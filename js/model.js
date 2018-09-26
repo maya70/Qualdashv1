@@ -31,3 +31,26 @@ $Q.handleJSON = function(url, callback, params) {
                         $.ajax(config);}};
     call();};
 
+
+$Q.Model_readMinapDummy = function(){
+    d3.csv("./data/minap_dummy.csv", function(data){
+        console.log(Object.keys(data[0])); 
+        var displayVar = $Q.Control_getDisplayVariable();
+
+        console.log(displayVar);
+        
+        var months = [];
+        var dateVar = "3.06 Date/time arrival at hospital";
+         console.log(data[0][dateVar]);
+
+        for(var i=0; i< data.length; i++){
+            // get the month of this entry
+            var date = data[i][dateVar];
+            var parts = date.split("-");
+            var month = parts[1]; 
+            var year = parts[0]; 
+            console.log("Year = "+ year); 
+        }
+
+    }); 
+};

@@ -4,12 +4,10 @@
 					null, 
 					function MainView(config){
 						var self = this;
-						self.readMinapDummy(); 
+						$Q.Model_readMinapDummy(); 
 					},
 					{
-						readMinapDummy: function(){
-							
-						}	
+						
 					}
 		);
 })(QUALDASH);

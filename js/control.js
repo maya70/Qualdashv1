@@ -3,6 +3,7 @@ var QUALDASH = QUALDASH || {};
 var $Q = QUALDASH; 
 
 $Q.classes = {};
+$Q.displayVariable = "4.04 Death in hospital";
 
 /**
  * Simple class inheritance.
@@ -29,3 +30,8 @@ $Q.defineClass = function(superclass, init, prototype) {
  * @returns {getter}
  */
 $Q.getter = function (key) {return function(object) {return object[key];};};
+
+
+$Q.Control_getDisplayVariable = function(){
+	return $Q.displayVariable; 
+};

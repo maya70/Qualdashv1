@@ -9,6 +9,55 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+.w3-grey-item {
+    height:25px;
+    background-color: grey;
+}
+.myitem{
+    height: 24px;
+
+}
+.tab {
+    float: left;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    width: 30%;
+    height: 300px;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+    display: block;
+    background-color: inherit;
+    color: black;
+    padding: 22px 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: left;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #ddd;
+}
+
+/* Create an active/current "tab button" class */
+.tab button.active {
+    background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+    float: left;
+    padding: 0px 12px;
+    border: 1px solid #ccc;
+    width: 70%;
+    border-left: none;
+    height: 300px;
+}
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -18,20 +67,26 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
-  <button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
+  <button class="w3-button w3-black w3-xlarge" onclick="w3_open()">☰</button>
+  <!--button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button-->
   <span class="w3-bar-item w3-right">Logout</span>
 </div>
 
 <!-- Sidebar/menu -->
-<nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:240px;" id="mySidebar"><br>
+<!--nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:240px;" id="mySidebar"><br-->
+<div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+  <button onclick="w3_close()" class="w3-bar-item w3-large">Hide &times;</button>
   <div class="w3-container w3-row">
     <div class="w3-col s4">
       <img src="img/logo.jpg" class=" w3-margin-right" style="width:46px">
     </div>
     <div class="w3-col s8 w3-bar">
-      <span>Welcome, <strong>Mai</strong></span><br>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i></a>
-      <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i></a>
+      <span>Welcome, <strong>Mai</strong>
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Profile</a>
+        <!--a href="#" class="w3-bar-item w3-button" style="width: 20px;"><i class="fa fa-bell"></i></a-->
+      </span>
+      
+      
       
     </div>
   </div>
@@ -54,7 +109,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i> Query History</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a><br><br>
   </div>
-    <div class="w3-third">
+    <!--div class="w3-third">
         <h5>Database Status</h5>
         <table class="w3-table w3-striped w3-white">
           <tr>
@@ -79,18 +134,38 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
           </tr>
         
         </table>
-      </div>
-</nav>
+      </div-->
+<!--/nav-->
+</div>
+<div class="w3-sidebar w3-bar-block w3-card w3-animate-right" style="right:0;" id="rightMenu">
+  <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-medium">Hide &times;</button>
+  <div class="w3-container">
+    <h4>Data Quality</h4>
+    <p>Overall Quality Score</p>
+    <div class="w3-grey-item" id="item1">
+      <div class="w3-container w3-center w3-padding w3-green myitem" style="width:75%">75%</div>
+    </div>
 
+    <p>Age</p>
+    <div class="w3-grey-item">
+      <div class="w3-container w3-center w3-padding w3-orange myitem" style="width:50%">50%</div>
+    </div>
+
+    <p>Comorbidities</p>
+    <div class="w3-grey-item">
+      <div class="w3-container w3-center w3-padding w3-red myitem" style="width:35%">35%</div>
+    </div>
+  </div>
+</div>
 
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px;margin-top:43px;">
+<div id="main" class="w3-main" style="margin-left:0px;margin-top:43px;">
 
   <!-- Header -->
-  <header class="w3-container" style="padding-top:12px; padding-bottom: 12px;">
+  <header class="w3-container" style="padding-top:6px; padding-bottom: 6px;">
     
     <div class="w3-row">
     
@@ -104,20 +179,25 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   
   
 </div>
-
+<button class="w3-button w3-teal w3-medium w3-right" onclick="openRightMenu()">Data Quality</button>
 <ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-  <li><a data-toggle="tab" href="#can1">>></a></li>
+  <li><a data-toggle="tab" href="#can1">Metrics</a></li>
+  <li><a data-toggle="tab" href="#can2">Database Status</a></li>
+  <li><a data-toggle="tab" href="#can3">>></a></li>
   
 </ul>
+
 
  <div class="tab-content">
   <div id="home" class="tab-pane fade in active">
   <div class="w3-panel">
     <div class="w3-row-padding" style="margin:0 -16px">
       <div class="w3-twothird">
-       <svg id="mainsvg" style="width: 2000px; height: 1500px;"> </svg>
+       <!--svg id="mainsvg" style="width: 2000px; height: 1500px;"> </svg-->
         <!--img src="img/map3.jpg" style="width:100%" alt="Regional Map"-->
+        <img src="img/mortality.PNG" class=" w3-margin-right" style="width:46%; height: 220px;" alt="Mortality Rates">
+        <img src="img/smr_missing.PNG" class=" w3-margin-right" style="width:46%; height: 220px;" alt="Mortality Rates">
       </div>
     
     </div>
@@ -125,33 +205,35 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   
   </div>
   <div id="can1" class="tab-pane fade">
-      <h3>Canvas 1</h3>
-      <svg style="width: 2000px; height: 1500px;"> </svg>
+       <img src="img/bench.jpg" class=" w3-margin-right" style="width:100%; height: 420px;" alt="Mortality Rates">
+      <!--svg style="width: 2000px; height: 1500px;"> </svg-->
     </div>
     <div id="can2" class="tab-pane fade">
-      <h3>Canvas 2</h3>
-      <svg style="width: 2000px; height: 1500px;"> </svg>
+     <div class="tab">
+        <button class="tablinks" onclick="openCity(event, 'London')">All Fields</button>
+        <button class="tablinks" onclick="openCity(event, 'Paris')">SMR Fields</button>
+        <button class="tablinks" onclick="openCity(event, 'Tokyo')">Call-to-Balloon Fields</button>
+      </div>
+
+      <div id="London" class="tabcontent">
+        <h3>All Fields</h3>
+        <p>London is the capital city of England.</p>
+      </div>
+
+      <div id="Paris" class="tabcontent">
+        <h3>SMR Fields</h3>
+        <img src="img/smr_missing.PNG" class=" w3-margin-right" style="width:100%; height: 220px;" alt="Mortality Rates">
+      </div>
+
+      <div id="Tokyo" class="tabcontent">
+        <h3>Call-to-Balloon Fields</h3>
+        <p>Tokyo is the capital of Japan.</p>
+      </div>
     </div>
 </div>
 
   <hr>
-  <div class="w3-container">
-    <h5>General Stats</h5>
-    <p>New Visitors</p>
-    <div class="w3-grey">
-      <div class="w3-container w3-center w3-padding w3-green" style="width:25%">+25%</div>
-    </div>
-
-    <p>New Users</p>
-    <div class="w3-grey">
-      <div class="w3-container w3-center w3-padding w3-orange" style="width:50%">50%</div>
-    </div>
-
-    <p>Bounce Rate</p>
-    <div class="w3-grey">
-      <div class="w3-container w3-center w3-padding w3-red" style="width:75%">75%</div>
-    </div>
-  </div>
+ 
   <hr>
 
   <div class="w3-container">
@@ -185,7 +267,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
   </div>
   <hr>
-  <div class="w3-container">
+  <!--div class="w3-container">
     <h5>Recent Users</h5>
     <ul class="w3-ul w3-card-4 w3-white">
       <li class="w3-padding-16">
@@ -201,7 +283,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         <span class="w3-xlarge">Jane</span><br>
       </li>
     </ul>
-  </div>
+  </div-->
   <hr>
 
   <div class="w3-container">
@@ -254,7 +336,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   <!-- Footer -->
   <footer class="w3-container w3-padding-16 w3-light-grey">
     <h4>FOOTER</h4>
-    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
+    <!--p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p-->
   </footer>
 
   <!-- End page content -->
@@ -268,7 +350,7 @@ var mySidebar = document.getElementById("mySidebar");
 var overlayBg = document.getElementById("myOverlay");
 
 // Toggle between showing and hiding the sidebar, and add overlay effect
-function w3_open() {
+/*function w3_open() {
     if (mySidebar.style.display === 'block') {
         mySidebar.style.display = 'none';
         overlayBg.style.display = "none";
@@ -282,6 +364,45 @@ function w3_open() {
 function w3_close() {
     mySidebar.style.display = "none";
     overlayBg.style.display = "none";
+}*/
+
+function w3_open() {
+  document.getElementById("main").style.marginLeft = "25%";
+  document.getElementById("mySidebar").style.width = "25%";
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("openNav").style.display = 'none';
+}
+function w3_close() {
+  document.getElementById("main").style.marginLeft = "0%";
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("openNav").style.display = "inline-block";
+}
+function openRightMenu() {
+    document.getElementById("rightMenu").style.display = "block";
+}
+function closeRightMenu() {
+    document.getElementById("rightMenu").style.display = "none";
+}
+
+function openCity(evt, cityName) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // Show the current tab, and add an "active" class to the link that opened the tab
+    document.getElementById(cityName).style.display = "block";
+    evt.currentTarget.className += " active";
 }
 </script>
 <script src="jqueryLib/jquery-1.10.2.js" type="text/javascript"></script>
