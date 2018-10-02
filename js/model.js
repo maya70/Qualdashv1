@@ -1,56 +1,76 @@
-// Define the namespace if it's not already defined
-var QUALDASH = QUALDASH || {};
-var $Q = QUALDASH; 
+(function($Q){
+    'use strict'
+    $Q.Model = $Q.defineClass(
+                    null, 
+                    function Model(control){
+                        var self = this;
+                        self.control = control; 
+                        self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                    },
+                    {
+                        readMinapDummy: function(){
+                            var self = this; 
+                            d3.csv("./data/minap_dummy.csv", function(data){
+                                    console.log(Object.keys(data[0])); 
+                                    var displayVar = self.control.getDisplayVariable(); 
+
+                                    console.log(displayVar);
+                                    var dateVar = "3.06 Date/time arrival at hospital";
+                                    self.aggMonthly(data, dateVar, displayVar);
 
 
-/**
- * ajax wrapper to read and write JSON data from/to file
- * @param {Object} url - the file path
- * @param {!Function} callback - the callback function once read/write finsihes
- * @param {Object} params - ajax call parameters
- */
+                                });
+                            },
+                        aggMonthly: function(data, dateVar, displayVar){
+                            var self = this; 
+                            var dict = {};
 
-$Q.handleJSON = function(url, callback, params) {
-    var call, config, count = 0;
-    config = {
-        dataType: 'json',
-        url: url,
-        async: false,
-        error: function(jqXHR, textStatus, errorThrown) {
-            if ('timeout' === textStatus) {
-                call();}
-            else {
-                console.error(errorThrown);
-                console.error(textStatus);}},
-        timeout: 120000,
-        success: callback};
-    if (params) {config = $.extend(config, params);}
-    call = function call() {
-                    ++count;
-                    if (count < 5) {
-                        $.ajax(config);}};
-    call();};
+                            for(var i=0; i< data.length; i++){
+                                // get the month of this entry
+                                var date = new Date(data[i][dateVar]);
+                                console.log(date); 
+                                var month = self.months[date.getMonth()];
+                                var year = date.getYear()+1900; 
+                                //console.log(month);
+                                //console.log(year);
+                                var my = month+"-"+year; 
+                                console.log(my); 
+                                dict[my] = dict[my]? dict[my]+parseInt(data[i][displayVar]) : parseInt(data[i][displayVar]);
+
+                            }
+
+                            console.log(dict); 
+                            var sum=0; 
+                            for(var key in dict){
+                                sum += dict[key];
+                            }
+                        
+
+                            // sort dict by date
+                            function custom_sort(a,b){
+                                return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
+                            }
+
+                            var ordered = [];
+                            var temp = Object.keys(dict);
+                            console.log(temp); 
+                            var orderedKeys = Object.keys(dict).sort(custom_sort);
+                            console.log(orderedKeys);
+
+                            for(var k= 0; k < orderedKeys.length; k++){
+                                var obj = {};
+                                obj['date'] = orderedKeys[k];
+                                obj['number'] = dict[orderedKeys[k]];
+                                ordered.push(obj); 
+
+                            }
+
+                            console.log(ordered); 
+
+                            self.control.drawBarChart(ordered); 
+                        }
+                    }
+        );
+})(QUALDASH);
 
 
-$Q.Model_readMinapDummy = function(){
-    d3.csv("./data/minap_dummy.csv", function(data){
-        console.log(Object.keys(data[0])); 
-        var displayVar = $Q.Control_getDisplayVariable();
-
-        console.log(displayVar);
-        
-        var months = [];
-        var dateVar = "3.06 Date/time arrival at hospital";
-         console.log(data[0][dateVar]);
-
-        for(var i=0; i< data.length; i++){
-            // get the month of this entry
-            var date = data[i][dateVar];
-            var parts = date.split("-");
-            var month = parts[1]; 
-            var year = parts[0]; 
-            console.log("Year = "+ year); 
-        }
-
-    }); 
-};
