@@ -84,7 +84,7 @@ div.tooltip {
     grid-template-columns: 30% 70%;
     grid-template-rows: 7% 93%;
     grid-template-areas: "header header"
-                "control draw";
+                         "draw control";
     height: 350px; 
     }
 
@@ -109,7 +109,8 @@ div.tooltip {
     }
     .control-panel{
       grid-area: control;
-      min-width: 25%;
+      justify-self: right;
+      min-width: 30%;
       height: 300px;
       margin-top: 15px;
       background-color: darkgrey;
@@ -123,6 +124,10 @@ div.tooltip {
     .control-button{
       border-radius: 5px;
       width: 100%;
+      margin-top: 20px; 
+      margin-bottom: 10px;
+    
+      margin-right: 10px; 
     }
     #table-panel{
       width: 100%;
@@ -133,6 +138,24 @@ div.tooltip {
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body class="w3-light-grey">
+
+
+      <!-- Content for Popover #1 -->    
+<div id="a1" class="hidden">
+    <div class="popover-heading">This is the heading for #1</div>
+    
+    <div class="popover-body">This is the body for #1</div>
+</div>   
+    
+<!-- Content for Popover #2 -->
+<div id="a2" class="hidden">
+    <div class="popover-heading">This is the heading for #2</div>
+    
+    <div class="popover-body">This is the body for #2<br>
+        With <b>html</b> content    
+    </div>
+</div>    
+ 
 
 <!-- Top container -->
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
@@ -267,15 +290,19 @@ div.tooltip {
         <div class="control-panel" id="mainCardPanel"> 
         <fieldset id="field-panel">
         <legend style="color:black; font-size:10pt; margin-top: 0px;">Card Tools</legend>
+
        <table id="table-panel">
        <tr>
          <td> 
-           <button id="cat-button" class="control-button accordion">Categories</button>
+           <!--button id="cat-button" class="control-button accordion">Categories</button-->
+           <a href="#" class="btn btn-primary control-button" tabindex="0" data-toggle="popover" data-trigger="focus" data-popover-content="#a1" data-placement="top">Categories</a>
+
          </td>
        </tr>
        <tr>
          <td> 
-             <button class="control-button accordion">Axes</button>
+             <!--button class="control-button accordion">Axes</button-->
+             <a href="#" class="btn btn-primary control-button" tabindex="0" data-toggle="popover" data-trigger="focus" data-popover-content="#a2">Axes</a>
          </td>
         
        </tr>
@@ -435,6 +462,9 @@ div.tooltip {
 
   <!-- End page content -->
 </div>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
 
 <script>
 // Get the Sidebar
@@ -498,13 +528,16 @@ function openCity(evt, cityName) {
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
 }
+
+
 </script>
-<script src="jqueryLib/jquery-1.10.2.js" type="text/javascript"></script>
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/model.js"></script>
 <script type="text/javascript" src="js/mainView.js"></script>
 <script type="text/javascript" src="js/control.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
+
 </body>
 </html>
