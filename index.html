@@ -114,6 +114,19 @@ div.tooltip {
       margin-top: 15px;
       background-color: darkgrey;
     }
+    #field-panel{
+      border-radius: 5px;
+      padding-left: 0px;
+      margin-left: 0px;
+      margin-top: 10px;
+    }
+    .control-button{
+      border-radius: 5px;
+      width: 100%;
+    }
+    #table-panel{
+      width: 100%;
+    }
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -252,20 +265,22 @@ div.tooltip {
        <div class="draggablediv" id="mainCard">
         <div class="draggabledivheader" id="mainCardHeader"> </div>
         <div class="control-panel" id="mainCardPanel"> 
+        <fieldset id="field-panel">
         <legend style="color:black; font-size:10pt; margin-top: 0px;">Card Tools</legend>
-       <table>
+       <table id="table-panel">
        <tr>
          <td> 
-           <button onclick="w3_close()" class="control-button">Categories</button>
+           <button id="cat-button" class="control-button accordion">Categories</button>
          </td>
        </tr>
        <tr>
          <td> 
-             <button onclick="w3_close()" class="control-button">Axes</button>
+             <button class="control-button accordion">Axes</button>
          </td>
         
        </tr>
        </table>
+       </fieldset>
         </div>     
         <div id="draw-area-1" class="draw-area"> 
 

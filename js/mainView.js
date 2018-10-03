@@ -6,10 +6,29 @@
 						var self = this;
 						//$Q.Model_readMinapDummy(); 
 						self.control = control;
+						self.setupControls(); 
 						self.urgencyColor = "#63F3B9";
 						self.control.viewReady(self); 
 					},
 					{
+						setupControls: function(){
+							var self = this;
+							d3.select("#cat-button").on("click", function(o){
+								var pan = this.nextElementSibling; 
+								if(pan){
+									if(pan.style.display === "none"){
+				                            	pan.style.display = "block";
+				                        		}
+				                       		 else
+				                            	pan.style.display = "none"; 
+								}
+							});
+							/*var buttons = d3.selectAll(".control-button"); 
+							buttons.each(function(but){
+								but.class("acco")
+								console.log(but); 
+							}); */
+						},
 						drawBarChart: function(data){
 							var self = this;
 							var svgw = 300;
