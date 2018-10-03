@@ -14,17 +14,23 @@
 							var self = this;
 							var svgw = 300;
 							var svgh = 300; 
-
+							var drawArea = d3.select("#draw-area-1");
+							var parentArea = drawArea.select(function(){
+								return this.parentNode; 
+							});
+							console.log(parentArea.node().getBoundingClientRect());
 							self.svg = d3.select("#draw-area-1").append("svg")
 										.attr("width", svgw).attr("height", svgh).attr("transform", "translate(50,20)");
 							
-							self.cardTitle = d3.select("#mainCard").selectAll("span")
+							self.cardTitle = d3.select("#mainCardHeader").selectAll("span")
 												.data(self.control.getDisplayVariable())
 												.enter()
 												.append("span")
 												.text(function(d){
 													return d;
-												});
+												})
+												.style("color", "black")
+												.style("margin-top", "0px");
 							self.cardHeader = d3.select("#mainCardHeader")
 												.on('mouseover', function() {
 														d3.select(this)

@@ -78,11 +78,18 @@ div.tooltip {
     text-align: center;
     border: 1px solid #d3d3d3;
     min-height: 350px;
-    min-width: 300px;
+    min-width: 550px;
     border-radius: 10px;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 7% 93%;
+    grid-template-areas: "header header"
+                "control draw";
+    height: 350px; 
     }
 
   .draggabledivheader {
+    grid-area: header;
     border-radius: 10px;
     padding: 10px;
     cursor: move;
@@ -90,13 +97,22 @@ div.tooltip {
     /* background: linear-gradient(to right, #63C3F3 , #63F3B9);*/
     background: #63F3B9;
     color: #fff;
-    max-height: 20px;
+    height: 35px;
     }
     .draw-area{
-      min-height: 500px;
-      min-width: 500px; 
+      grid-area: draw;
+      justify-self: left;
+      min-height: 350px;
+      min-width: 70%; 
       z-index: 8; 
 
+    }
+    .control-panel{
+      grid-area: control;
+      min-width: 25%;
+      height: 300px;
+      margin-top: 15px;
+      background-color: darkgrey;
     }
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -234,13 +250,27 @@ div.tooltip {
   <div class="w3-panel">
     <div class="w3-row-padding" style="margin:0 -16px; min-height: 700px;">
        <div class="draggablediv" id="mainCard">
-      <div class="draggabledivheader" id="mainCardHeader"> 
-      
+        <div class="draggabledivheader" id="mainCardHeader"> </div>
+        <div class="control-panel" id="mainCardPanel"> 
+        <legend style="color:black; font-size:10pt; margin-top: 0px;">Card Tools</legend>
+       <table>
+       <tr>
+         <td> 
+           <button onclick="w3_close()" class="control-button">Categories</button>
+         </td>
+       </tr>
+       <tr>
+         <td> 
+             <button onclick="w3_close()" class="control-button">Axes</button>
+         </td>
+        
+       </tr>
+       </table>
+        </div>     
         <div id="draw-area-1" class="draw-area"> 
 
             <!--svg id="mainsvg" style="min-height: 300px;"> </svg-->
-
-        </div>
+        
       </div>
     </div>
        
