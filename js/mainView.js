@@ -30,6 +30,7 @@
 							}); */
 							 jQuery("[data-toggle=popover]").popover({
 						        html : true,
+						        container: '#home',
 						        content: function() {
 						          var content = $(this).attr("data-popover-content");
 						          return $(content).children(".popover-body").html();

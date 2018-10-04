@@ -132,6 +132,13 @@ div.tooltip {
     #table-panel{
       width: 100%;
     }
+    .popover{
+      max-width: 1000px;
+      min-width: 500px;
+      min-height: 500px;
+      max-height: 1000px;
+    }
+
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -144,15 +151,21 @@ div.tooltip {
 <div id="a1" class="hidden">
     <div class="popover-heading">This is the heading for #1</div>
     
-    <div class="popover-body">This is the body for #1</div>
+    <div class="popover-body">
+    <button class="w3-button w3-black w3-xlarge" onclick="helloWorld()">Click ME</button>
+    </div>
 </div>   
     
 <!-- Content for Popover #2 -->
 <div id="a2" class="hidden">
     <div class="popover-heading">This is the heading for #2</div>
     
-    <div class="popover-body">This is the body for #2<br>
-        With <b>html</b> content    
+    <div class="popover-body">
+       <div class="popover-content"> 
+          <svg height="500" width="500">
+  <circle cx="100" cy="100" r="40" stroke="black" stroke-width="3" fill="red" />
+</svg>
+       </div>    
     </div>
 </div>    
  
@@ -295,14 +308,14 @@ div.tooltip {
        <tr>
          <td> 
            <!--button id="cat-button" class="control-button accordion">Categories</button-->
-           <a href="#" class="btn btn-primary control-button" tabindex="0" data-toggle="popover" data-trigger="focus" data-popover-content="#a1" data-placement="top">Categories</a>
+           <a href="#" class="btn btn-primary control-button" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="right" data-popover-content="#a1" data-placement="top">Categories</a>
 
          </td>
        </tr>
        <tr>
          <td> 
              <!--button class="control-button accordion">Axes</button-->
-             <a href="#" class="btn btn-primary control-button" tabindex="0" data-toggle="popover" data-trigger="focus" data-popover-content="#a2">Axes</a>
+             <a href="#" class="btn btn-primary control-button" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="right" data-popover-content="#a2">Axes</a>
          </td>
         
        </tr>
@@ -490,6 +503,14 @@ function w3_close() {
     overlayBg.style.display = "none";
 }*/
 
+function helloWorld(){
+  console.log("HELLO WORLD");
+}
+$('body')
+  .on('mousedown', '.popover', function(e) {
+    console.log("clicked inside popover")
+    e.preventDefault()
+  });
 function w3_open() {
   document.getElementById("main").style.marginLeft = "25%";
   document.getElementById("mySidebar").style.width = "25%";
