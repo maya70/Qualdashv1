@@ -138,7 +138,10 @@ div.tooltip {
       min-height: 500px;
       max-height: 1000px;
     }
-
+  .mod_vis{
+    max-height: 400px;
+    max-width: 500px; 
+  }
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -151,8 +154,9 @@ div.tooltip {
 <div id="a1" class="hidden">
     <div class="popover-heading">This is the heading for #1</div>
     
-    <div class="popover-body">
-    <button class="w3-button w3-black w3-xlarge" onclick="helloWorld()">Click ME</button>
+    <div class="popover-body" id="cat-popover">
+    <!--button class="w3-button w3-black w3-xlarge" onclick="helloWorld()">Click ME</button-->
+     <input type="button" class="btn_vg_parse hide-vl" value="Parse"></input>
     </div>
 </div>   
     
@@ -553,7 +557,30 @@ function openCity(evt, cityName) {
 
 </script>
 
+
+
+<!-- vega libraries-->
+<link rel="stylesheet" type="text/css" href="app/editor.css"/>
+    <script src="vendor/topojson.js"charset="utf-8"></script>
+    <script src="vendor/d3.min.js" charset="utf-8"></script>
+    <script src="vendor/d3.geo.projection.min.js" charset="utf-8"></script>
+    <script src="vendor/d3.layout.cloud.js" charset="utf-8"></script>
+    <script src="vendor/ace/ace.js" charset="utf-8"></script>
+    <script src="vendor/vega.js" charset="utf-8"></script>
+    <script src="vendor/vega-embed.js" charset="utf-8"></script>
+    <script src="vendor/vega-lite.js" charset="utf-8"></script>
+    <script src="vendor/json3-compactstringify.js" charset="utf-8"></script>
+    <script>
+      JSON3 = JSON3.noConflict();
+    </script>
+    <script src="app/vega-specs.js" charset="utf-8"></script>
+    <script src="app/vl-specs.js" charset="utf-8"></script>
+    <script src="app/editor.js" charset="utf-8"></script>
+     <script> ved.init('#draw-area-1', 'app/'); </script>
+<!-- end vega libraries -->  
+
 <script src="https://d3js.org/d3.v4.min.js"></script>
+
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/model.js"></script>
 <script type="text/javascript" src="js/mainView.js"></script>

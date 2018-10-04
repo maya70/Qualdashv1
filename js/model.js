@@ -11,10 +11,10 @@
                         readMinapDummy: function(){
                             var self = this; 
                             d3.csv("./data/minap_dummy.csv", function(data){
-                                    console.log(Object.keys(data[0])); 
+                                    //console.log(Object.keys(data[0])); 
                                     var displayVar = self.control.getDisplayVariable(); 
 
-                                    console.log(displayVar);
+                                    //console.log(displayVar);
                                     var dateVar = "3.06 Date/time arrival at hospital";
                                     self.aggMonthly(data, dateVar, displayVar);
 
@@ -28,18 +28,18 @@
                             for(var i=0; i< data.length; i++){
                                 // get the month of this entry
                                 var date = new Date(data[i][dateVar]);
-                                console.log(date); 
+                                //console.log(date); 
                                 var month = self.months[date.getMonth()];
                                 var year = date.getYear()+1900; 
-                                //console.log(month);
-                                //console.log(year);
+                                ////console.log(month);
+                                ////console.log(year);
                                 var my = month+"-"+year; 
-                                console.log(my); 
+                                //console.log(my); 
                                 dict[my] = dict[my]? dict[my]+parseInt(data[i][displayVar]) : parseInt(data[i][displayVar]);
 
                             }
 
-                            console.log(dict); 
+                            //console.log(dict); 
                             var sum=0; 
                             for(var key in dict){
                                 sum += dict[key];
@@ -53,9 +53,9 @@
 
                             var ordered = [];
                             var temp = Object.keys(dict);
-                            console.log(temp); 
+                            //console.log(temp); 
                             var orderedKeys = Object.keys(dict).sort(custom_sort);
-                            console.log(orderedKeys);
+                            //console.log(orderedKeys);
 
                             for(var k= 0; k < orderedKeys.length; k++){
                                 var obj = {};
@@ -65,7 +65,7 @@
 
                             }
 
-                            console.log(ordered); 
+                            //console.log(ordered); 
 
                             self.control.drawBarChart(ordered); 
                         }
