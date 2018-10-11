@@ -3,5 +3,5 @@
  * Date: 18/09/2018
  */  
 (function($Q){
-	var v = new $Q.Control(); 
+	$Q.mainControl = new $Q.Control(); 
 })(QUALDASH);

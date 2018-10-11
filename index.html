@@ -85,7 +85,7 @@ div.tooltip {
     grid-template-rows: 7% 93%;
     grid-template-areas: "header header"
                          "draw control";
-    height: 350px; 
+    height: 450px; 
     }
 
   .draggabledivheader {
@@ -94,15 +94,17 @@ div.tooltip {
     padding: 10px;
     cursor: move;
     z-index: 10;
-    /* background: linear-gradient(to right, #63C3F3 , #63F3B9);*/
-    background: #63F3B9;
+    /* background: linear-gradient(to right, #63C3F3 , #63F3B9);*
+    background: #63F3B9;*/
+    background: #009933 ; 
+    opacity: 0.8;
     color: #fff;
     height: 35px;
     }
     .draw-area{
       grid-area: draw;
       justify-self: left;
-      min-height: 350px;
+      min-height: 400px;
       min-width: 70%; 
       z-index: 8; 
 
@@ -111,7 +113,7 @@ div.tooltip {
       grid-area: control;
       justify-self: right;
       min-width: 30%;
-      height: 300px;
+      height: 400px;
       margin-top: 15px;
       background-color: darkgrey;
     }
@@ -156,7 +158,9 @@ div.tooltip {
     
     <div class="popover-body" id="cat-popover">
     <!--button class="w3-button w3-black w3-xlarge" onclick="helloWorld()">Click ME</button-->
-     <input type="button" class="btn_vg_parse hide-vl" value="Parse"></input>
+     <input type="button" class="btn_vg_parse hide-vl" value="Add grouping" onclick="addGroup()"></input>
+     <input type="button" class="btn_vg_parse hide-vl" value="Toggle view" onclick="toggleBars()"></input>
+      <input type="button" class="btn_vg_parse hide-vl" value="Further grouping" onclick="trellis()"></input>
     </div>
 </div>   
     
@@ -178,7 +182,7 @@ div.tooltip {
 <div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
   <button class="w3-button w3-black w3-xlarge" onclick="w3_open()">☰</button>
   <!--button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button-->
-  <span class="w3-bar-item w3-right">Logout</span>
+  <span class="w3-bar-item w3-right"> QualDash &copy </span>
 </div>
 
 <!-- Sidebar/menu -->
@@ -309,6 +313,14 @@ div.tooltip {
         <legend style="color:black; font-size:10pt; margin-top: 0px;">Card Tools</legend>
 
        <table id="table-panel">
+      
+       <tr>
+         <td> 
+             <!--button class="control-button accordion">Axes</button-->
+             <a href="#" class="btn btn-primary control-button" tabindex="1" data-toggle="popover" data-trigger="focus" data-placement="right" data-popover-content="#a2">Axes</a>
+         </td>
+        
+       </tr>
        <tr>
          <td> 
            <!--button id="cat-button" class="control-button accordion">Categories</button-->
@@ -316,13 +328,8 @@ div.tooltip {
 
          </td>
        </tr>
-       <tr>
-         <td> 
-             <!--button class="control-button accordion">Axes</button-->
-             <a href="#" class="btn btn-primary control-button" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="right" data-popover-content="#a2">Axes</a>
-         </td>
-        
-       </tr>
+          
+       
        </table>
        </fieldset>
         </div>     
@@ -374,36 +381,7 @@ div.tooltip {
  
   <hr>
 
-  <div class="w3-container">
-    <h5>Countries</h5>
-    <table class="w3-table w3-striped w3-bordered w3-border w3-hoverable w3-white">
-      <tr>
-        <td>United States</td>
-        <td>65%</td>
-      </tr>
-      <tr>
-        <td>UK</td>
-        <td>15.7%</td>
-      </tr>
-      <tr>
-        <td>Russia</td>
-        <td>5.6%</td>
-      </tr>
-      <tr>
-        <td>Spain</td>
-        <td>2.1%</td>
-      </tr>
-      <tr>
-        <td>India</td>
-        <td>1.9%</td>
-      </tr>
-      <tr>
-        <td>France</td>
-        <td>1.5%</td>
-      </tr>
-    </table><br>
-    <button class="w3-button w3-dark-grey">More Countries  <i class="fa fa-arrow-right"></i></button>
-  </div>
+ 
   <hr>
   <!--div class="w3-container">
     <h5>Recent Users</h5>
@@ -428,7 +406,7 @@ div.tooltip {
     <h5>Recent Comments</h5>
     <div class="w3-row">
       <div class="w3-col m2 text-center">
-        <img class="w3-circle" src="/w3images/avatar3.png" style="width:96px;height:96px">
+        <!--img class="w3-circle" src="/w3images/avatar3.png" style="width:96px;height:96px"-->
       </div>
       <div class="w3-col m10 w3-container">
         <h4>John <span class="w3-opacity w3-medium">Sep 29, 2014, 9:12 PM</span></h4>
@@ -438,7 +416,7 @@ div.tooltip {
 
     <div class="w3-row">
       <div class="w3-col m2 text-center">
-        <img class="w3-circle" src="/w3images/avatar1.png" style="width:96px;height:96px">
+        <!--img class="w3-circle" src="/w3images/avatar1.png" style="width:96px;height:96px"-->
       </div>
       <div class="w3-col m10 w3-container">
         <h4>Bo <span class="w3-opacity w3-medium">Sep 28, 2014, 10:15 PM</span></h4>
@@ -507,8 +485,16 @@ function w3_close() {
     overlayBg.style.display = "none";
 }*/
 
-function helloWorld(){
-  console.log("HELLO WORLD");
+function addGroup(){
+  $Q.mainControl.addCategorical("Record Created By"); 
+}
+
+function toggleBars(){
+  $Q.mainControl.toggleBars(); 
+}
+
+function trellis() {
+  $Q.mainControl.createTrellis(); 
 }
 $('body')
   .on('mousedown', '.popover', function(e) {
@@ -560,7 +546,7 @@ function openCity(evt, cityName) {
 
 
 <!-- vega libraries-->
-<link rel="stylesheet" type="text/css" href="app/editor.css"/>
+<!--link rel="stylesheet" type="text/css" href="app/editor.css"/>
     <script src="vendor/topojson.js"charset="utf-8"></script>
     <script src="vendor/d3.min.js" charset="utf-8"></script>
     <script src="vendor/d3.geo.projection.min.js" charset="utf-8"></script>
@@ -576,7 +562,7 @@ function openCity(evt, cityName) {
     <script src="app/vega-specs.js" charset="utf-8"></script>
     <script src="app/vl-specs.js" charset="utf-8"></script>
     <script src="app/editor.js" charset="utf-8"></script>
-     <script> ved.init('#draw-area-1', 'app/'); </script>
+     <script> ved.init('#draw-area-1', 'app/'); </script-->
 <!-- end vega libraries -->  
 
 <script src="https://d3js.org/d3.v4.min.js"></script>

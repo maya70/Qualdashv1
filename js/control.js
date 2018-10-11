@@ -4,20 +4,36 @@
 					null, 
 					function Control(config){
 						var self = this;
+						self.displayVariable = "4.04 Death in hospital";
 						self.dataModel = new $Q.Model(self); 
 						self.mainView = new $Q.MainView(self); 
-						self.displayVariable = "4.04 Death in hospital";
+					
 					},
 					{
 						viewReady: function(view){
 							var self = this; 
 							self.dataModel.readMinapDummy(); 
 						},
-						drawBarChart: function(data){
-							this.mainView.drawBarChart(data); 
+						drawBarChart: function(data, cat, levels){
+							if(!cat)
+								this.mainView.drawBarChart(data); 
+							else
+								this.mainView.drawCatBar(data, cat, levels);
 						}, 
 						getDisplayVariable: function(){
-							return this.displayVariable; 
+							var self = this;
+
+							return self.displayVariable; 
+						}, 
+						addCategorical: function(catName){
+						  	this.dataModel.addCategorical(catName);
+						},
+						toggleBars: function(){
+							this.mainView.toggleBarView(); 
+						}, 
+						createTrellis: function(){
+							this.mainView.toggleTrellis(); 
+							
 						}
 					}
 		);

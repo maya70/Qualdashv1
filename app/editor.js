@@ -127,7 +127,26 @@ ved.select = function(spec) {
   if (idx > 0) {
     d3.json("./app/spec/vega-lite/bar_aggregate.json", function(error, response) {
       
-      editor.setValue(JSON.stringify(response));
+      var str = {
+  "data": {"url": "data/cars.json"},
+  "mark": "circle",
+  "select": {
+    "id": {"type": "list"}
+  },
+  "encoding": {
+    "x": {"field": "Horsepower","type": "quantitative"},
+    "y": {"field": "Miles_per_Gallon","type": "quantitative"},
+    "color": [
+      {"if": "id", "field": "Origin", "type": "nominal"},
+      {"value": "grey"}
+    ],
+    "size": {"value": 100}
+  },
+  "config": {"mark": {"fillOpacity": 0.5}}
+}; 
+
+     // editor.setValue(JSON.stringify(response));
+     editor.setValue(JSON.stringify(str));
       //editor.gotoLine(0);
       parse(function(err) {
         if (err) console.error(err);

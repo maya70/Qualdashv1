@@ -6,6 +6,7 @@ var $Q = QUALDASH;
 $Q.classes = {};
 
 
+
 /**
  * Simple class inheritance.
  * Does not handle calling the superclass constructor.
