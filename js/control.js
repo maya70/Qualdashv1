@@ -14,11 +14,13 @@
 							var self = this; 
 							self.dataModel.readMinapDummy(); 
 						},
-						drawBarChart: function(data, cat, levels){
+						drawBarChart: function(data, cat, levels, trellis){
 							if(!cat)
 								this.mainView.drawBarChart(data); 
+							else if(!trellis)
+								this.mainView.drawCatBar(data, cat, levels,0);
 							else
-								this.mainView.drawCatBar(data, cat, levels);
+								this.mainView.drawBarTrellis(data, cat, levels); 
 						}, 
 						getDisplayVariable: function(){
 							var self = this;

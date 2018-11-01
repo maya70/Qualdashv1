@@ -80,11 +80,25 @@
 						        }
 						    });
 						},
-						drawCatBar: function(dict, cat, levels){
+						drawBarTrellis: function(dicts, cat, levels){
+							var self = this;
+							var dict = dicts[levels[0][0]];
+							var c =0; 
+                            
+                            self.drawCatBar(dict, cat[1], levels[1], 0);
+                            
+                            self.drawCatBar(dict, cat[1], levels[1], 1);
+                               
+						},
+						drawCatBar: function(dict, cat, levels, iter){
 							var self = this; 
 								self.dict = dict;
 								self.cat = cat;
 								self.levels = levels; 
+								console.log(dict);
+								console.log(cat);
+								console.log(levels);
+								console.log(iter);
 							   // sort dict by date
                                 function custom_sort(a,b){
                                     return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
@@ -115,7 +129,7 @@
                                     console.log(yMax);
                                     console.log(y1Max);
 
-							if(self.svg){
+							if(self.svg && iter === 0){
 								d3.selectAll("svg").remove(); 
 							}
 							console.log(dict);
@@ -129,7 +143,8 @@
 
 							self.svg = d3.select("#draw-area-1").append("svg")
 										.attr("id", "mainsvg")
-										.attr("width", svgw).attr("height", svgh).attr("transform", "translate(50,20)");
+										.attr("width", svgw).attr("height", svgh)
+										.attr("transform", "translate(50,"+ (20+ iter*svgh * 0.8) +")");
 							
 							self.cardTitle = d3.select("#mainCardHeader").selectAll("span")
 												.data(self.control.getDisplayVariable())
@@ -143,11 +158,11 @@
 							self.cardHeader = d3.select("#mainCardHeader")
 												.on('mouseover', function() {
 														d3.select(this)
-														.style('background-color', "white")
+														.style('background-color', self.urgencyColor)
 													})
 												.on("mouseout", function(){
 														d3.select(this)
-														.style('background-color', self.urgencyColor);
+														.style('background-color', "darkgrey" );
 														console.log(d3.select(this).node().getBoundingClientRect().height);
 												});
 							var div = d3.select("body").append("div")	
@@ -336,11 +351,11 @@
 							self.cardHeader = d3.select("#mainCardHeader")
 												.on('mouseover', function() {
 														d3.select(this)
-														.style('background-color', "white")
+														.style('background-color', self.urgencyColor)
 													})
 												.on("mouseout", function(){
 														d3.select(this)
-														.style('background-color', self.urgencyColor);
+														.style('background-color', "darkgrey");
 														console.log(d3.select(this).node().getBoundingClientRect().height);
 												});
 												

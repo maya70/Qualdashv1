@@ -96,7 +96,7 @@ div.tooltip {
     z-index: 10;
     /* background: linear-gradient(to right, #63C3F3 , #63F3B9);*
     background: #63F3B9;*/
-    background: #009933 ; 
+    background: darkgrey ; 
     opacity: 0.8;
     color: #fff;
     height: 35px;
@@ -402,28 +402,28 @@ div.tooltip {
   </div-->
   <hr>
 
-  <div class="w3-container">
+  <!--div class="w3-container">
     <h5>Recent Comments</h5>
     <div class="w3-row">
       <div class="w3-col m2 text-center">
-        <!--img class="w3-circle" src="/w3images/avatar3.png" style="width:96px;height:96px"-->
+        <img class="w3-circle" src="/w3images/avatar3.png" style="width:96px;height:96px">
       </div>
       <div class="w3-col m10 w3-container">
         <h4>John <span class="w3-opacity w3-medium">Sep 29, 2014, 9:12 PM</span></h4>
         <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
       </div>
-    </div>
+    </div-->
 
-    <div class="w3-row">
+    <!--div class="w3-row">
       <div class="w3-col m2 text-center">
-        <!--img class="w3-circle" src="/w3images/avatar1.png" style="width:96px;height:96px"-->
+        <img class="w3-circle" src="/w3images/avatar1.png" style="width:96px;height:96px">
       </div>
       <div class="w3-col m10 w3-container">
         <h4>Bo <span class="w3-opacity w3-medium">Sep 28, 2014, 10:15 PM</span></h4>
         <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
       </div>
     </div>
-  </div>
+  </div-->
   <br>
   <div class="w3-container w3-dark-grey w3-padding-32">
     <div class="w3-row">
@@ -451,7 +451,7 @@ div.tooltip {
 
   <!-- Footer -->
   <footer class="w3-container w3-padding-16 w3-light-grey">
-    <h4>FOOTER</h4>
+    <!--h4>FOOTER</h4-->
     <!--p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p-->
   </footer>
 
@@ -468,6 +468,7 @@ var mySidebar = document.getElementById("mySidebar");
 // Get the DIV with overlay effect
 var overlayBg = document.getElementById("myOverlay");
 
+var cat_count = 0; 
 // Toggle between showing and hiding the sidebar, and add overlay effect
 /*function w3_open() {
     if (mySidebar.style.display === 'block') {
@@ -486,7 +487,9 @@ function w3_close() {
 }*/
 
 function addGroup(){
-  $Q.mainControl.addCategorical("Record Created By"); 
+  var categoricals = ["Record Created By", "Patient District Number", "1.09 Patient admin status"];
+  $Q.mainControl.addCategorical(categoricals[cat_count]);
+  cat_count++; 
 }
 
 function toggleBars(){

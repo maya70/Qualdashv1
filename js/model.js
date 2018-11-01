@@ -29,6 +29,8 @@
                             var self = this;
                             
                             self.categoricals.push(varName);
+                            console.log(self.categoricals);
+
                             self.aggMonthly(self.data, self.dateVar, self.displayVar, self.categoricals );
                         },
                         aggMonthly: function(data, dateVar, displayVar, categoricals){
@@ -79,7 +81,7 @@
                                                         //console.log(ordered); 
                                                         self.control.drawBarChart(ordered); 
                             }
-                            else{  // count within categories
+                            else if(categoricals.length === 1){  // count within categories
                                 var cat = categoricals[0];
                                 console.log(cat);
 
@@ -119,13 +121,55 @@
                                
 
                             }
+                        else if(categoricals.length === 2){
+                            // first variable divides the trellis
+                            
+                            var levels0 = d3.map(self.data, function(item){
+                                    return item[categoricals[0]];
+                                    }).keys();
+                            var levels1 = d3.map(self.data, function(item){
+                                    return item[categoricals[1]];
+                                    }).keys();
+                            
+                            console.log(levels0);
+                            levels0.forEach(function(level){
+                                dict[level] = {};
+                            });
+                            console.log(dict);
+                            for(var i=0; i< data.length; i++){
+                                                        // get the month of this entry
+                                                        var date = new Date(data[i][dateVar]);
+                                                        //console.log(date); 
+                                                        var month = self.months[date.getMonth()];
+                                                        var year = date.getYear()+1900; 
+                                                        ////console.log(month);
+                                                        ////console.log(year);
+                                                        var my = month+"-"+year; 
+                                                        //console.log(my); 
+                                                        if(!dict[levels0[0]][my]){
+                                                            levels0.forEach(function(level){
+                                                                dict[level][my] = {}; 
+                                                                levels1.forEach(function(level2){
+                                                                    dict[level][my][level2] = 0;
+                                                                });
+
+                                                            });
+                                                         }
+                                                       dict[data[i][categoricals[0]]][my][data[i][categoricals[1]]] += parseInt(data[i][displayVar]);
+
+                                                    }
+                               console.log(dict);
+                               var levels = [levels0, levels1]; 
+                            self.control.drawBarChart(dict, categoricals, levels, 1);
 
 
+                        }
+                        else if(categoricals.length === 3){
 
                             
                         }
                     }
-        );
+        });
 })(QUALDASH);
 
 
