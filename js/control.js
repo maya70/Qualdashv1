@@ -32,10 +32,6 @@
 						},
 						toggleBars: function(){
 							this.mainView.toggleBarView(); 
-						}, 
-						createTrellis: function(){
-							this.mainView.toggleTrellis(); 
-							
 						}
 					}
 		);

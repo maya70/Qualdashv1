@@ -107,7 +107,7 @@ div.tooltip {
       min-height: 400px;
       min-width: 70%; 
       z-index: 8; 
-
+      overflow: scroll;
     }
     .control-panel{
       grid-area: control;
@@ -160,7 +160,6 @@ div.tooltip {
     <!--button class="w3-button w3-black w3-xlarge" onclick="helloWorld()">Click ME</button-->
      <input type="button" class="btn_vg_parse hide-vl" value="Add grouping" onclick="addGroup()"></input>
      <input type="button" class="btn_vg_parse hide-vl" value="Toggle view" onclick="toggleBars()"></input>
-      <input type="button" class="btn_vg_parse hide-vl" value="Further grouping" onclick="trellis()"></input>
     </div>
 </div>   
     
@@ -496,9 +495,6 @@ function toggleBars(){
   $Q.mainControl.toggleBars(); 
 }
 
-function trellis() {
-  $Q.mainControl.createTrellis(); 
-}
 $('body')
   .on('mousedown', '.popover', function(e) {
     console.log("clicked inside popover")

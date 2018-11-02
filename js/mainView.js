@@ -6,6 +6,7 @@
 						var self = this;
 						//$Q.Model_readMinapDummy(); 
 						self.control = control;
+						self.iter = 0; 
 						self.setupControls(); 
 						self.urgencyColor =  "#009933"; //"#63F3B9";
 						self.toggle = "grouped";
@@ -65,7 +66,7 @@
 							/*var buttons = d3.selectAll(".control-button"); 
 							buttons.each(function(but){
 								but.class("acco")
-								console.log(but); 
+								//console.log(but); 
 							}); */
 							 jQuery("[data-toggle=popover]").popover({
 						        html : true,
@@ -81,13 +82,21 @@
 						    });
 						},
 						drawBarTrellis: function(dicts, cat, levels){
-							var self = this;
-							var dict = dicts[levels[0][0]];
+							var self = this;						
+							self.dicts = dicts; 
 							var c =0; 
-                            
-                            self.drawCatBar(dict, cat[1], levels[1], 0);
-                            
-                            self.drawCatBar(dict, cat[1], levels[1], 1);
+                            //console.log(dicts);
+                            //console.log(cat);
+                            //console.log(levels);
+                            for(var key in dicts){
+                         	   self.drawCatBar(dicts[key], cat[1], levels[1], c);
+                         	   c++;	
+                         	   self.iter = c; 
+                            }
+                            //document.getElementById('mainCardHeader').setAttribute("style","width:1000px");
+							document.getElementById('mainCard').setAttribute("style","height:600px");
+							document.getElementById('mainCardPanel').setAttribute("style","height:500px");
+							//document.getElementById('mainsvg').setAttribute("style","height:700px");
                                
 						},
 						drawCatBar: function(dict, cat, levels, iter){
@@ -95,10 +104,10 @@
 								self.dict = dict;
 								self.cat = cat;
 								self.levels = levels; 
-								console.log(dict);
-								console.log(cat);
-								console.log(levels);
-								console.log(iter);
+								//console.log(dict);
+								//console.log(cat);
+								//console.log(levels);
+								//console.log(iter);
 							   // sort dict by date
                                 function custom_sort(a,b){
                                     return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
@@ -106,9 +115,9 @@
     
                                 var ordered = [];
                                 var temp = Object.keys(dict);
-                                //console.log(temp); 
+                                ////console.log(temp); 
                                 var orderedKeys = Object.keys(dict).sort(custom_sort);
-                                //console.log(orderedKeys);
+                                ////console.log(orderedKeys);
                                 var xz = orderedKeys,
                                     yz = d3.range(levels.length).map(function(d){
                                         return Array.apply(null, Array(xz.length)).map(Number.prototype.valueOf,0);
@@ -118,33 +127,33 @@
                                             yz[ky][kx] += dict[xz[kx]][levels[ky]];
                                         }
                                     }
-                                    console.log(xz);
-                                    console.log(yz);
+                                    //console.log(xz);
+                                    //console.log(yz);
 
                                    var y01z = d3.stack().keys(d3.range(levels.length))(d3.transpose(yz)),
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
-                                    console.log(y01z);
-                                    console.log(yMax);
-                                    console.log(y1Max);
+                                    //console.log(y01z);
+                                    //console.log(yMax);
+                                    //console.log(y1Max);
 
 							if(self.svg && iter === 0){
 								d3.selectAll("svg").remove(); 
 							}
-							console.log(dict);
+							//console.log(dict);
 							var drawArea = d3.select("#draw-area-1");
 							var parentArea = drawArea.select(function(){
 								return this.parentNode; 
 							});
-							console.log(parentArea.node().getBoundingClientRect());
+							//console.log(parentArea.node().getBoundingClientRect());
 							var svgw = 0.7 * parentArea.node().getBoundingClientRect().width;
 							var svgh = 0.8* parentArea.node().getBoundingClientRect().height; 
 
 							self.svg = d3.select("#draw-area-1").append("svg")
-										.attr("id", "mainsvg")
+										.attr("id", "mainsvg"+iter)
 										.attr("width", svgw).attr("height", svgh)
-										.attr("transform", "translate(50,"+ (20+ iter*svgh * 0.8) +")");
+										.attr("transform", "translate(50,"+ (20) +")");
 							
 							self.cardTitle = d3.select("#mainCardHeader").selectAll("span")
 												.data(self.control.getDisplayVariable())
@@ -163,7 +172,7 @@
 												.on("mouseout", function(){
 														d3.select(this)
 														.style('background-color', "darkgrey" );
-														console.log(d3.select(this).node().getBoundingClientRect().height);
+														//console.log(d3.select(this).node().getBoundingClientRect().height);
 												});
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
@@ -266,13 +275,15 @@
 							}
 
 						function transitionGrouped() {
-							
+						
+						 console.log(levels); 
 						  y.domain([0, yMax]);
 
 						  rect.transition()
 						      .duration(500)
 						      .delay(function(d, i) { return i * 10; })
 						      .attr("x", function(d, i) {
+						      	 console.log(this.parentNode.__data__.key);
 						      	 return x(xz[i]) + x.bandwidth() / levels.length * this.parentNode.__data__.key; })
 						      .attr("width", x.bandwidth() / levels.length)
 						    .transition()
@@ -305,33 +316,26 @@
 							else
 								self.toggle = "grouped";
 
-							self.drawCatBar(self.dict, self.cat, self.levels); 
-
-						},
-
-						toggleTrellis: function(){
-							var self = this; 
-							document.getElementById('mainCardHeader').setAttribute("style","width:1000px");
-							document.getElementById('mainCard').setAttribute("style","height:800px");
-							document.getElementById('mainCardPanel').setAttribute("style","height:700px");
-							document.getElementById('mainsvg').setAttribute("style","height:700px");
-							
-							//console.log(parentArea); 
-							
-
-							//var svgw = 0.7 * parentArea.node().getBoundingClientRect().width;
-							//var svgh = 0.8* parentArea.node().getBoundingClientRect().height; 
+							if(self.iter < 1)
+								self.drawCatBar(self.dict, self.cat, self.levels, 0); 
+							else{
+								 var c = 0;
+								 for(var key in self.dicts){
+		                         	   self.drawCatBar(self.dicts[key], self.cat, self.levels, c);
+		                         	   c++; 
+		                         	}
+							}
 
 						},
 
 						drawBarChart: function(data){
 							var self = this;
-							console.log(data);
+							////console.log(data);
 							var drawArea = d3.select("#draw-area-1");
 							var parentArea = drawArea.select(function(){
 								return this.parentNode; 
 							});
-							console.log(parentArea.node().getBoundingClientRect());
+							//console.log(parentArea.node().getBoundingClientRect());
 							var svgw = 0.7 * parentArea.node().getBoundingClientRect().width;
 							var svgh = 0.8* parentArea.node().getBoundingClientRect().height; 
 
@@ -356,7 +360,7 @@
 												.on("mouseout", function(){
 														d3.select(this)
 														.style('background-color', "darkgrey");
-														console.log(d3.select(this).node().getBoundingClientRect().height);
+														//console.log(d3.select(this).node().getBoundingClientRect().height);
 												});
 												
 
