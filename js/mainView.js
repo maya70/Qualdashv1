@@ -10,19 +10,21 @@
 						self.setupControls(); 
 						self.urgencyColor =  "#009933"; //"#63F3B9";
 						self.toggle = "grouped";
-						self.setupDrag(document.getElementById("mainCard"));
+						//self.setupDrag(document.getElementById("mainCard"));
 						self.control.viewReady(self); 
 					},
 					{
 						setupDrag: function(elmnt){
 							var self = this;
+							console.log(elmnt.id); 
+							//$(elmnt.id).resizable(); 
 							var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-							if (document.getElementById(elmnt.id + "header")) {
+							if (document.getElementById(elmnt.id + "Header")) {
 							    /* if present, the header is where you move the DIV from:*/
-							    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+							    document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
 							  } else {
 							    /* otherwise, move the DIV from anywhere inside the DIV:*/
-							    elmnt.onmousedown = dragMouseDown;
+							   // elmnt.onmousedown = dragMouseDown;
 							  }
 							function dragMouseDown(e) {
 							    e = e || window.event;
@@ -94,8 +96,8 @@
                          	   self.iter = c; 
                             }
                             //document.getElementById('mainCardHeader').setAttribute("style","width:1000px");
-							document.getElementById('mainCard').setAttribute("style","height:600px");
-							document.getElementById('mainCardPanel').setAttribute("style","height:500px");
+							//document.getElementById('mainCard').setAttribute("style","height:600px");
+							//document.getElementById('mainCardPanel').setAttribute("style","height:500px");
 							//document.getElementById('mainsvg').setAttribute("style","height:700px");
                                
 						},
@@ -147,8 +149,9 @@
 								return this.parentNode; 
 							});
 							//console.log(parentArea.node().getBoundingClientRect());
-							var svgw = 0.7 * parentArea.node().getBoundingClientRect().width;
-							var svgh = 0.8* parentArea.node().getBoundingClientRect().height; 
+							var viewshare = self.dicts? Object.keys(self.dicts).length : 1; 
+							var svgw = 0.75 * parentArea.node().getBoundingClientRect().width;
+							var svgh = 0.87* parentArea.node().getBoundingClientRect().height / viewshare; 
 
 							self.svg = d3.select("#draw-area-1").append("svg")
 										.attr("id", "mainsvg"+iter)
@@ -163,7 +166,8 @@
 													return d;
 												})
 												.style("color", "black")
-												.style("margin-top", "0px");
+												.style("margin-top", "5px")
+												.style("font-size", "14pt");
 							self.cardHeader = d3.select("#mainCardHeader")
 												.on('mouseover', function() {
 														d3.select(this)
@@ -327,21 +331,24 @@
 							}
 
 						},
-
 						drawBarChart: function(data){
 							var self = this;
 							////console.log(data);
 							var drawArea = d3.select("#draw-area-1");
 							var parentArea = drawArea.select(function(){
+								//d3.select(this.parentNode).on("resize", resize);
 								return this.parentNode; 
 							});
 							//console.log(parentArea.node().getBoundingClientRect());
-							var svgw = 0.7 * parentArea.node().getBoundingClientRect().width;
-							var svgh = 0.8* parentArea.node().getBoundingClientRect().height; 
+							var svgw =  0.75* parentArea.node().getBoundingClientRect().width;
+							var svgh =  0.87* parentArea.node().getBoundingClientRect().height; 
+
 
 							self.svg = d3.select("#draw-area-1").append("svg")
 											.attr("id", "mainsvg")
-										.attr("width", svgw).attr("height", svgh).attr("transform", "translate(50,20)");
+											.attr("width", svgw)
+											.attr("height", svgh)
+											.attr("transform", "translate(50,20)");
 							
 							self.cardTitle = d3.select("#mainCardHeader").selectAll("span")
 												.data(self.control.getDisplayVariable())
@@ -351,7 +358,9 @@
 													return d;
 												})
 												.style("color", "black")
-												.style("margin-top", "0px");
+												.style("margin-top", "5px")
+												.style("font-size", "14pt")
+												.style("font-weight", "bold");
 							self.cardHeader = d3.select("#mainCardHeader")
 												.on('mouseover', function() {
 														d3.select(this)
@@ -373,8 +382,6 @@
 							var height = svgh - margin.top - margin.bottom;
 
 
-
-
 							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
 								y = d3.scaleLinear().rangeRound([(height), 0]); 
 
@@ -387,7 +394,7 @@
 							y.domain([0, d3.max(data, function(d){ return d.number; })]);
 
 							g.append("g")
-							      .attr("class", "axis axis--x")
+							      .attr("class", "x axis")
 							      .attr("transform", "translate("+ 0+"," + (height+margin.top) + ")")
 							      .call(d3.axisBottom(x))
 									.selectAll("text")	
@@ -396,7 +403,7 @@
 								        .attr("dy", ".15em")
 								        .attr("transform", "rotate(-65)");
 							g.append("g")
-							      .attr("class", "axis axis--y")
+							      .attr("class", "y axis")
 							      .call(d3.axisLeft(y).ticks(5, "s"))
 							      .attr("transform", "translate(0,"+ margin.top+")");
 
@@ -426,7 +433,48 @@
 							      });
 
 
+						function resize() {
+							console.log("RESIZE CALLED");
+							var svgw = parseInt(d3.select("#mainCard").style("width")) * 0.75,
+								svgh = parseInt(d3.select("#mainCard").style("height")) * 0.87;
 
+							// update svg width and height
+							d3.select("#mainsvg").attr("width", svgw)
+												.attr("height", svgh);
+
+							// update the range of the scale with new width/ height
+							var width = svgw - margin.right - margin.left, 
+								height = svgh - margin.top - margin.bottom; 
+
+							x.rangeRound([0, width]).padding(0.1);
+							y.rangeRound([(height), 0]); 
+
+
+							self.svg.select(".x.axis")
+							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
+							      .call(d3.axisBottom(x))
+									.selectAll("text")	
+								        .style("text-anchor", "end")
+								        .attr("dx", "-.8em")
+								        .attr("dy", ".15em")
+								        .attr("transform", "rotate(-65)");
+							
+							self.svg.select(".y.axis")
+									.call(d3.axisLeft(y).ticks(5, "s"))
+							      	.attr("transform", "translate(0,"+ margin.top+")");
+							self.svg.selectAll(".bar")
+								.attr("x", function(d) { return x(d.date); })
+							      .attr("y", function(d) { return y(d.number)+ margin.top; })
+							      .attr("width", x.bandwidth())
+							      .attr("height", function(d) { return height  - y(d.number); })
+
+						}
+						 
+						$("#mainCard").resize(function(e){
+							resize(); 
+						});
+
+						//resize(); 
 
 						}
 					}
