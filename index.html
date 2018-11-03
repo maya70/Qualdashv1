@@ -181,8 +181,8 @@ div.tooltip {
     
     <div class="popover-body" id="cat-popover">
     <!--button class="w3-button w3-black w3-xlarge" onclick="helloWorld()">Click ME</button-->
-     <input type="button" class="btn_vg_parse hide-vl" value="Add grouping" onclick="addGroup()"></input>
-     <input type="button" class="btn_vg_parse hide-vl" value="Toggle view" onclick="toggleBars()"></input>
+     <input type="button" class="btn_vg_parse hide-vl" value="Add grouping" id="group0" onclick="addGroup(this.id)"></input>
+     <input type="button" class="btn_vg_parse hide-vl" value="Toggle view" id="toggle0" onclick="toggleBars(this.id)"></input>
     </div>
 </div>   
     
@@ -379,7 +379,7 @@ div.tooltip {
 
       <div id="London" class="tabcontent">
         <h3>All Fields</h3>
-        <p>London is the capital city of England.</p>
+        <p>Fields here.</p>
       </div>
 
       <div id="Paris" class="tabcontent">
@@ -389,7 +389,7 @@ div.tooltip {
 
       <div id="Tokyo" class="tabcontent">
         <h3>Call-to-Balloon Fields</h3>
-        <p>Tokyo is the capital of Japan.</p>
+        <p>Fields here.</p>
       </div>
     </div>
 </div>
@@ -505,9 +505,9 @@ function w3_close() {
     overlayBg.style.display = "none";
 }*/
 
-function addGroup(){
+function addGroup(id){
   var categoricals = ["Record Created By", "Patient District Number", "1.09 Patient admin status"];
-  $Q.mainControl.addCategorical(categoricals[cat_count]);
+  $Q.mainControl.addCategorical(id, categoricals[cat_count]);
   cat_count++; 
 }
 

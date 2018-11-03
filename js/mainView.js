@@ -4,7 +4,6 @@
 					null, 
 					function MainView(control){
 						var self = this;
-						//$Q.Model_readMinapDummy(); 
 						self.control = control;
 						self.iter = 0; 
 						self.setupControls(); 
@@ -159,7 +158,10 @@
 										.attr("transform", "translate(50,"+ (20) +")");
 							
 							self.cardTitle = d3.select("#mainCardHeader").selectAll("span")
-												.data(self.control.getDisplayVariable())
+												.data(function(){
+													var disp = self.control.getDisplayVariables();
+													return disp[0]["y"];	
+												})
 												.enter()
 												.append("span")
 												.text(function(d){
@@ -263,12 +265,8 @@
 							      .call(d3.axisLeft(y).ticks(5, "s"))
 							      .attr("transform", "translate(0,"+0+")");
 
-
 							d3.selectAll(".toggle-button")
 							    .on("click", changed);
-							
-
-							
 
 							function changed() {
 							  timeout.stop();
@@ -279,15 +277,12 @@
 							}
 
 						function transitionGrouped() {
-						
-						 console.log(levels); 
 						  y.domain([0, yMax]);
 
 						  rect.transition()
 						      .duration(500)
 						      .delay(function(d, i) { return i * 10; })
 						      .attr("x", function(d, i) {
-						      	 console.log(this.parentNode.__data__.key);
 						      	 return x(xz[i]) + x.bandwidth() / levels.length * this.parentNode.__data__.key; })
 						      .attr("width", x.bandwidth() / levels.length)
 						    .transition()
@@ -351,7 +346,10 @@
 											.attr("transform", "translate(50,20)");
 							
 							self.cardTitle = d3.select("#mainCardHeader").selectAll("span")
-												.data(self.control.getDisplayVariable())
+												.data(function(){
+													var disp = self.control.getDisplayVariables();
+													return disp[0]["y"];	
+												})
 												.enter()
 												.append("span")
 												.text(function(d){

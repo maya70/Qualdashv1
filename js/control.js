@@ -4,7 +4,10 @@
 					null, 
 					function Control(config){
 						var self = this;
-						self.displayVariable = "4.04 Death in hospital";
+						self.displayVariables = [{	"x": "3.06 Date/time arrival at hospital" ,
+													"y":"4.04 Death in hospital",
+													"xType": "t",
+													"yType": "q"}];
 						self.dataModel = new $Q.Model(self); 
 						self.mainView = new $Q.MainView(self); 
 					
@@ -22,13 +25,12 @@
 							else
 								this.mainView.drawBarTrellis(data, cat, levels); 
 						}, 
-						getDisplayVariable: function(){
+						getDisplayVariables: function(){
 							var self = this;
-
-							return self.displayVariable; 
+							return self.displayVariables; 
 						}, 
-						addCategorical: function(catName){
-						  	this.dataModel.addCategorical(catName);
+						addCategorical: function(id, catName){
+						  	this.dataModel.addCategorical(id, catName);
 						},
 						toggleBars: function(){
 							this.mainView.toggleBarView(); 

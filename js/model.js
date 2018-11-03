@@ -6,8 +6,8 @@
                         var self = this;
                         self.control = control; 
                         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                        self.displayVar = self.control.getDisplayVariable(); 
-                        self.dateVar = "3.06 Date/time arrival at hospital";
+                        self.displayVariables = self.control.getDisplayVariables(); 
+                        //self.dateVar = self.;
                         self.categoricals = [];
                     },
                     {
@@ -19,19 +19,22 @@
                                     self.data = data; 
                                     
                                     //console.log(displayVar);
-                                   
-                                    self.aggMonthly(data, self.dateVar, self.displayVar);
+                                    for(var display = 0; display < self.displayVariables.length; display++)
+                                    {
+                                        self.aggMonthly(data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
+                                    }
 
 
                                 });
                             },
-                        addCategorical: function(varName){
+                        addCategorical: function(id, varName){
                             var self = this;
-                            
+                            var viewId = id[id.length-1];
+                            //console.log("VIEW ID = "+ viewId); 
                             self.categoricals.push(varName);
                             console.log(self.categoricals);
 
-                            self.aggMonthly(self.data, self.dateVar, self.displayVar, self.categoricals );
+                            self.aggMonthly(self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
                         },
                         aggMonthly: function(data, dateVar, displayVar, categoricals){
                             var self = this; 
@@ -78,7 +81,7 @@
                             
                                                         }
                             
-                                                        //console.log(ordered); 
+                                                        console.log(ordered); 
                                                         self.control.drawBarChart(ordered); 
                             }
                             else if(categoricals.length === 1){  // count within categories
