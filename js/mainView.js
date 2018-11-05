@@ -11,8 +11,23 @@
 						self.toggle = "grouped";
 						//self.setupDrag(document.getElementById("mainCard"));
 						self.control.viewReady(self); 
+						self.createQualCard();
 					},
 					{
+						createQualCard: function(){
+							var self = this;
+							var card1 = d3.select("#mainCanvas").append("div")
+								.attr("class", "draggablediv")
+								.attr("id", "display1")
+								.style("margin-top", "20px");
+								//.style("top", "110px")
+								//.style("left", "580px");
+
+
+							card1.append("div")
+								.attr("class", "draggabledivheader");
+
+						},
 						setupDrag: function(elmnt){
 							var self = this;
 							console.log(elmnt.id); 
@@ -82,7 +97,7 @@
 						        }
 						    });
 						},
-						drawBarTrellis: function(dicts, cat, levels){
+						drawBarTrellis: function(displayId, dicts, cat, levels){
 							var self = this;						
 							self.dicts = dicts; 
 							var c =0; 
@@ -90,7 +105,7 @@
                             //console.log(cat);
                             //console.log(levels);
                             for(var key in dicts){
-                         	   self.drawCatBar(dicts[key], cat[1], levels[1], c);
+                         	   self.drawCatBar(displayId, dicts[key], cat[1], levels[1], c);
                          	   c++;	
                          	   self.iter = c; 
                             }
@@ -100,16 +115,12 @@
 							//document.getElementById('mainsvg').setAttribute("style","height:700px");
                                
 						},
-						drawCatBar: function(dict, cat, levels, iter){
+						drawCatBar: function(displayId, dict, cat, levels, iter){
 							var self = this; 
 								self.dict = dict;
 								self.cat = cat;
 								self.levels = levels; 
-								//console.log(dict);
-								//console.log(cat);
-								//console.log(levels);
-								//console.log(iter);
-							   // sort dict by date
+								// sort dict by date
                                 function custom_sort(a,b){
                                     return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
                                 }
@@ -308,7 +319,7 @@
 						},
 
 
-						toggleBarView: function(){
+						toggleBarView: function(displayId){
 							var self = this;
 							if(self.toggle === "grouped")
 								self.toggle = "stacked";
@@ -316,17 +327,17 @@
 								self.toggle = "grouped";
 
 							if(self.iter < 1)
-								self.drawCatBar(self.dict, self.cat, self.levels, 0); 
+								self.drawCatBar(displayId, self.dict, self.cat, self.levels, 0); 
 							else{
 								 var c = 0;
 								 for(var key in self.dicts){
-		                         	   self.drawCatBar(self.dicts[key], self.cat, self.levels, c);
+		                         	   self.drawCatBar(displayId, self.dicts[key], self.cat, self.levels, c);
 		                         	   c++; 
 		                         	}
 							}
 
 						},
-						drawBarChart: function(data){
+						drawBarChart: function(displayId, data){
 							var self = this;
 							////console.log(data);
 							var drawArea = d3.select("#draw-area-1");

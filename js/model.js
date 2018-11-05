@@ -21,7 +21,7 @@
                                     //console.log(displayVar);
                                     for(var display = 0; display < self.displayVariables.length; display++)
                                     {
-                                        self.aggMonthly(data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
+                                        self.aggMonthly(display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
                                     }
 
 
@@ -34,9 +34,9 @@
                             self.categoricals.push(varName);
                             console.log(self.categoricals);
 
-                            self.aggMonthly(self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
+                            self.aggMonthly(viewId, self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
                         },
-                        aggMonthly: function(data, dateVar, displayVar, categoricals){
+                        aggMonthly: function(displayId, data, dateVar, displayVar, categoricals){
                             var self = this; 
                             var dict = {};
 
@@ -82,7 +82,7 @@
                                                         }
                             
                                                         console.log(ordered); 
-                                                        self.control.drawBarChart(ordered); 
+                                                        self.control.drawBarChart(displayId, ordered); 
                             }
                             else if(categoricals.length === 1){  // count within categories
                                 var cat = categoricals[0];
@@ -119,7 +119,7 @@
 
                                
                                    
-                                    self.control.drawBarChart(dict, cat, levels);
+                                    self.control.drawBarChart(displayId, dict, cat, levels);
 
                                
 
@@ -163,7 +163,7 @@
                                                     }
                                console.log(dict);
                                var levels = [levels0, levels1]; 
-                            self.control.drawBarChart(dict, categoricals, levels, 1);
+                            self.control.drawBarChart(displayId, dict, categoricals, levels, 1);
 
 
                         }

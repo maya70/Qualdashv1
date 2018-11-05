@@ -177,7 +177,7 @@ div.tooltip {
 
       <!-- Content for Popover #1 -->    
 <div id="a1" class="hidden">
-    <div class="popover-heading">This is the heading for #1</div>
+    <div class="popover-heading">Category Management</div>
     
     <div class="popover-body" id="cat-popover">
     <!--button class="w3-button w3-black w3-xlarge" onclick="helloWorld()">Click ME</button-->
@@ -317,7 +317,7 @@ div.tooltip {
 <button class="w3-button w3-teal w3-medium w3-right" onclick="openRightMenu()">Data Quality</button>
 <ul class="nav nav-tabs">
   <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-  <li><a data-toggle="tab" href="#can1">Metrics</a></li>
+  <li><a data-toggle="tab" href="#can1">Root Cause</a></li>
   <li><a data-toggle="tab" href="#can2">Database Status</a></li>
   <li><a data-toggle="tab" href="#can3">>></a></li>
   
@@ -327,8 +327,8 @@ div.tooltip {
  <div class="tab-content">
   <div id="home" class="tab-pane fade in active">
   <div class="w3-panel">
-    <div class="w3-row-padding" style="margin:0 -16px; min-height: 700px;">
-    <!--div class="draggabledivcontainer"-->
+    <div class="w3-row-padding" id= "mainCanvas" style="margin:0 -16px; min-height: 700px;">
+    <!--div class="draggabledivcontainer" id= "mainCardContainer"-->
        <div class="draggablediv" id="mainCard">
         <div class="draggabledivheader" id="mainCardHeader"> </div>
         <div class="control-panel" id="mainCardPanel"> 
@@ -360,8 +360,10 @@ div.tooltip {
             <!--svg id="mainsvg" style="min-height: 300px;"> </svg-->
         </div>
     <!--/div-->
+
+
     </div>
-    
+
     </div>
   </div>
   
@@ -511,8 +513,8 @@ function addGroup(id){
   cat_count++; 
 }
 
-function toggleBars(){
-  $Q.mainControl.toggleBars(); 
+function toggleBars(displayId){
+  $Q.mainControl.toggleBars(displayId); 
 }
 $(".draggablediv").resizable(
   ); 

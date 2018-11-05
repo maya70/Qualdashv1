@@ -17,13 +17,13 @@
 							var self = this; 
 							self.dataModel.readMinapDummy(); 
 						},
-						drawBarChart: function(data, cat, levels, trellis){
+						drawBarChart: function(displayId, data, cat, levels, trellis){
 							if(!cat)
-								this.mainView.drawBarChart(data); 
+								this.mainView.drawBarChart(displayId, data); 
 							else if(!trellis)
-								this.mainView.drawCatBar(data, cat, levels,0);
+								this.mainView.drawCatBar(displayId, data, cat, levels,0);
 							else
-								this.mainView.drawBarTrellis(data, cat, levels); 
+								this.mainView.drawBarTrellis(displayId, data, cat, levels); 
 						}, 
 						getDisplayVariables: function(){
 							var self = this;
@@ -32,7 +32,7 @@
 						addCategorical: function(id, catName){
 						  	this.dataModel.addCategorical(id, catName);
 						},
-						toggleBars: function(){
+						toggleBars: function(displayId){
 							this.mainView.toggleBarView(); 
 						}
 					}
