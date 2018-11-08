@@ -7,13 +7,54 @@
 						self.control = control;
 						self.iter = 0; 
 						self.setupControls(); 
-						self.urgencyColor =  "#009933"; //"#63F3B9";
+						self.urgencyColor =  "darkgrey"; // "#009933"; //"#63F3B9";
 						self.toggle = "grouped";
 						//self.setupDrag(document.getElementById("mainCard"));
+						 
 						self.control.viewReady(self); 
-						self.createQualCard();
+						//self.createQualCard();
+						self.cardSetupDrag();
 					},
 					{
+						cardSetupDrag: function(){
+							var self= this; 
+							var container = d3.select(".draggabledivcontainer")
+										.call(d3.drag()
+											.on('start.interrupt', function(){
+												container.interrupt();
+												console.log('stop')
+											})
+											.on('start drag', function(){
+												var curx = parseInt(container.style('left')); 
+												//var cury = container.style('top');
+												console.log(curx); 
+												container.style('top',  d3.event.y + 'px')
+												container.style('left', d3.event.x + 'px')
+											}));
+
+							var div = d3.select(".draggablediv");
+
+							div.call(d3.drag()
+								.on('drag', function(){
+											 var x = d3.mouse(this.parentNode)[0];
+											 var y = d3.mouse(this.parentNode)[1];
+											 var pWidth = this.parentNode.getBoundingClientRect().width; 
+											 var pHeight = this.parentNode.getBoundingClientRect().height; 
+											 if (x > (pWidth - 20) && y > (pHeight - 20) )
+											 {
+												console.log(y);
+												x = Math.max(50, x);
+												y = Math.max(50, y);
+												div.style('width', x + 'px'); 	
+												div.style('height', y + 'px'); 
+												container.style('width', x+'px');	
+												div.dispatch("resize");
+											 }
+											
+										}));
+								
+							
+						},
 						createQualCard: function(){
 							var self = this;
 							var card1 = d3.select("#mainCanvas").append("div")
@@ -28,45 +69,7 @@
 								.attr("class", "draggabledivheader");
 
 						},
-						setupDrag: function(elmnt){
-							var self = this;
-							console.log(elmnt.id); 
-							//$(elmnt.id).resizable(); 
-							var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-							if (document.getElementById(elmnt.id + "Header")) {
-							    /* if present, the header is where you move the DIV from:*/
-							    document.getElementById(elmnt.id + "Header").onmousedown = dragMouseDown;
-							  } else {
-							    /* otherwise, move the DIV from anywhere inside the DIV:*/
-							   // elmnt.onmousedown = dragMouseDown;
-							  }
-							function dragMouseDown(e) {
-							    e = e || window.event;
-							    // get the mouse cursor position at startup:
-							    pos3 = e.clientX;
-							    pos4 = e.clientY;
-							    document.onmouseup = closeDragElement;
-							    // call a function whenever the cursor moves:
-							    document.onmousemove = elementDrag;
-							  }
-
-							 function elementDrag(e) {
-							    e = e || window.event;
-							    // calculate the new cursor position:
-							    pos1 = pos3 - e.clientX;
-							    pos2 = pos4 - e.clientY;
-							    pos3 = e.clientX;
-							    pos4 = e.clientY;
-							    // set the element's new position:
-							    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-							    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-							  }
-							   function closeDragElement() {
-								    /* stop moving when mouse button is released:*/
-								    document.onmouseup = null;
-								    document.onmousemove = null;
-								  }
-						},
+						
 						setupControls: function(){
 							var self = this;
 							d3.select("#cat-button").on("click", function(o){
@@ -109,7 +112,7 @@
                          	   c++;	
                          	   self.iter = c; 
                             }
-                            //document.getElementById('mainCardHeader').setAttribute("style","width:1000px");
+                            
 							//document.getElementById('mainCard').setAttribute("style","height:600px");
 							//document.getElementById('mainCardPanel').setAttribute("style","height:500px");
 							//document.getElementById('mainsvg').setAttribute("style","height:700px");
@@ -160,15 +163,15 @@
 							});
 							//console.log(parentArea.node().getBoundingClientRect());
 							var viewshare = self.dicts? Object.keys(self.dicts).length : 1; 
-							var svgw = 0.75 * parentArea.node().getBoundingClientRect().width;
-							var svgh = 0.87* parentArea.node().getBoundingClientRect().height / viewshare; 
+							var svgw = 0.7 * parentArea.node().getBoundingClientRect().width;
+							var svgh = 0.8* parentArea.node().getBoundingClientRect().height / viewshare; 
 
 							self.svg = d3.select("#draw-area-1").append("svg")
 										.attr("id", "mainsvg"+iter)
 										.attr("width", svgw).attr("height", svgh)
 										.attr("transform", "translate(50,"+ (20) +")");
 							
-							self.cardTitle = d3.select("#mainCardHeader").selectAll("span")
+							self.cardTitle = d3.select("#mainCardContainer").selectAll("span")
 												.data(function(){
 													var disp = self.control.getDisplayVariables();
 													return disp[0]["y"];	
@@ -181,7 +184,7 @@
 												.style("color", "black")
 												.style("margin-top", "5px")
 												.style("font-size", "14pt");
-							self.cardHeader = d3.select("#mainCardHeader")
+							self.cardHeader = d3.select("#mainCardContainer")
 												.on('mouseover', function() {
 														d3.select(this)
 														.style('background-color', self.urgencyColor)
@@ -346,8 +349,8 @@
 								return this.parentNode; 
 							});
 							//console.log(parentArea.node().getBoundingClientRect());
-							var svgw =  0.75* parentArea.node().getBoundingClientRect().width;
-							var svgh =  0.87* parentArea.node().getBoundingClientRect().height; 
+							var svgw =  0.7* parentArea.node().getBoundingClientRect().width;
+							var svgh =  0.8* parentArea.node().getBoundingClientRect().height; 
 
 
 							self.svg = d3.select("#draw-area-1").append("svg")
@@ -356,7 +359,7 @@
 											.attr("height", svgh)
 											.attr("transform", "translate(50,20)");
 							
-							self.cardTitle = d3.select("#mainCardHeader").selectAll("span")
+							self.cardTitle = d3.select("#mainCardContainer").selectAll("span")
 												.data(function(){
 													var disp = self.control.getDisplayVariables();
 													return disp[0]["y"];	
@@ -370,7 +373,7 @@
 												.style("margin-top", "5px")
 												.style("font-size", "14pt")
 												.style("font-weight", "bold");
-							self.cardHeader = d3.select("#mainCardHeader")
+							self.cardHeader = d3.select("#mainCardContainer")
 												.on('mouseover', function() {
 														d3.select(this)
 														.style('background-color', self.urgencyColor)
@@ -444,8 +447,8 @@
 
 						function resize() {
 							console.log("RESIZE CALLED");
-							var svgw = parseInt(d3.select("#mainCard").style("width")) * 0.75,
-								svgh = parseInt(d3.select("#mainCard").style("height")) * 0.87;
+							var svgw = parseInt(d3.select("#mainCard").style("width")) * 0.7,
+								svgh = parseInt(d3.select("#mainCard").style("height")) * 0.8;
 
 							// update svg width and height
 							d3.select("#mainsvg").attr("width", svgw)
@@ -479,10 +482,10 @@
 
 						}
 						 
-						$("#mainCard").resize(function(e){
-							resize(); 
-						});
-
+						//$("#mainCard").resize(function(e){
+						//	resize(); 
+						//});
+						d3.select("#mainCard").on("resize", resize); 
 						//resize(); 
 
 						}

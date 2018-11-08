@@ -72,8 +72,8 @@ div.tooltip {
 }
 
 .draggabledivcontainer{
-    position: absolute !important;
-    z-index: 9;
+    position: absolute;
+    z-index: 11;
     text-align: center;
     border: 1px solid #d3d3d3;
     min-height: 350px;
@@ -82,7 +82,9 @@ div.tooltip {
     height: 455px; 
     padding-bottom: 10px; 
     width: 505px; 
-    
+     background: darkgrey ; 
+    opacity: 0.9;
+    color: #fff;
 }
 .draggablediv {
     position: absolute;
@@ -92,7 +94,6 @@ div.tooltip {
     border: 1px solid #d3d3d3;
     min-height: 350px;
     min-width: 550px;
-    border-radius: 10px;
     display: grid;
     grid-template-columns: 30% 70%;
     grid-template-rows: 7% 93%;
@@ -101,6 +102,7 @@ div.tooltip {
     height: 450px; 
     padding-bottom: 10px; 
     width: 500px; 
+    margin-top: 45px; 
     
     }
 
@@ -127,14 +129,15 @@ div.tooltip {
       margin-right: 0px;
       padding-right: 0px;
       z-index: 8; 
-      overflow: scroll;
+     
     }
     .control-panel{
       grid-area: control;
       justify-self: right;
       min-width: 30%;
-      height: 98%;
+      height: 90%;
       margin-top: 5%;
+      margin-bottom: 5%;
       background-color: darkgrey;
     }
     #field-panel{
@@ -328,9 +331,9 @@ div.tooltip {
   <div id="home" class="tab-pane fade in active">
   <div class="w3-panel">
     <div class="w3-row-padding" id= "mainCanvas" style="margin:0 -16px; min-height: 700px;">
-    <!--div class="draggabledivcontainer" id= "mainCardContainer"-->
+    <div class="draggabledivcontainer" id= "mainCardContainer">
        <div class="draggablediv" id="mainCard">
-        <div class="draggabledivheader" id="mainCardHeader"> </div>
+        <!--div class="draggabledivheader" id="mainCardHeader"> </div-->
         <div class="control-panel" id="mainCardPanel"> 
             <fieldset id="field-panel">
             <legend style="color:black; font-size:10pt; margin-top: 0px;">Card Tools</legend>
@@ -359,7 +362,7 @@ div.tooltip {
         <div id="draw-area-1" class="draw-area"> 
             <!--svg id="mainsvg" style="min-height: 300px;"> </svg-->
         </div>
-    <!--/div-->
+    </div>
 
 
     </div>
@@ -516,8 +519,8 @@ function addGroup(id){
 function toggleBars(displayId){
   $Q.mainControl.toggleBars(displayId); 
 }
-$(".draggablediv").resizable(
-  ); 
+//$(".draggablediv").resizable(
+ // ); 
 
 $('body')
   .on('mousedown', '.popover', function(e) {
@@ -590,7 +593,11 @@ function openCity(evt, cityName) {
 
 
 <script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
 
+var drag = d3.drag();
+
+</script>
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/model.js"></script>
 <script type="text/javascript" src="js/mainView.js"></script>
