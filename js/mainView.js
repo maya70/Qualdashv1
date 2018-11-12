@@ -10,29 +10,48 @@
 						self.urgencyColor =  "darkgrey"; // "#009933"; //"#63F3B9";
 						self.toggle = "grouped";
 						//self.setupDrag(document.getElementById("mainCard"));
-						 
+
+						self.nextAvailX = 600;
+						self.nextAvailY = 100; 
+
 						self.control.viewReady(self); 
-						//self.createQualCard();
-						self.cardSetupDrag();
+
+						self.availMetrics = [{"value": "4.04 Death in hospital", 
+											  "text": "Mortality"},
+											  {"value": "2.28 Serum glucose", 
+											  	"text": "48h Readmission"
+											  }]; 
+						self.createQualCard(0);
+						self.cardSetupDrag(0);
+
+						self.createQualCard(1);
+						self.cardSetupDrag(1);
 					},
 					{
-						cardSetupDrag: function(){
+						cardSetupDrag: function(viewId){
 							var self= this; 
-							var container = d3.select(".draggabledivcontainer")
+							var curx, cury; 
+							var container = d3.select("#cardcontainer"+viewId)
 										.call(d3.drag()
 											.on('start.interrupt', function(){
 												container.interrupt();
-												console.log('stop')
+												curx = d3.event.x ;
+												cury = d3.event.y ;
+											
 											})
 											.on('start drag', function(){
-												var curx = parseInt(container.style('left')); 
-												//var cury = container.style('top');
-												console.log(curx); 
-												container.style('top',  d3.event.y + 'px')
-												container.style('left', d3.event.x + 'px')
+												//var curx = parseInt(container.style('left'));											
+												var dx = d3.event.x - curx; 
+												var dy = d3.event.y - cury;
+											
+												if(dx > 30 || dy > 30 )
+												{
+													container.style('top',  (d3.event.y) + 'px');
+													container.style('left', (d3.event.x) + 'px');
+												}
 											}));
 
-							var div = d3.select(".draggablediv");
+							var div = d3.select("#card"+viewId);
 
 							div.call(d3.drag()
 								.on('drag', function(){
@@ -43,11 +62,12 @@
 											 if (x > (pWidth - 20) && y > (pHeight - 20) )
 											 {
 												console.log(y);
-												x = Math.max(50, x);
-												y = Math.max(50, y);
+												//x = Math.max(50, x);
+												//y = Math.max(50, y);
 												div.style('width', x + 'px'); 	
 												div.style('height', y + 'px'); 
-												container.style('width', x+'px');	
+												container.style('width', (x) +'px');	
+												container.style('height', (y) +'px');	
 												div.dispatch("resize");
 											 }
 											
@@ -55,19 +75,56 @@
 								
 							
 						},
-						createQualCard: function(){
+						createQualCard: function(viewId){
 							var self = this;
-							var card1 = d3.select("#mainCanvas").append("div")
-								.attr("class", "draggablediv")
-								.attr("id", "display1")
-								.style("margin-top", "20px");
+							var container = d3.select("#mainCanvas").append("div")
+								.attr("class", "draggabledivcontainer")
+								.attr("id", "cardcontainer"+viewId)
+								.style("margin-top", "20px")
+								.style("top", self.nextAvailY +"px")
+								.style("left", self.nextAvailX +"px");
 								//.style("top", "110px")
 								//.style("left", "580px");
 
+							var header = container.append("form")
+									.attr("class", "cardheader")
+										.append("div").attr("class", "form-group");
 
-							card1.append("div")
-								.attr("class", "draggabledivheader");
+							header.append("label")
+								.attr("class", "form-label")
+								.attr("for", "sel1")
+								.text("Metric: ");
 
+							var metricSelect = header.append("select")
+												.attr("name", "metricselector")
+												.attr("class", "form-control")
+												.attr("id", "sel"+viewId)
+												.on("change", function(d){
+													console.log(this.value);
+												});
+
+							
+							for(var m = 0; m < self.availMetrics.length; m++){
+								metricSelect.append("option")
+											.attr("value", self.availMetrics[m]['value'])
+											.text(self.availMetrics[m]['text']);
+							}
+							
+							var curMetric = self.availMetrics[(viewId%self.availMetrics.length)]['value'];
+							console.log(curMetric);
+							//var text = $("select[name=metricselector] option[value='"+ curMetric +"']").text();
+							//var text = self.availMetrics[(viewId%self.availMetrics.length)]['text'];
+							//console.log(text);
+							//$('.bootstrap-select .filter-option').text(text);
+							$('#sel'+viewId).val(curMetric);
+							$('.selectpicker').selectpicker('refresh');
+
+							var card = container.append("div")
+									.attr("class", "draggablediv")
+									.attr("id", "card"+viewId);
+
+							self.nextAvailX += container.node().getBoundingClientRect().width; 
+							console.log("NEXT "+ self.nextAvailX);
 						},
 						
 						setupControls: function(){
