@@ -17,16 +17,20 @@
 					{
 						createQualCards: function(dataViews){
 							var self = this; 
-							console.log("made it here safely");
+							
 							self.availMetrics = self.control.getAvailMetrics(); 
 							console.log(self.availMetrics);
 							console.log(dataViews.length);
 							for(var i=0; i< dataViews.length; i++){
-								self.createQualCard2(i);
+								self.createQualCard(i);
 							}
 							self.initGrid(); 
+							for(var i=0; i< dataViews.length; i++){
+								self.populateCard(dataViews[i]);
+							}
+	
 						},
-						createQualCard2: function(viewId){
+						createQualCard: function(viewId){
 							var self = this; 
 							var container = d3.select("#mainCanvas").append("div")
 												.attr("class", "item")
@@ -63,12 +67,16 @@
 
 							var card = container.append("div")
 											.attr("class", "item-content")
+											.attr("id", "card"+viewId)
 											.on("doubleclick", function(d){
 												console.log(d3.select(this));
 												// fit to original size
 												//d3.select(this).attr("width", 50)
 												//				.attr("height", 50);
 											});
+							card.append("div")
+								.attr("class", "draw-area")
+								.attr("id", "draw-area"+viewId);
 							
 
 
@@ -84,8 +92,9 @@
 							                    }
 							                });
 							$('.item-content').resizable();
-							$('.item-content').resize(function(e){
-							});
+							//$('.item-content').resize(function(e){
+
+							//});
 
 							grid.on('dragEnd', function (item, event) {
 							  //$(".item-content").css('background-color', 'green');
@@ -100,57 +109,6 @@
 							  
 							});
 
-						},
-						createQualCard: function(viewId){
-							var self = this;
-							var container = d3.select("#mainCanvas").append("div")
-								.attr("class", "draggabledivcontainer")
-								.attr("id", "cardcontainer"+viewId)
-								.style("margin-top", "20px")
-								.style("top", self.nextAvailY +"px")
-								.style("left", self.nextAvailX +"px");
-								//.style("top", "110px")
-								//.style("left", "580px");
-
-							var header = container.append("form")
-									.attr("class", "cardheader")
-										.append("div").attr("class", "form-group");
-
-							header.append("label")
-								.attr("class", "form-label")
-								.attr("for", "sel1")
-								.text("Metric: ");
-
-							var metricSelect = header.append("select")
-												.attr("name", "metricselector")
-												.attr("class", "form-control")
-												.attr("id", "sel"+viewId)
-												.on("change", function(d){
-													console.log(this.value);
-												});
-
-							
-							for(var m = 0; m < self.availMetrics.length; m++){
-								metricSelect.append("option")
-											.attr("value", self.availMetrics[m]['value'])
-											.text(self.availMetrics[m]['text']);
-							}
-							
-							var curMetric = self.availMetrics[(viewId%self.availMetrics.length)]['value'];
-							console.log(curMetric);
-							$('#sel'+viewId).val(curMetric);
-							$('.selectpicker').selectpicker('refresh');
-
-							var card = container.append("div")
-									.attr("class", "draggablediv")
-									.attr("id", "card"+viewId);
-
-							card.append("div")
-								.attr("class", "control-panel")
-								.attr("id", "panel"+viewId);
-
-							self.nextAvailX += container.node().getBoundingClientRect().width; 
-							console.log("NEXT "+ self.nextAvailX);
 						},
 						
 						setupControls: function(){
@@ -427,26 +385,31 @@
 							}
 
 						},
-						drawBarChart: function(displayId, data){
+						populateCard: function(dataView){
+							var self = this;
+							console.log(dataView);
+							self.drawBarChart(dataView['viewId'], dataView['data']);
+						},
+						drawBarChart: function(viewId, data){
 							var self = this;
 							////console.log(data);
-							var drawArea = d3.select("#draw-area-1");
+							var drawArea = d3.select("#draw-area"+viewId);
 							var parentArea = drawArea.select(function(){
 								//d3.select(this.parentNode).on("resize", resize);
 								return this.parentNode; 
 							});
 							//console.log(parentArea.node().getBoundingClientRect());
-							var svgw =  0.7* parentArea.node().getBoundingClientRect().width;
-							var svgh =  0.8* parentArea.node().getBoundingClientRect().height; 
+							var svgw =  0.9* parentArea.node().getBoundingClientRect().width;
+							var svgh =  0.9* parentArea.node().getBoundingClientRect().height; 
 
 
-							self.svg = d3.select("#draw-area-1").append("svg")
-											.attr("id", "mainsvg")
+							self.svg = d3.select("#draw-area"+viewId).append("svg")
+											.attr("id", "mainsvg"+viewId)
 											.attr("width", svgw)
 											.attr("height", svgh)
-											.attr("transform", "translate(50,20)");
+											.attr("transform", "translate(10,10)");
 							
-							self.cardTitle = d3.select("#mainCardContainer").selectAll("span")
+							/*self.cardTitle = d3.select("#mainCardContainer").selectAll("span")
 												.data(function(){
 													var disp = self.control.getDisplayVariables();
 													return disp[0]["y"];	
@@ -470,13 +433,13 @@
 														.style('background-color', "darkgrey");
 														//console.log(d3.select(this).node().getBoundingClientRect().height);
 												});
-												
-
+							*/	
+	
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 50, right: 20, bottom: 50, left:30};
+							var margin = {top: 10, right: 10, bottom: 65, left:30};
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 
@@ -533,15 +496,18 @@
 
 
 						function resize() {
-							console.log("RESIZE CALLED");
-							var svgw = parseInt(d3.select("#mainCard").style("width")) * 0.7,
-								svgh = parseInt(d3.select("#mainCard").style("height")) * 0.8;
+							//console.log("RESIZE CALLED");
+							var svgw = parseInt(d3.select("#card"+viewId).style("width")) * 0.9,
+								svgh = parseInt(d3.select("#card"+viewId).style("height")) * 0.9;
 
 							// update svg width and height
-							d3.select("#mainsvg").attr("width", svgw)
+							self.svg = d3.select("#mainsvg"+viewId); 
+
+							self.svg.attr("width", svgw)
 												.attr("height", svgh);
 
-							// update the range of the scale with new width/ height
+
+						 	// update the range of the scale with new width/ height
 							var width = svgw - margin.right - margin.left, 
 								height = svgh - margin.top - margin.bottom; 
 
@@ -569,10 +535,10 @@
 
 						}
 						 
-						//$("#mainCard").resize(function(e){
-						//	resize(); 
-						//});
-						d3.select("#mainCard").on("resize", resize); 
+						$("#card"+viewId).resize(function(e){
+							resize(); 
+						});
+						//d3.select("#card"+viewId).on("resize", resize); 
 						//resize(); 
 
 						}
