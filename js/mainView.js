@@ -9,71 +9,97 @@
 						self.setupControls(); 
 						self.urgencyColor =  "darkgrey"; // "#009933"; //"#63F3B9";
 						self.toggle = "grouped";
-						//self.setupDrag(document.getElementById("mainCard"));
-
-						self.nextAvailX = 600;
-						self.nextAvailY = 100; 
-
 						self.control.viewReady(self); 
-
-						self.availMetrics = [{"value": "4.04 Death in hospital", 
-											  "text": "Mortality"},
-											  {"value": "2.28 Serum glucose", 
-											  	"text": "48h Readmission"
-											  }]; 
-						self.createQualCard(0);
-						self.cardSetupDrag(0);
-
-						self.createQualCard(1);
-						self.cardSetupDrag(1);
+						
+						//self.createQualCard(1);
+						//self.cardSetupDrag(1);
 					},
 					{
-						cardSetupDrag: function(viewId){
-							var self= this; 
-							var curx, cury; 
-							var container = d3.select("#cardcontainer"+viewId)
-										.call(d3.drag()
-											.on('start.interrupt', function(){
-												container.interrupt();
-												curx = d3.event.x ;
-												cury = d3.event.y ;
-											
-											})
-											.on('start drag', function(){
-												//var curx = parseInt(container.style('left'));											
-												var dx = d3.event.x - curx; 
-												var dy = d3.event.y - cury;
-											
-												if(dx > 30 || dy > 30 )
-												{
-													container.style('top',  (d3.event.y) + 'px');
-													container.style('left', (d3.event.x) + 'px');
-												}
-											}));
+						createQualCards: function(dataViews){
+							var self = this; 
+							console.log("made it here safely");
+							self.availMetrics = self.control.getAvailMetrics(); 
+							console.log(self.availMetrics);
+							console.log(dataViews.length);
+							for(var i=0; i< dataViews.length; i++){
+								self.createQualCard2(i);
+							}
+							self.initGrid(); 
+						},
+						createQualCard2: function(viewId){
+							var self = this; 
+							var container = d3.select("#mainCanvas").append("div")
+												.attr("class", "item")
+												.attr("id", "cardcontainer"+viewId);
+							var header = container.append("form")
+									.attr("class", "cardheader")
+										.append("div").attr("class", "form-group")
+										.style("height", 45);
 
-							var div = d3.select("#card"+viewId);
+							//header.append("label")
+							//	.attr("class", "form-label")
+							//	.attr("for", "sel1")
+							//	.text("Metric: ");
 
-							div.call(d3.drag()
-								.on('drag', function(){
-											 var x = d3.mouse(this.parentNode)[0];
-											 var y = d3.mouse(this.parentNode)[1];
-											 var pWidth = this.parentNode.getBoundingClientRect().width; 
-											 var pHeight = this.parentNode.getBoundingClientRect().height; 
-											 if (x > (pWidth - 20) && y > (pHeight - 20) )
-											 {
-												console.log(y);
-												//x = Math.max(50, x);
-												//y = Math.max(50, y);
-												div.style('width', x + 'px'); 	
-												div.style('height', y + 'px'); 
-												container.style('width', (x) +'px');	
-												container.style('height', (y) +'px');	
-												div.dispatch("resize");
-											 }
-											
-										}));
-								
+							var metricSelect = header.append("select")
+												.attr("name", "metricselector")
+												.attr("class", "form-control")
+												.attr("id", "sel"+viewId)
+												.on("change", function(d){
+													console.log(this.value);
+												});
+
 							
+							for(var m = 0; m < self.availMetrics.length; m++){
+								metricSelect.append("option")
+											.attr("value", self.availMetrics[m]['value'])
+											.text(self.availMetrics[m]['text']);
+							}
+							
+							var curMetric = self.availMetrics[(viewId%self.availMetrics.length)]['value'];
+							console.log(curMetric);
+							$('#sel'+viewId).val(curMetric);
+							$('.selectpicker').selectpicker('refresh');
+
+							var card = container.append("div")
+											.attr("class", "item-content")
+											.on("doubleclick", function(d){
+												console.log(d3.select(this));
+												// fit to original size
+												//d3.select(this).attr("width", 50)
+												//				.attr("height", 50);
+											});
+							
+
+
+						},
+						initGrid: function(){
+							var grid = new Muuri('.grid', {
+							                dragEnabled: true,
+							                dragStartPredicate: function (item, event) {
+							                    if (event.target.matches('[data-toggle="popover"]') ) {
+							                      return false;
+							                      }
+							                    return Muuri.ItemDrag.defaultStartPredicate(item, event);
+							                    }
+							                });
+							$('.item-content').resizable();
+							$('.item-content').resize(function(e){
+							});
+
+							grid.on('dragEnd', function (item, event) {
+							  //$(".item-content").css('background-color', 'green');
+							  //$(".item-content").css('opacity', 0.5);
+							  $(".item-content").css('z-index', 1);
+
+							  //$(item.getElement()).css('background-color', 'yellow');
+							  $(item.getElement()).css('opacity', 1.0);
+							  $(item.getElement()).css('z-index', 10);
+							  
+							  console.log(item.getElement());
+							  
+							});
+
 						},
 						createQualCard: function(viewId){
 							var self = this;
@@ -112,16 +138,16 @@
 							
 							var curMetric = self.availMetrics[(viewId%self.availMetrics.length)]['value'];
 							console.log(curMetric);
-							//var text = $("select[name=metricselector] option[value='"+ curMetric +"']").text();
-							//var text = self.availMetrics[(viewId%self.availMetrics.length)]['text'];
-							//console.log(text);
-							//$('.bootstrap-select .filter-option').text(text);
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
 							var card = container.append("div")
 									.attr("class", "draggablediv")
 									.attr("id", "card"+viewId);
+
+							card.append("div")
+								.attr("class", "control-panel")
+								.attr("id", "panel"+viewId);
 
 							self.nextAvailX += container.node().getBoundingClientRect().width; 
 							console.log("NEXT "+ self.nextAvailX);
@@ -156,6 +182,10 @@
 						          return $(title).children(".popover-heading").html();
 						        }
 						    });
+
+							// Muuri setup
+							//$('.item-content').resizable();
+							
 						},
 						drawBarTrellis: function(displayId, dicts, cat, levels){
 							var self = this;						

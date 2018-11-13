@@ -4,10 +4,6 @@
 					null, 
 					function Control(config){
 						var self = this;
-						self.displayVariables = [{	"x": "3.06 Date/time arrival at hospital" ,
-													"y":"4.04 Death in hospital",
-													"xType": "t",
-													"yType": "q"}];
 						self.dataModel = new $Q.Model(self); 
 						self.mainView = new $Q.MainView(self); 
 					
@@ -17,6 +13,14 @@
 							var self = this; 
 							self.dataModel.readMinapDummy(); 
 						},
+						dataReady: function(dataViews){
+							var self = this;
+							self.mainView.createQualCards(dataViews);
+						},
+						getAvailMetrics: function(){
+							var self = this; 
+							return self.dataModel.availMetrics; 
+						},
 						drawBarChart: function(displayId, data, cat, levels, trellis){
 							if(!cat)
 								this.mainView.drawBarChart(displayId, data); 
@@ -25,10 +29,10 @@
 							else
 								this.mainView.drawBarTrellis(displayId, data, cat, levels); 
 						}, 
-						getDisplayVariables: function(){
-							var self = this;
-							return self.displayVariables; 
-						}, 
+						//getDisplayVariables: function(){
+						//	var self = this;
+						//	return self.displayVariables; 
+						//}, 
 						addCategorical: function(id, catName){
 						  	this.dataModel.addCategorical(id, catName);
 						},

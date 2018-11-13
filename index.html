@@ -24,7 +24,9 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     width: 30%;
     height: 300px;
 }
-
+#rightMenu{
+  z-index: 12;
+}
 /* Style the buttons that are used to open the tab content */
 .tab button {
     display: block;
@@ -71,60 +73,11 @@ div.tooltip {
     pointer-events: none;     
 }
 
-.draggabledivcontainer{
-    position: absolute;
-    z-index: 11;
-    text-align: center;
-    border: 1px solid #d3d3d3;
-    min-height: 350px;
-    min-width: 550px;
-    border-radius: 10px;
-    height: 500px; 
-    padding-bottom: 10px; 
-    width: 505px; 
-     background: darkgrey ; 
-    opacity: 0.9;
-    color: #fff;
-}
-.draggablediv {
-    position: absolute;
-    z-index: 9;
-    background-color: #f1f1f1;
-    text-align: center;
-    border: 1px solid #d3d3d3;
-    min-height: 350px;
-    display: grid;
-    grid-template-columns: 30% 70%;
-    grid-template-rows: 7% 93%;
-    grid-template-areas: "header header"
-                         "draw control";
-    height: 86%;
-    padding-bottom: 3px; 
-    width: 98%;
-    margin-left: 1%;
-    margin-right: 1%;
-    margin-top: 5px; 
-    
-    }
-
-  .draggabledivheader {
-    grid-area: header;
-    border-radius: 10px;
-    padding: 10px;
-    cursor: move;
-    z-index: 10;
-    /* background: linear-gradient(to right, #63C3F3 , #63F3B9);*
-    background: #63F3B9;*/
-    background: darkgrey ; 
-    opacity: 0.8;
-    color: #fff;
-    height: 45px;
-    
-    }
-    .form-control{
+   .form-control{
       max-width: 50%;
-      display: inline-block;
-      margin-top: 10px; 
+      max-height: 15%;
+      margin-top: 1%; 
+      margin-left: 10px;
     }
     .form-label{
        text-align: right;
@@ -183,9 +136,70 @@ div.tooltip {
     max-height: 400px;
     max-width: 500px; 
   }
+  
+.grid {
+  position: relative;
+  min-height: 1000px;
+}
+.item {
+  position: absolute;
+  width: 30%;
+  height: 40%;
+  line-height: 200px;
+  margin: 3px;
+  z-index: 1;
+  text-align: center;
+  border: 1px solid #d3d3d3;
+  border-radius: 10px;
+  padding-bottom: 5px; 
+  background: darkgrey ; 
+  opacity: 0.9;
+  color: #fff;
+  overflow: visible;
+}
+.item.muuri-item-hidden {
+  z-index: 0;
+}
+.item.muuri-item-releasing {
+  z-index: 4;
+}
+.item.muuri-item-dragging {
+  z-index: 3;
+}
+.item-content {
+  position: relative;
+  text-align: center;
+  font-size: 50px;
+  color: white;
+  cursor: pointer;
+  background-color: #f1f1f1;
+  border: 1px solid #d3d3d3;
+  min-width: 300px;
+  display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 7% 93%;
+    grid-template-areas: "header header"
+                         "draw control";
+  height: 87%;
+  padding-bottom: 3px; 
+  width: 80%;
+  margin-left: 1%;
+  margin-right: 1%;
+  margin-top: 1px;   
+}
+.item.muuri-item-dragging .item-content {
+  background: darkgrey;
+}
+.item.muuri-item-releasing .item-content {
+  background: lightgrey;
+}
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://unpkg.com/muuri@0.6.3/dist/muuri.min.js"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -344,77 +358,38 @@ div.tooltip {
 </ul>
 
 
- <div class="tab-content">
-  <div id="home" class="tab-pane fade in active">
+<div class="tab-content">
+ <div id="home" class="tab-pane fade in active">
   <div class="w3-panel">
-    <div class="w3-row-padding" id= "mainCanvas" style="margin:0 -16px; min-height: 700px;">
-    <div class="draggabledivcontainer" id= "mainCardContainer">
-       <div class="draggablediv" id="mainCard">
-        <!--div class="draggabledivheader" id="mainCardHeader"> </div-->
-        <div class="control-panel" id="mainCardPanel"> 
-            <fieldset id="field-panel">
-            <legend style="color:black; font-size:10pt; margin-top: 0px;">Card Tools</legend>
-
-           <table id="table-panel">
-          
-           <tr>
-             <td> 
-                 <!--button class="control-button accordion">Axes</button-->
-                 <a href="#" class="btn btn-primary control-button" tabindex="1" data-toggle="popover" data-trigger="focus" data-placement="right" data-popover-content="#a2">Axes</a>
-             </td>
-            
-           </tr>
-           <tr>
-             <td> 
-               <!--button id="cat-button" class="control-button accordion">Categories</button-->
-               <a href="#" class="btn btn-primary control-button" tabindex="0" data-toggle="popover" data-trigger="focus" data-placement="right" data-popover-content="#a1" data-placement="top">Categories</a>
-
-             </td>
-           </tr>
-              
-           
-           </table>
-           </fieldset>
-        </div>     
-        <div id="draw-area-1" class="draw-area"> 
-            <!--svg id="mainsvg" style="min-height: 300px;"> </svg-->
-        </div>
-    </div>
-
-
-    </div>
-
-    </div>
+    <!--div class="w3-row-padding" id= "mainCanvas" style="margin:0 -16px; min-height: 700px;">
+    </div-->
+    <div class="grid" id="mainCanvas">
+  <!--div class="item">
+    <div class="item-content" id="myitem"><a href="#" data-toggle="popover" class="pop" title="Popover Header" data-container="body" style="position:relative;" data-content="Some content inside the popover">Toggle</a></div>
   </div>
+  <div class="item">
+    <div class="item-content">2</div>
+  </div>
+  <div class="item">
+    <div class="item-content">3</div>
+  </div>
+  <div class="item">
+    <div class="item-content">4</div>
+  </div>
+  <div class="item">
+    <div class="item-content">5</div>
+  </div>
+  <div class="item">
+    <div class="item-content">6</div>
+  </div-->
   
-  </div>
-  <div id="can1" class="tab-pane fade">
-       <img src="img/bench.jpg" class=" w3-margin-right" style="width:100%; height: 420px;" alt="Mortality Rates">
-      <!--svg style="width: 2000px; height: 1500px;"> </svg-->
-    </div>
-    <div id="can2" class="tab-pane fade">
-     <div class="tab">
-        <button class="tablinks" onclick="openCity(event, 'London')">All Fields</button>
-        <button class="tablinks" onclick="openCity(event, 'Paris')">SMR Fields</button>
-        <button class="tablinks" onclick="openCity(event, 'Tokyo')">Call-to-Balloon Fields</button>
-      </div>
-
-      <div id="London" class="tabcontent">
-        <h3>All Fields</h3>
-        <p>Fields here.</p>
-      </div>
-
-      <div id="Paris" class="tabcontent">
-        <h3>SMR Fields</h3>
-        <img src="img/smr_missing.PNG" class=" w3-margin-right" style="width:100%; height: 220px;" alt="Mortality Rates">
-      </div>
-
-      <div id="Tokyo" class="tabcontent">
-        <h3>Call-to-Balloon Fields</h3>
-        <p>Fields here.</p>
-      </div>
-    </div>
 </div>
+   </div>
+ </div>  
+</div>
+
+  <div id="can1" class="tab-pane fade">
+  </div>
 
   <hr>
  
@@ -503,6 +478,7 @@ div.tooltip {
    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet"-->
 
 <script>
+
 // Get the Sidebar
 var mySidebar = document.getElementById("mySidebar");
 
@@ -615,6 +591,7 @@ function openCity(evt, cityName) {
 var drag = d3.drag();
 
 </script>
+
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/model.js"></script>
 <script type="text/javascript" src="js/mainView.js"></script>
