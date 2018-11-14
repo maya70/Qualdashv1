@@ -49,6 +49,7 @@
 												.attr("name", "metricselector")
 												.attr("class", "form-control")
 												.attr("id", "sel"+viewId)
+												.style("font-size", "9pt")
 												.on("change", function(d){
 													console.log(this.value);
 												});
@@ -57,7 +58,8 @@
 							for(var m = 0; m < self.availMetrics.length; m++){
 								metricSelect.append("option")
 											.attr("value", self.availMetrics[m]['value'])
-											.text(self.availMetrics[m]['text']);
+											.text(self.availMetrics[m]['text'])
+											.style("font-size", "9pt");
 							}
 							
 							var curMetric = self.availMetrics[(viewId%self.availMetrics.length)]['value'];
