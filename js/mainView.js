@@ -38,6 +38,49 @@
 							var container = d3.select("#mainCanvas").append("div")
 												.attr("class", "item")
 												.attr("id", "cardcontainer"+viewId);
+							
+							self.createHeader(container, viewId);
+							self.setupControls(); 
+							var cbody = container.append("div")
+									.attr("class", "card-body")
+									.style("width", "98%")
+									.style("height", "85%")
+									.style("padding-bottom", "3px")
+									.style("margin-right", "1%")
+									.style("margin-left", "1%")
+									.style("margin-top", "-10px"); 
+									 
+							
+							var panel = cbody.append("div")
+											.attr("class", "w3-sidebar")
+											.style("background-color", "darkgrey")
+											.style("max-width", "20%")
+											.style("height", "82%").style("padding-bottom", "3px")
+									.style("margin-right", "1%")
+									.style("margin-left", "0%")
+									.style("overflow", "visible"); 
+							self.createButtons(panel, viewId); 
+
+
+							
+							var card = cbody.append("div")
+											.attr("class", "item-content")
+											.attr("id", "card"+viewId)
+											.on("doubleclick", function(d){
+												console.log(d3.select(this));
+												// fit to original size
+												//d3.select(this).attr("width", 50)
+												//				.attr("height", 50);
+											});
+							card.append("div")
+								.attr("class", "draw-area")
+								.attr("id", "draw-area"+viewId);
+							
+							
+							
+						},
+						createHeader: function(container, viewId){
+							var self = this; 
 							var header = container.append("div")
 									.attr("class", "form-inline")
 									.style("text-align", "left")
@@ -103,60 +146,107 @@
 											.style("font-size", "9pt");
 								}
 							
-							self.createButtons(container); 
-							self.setupControls(); 
-							var card = container.append("div")
-											.attr("class", "item-content")
-											.attr("id", "card"+viewId)
-											.on("doubleclick", function(d){
-												console.log(d3.select(this));
-												// fit to original size
-												//d3.select(this).attr("width", 50)
-												//				.attr("height", 50);
-											});
-							card.append("div")
-								.attr("class", "draw-area")
-								.attr("id", "draw-area"+viewId);
-							
-							
-							
 						},
-						createButtons: function(container){
+						createButtons: function(panel, viewId){
 							var self = this; 
-							container.append("a")
+							var pbody = panel.append("fieldset")
+											.attr("class", "btn-container");
+								pbody.append("a")
 									.attr("href", "#")
 									.attr("class", "btn btn-primary control-button")
-									.attr("tabindex", 1)
+									//.attr("tabindex", 0)
 									.attr("data-toggle", "popover")
 									.attr("data-trigger", "focus")
-									.attr("data-placement", "right")
+									//.attr("data-placement", "bottom")
 									.attr("data-popover-content","#a2")
 									.text("Variables")
-									.style("position", "absolute")
-									.style("left", "78%")
-									.style("top", "10%")									
-									.style("font-size", "8pt")
-									.style("max-width", "20%")
-									.style("margin-right", "1%")
+									.style("font-size", "7pt")
+									.style("width", "90%")
+									.style("margin-left", "2%")
+									.style("margin-bottom", "100%")
+									.style("margin-top", "-50px")
 									.style("background-color", "lightgrey")
+									.style("padding", 0)
 									.style("color", "black");
-							 container.append("a")
+
+								pbody.append("a")
 									.attr("href", "#")
 									.attr("class", "btn btn-primary control-button")
 									.attr("tabindex", 2)
 									.attr("data-toggle", "popover")
 									.attr("data-trigger", "focus")
-									.attr("data-placement", "right")
+									.attr("data-placement", "bottom")
 									.attr("data-popover-content","#a2")
 									.text("Axes")
-									.style("position", "absolute")
-									.style("left", "78%")
-									.style("top", "30%")									
-									.style("font-size", "8pt")
-									.style("max-width", "20%")
-									.style("margin-right", "1%")
+									.style("font-size", "7pt")
+									.style("width", "90%")
+									.style("margin-left", "2%")
+									.style("margin-top", "-450px")
+									.style("background-color", "lightgrey")
+									.style("padding", 0)
+									.style("color", "black");
+							/*var rows = [];
+								var table = pbody.append("table")
+												.style("height", "60px")
+												.style("background-color", "black");
+
+								for(var i = 0; i < 3; i++){
+									rows[i] = table.append("tr")
+												.style("border-color", "black")
+												.style("height", "30px")
+												.style("background-color", "white");
+								}
+
+								var btn0 = rows[0].append("td"); 
+								var btn1 = rows[1].append("td");
+								
+							btn0.append("a")
+									.attr("href", "#")
+									.attr("class", "btn btn-primary control-button")
+									.attr("tabindex", 1)
+									.attr("data-toggle", "popover")
+									.attr("data-trigger", "focus")
+									.attr("data-placement", "bottom")
+									.attr("data-popover-content","#a2")
+									.text("Variables")
+									.style("font-size", "7pt")
+									.style("width", "90%")
+									.style("margin-left", "2%")
 									.style("background-color", "lightgrey")
 									.style("color", "black");
+
+							btn1.append("a")
+									.attr("href", "#")
+									.attr("class", "btn btn-primary control-button")
+									.attr("tabindex", 1)
+									.attr("data-toggle", "popover")
+									.attr("data-trigger", "focus")
+									.attr("data-placement", "bottom")
+									.attr("data-popover-content","#a2")
+									.text("Axes")
+									.style("font-size", "7pt")
+									.style("width", "90%")
+									.style("margin-left", "2%")
+									.style("background-color", "lightgrey")
+									.style("color", "black");
+
+							/*pbody.append("a")
+									.attr("href", "#")
+									.attr("class", "btn btn-primary control-button")
+									.attr("tabindex", 1)
+									.attr("data-toggle", "popover")
+									.attr("data-trigger", "focus")
+									.attr("data-placement", "bottom")
+									.attr("data-popover-content","#a2")
+									.text("Variables")
+									.style("font-size", "7pt")
+									.style("width", "90%")
+									.style("margin-left", "2%")
+									.style("margin-top", "10%")
+									.style("background-color", "lightgrey")
+									.style("color", "black");
+								*/ 
+
 						},
 						initGrid: function(){
 							var grid = new Muuri('.grid', {
@@ -516,7 +606,7 @@
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 10, right: 10, bottom: 65, left:30};
+							var margin = {top: 10, right: 10, bottom: 65, left:15};
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 
