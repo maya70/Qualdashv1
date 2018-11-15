@@ -5,11 +5,14 @@
 					function MainView(control){
 						var self = this;
 						self.control = control;
-						self.iter = 0; 
-						self.setupControls(); 
+						self.iter = 0; 						
 						self.urgencyColor =  "darkgrey"; // "#009933"; //"#63F3B9";
 						self.toggle = "grouped";
 						self.control.viewReady(self); 
+						self.availViews = [{"value": "bar", "text": "Bar Chart"}, 
+											{"value": "histo", "text": "Histogram"}, 
+											{"value": "scatter", "text": "Scatter Plot"}, 
+											{"value": "pie", "text": "Pie Chart"}]; 
 						
 						//self.createQualCard(1);
 						//self.cardSetupDrag(1);
@@ -35,10 +38,20 @@
 							var container = d3.select("#mainCanvas").append("div")
 												.attr("class", "item")
 												.attr("id", "cardcontainer"+viewId);
-							var header = container.append("form")
-									.attr("class", "cardheader")
+							var header = container.append("div")
+									.attr("class", "form-inline")
+									.style("text-align", "left")
+									.style("max-height", 45)
+									.style("width", "90%")
+									.style("margin-left", "3px")
 										.append("div").attr("class", "form-group")
-										.style("height", 45);
+											.style("height", 43)
+											.style("width", "90%")
+											.style("max-height", 45)
+											.style("vertical-align", "top")
+											.style("text-align", "left")
+											.style("padding-top", 0)											
+											.style("margin-top", 0); 
 
 							//header.append("label")
 							//	.attr("class", "form-label")
@@ -48,8 +61,12 @@
 							var metricSelect = header.append("select")
 												.attr("name", "metricselector")
 												.attr("class", "form-control")
+												.style("vertical-align", "top")
 												.attr("id", "sel"+viewId)
 												.style("font-size", "9pt")
+												.style("horizontal-align", "left")
+												.style("min-width", "45%")
+												.style("margin-left",0)
 												.on("change", function(d){
 													console.log(this.value);
 												});
@@ -67,6 +84,27 @@
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
+							var viewSelect = header.append("select")
+												.attr("name", "viewselector")
+												.attr("class", "form-control")
+												.attr("id", "vsel"+viewId)
+												.style("font-size", "9pt")
+												.style("vertical-align", "top")
+												.style("horizontal-align", "right")
+												.style("min-width", "45%")
+												.on("change", function(){
+													console.log(this.value);
+												});
+							
+							for(var m = 0; m < self.availViews.length; m++){
+								viewSelect.append("option")
+											.attr("value", self.availViews[m]['value'])
+											.text(self.availViews[m]['text'])
+											.style("font-size", "9pt");
+								}
+							
+							self.createButtons(container); 
+							self.setupControls(); 
 							var card = container.append("div")
 											.attr("class", "item-content")
 											.attr("id", "card"+viewId)
@@ -80,8 +118,45 @@
 								.attr("class", "draw-area")
 								.attr("id", "draw-area"+viewId);
 							
-
-
+							
+							
+						},
+						createButtons: function(container){
+							var self = this; 
+							container.append("a")
+									.attr("href", "#")
+									.attr("class", "btn btn-primary control-button")
+									.attr("tabindex", 1)
+									.attr("data-toggle", "popover")
+									.attr("data-trigger", "focus")
+									.attr("data-placement", "right")
+									.attr("data-popover-content","#a2")
+									.text("Variables")
+									.style("position", "absolute")
+									.style("left", "78%")
+									.style("top", "10%")									
+									.style("font-size", "8pt")
+									.style("max-width", "20%")
+									.style("margin-right", "1%")
+									.style("background-color", "lightgrey")
+									.style("color", "black");
+							 container.append("a")
+									.attr("href", "#")
+									.attr("class", "btn btn-primary control-button")
+									.attr("tabindex", 2)
+									.attr("data-toggle", "popover")
+									.attr("data-trigger", "focus")
+									.attr("data-placement", "right")
+									.attr("data-popover-content","#a2")
+									.text("Axes")
+									.style("position", "absolute")
+									.style("left", "78%")
+									.style("top", "30%")									
+									.style("font-size", "8pt")
+									.style("max-width", "20%")
+									.style("margin-right", "1%")
+									.style("background-color", "lightgrey")
+									.style("color", "black");
 						},
 						initGrid: function(){
 							var grid = new Muuri('.grid', {

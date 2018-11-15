@@ -7,6 +7,19 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://unpkg.com/muuri@0.6.3/dist/muuri.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.3/js/bootstrap-select.min.js"> </script>
+
+
 <style>
 html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 .w3-grey-item {
@@ -72,12 +85,25 @@ div.tooltip {
     border-radius: 8px;     
     pointer-events: none;     
 }
-
    .form-control{
-      max-width: 50%;
+      max-width: 40%;
       max-height: 27px;
       margin-top: 1%; 
       margin-left: 10px;
+      vertical-align: top; 
+    }
+    .form-inline{
+      height: 45px;
+      max-height: 45px;
+      padding-top: 0px;
+      padding-bottom: 0px;
+      margin-top: 0px;
+      margin-bottom: 0px; 
+      vertical-align: top;
+    }
+    .form-group{
+      max-height: 40px;
+      vertical-align: top;
     }
     .form-label{
        text-align: right;
@@ -89,39 +115,11 @@ div.tooltip {
       font-size: 12pt;
       color: black;
     }
-    .draw-area{
-      grid-area: draw;
-      justify-self: left;
-      height: 98%;
-      min-width: 100%; 
-      margin-top: 5%;
-      margin-right: 0px;
-      padding-right: 0px;
-      z-index: 8; 
-     
-    }
-    .control-panel{
-      grid-area: control;
-      justify-self: right;
-      min-width: 30%;
-      height: 90%;
-      margin-top: 5%;
-      margin-bottom: 5%;
-      background-color: darkgrey;
-    }
     #field-panel{
       border-radius: 5px;
       padding-left: 0px;
       margin-left: 0px;
       margin-top: 10px;
-    }
-    .control-button{
-      border-radius: 5px;
-      width: 100%;
-      margin-top: 20px; 
-      margin-bottom: 10px;
-    
-      margin-right: 10px; 
     }
     #table-panel{
       width: 100%;
@@ -176,8 +174,8 @@ div.tooltip {
   border: 1px solid #d3d3d3;
   min-width: 300px;
   display: grid;
-    grid-template-columns: 30% 70%;
-    grid-template-rows: 7% 93%;
+    grid-template-columns: 75% 20%;
+    grid-template-rows: 2% 98%;
     grid-template-areas: "header header"
                          "draw control";
   height: 85%;
@@ -187,24 +185,47 @@ div.tooltip {
   margin-right: 1%;
   margin-top: -10px;   
 }
+ .draw-area{
+    display: inline-block;
+      grid-area: draw;
+      justify-self: left;
+      height: 98%;
+      min-width: 80%; 
+      margin-top: 5%;
+      margin-right: 0px;
+      padding-right: 0px;
+      z-index: 8; 
+     
+    }
+    .control-panel{
+      display: inline-block;
+      grid-area: control;
+      justify-self: right;
+      max-width: 20%;
+      height: 70%;
+      margin-top: 5%;
+      margin-bottom: 5%;
+      background-color: red;
+    }
+    .control-button{
+      grid-area: control;
+      justify-self: right;
+      border-radius: 5px;
+      width: 20%;
+      margin-top: 20px; 
+      margin-bottom: 10px;
+    
+      margin-right: 10px; 
+    }
+    
 .item.muuri-item-dragging .item-content {
   background: darkgrey;
 }
 .item.muuri-item-releasing .item-content {
   background: lightgrey;
-}
+}    
 </style>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/web-animations/2.3.1/web-animations.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-<script src="https://unpkg.com/muuri@0.6.3/dist/muuri.min.js"></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.3/js/bootstrap-select.min.js"> </script>
 </head>
 <body class="w3-light-grey">
 
