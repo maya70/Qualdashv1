@@ -64,7 +64,7 @@
                                     {
                                         self.aggMonthly(display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
                                     }
-                                    self.control.dataReady(self.dataViews); 
+                                    self.control.dataReady(self.dataViews, self.data); 
 
                                 });
                             },

@@ -13,9 +13,14 @@
 							var self = this; 
 							self.dataModel.readMinapDummy(); 
 						},
-						dataReady: function(dataViews){
-							var self = this;
+						dataReady: function(dataViews, rawData){
+							var self = this;							
+							self.allVars =  Object.keys(rawData[0]); 
 							self.mainView.createQualCards(dataViews);
+						},
+						getAvailVars: function(){
+							var self = this;
+							return self.allVars; 
 						},
 						getAvailMetrics: function(){
 							var self = this; 

@@ -59,6 +59,7 @@
 									.style("margin-right", "1%")
 									.style("margin-left", "0%")
 									.style("overflow", "visible"); 
+							self.setupPopover(viewId);
 							self.createButtons(panel, viewId); 
 
 
@@ -78,6 +79,46 @@
 							
 							
 							
+						},
+						setupPopover: function(viewId){
+							var self = this; 
+							self.pop = d3.select("body").append("div")
+											.attr("id", "pp"+viewId)
+											.attr("class", "hidden");
+							self.pop.append("div")
+											.attr("class","popover-heading" )
+											.text("Add/Remove Grouping Variables");
+							var pbody = self.pop.append("div")
+											.attr("class", "popover-body")
+											.attr("id", "cat-popover"); 
+							var varselect=	pbody.append("select")
+												.attr("name", "varselector")
+												.attr("class", "form-control")
+												.style("vertical-align", "top")
+												.attr("id", "varsel"+viewId)
+												.style("font-size", "9pt")
+												.style("horizontal-align", "left")
+												.style("min-width", "45%")
+												.style("margin-left",0)
+												.on("change", function(d){
+													console.log(this.value);
+												});
+								var allVars = self.control.getAvailVars(); 
+								console.log(allVars); 
+								for(var m = 0; m < allVars.length; m++){
+								varselect.append("option")
+											.attr("value", allVars[m])
+											.text(allVars[m])
+											.style("font-size", "9pt");
+									}
+							//event delegation to detect change 
+							// suggested by: https://stackoverflow.com/questions/20786696/select-on-change-inside-bootstrap-popover-does-not-fire
+							$(document).on('change', '#varsel'+viewId, function(){
+								console.log($('#varsel'+viewId +' option:selected').val()); 
+							});
+							
+
+
 						},
 						createHeader: function(container, viewId){
 							var self = this; 
@@ -149,6 +190,7 @@
 						},
 						createButtons: function(panel, viewId){
 							var self = this; 
+
 							var pbody = panel.append("fieldset")
 											.attr("class", "btn-container");
 								pbody.append("a")
@@ -156,9 +198,14 @@
 									.attr("class", "btn btn-primary control-button")
 									//.attr("tabindex", 0)
 									.attr("data-toggle", "popover")
-									.attr("data-trigger", "focus")
-									//.attr("data-placement", "bottom")
-									.attr("data-popover-content","#a2")
+									//.attr("data-trigger", "focus")
+									.attr("data-placement", function(d){
+										if(viewId%3 === 0)
+											return "bottom";
+										else
+											return "left"; 
+									})
+									.attr("data-popover-content","#pp"+viewId)
 									.text("Variables")
 									.style("font-size", "7pt")
 									.style("width", "90%")
@@ -295,7 +342,7 @@
 								but.class("acco")
 								//console.log(but); 
 							}); */
-							 jQuery("[data-toggle=popover]").popover({
+							self.popSettings= jQuery("[data-toggle=popover]").popover({
 						        html : true,
 						        container: '#home',
 						        content: function() {
