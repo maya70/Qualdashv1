@@ -116,7 +116,14 @@
 							$(document).on('change', '#varsel'+viewId, function(){
 								console.log($('#varsel'+viewId +' option:selected').val()); 
 							});
-							
+							$(':not(#anything)').on('click', function (e) {
+							    self.popSettings.each(function () {
+							        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+							            $(this).popover('hide');
+							            return;
+							        }
+							    });
+							});
 
 
 						},
