@@ -68,9 +68,9 @@
 
                                 });
                             },
-                        addCategorical: function(id, varName){
+                        addCategorical: function(viewId, varName){
                             var self = this;
-                            var viewId = id[id.length-1];
+                            //var viewId = id[id.length-1];
                             ////console.log("VIEW ID = "+ viewId); 
                             self.categoricals.push(varName);
                             //console.log(self.categoricals);

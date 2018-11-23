@@ -38,8 +38,8 @@
 						//	var self = this;
 						//	return self.displayVariables; 
 						//}, 
-						addCategorical: function(id, catName){
-						  	this.dataModel.addCategorical(id, catName);
+						addCategorical: function(viewId, catName){
+						  	this.dataModel.addCategorical(viewId, catName);
 						},
 						toggleBars: function(displayId){
 							this.mainView.toggleBarView(); 

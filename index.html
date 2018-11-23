@@ -102,8 +102,8 @@ div.tooltip {
     }
     .popover{
       max-width: 1000px;
-      min-width: 500px;
-      min-height: 500px;
+      width: 300px;
+      min-height: 300px;
       max-height: 1000px;
     }
   .mod_vis{
@@ -530,13 +530,13 @@ var cat_count = 0;
 function w3_close() {
     mySidebar.style.display = "none";
     overlayBg.style.display = "none";
-}*/
+}
 
 function addGroup(id){
   var categoricals = ["Record Created By", "Patient District Number", "1.09 Patient admin status"];
   $Q.mainControl.addCategorical(id, categoricals[cat_count]);
   cat_count++; 
-}
+}*/
 
 function toggleBars(displayId){
   $Q.mainControl.toggleBars(displayId); 

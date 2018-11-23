@@ -98,7 +98,7 @@
 												.attr("id", "varsel"+viewId)
 												.style("font-size", "9pt")
 												.style("horizontal-align", "left")
-												.style("min-width", "45%")
+												.style("min-width", "65%")
 												.style("margin-left",0)
 												.on("change", function(d){
 													console.log(this.value);
@@ -114,7 +114,7 @@
 							//event delegation to detect change 
 							// suggested by: https://stackoverflow.com/questions/20786696/select-on-change-inside-bootstrap-popover-does-not-fire
 							$(document).on('change', '#varsel'+viewId, function(){
-								console.log($('#varsel'+viewId +' option:selected').val()); 
+								//console.log($('#varsel'+viewId +' option:selected').val()); 
 							});
 							$(':not(#anything)').on('click', function (e) {
 							    self.popSettings.each(function () {
@@ -125,7 +125,24 @@
 							    });
 							});
 
+							
+							pbody.append("button")
+									.attr("type", "submit")						
+									.attr("class", "btn_vg_parse hide-vl")
+									.text( "Add Grouping")
+									.attr("id", "group-but"+viewId);
+									
+							$(document).on('click', '#group-but'+viewId, function(){
+								console.log($('#varsel'+viewId +' option:selected').val());
+								self.addGroup(viewId, $('#varsel'+viewId +' option:selected').val()); 
+							});
 
+						},
+						addGroup: function(viewId, gvar){
+							//TODO: remove the following line
+							var gvar = "Record Created By";  // hard code grouping variable for now
+							var self = this; 
+							self.control.addCategorical(viewId, gvar); 
 						},
 						createHeader: function(container, viewId){
 							var self = this; 
@@ -366,7 +383,7 @@
 							//$('.item-content').resizable();
 							
 						},
-						drawBarTrellis: function(displayId, dicts, cat, levels){
+						drawBarTrellis: function(viewId, dicts, cat, levels){
 							var self = this;						
 							self.dicts = dicts; 
 							var c =0; 
@@ -374,7 +391,7 @@
                             //console.log(cat);
                             //console.log(levels);
                             for(var key in dicts){
-                         	   self.drawCatBar(displayId, dicts[key], cat[1], levels[1], c);
+                         	   self.drawCatBar(viewId, dicts[key], cat[1], levels[1], c);
                          	   c++;	
                          	   self.iter = c; 
                             }
@@ -384,7 +401,7 @@
 							//document.getElementById('mainsvg').setAttribute("style","height:700px");
                                
 						},
-						drawCatBar: function(displayId, dict, cat, levels, iter){
+						drawCatBar: function(viewId, dict, cat, levels, iter){
 							var self = this; 
 								self.dict = dict;
 								self.cat = cat;
@@ -408,22 +425,21 @@
                                             yz[ky][kx] += dict[xz[kx]][levels[ky]];
                                         }
                                     }
-                                    //console.log(xz);
-                                    //console.log(yz);
+                                    
 
                                    var y01z = d3.stack().keys(d3.range(levels.length))(d3.transpose(yz)),
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
-                                    //console.log(y01z);
-                                    //console.log(yMax);
-                                    //console.log(y1Max);
+                                   
 
 							if(self.svg && iter === 0){
-								d3.selectAll("svg").remove(); 
+							//	d3.selectAll("svg").remove(); 
+								d3.select("#mainsvg"+viewId).remove(); 
 							}
 							//console.log(dict);
-							var drawArea = d3.select("#draw-area-1");
+
+							var drawArea = d3.select("#draw-area"+viewId);
 							var parentArea = drawArea.select(function(){
 								return this.parentNode; 
 							});
@@ -432,7 +448,7 @@
 							var svgw = 0.7 * parentArea.node().getBoundingClientRect().width;
 							var svgh = 0.8* parentArea.node().getBoundingClientRect().height / viewshare; 
 
-							self.svg = d3.select("#draw-area-1").append("svg")
+							self.svg = d3.select("#draw-area"+viewId).append("svg")
 										.attr("id", "mainsvg"+iter)
 										.attr("width", svgw).attr("height", svgh)
 										.attr("transform", "translate(50,"+ (20) +")");
@@ -588,7 +604,7 @@
 						},
 
 
-						toggleBarView: function(displayId){
+						toggleBarView: function(viewId){
 							var self = this;
 							if(self.toggle === "grouped")
 								self.toggle = "stacked";
@@ -596,11 +612,11 @@
 								self.toggle = "grouped";
 
 							if(self.iter < 1)
-								self.drawCatBar(displayId, self.dict, self.cat, self.levels, 0); 
+								self.drawCatBar(viewId, self.dict, self.cat, self.levels, 0); 
 							else{
 								 var c = 0;
 								 for(var key in self.dicts){
-		                         	   self.drawCatBar(displayId, self.dicts[key], self.cat, self.levels, c);
+		                         	   self.drawCatBar(viewId, self.dicts[key], self.cat, self.levels, c);
 		                         	   c++; 
 		                         	}
 							}
