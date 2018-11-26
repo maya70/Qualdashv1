@@ -50,6 +50,9 @@
                         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                         //self.dateVar = self.;
                         self.categoricals = [];
+                        for(var i=0; i < self.displayVariables.length; i++){
+                            self.categoricals[i] = []; 
+                        }
                     },
                     {
                         readMinapDummy: function(){
@@ -72,7 +75,7 @@
                             var self = this;
                             //var viewId = id[id.length-1];
                             ////console.log("VIEW ID = "+ viewId); 
-                            self.categoricals.push(varName);
+                            self.categoricals[viewId].push(varName);
                             //console.log(self.categoricals);
 
                             self.aggMonthly(viewId, self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
@@ -126,8 +129,8 @@
                                                         //self.control.drawBarChart(displayId, ordered); 
                                                         self.dataViews.push({"viewId": displayId, "data": ordered});
                             }
-                            else if(categoricals.length === 1){  // count within categories
-                                var cat = categoricals[0];
+                            else if(categoricals[displayId].length === 1){  // count within categories
+                                var cat = categoricals[displayId][0];
                                 //console.log(cat);
 
                                 var levels = d3.map(self.data, function(item){
@@ -166,14 +169,14 @@
                                
 
                             }
-                        else if(categoricals.length === 2){
+                        else if(categoricals[displayId].length === 2){
                             // first variable divides the trellis
                             
                             var levels0 = d3.map(self.data, function(item){
-                                    return item[categoricals[0]];
+                                    return item[categoricals[displayId][0]];
                                     }).keys();
                             var levels1 = d3.map(self.data, function(item){
-                                    return item[categoricals[1]];
+                                    return item[categoricals[displayId][1]];
                                     }).keys();
                             
                             //console.log(levels0);
@@ -200,16 +203,16 @@
 
                                                             });
                                                          }
-                                                       dict[data[i][categoricals[0]]][my][data[i][categoricals[1]]] += parseInt(data[i][displayVar]);
+                                                       dict[data[i][categoricals[displayId][0]]][my][data[i][categoricals[displayId][1]]] += parseInt(data[i][displayVar]);
 
                                                     }
                                //console.log(dict);
                                var levels = [levels0, levels1]; 
-                            self.control.drawBarChart(displayId, dict, categoricals, levels, 1);
+                            self.control.drawBarChart(displayId, dict, categoricals[displayId], levels, 1);
 
 
                         }
-                        else if(categoricals.length === 3){
+                        else if(categoricals[displayId].length === 3){
 
                             
                         }

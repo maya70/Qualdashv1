@@ -22,8 +22,8 @@
 							var self = this; 
 							
 							self.availMetrics = self.control.getAvailMetrics(); 
-							console.log(self.availMetrics);
-							console.log(dataViews.length);
+							////console.log(self.availMetrics);
+							////console.log(dataViews.length);
 							for(var i=0; i< dataViews.length; i++){
 								self.createQualCard(i);
 							}
@@ -68,7 +68,7 @@
 											.attr("class", "item-content")
 											.attr("id", "card"+viewId)
 											.on("doubleclick", function(d){
-												console.log(d3.select(this));
+												////console.log(d3.select(this));
 												// fit to original size
 												//d3.select(this).attr("width", 50)
 												//				.attr("height", 50);
@@ -101,10 +101,10 @@
 												.style("min-width", "65%")
 												.style("margin-left",0)
 												.on("change", function(d){
-													console.log(this.value);
+													////console.log(this.value);
 												});
 								var allVars = self.control.getAvailVars(); 
-								console.log(allVars); 
+								////console.log(allVars); 
 								for(var m = 0; m < allVars.length; m++){
 								varselect.append("option")
 											.attr("value", allVars[m])
@@ -114,7 +114,7 @@
 							//event delegation to detect change 
 							// suggested by: https://stackoverflow.com/questions/20786696/select-on-change-inside-bootstrap-popover-does-not-fire
 							$(document).on('change', '#varsel'+viewId, function(){
-								//console.log($('#varsel'+viewId +' option:selected').val()); 
+								//////console.log($('#varsel'+viewId +' option:selected').val()); 
 							});
 							$(':not(#anything)').on('click', function (e) {
 							    self.popSettings.each(function () {
@@ -133,14 +133,16 @@
 									.attr("id", "group-but"+viewId);
 									
 							$(document).on('click', '#group-but'+viewId, function(){
-								console.log($('#varsel'+viewId +' option:selected').val());
+								////console.log($('#varsel'+viewId +' option:selected').val());
 								self.addGroup(viewId, $('#varsel'+viewId +' option:selected').val()); 
 							});
 
 						},
 						addGroup: function(viewId, gvar){
+							////console.log(gvar);
 							//TODO: remove the following line
-							var gvar = "Record Created By";  // hard code grouping variable for now
+							var gvar = "Record Created By";  // I'm hard coding a grouping variable for now
+
 							var self = this; 
 							self.control.addCategorical(viewId, gvar); 
 						},
@@ -176,7 +178,7 @@
 												.style("min-width", "45%")
 												.style("margin-left",0)
 												.on("change", function(d){
-													console.log(this.value);
+													////console.log(this.value);
 												});
 
 							
@@ -188,7 +190,7 @@
 							}
 							
 							var curMetric = self.availMetrics[(viewId%self.availMetrics.length)]['value'];
-							console.log(curMetric);
+							////console.log(curMetric);
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
@@ -201,7 +203,7 @@
 												.style("horizontal-align", "right")
 												.style("min-width", "45%")
 												.on("change", function(){
-													console.log(this.value);
+													////console.log(this.value);
 												});
 							
 							for(var m = 0; m < self.availViews.length; m++){
@@ -323,7 +325,9 @@
 							var grid = new Muuri('.grid', {
 							                dragEnabled: true,
 							                dragStartPredicate: function (item, event) {
-							                    if (event.target.matches('[data-toggle="popover"]') ) {
+							                	////console.log(event.target); 
+							                    if (event.target.matches('[data-toggle="popover"]') 
+							                    	|| (event.target.matches('[class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se"]')) ) {
 							                      return false;
 							                      }
 							                    return Muuri.ItemDrag.defaultStartPredicate(item, event);
@@ -343,7 +347,7 @@
 							  $(item.getElement()).css('opacity', 1.0);
 							  $(item.getElement()).css('z-index', 10);
 							  
-							  console.log(item.getElement());
+							  ////console.log(item.getElement());
 							  
 							});
 
@@ -364,7 +368,7 @@
 							/*var buttons = d3.selectAll(".control-button"); 
 							buttons.each(function(but){
 								but.class("acco")
-								//console.log(but); 
+								//////console.log(but); 
 							}); */
 							self.popSettings= jQuery("[data-toggle=popover]").popover({
 						        html : true,
@@ -387,9 +391,9 @@
 							var self = this;						
 							self.dicts = dicts; 
 							var c =0; 
-                            //console.log(dicts);
-                            //console.log(cat);
-                            //console.log(levels);
+                            //////console.log(dicts);
+                            //////console.log(cat);
+                            //////console.log(levels);
                             for(var key in dicts){
                          	   self.drawCatBar(viewId, dicts[key], cat[1], levels[1], c);
                          	   c++;	
@@ -413,9 +417,9 @@
     
                                 var ordered = [];
                                 var temp = Object.keys(dict);
-                                ////console.log(temp); 
+                                ////////console.log(temp); 
                                 var orderedKeys = Object.keys(dict).sort(custom_sort);
-                                ////console.log(orderedKeys);
+                                ////////console.log(orderedKeys);
                                 var xz = orderedKeys,
                                     yz = d3.range(levels.length).map(function(d){
                                         return Array.apply(null, Array(xz.length)).map(Number.prototype.valueOf,0);
@@ -427,33 +431,43 @@
                                     }
                                     
 
+
                                    var y01z = d3.stack().keys(d3.range(levels.length))(d3.transpose(yz)),
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
-                                   
+                               	
+
 
 							if(self.svg && iter === 0){
 							//	d3.selectAll("svg").remove(); 
-								d3.select("#mainsvg"+viewId).remove(); 
+								d3.select(".mainsvg"+viewId).remove(); 
 							}
-							//console.log(dict);
+							//////console.log(dict);
 
 							var drawArea = d3.select("#draw-area"+viewId);
+							if(iter > 0)
+								drawArea.style("overflow-y", "scroll"); 
+
+							
 							var parentArea = drawArea.select(function(){
 								return this.parentNode; 
 							});
-							//console.log(parentArea.node().getBoundingClientRect());
+							//////console.log(parentArea.node().getBoundingClientRect());
 							var viewshare = self.dicts? Object.keys(self.dicts).length : 1; 
-							var svgw = 0.7 * parentArea.node().getBoundingClientRect().width;
-							var svgh = 0.8* parentArea.node().getBoundingClientRect().height / viewshare; 
+							////console.log(viewshare); 
+							if(viewshare > 2) viewshare = 2; 
+							var svgw = 0.9 * parentArea.node().getBoundingClientRect().width;
+							var svgh = 0.9* parentArea.node().getBoundingClientRect().height / viewshare; 
 
 							self.svg = d3.select("#draw-area"+viewId).append("svg")
-										.attr("id", "mainsvg"+iter)
+										.attr("id", "mainsvg"+viewId+"_"+iter)
+										.attr("class", "mainsvg"+viewId)
 										.attr("width", svgw).attr("height", svgh)
-										.attr("transform", "translate(50,"+ (20) +")");
+										.style("vertical-align", "top")
+										.attr("transform", "translate(0,"+ (-svgh*iter) +")");
 							
-							self.cardTitle = d3.select("#mainCardContainer").selectAll("span")
+							/*self.cardTitle = d3.select("#mainCardContainer").selectAll("span")
 												.data(function(){
 													var disp = self.control.getDisplayVariables();
 													return disp[0]["y"];	
@@ -474,15 +488,17 @@
 												.on("mouseout", function(){
 														d3.select(this)
 														.style('background-color', "darkgrey" );
-														//console.log(d3.select(this).node().getBoundingClientRect().height);
-												});
+														//////console.log(d3.select(this).node().getBoundingClientRect().height);
+												});*/
+
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 50, right: 20, bottom: 50, left:30};
+							var margin = {top: 0, right: 10, bottom: 50, left:30};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
+							
 
 							var g = self.svg.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
 
@@ -516,6 +532,7 @@
 							var rect = series.selectAll("rect")
 							  .data(function(d) { return d; })
 							  .enter().append("rect")
+							  	.attr("class", "bar")
 							    .attr("x", function(d, i) { return x(i); })
 							    .attr("y", height)
 							    .attr("width", x.bandwidth())
@@ -545,7 +562,7 @@
 								    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
 
 								g.append("g")
-								    .attr("class", "axis axis--x")
+								    .attr("class", "x axis")
 								    .attr("transform", "translate(0," + height + ")")
 								    .call(d3.axisBottom(x))
 									.selectAll("text")	
@@ -557,7 +574,7 @@
 
 							
 								g.append("g")
-							      .attr("class", "axis axis--y")
+							      .attr("class", "y axis")
 							      .call(d3.axisLeft(y).ticks(5, "s"))
 							      .attr("transform", "translate(0,"+0+")");
 
@@ -600,7 +617,54 @@
 						      .attr("width", x.bandwidth());
 						}
 
+						function resize() {
+							console.log("RESIZE CALLED");
+							var svgw = parseInt(d3.select("#card"+viewId).style("width")) * 0.9,
+								svgh = parseInt(d3.select("#card"+viewId).style("height")) * 0.9;
 
+							// update svg width and height
+							self.svg = d3.select("#mainsvg"+viewId+"_"+iter); 
+
+							self.svg.attr("width", svgw)
+												.attr("height", svgh);
+
+
+						 	// update the range of the scale with new width/ height
+							var width = svgw - margin.right - margin.left, 
+								height = svgh - margin.top - margin.bottom; 
+
+							x.rangeRound([0, width]).padding(0.1);
+							y.rangeRound([(height), 0]); 
+
+
+							self.svg.select(".x.axis")
+							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
+							      .call(d3.axisBottom(x))
+									.selectAll("text")	
+								        .style("text-anchor", "end")
+								        .attr("dx", "-.8em")
+								        .attr("dy", ".15em")
+								        .attr("transform", "rotate(-65)");
+							
+							self.svg.select(".y.axis")
+									.call(d3.axisLeft(y).ticks(5, "s"))
+							      	.attr("transform", "translate(0,"+ margin.top+")");
+
+							//console.log(self.svg.selectAll("g").selectAll(".bar"));
+							/*self.svg.selectAll("g").selectAll(".bar")
+								.attr("x", function(d, i) { return x(i); })
+							      .attr("y", function(d) { 
+							      	return y(d.number)+ margin.top; })
+							      .attr("width", x.bandwidth())
+							      .attr("height", function(d) { return height  - y(d.number); })*/
+							     changed(); 
+
+						}
+						 
+						$("#card"+viewId).resize(function(e){
+							 resize(); 
+						});
+						
 						},
 
 
@@ -624,54 +688,30 @@
 						},
 						populateCard: function(dataView){
 							var self = this;
-							console.log(dataView);
+							////console.log(dataView);
 							self.drawBarChart(dataView['viewId'], dataView['data']);
 						},
 						drawBarChart: function(viewId, data){
 							var self = this;
-							////console.log(data);
+							////////console.log(data);
 							var drawArea = d3.select("#draw-area"+viewId);
 							var parentArea = drawArea.select(function(){
 								//d3.select(this.parentNode).on("resize", resize);
 								return this.parentNode; 
 							});
-							//console.log(parentArea.node().getBoundingClientRect());
+							//////console.log(parentArea.node().getBoundingClientRect());
 							var svgw =  0.9* parentArea.node().getBoundingClientRect().width;
 							var svgh =  0.9* parentArea.node().getBoundingClientRect().height; 
 
 
 							self.svg = d3.select("#draw-area"+viewId).append("svg")
 											.attr("id", "mainsvg"+viewId)
+											.attr("class", "mainsvg"+viewId)
 											.attr("width", svgw)
-											.attr("height", svgh)
+											.attr("height", svgh)											
 											.attr("transform", "translate(10,10)");
 							
-							/*self.cardTitle = d3.select("#mainCardContainer").selectAll("span")
-												.data(function(){
-													var disp = self.control.getDisplayVariables();
-													return disp[0]["y"];	
-												})
-												.enter()
-												.append("span")
-												.text(function(d){
-													return d;
-												})
-												.style("color", "black")
-												.style("margin-top", "5px")
-												.style("font-size", "14pt")
-												.style("font-weight", "bold");
-							self.cardHeader = d3.select("#mainCardContainer")
-												.on('mouseover', function() {
-														d3.select(this)
-														.style('background-color', self.urgencyColor)
-													})
-												.on("mouseout", function(){
-														d3.select(this)
-														.style('background-color', "darkgrey");
-														//console.log(d3.select(this).node().getBoundingClientRect().height);
-												});
-							*/	
-	
+							
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
@@ -733,7 +773,10 @@
 
 
 						function resize() {
-							//console.log("RESIZE CALLED");
+							if(!self.cat)
+							{	
+							console.log("RESIZE CALLED 22 ");
+
 							var svgw = parseInt(d3.select("#card"+viewId).style("width")) * 0.9,
 								svgh = parseInt(d3.select("#card"+viewId).style("height")) * 0.9;
 
@@ -751,7 +794,7 @@
 							x.rangeRound([0, width]).padding(0.1);
 							y.rangeRound([(height), 0]); 
 
-
+							//console.log(self.svg.selectAll("*"));
 							self.svg.select(".x.axis")
 							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
 							      .call(d3.axisBottom(x))
@@ -765,11 +808,13 @@
 									.call(d3.axisLeft(y).ticks(5, "s"))
 							      	.attr("transform", "translate(0,"+ margin.top+")");
 							self.svg.selectAll(".bar")
-								.attr("x", function(d) { return x(d.date); })
-							      .attr("y", function(d) { return y(d.number)+ margin.top; })
+								.attr("x", function(d) { 
+									return x(d.date); })
+							      .attr("y", function(d) { 
+							      	return y(d.number)+ margin.top; })
 							      .attr("width", x.bandwidth())
 							      .attr("height", function(d) { return height  - y(d.number); })
-
+							}
 						}
 						 
 						$("#card"+viewId).resize(function(e){
