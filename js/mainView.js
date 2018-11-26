@@ -178,7 +178,10 @@
 												.style("min-width", "45%")
 												.style("margin-left",0)
 												.on("change", function(d){
-													////console.log(this.value);
+													console.log(this.value);
+													var dv = self.getMetricDataView(this.value);
+													console.log(dv); 
+													self.drawBarChart(viewId, dv['data']);
 												});
 
 							
@@ -213,6 +216,15 @@
 											.style("font-size", "9pt");
 								}
 							
+						},
+						getMetricDataView: function(txt){
+							var self = this; 
+							var views = self.control.getDataViews();
+							for(var v=0; v < views.length; v++){
+								if(views[v]['metric'] === txt)
+									return views[v];
+							}
+							return -1; 
 						},
 						createButtons: function(panel, viewId){
 							var self = this; 
@@ -703,6 +715,8 @@
 							var svgw =  0.9* parentArea.node().getBoundingClientRect().width;
 							var svgh =  0.9* parentArea.node().getBoundingClientRect().height; 
 
+							if(self.svg)
+								d3.select(".mainsvg"+viewId).remove(); 
 
 							self.svg = d3.select("#draw-area"+viewId).append("svg")
 											.attr("id", "mainsvg"+viewId)

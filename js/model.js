@@ -6,46 +6,60 @@
                         var self = this;
                         self.control = control; 
                         self.dataViews = []; 
-                        self.availMetrics = [{"value": "4.04 Death in hospital", 
+                        /** availMetrics keeps a list of metrics that are made available 
+                         *  in a drop-down menu for users to select from in each QualCard
+                         *  Defaults for each audit are set here
+                         *  On launching the site it will display metrics in this order 
+                         */ 
+                        self.availMetrics = control.savedMetrics || [{"value": "4.04 Death in hospital", 
                                               "text": "Mortality"},
-                                              {"value": "2.28 Serum glucose", 
+                                              {"value": "derived_readmission", 
                                                 "text": "48h Readmission"}, 
-                                              {"value": "4.04 Death in hospital", 
-                                              "text": "Mortality"},
-                                              {"value": "2.28 Serum glucose", 
-                                                "text": "48h Readmission"},
-                                              {"value": "4.04 Death in hospital", 
-                                              "text": "Mortality"},
-                                              {"value": "2.28 Serum glucose", 
-                                                "text": "48h Readmission"
+                                              {"value": "Delay from Call for Help to Reperfusion Treatment", 
+                                              "text": "Call-to-Balloon"},
+                                              {"value": "Delay from Arrival in Hospital to Reperfusion Treatment", 
+                                                "text": "Door-to-Balloon"},
+                                              {"value": "derived_los", 
+                                              "text": "Length of Stay"},
+                                              {"value": "Bleeding complications", // TODO: check how to calcul. complication rates 
+                                                "text": "Complications"
                                               }];   
-                        self.displayVariables = [{  "x": "3.06 Date/time arrival at hospital" ,
+                        self.displayVariables = control.savedVariables || [{  "metric": "Mortality",
+                                                    "x": "3.06 Date/time arrival at hospital" ,
                                                     "y":"4.04 Death in hospital",
                                                     "xType": "t",
-                                                    "yType": "q"}, 
-                                                 {  "x": "3.06 Date/time arrival at hospital",
-                                                    "y": "2.28 Serum glucose",
+                                                    "yType": "q"
+                                                 }, 
+                                                 {  "metric": "48h Readmission",
+                                                    "x": "3.06 Date/time arrival at hospital",
+                                                    "y": ["Date of discharge", "3.06 Date/time arrival at hospital"],
                                                     "xType": "t",
                                                     "yType": "q"
                                                  },
-                                                 {  "x": "3.06 Date/time arrival at hospital" ,
-                                                    "y":"4.04 Death in hospital",
+                                                 {  "metric": "Call-to-Balloon",
+                                                    "x": "3.06 Date/time arrival at hospital" ,
+                                                    "y":"Delay from Call for Help to Reperfusion Treatment",
                                                     "xType": "t",
-                                                    "yType": "q"}, 
-                                                 {  "x": "3.06 Date/time arrival at hospital",
-                                                    "y": "2.28 Serum glucose",
+                                                    "yType": "q"
+                                                 }, 
+                                                 {  "metric": "Door-to-Balloon",
+                                                    "x": "3.06 Date/time arrival at hospital",
+                                                    "y": "Delay from Arrival in Hospital to Reperfusion Treatment",
                                                     "xType": "t",
                                                     "yType": "q"
                                                  },
-                                                 {  "x": "3.06 Date/time arrival at hospital" ,
-                                                    "y":"4.04 Death in hospital",
-                                                    "xType": "t",
-                                                    "yType": "q"}, 
-                                                 {  "x": "3.06 Date/time arrival at hospital",
-                                                    "y": "2.28 Serum glucose",
+                                                 {  "metric": "Length of Stay",
+                                                    "x": "3.06 Date/time arrival at hospital",
+                                                    "y": ["Date of discharge", "3.06 Date/time arrival at hospital"],
                                                     "xType": "t",
                                                     "yType": "q"
-                                                 }];
+                                                 },
+                                                 {  "metric": "Complications",
+                                                    "x": "3.06 Date/time arrival at hospital" ,
+                                                    "y":"Bleeding complications",
+                                                    "xType": "t",
+                                                    "yType": "q"
+                                                }];
                           
                         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                         //self.dateVar = self.;
@@ -91,8 +105,6 @@
                                                             ////console.log(date); 
                                                             var month = self.months[date.getMonth()];
                                                             var year = date.getYear()+1900; 
-                                                            //////console.log(month);
-                                                            //////console.log(year);
                                                             var my = month+"-"+year; 
                                                             ////console.log(my); 
                                                             dict[my] = dict[my]? dict[my]+parseInt(data[i][displayVar]) : parseInt(data[i][displayVar]);
@@ -127,7 +139,7 @@
                             
                                                         //console.log(ordered); 
                                                         //self.control.drawBarChart(displayId, ordered); 
-                                                        self.dataViews.push({"viewId": displayId, "data": ordered});
+                                                        self.dataViews.push({"viewId": displayId, "data": ordered, "metric": self.availMetrics[displayId]['value']});
                             }
                             else if(categoricals[displayId].length === 1){  // count within categories
                                 var cat = categoricals[displayId][0];
