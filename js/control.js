@@ -29,7 +29,7 @@
 						getAvailMetrics: function(){
 							var self = this; 
 							return self.dataModel.availMetrics; 
-						},
+						},						
 						drawBarChart: function(displayId, data, cat, levels, trellis){
 							if(!cat)
 								this.mainView.drawBarChart(displayId, data); 
@@ -44,6 +44,9 @@
 						//}, 
 						addCategorical: function(viewId, catName){
 						  	this.dataModel.addCategorical(viewId, catName);
+						},
+						resetCategoricals: function(viewId){
+							this.dataModel.resetCategoricals(viewId); 
 						},
 						toggleBars: function(displayId){
 							this.mainView.toggleBarView(); 

@@ -32,7 +32,7 @@
                                                  }, 
                                                  {  "metric": "48h Readmission",
                                                     "x": "3.06 Date/time arrival at hospital",
-                                                    "y": ["Date of discharge", "3.06 Date/time arrival at hospital"],
+                                                    "y": ["4.01 Date of discharge", "3.06 Date/time arrival at hospital"],
                                                     "xType": "t",
                                                     "yType": "q"
                                                  },
@@ -79,7 +79,7 @@
                                     ////console.log(displayVar);
                                     for(var display = 0; display < self.displayVariables.length; display++)
                                     {
-                                        self.aggMonthly(display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
+                                        self.aggMonthly(self.displayVariables[display]["metric"], display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
                                     }
                                     self.control.dataReady(self.dataViews, self.data); 
 
@@ -90,13 +90,36 @@
                             //var viewId = id[id.length-1];
                             ////console.log("VIEW ID = "+ viewId); 
                             self.categoricals[viewId].push(varName);
-                            //console.log(self.categoricals);
+                            console.log(self.categoricals);
 
-                            self.aggMonthly(viewId, self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
+                            self.aggMonthly(self.displayVariables[viewId]["metric"], viewId, self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
                         },
-                        aggMonthly: function(displayId, data, dateVar, displayVar, categoricals){
+                        resetCategoricals: function(viewId){
+                            var self = this;
+                            self.categoricals[viewId] = []; 
+                        },
+                        calculateDerivedVar: function(metric, vars){
+                            var self = this; 
+                            var derived = []; 
+                            for(var i=0; i< self.data.length; i++){
+                                var rec = self.data[i]; 
+                                if(metric === "48h Readmission"){
+                                    var discharge_date = new Date(self.data[i][vars[0]]);
+                                    var readmission_date = new Date(self.data[i][vars[1]]);
+                                    var one_day=1000*60*60*24;  // in ms
+                                    var diff = Math.round((readmission_date.getTime() - discharge_date.getTime())/one_day); 
+                                    console.log(diff); 
+                                    self.data[i][metric] = ((diff > 0) && (diff <= 2))? 1: 0; 
+                                }
+                            }                            
+                            return metric; 
+                        },
+                        aggMonthly: function(metric, displayId, data, dateVar, displayVar, categoricals){
                             var self = this; 
                             var dict = {};
+                            if(displayVar.constructor == Array)
+                                displayVar = self.calculateDerivedVar(metric, displayVar); 
+                            //console.log(data[0][metric]); 
 
                             if(!categoricals){
                                                         for(var i=0; i< data.length; i++){
@@ -182,13 +205,15 @@
 
                             }
                         else if(categoricals[displayId].length === 2){
-                            // first variable divides the trellis
                             
+
+                            // new variable divides the trellis
                             var levels0 = d3.map(self.data, function(item){
-                                    return item[categoricals[displayId][0]];
-                                    }).keys();
-                            var levels1 = d3.map(self.data, function(item){
                                     return item[categoricals[displayId][1]];
+                                    }).keys();
+                            
+                            var levels1 = d3.map(self.data, function(item){
+                                    return item[categoricals[displayId][0]];
                                     }).keys();
                             
                             //console.log(levels0);
@@ -215,7 +240,7 @@
 
                                                             });
                                                          }
-                                                       dict[data[i][categoricals[displayId][0]]][my][data[i][categoricals[displayId][1]]] += parseInt(data[i][displayVar]);
+                                                       dict[data[i][categoricals[displayId][1]]][my][data[i][categoricals[displayId][0]]] += parseInt(data[i][displayVar]);
 
                                                     }
                                //console.log(dict);

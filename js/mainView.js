@@ -139,10 +139,10 @@
 
 						},
 						addGroup: function(viewId, gvar){
-							////console.log(gvar);
+							console.log(gvar);
+							console.log(viewId); 
 							//TODO: remove the following line
-							var gvar = "Record Created By";  // I'm hard coding a grouping variable for now
-
+							//var gvar = "Record Created By";  // I'm hard coding a grouping variable for now
 							var self = this; 
 							self.control.addCategorical(viewId, gvar); 
 						},
@@ -181,6 +181,8 @@
 													console.log(this.value);
 													var dv = self.getMetricDataView(this.value);
 													console.log(dv); 
+													//TODO: reset here the grouping variables and dicts of this view
+													self.control.resetCategoricals(viewId); 
 													self.drawBarChart(viewId, dv['data']);
 												});
 
