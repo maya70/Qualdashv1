@@ -28,7 +28,7 @@
 								self.createQualCard(i);
 							}
 							self.initGrid(); 
-							for(var i=0; i< dataViews.length; i++){
+							for(var i=0; i< dataViews.length-1; i++){
 								self.populateCard(dataViews[i]);
 							}
 	
@@ -556,7 +556,7 @@
 							      	div.transition()
 							      		.duration(200)
 							      		.style("opacity", 0.9);
-							      	div .html((d[1] - d[0]+ " records"))
+							      	div .html((d[1] - d[0]+ ""))
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	origColor = d3.select(this).style("fill");
@@ -586,7 +586,8 @@
 								        .attr("transform", "rotate(-65)")
 								        .call(changed);
 
-							
+								console.log(y.domain());
+								console.log(y.range());
 								g.append("g")
 							      .attr("class", "y axis")
 							      .call(d3.axisLeft(y).ticks(5, "s"))
@@ -648,7 +649,7 @@
 								height = svgh - margin.top - margin.bottom; 
 
 							x.rangeRound([0, width]).padding(0.1);
-							y.rangeRound([(height), 0]); 
+							y.range([height, 0]); 
 
 
 							self.svg.select(".x.axis")
@@ -725,20 +726,23 @@
 											.attr("class", "mainsvg"+viewId)
 											.attr("width", svgw)
 											.attr("height", svgh)											
-											.attr("transform", "translate(10,10)");
+											.attr("transform", "translate(0,10)");
 							
 							
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 10, right: 10, bottom: 65, left:15};
+							var margin = {top: 10, right: 10, bottom: 65, left:30};
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
-
+							/*var yAxis = g => g
+									    .attr("transform", `translate(${margin.left},0)`)
+									    .call(d3.axisLeft(y))
+									    .call(g => g.select(".domain").remove());*/
 
 							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
-								y = d3.scaleLinear().rangeRound([(height), 0]); 
+								y = d3.scaleLinear().range([height, 0]).nice(); 
 
 							var g = self.svg.append("g")
 									.attr("transform", "translate(" + margin.left + ", "+ 0 +")");
@@ -747,7 +751,9 @@
 									return d.date; 
 							}));
 							y.domain([0, d3.max(data, function(d){ return d.number; })]);
-
+							
+							
+							
 							g.append("g")
 							      .attr("class", "x axis")
 							      .attr("transform", "translate("+ 0+"," + (height+margin.top) + ")")
@@ -757,10 +763,19 @@
 								        .attr("dx", "-.8em")
 								        .attr("dy", ".15em")
 								        .attr("transform", "rotate(-65)");
+
+							console.log(y.domain());
+							console.log(y.range());
+							
+
 							g.append("g")
 							      .attr("class", "y axis")
-							      .call(d3.axisLeft(y).ticks(5, "s"))
-							      .attr("transform", "translate(0,"+ margin.top+")");
+							      .call(d3.axisLeft(y).ticks(5,"s"))
+							      .attr("transform", "translate("+0+","+ margin.top+")");
+							
+							/* g.append("g")
+							 	.attr("class", "y axis")
+      							.call(yAxis);*/
 
 							g.selectAll(".bar")
 							    .data(data)
@@ -775,7 +790,7 @@
 							      	div.transition()
 							      		.duration(200)
 							      		.style("opacity", 0.9);
-							      	div .html((d.date) + "<br/>" + (d.number+ " records"))
+							      	div .html((d.date) + "<br/>" + (d.number+ ""))
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	d3.select(this).style("fill", "brown");
@@ -808,7 +823,7 @@
 								height = svgh - margin.top - margin.bottom; 
 
 							x.rangeRound([0, width]).padding(0.1);
-							y.rangeRound([(height), 0]); 
+							y.range([(height), 0]); 
 
 							//console.log(self.svg.selectAll("*"));
 							self.svg.select(".x.axis")
@@ -820,6 +835,8 @@
 								        .attr("dy", ".15em")
 								        .attr("transform", "rotate(-65)");
 							
+							
+
 							self.svg.select(".y.axis")
 									.call(d3.axisLeft(y).ticks(5, "s"))
 							      	.attr("transform", "translate(0,"+ margin.top+")");
