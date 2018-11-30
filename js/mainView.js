@@ -10,7 +10,7 @@
 						self.toggle = "grouped";
 						self.control.viewReady(self); 
 						self.availViews = [{"value": "bar", "text": "Bar Chart"}, 
-											{"value": "histo", "text": "Histogram"}, 
+											//{"value": "histo", "text": "Histogram"}, 
 											{"value": "scatter", "text": "Scatter Plot"}, 
 											{"value": "pie", "text": "Pie Chart"}]; 
 						
@@ -20,10 +20,7 @@
 					{
 						createQualCards: function(dataViews){
 							var self = this; 
-							
 							self.availMetrics = self.control.getAvailMetrics(); 
-							////console.log(self.availMetrics);
-							////console.log(dataViews.length);
 							for(var i=0; i< dataViews.length; i++){
 								self.createQualCard(i);
 							}
@@ -32,6 +29,13 @@
 								self.populateCard(dataViews[i]);
 							}
 	
+						},
+						getChartType: function(viewId){
+							var self = this; 
+							var viewType = $("#vsel"+viewId +' option:selected').val(); 
+							console.log("TYPE = "+ viewType);
+							return viewType; 
+
 						},
 						createQualCard: function(viewId){
 							var self = this; 
@@ -76,8 +80,7 @@
 							card.append("div")
 								.attr("class", "draw-area")
 								.attr("id", "draw-area"+viewId);
-							
-							
+									
 							
 						},
 						setupPopover: function(viewId){
@@ -208,7 +211,10 @@
 												.style("horizontal-align", "right")
 												.style("min-width", "45%")
 												.on("change", function(){
-													////console.log(this.value);
+													console.log(this.value);
+													var dataViews = self.control.getDataViews(); 
+													console.log(dataViews[viewId]); 
+													self.populateCard(dataViews[viewId] ); 
 												});
 							
 							for(var m = 0; m < self.availViews.length; m++){
@@ -272,67 +278,7 @@
 									.style("background-color", "lightgrey")
 									.style("padding", 0)
 									.style("color", "black");
-							/*var rows = [];
-								var table = pbody.append("table")
-												.style("height", "60px")
-												.style("background-color", "black");
-
-								for(var i = 0; i < 3; i++){
-									rows[i] = table.append("tr")
-												.style("border-color", "black")
-												.style("height", "30px")
-												.style("background-color", "white");
-								}
-
-								var btn0 = rows[0].append("td"); 
-								var btn1 = rows[1].append("td");
-								
-							btn0.append("a")
-									.attr("href", "#")
-									.attr("class", "btn btn-primary control-button")
-									.attr("tabindex", 1)
-									.attr("data-toggle", "popover")
-									.attr("data-trigger", "focus")
-									.attr("data-placement", "bottom")
-									.attr("data-popover-content","#a2")
-									.text("Variables")
-									.style("font-size", "7pt")
-									.style("width", "90%")
-									.style("margin-left", "2%")
-									.style("background-color", "lightgrey")
-									.style("color", "black");
-
-							btn1.append("a")
-									.attr("href", "#")
-									.attr("class", "btn btn-primary control-button")
-									.attr("tabindex", 1)
-									.attr("data-toggle", "popover")
-									.attr("data-trigger", "focus")
-									.attr("data-placement", "bottom")
-									.attr("data-popover-content","#a2")
-									.text("Axes")
-									.style("font-size", "7pt")
-									.style("width", "90%")
-									.style("margin-left", "2%")
-									.style("background-color", "lightgrey")
-									.style("color", "black");
-
-							/*pbody.append("a")
-									.attr("href", "#")
-									.attr("class", "btn btn-primary control-button")
-									.attr("tabindex", 1)
-									.attr("data-toggle", "popover")
-									.attr("data-trigger", "focus")
-									.attr("data-placement", "bottom")
-									.attr("data-popover-content","#a2")
-									.text("Variables")
-									.style("font-size", "7pt")
-									.style("width", "90%")
-									.style("margin-left", "2%")
-									.style("margin-top", "10%")
-									.style("background-color", "lightgrey")
-									.style("color", "black");
-								*/ 
+							
 
 						},
 						initGrid: function(){
@@ -348,9 +294,6 @@
 							                    }
 							                });
 							$('.item-content').resizable();
-							//$('.item-content').resize(function(e){
-
-							//});
 
 							grid.on('dragEnd', function (item, event) {
 							  //$(".item-content").css('background-color', 'green');
@@ -418,6 +361,60 @@
 							//document.getElementById('mainCardPanel').setAttribute("style","height:500px");
 							//document.getElementById('mainsvg').setAttribute("style","height:700px");
                                
+						},
+						drawScatter: function(dataView){
+							var self = this; 
+							console.log(dataView);
+							//scale function
+							/*
+							var xScale = d3.scaleLinear()
+								//.domain(["Alabama","Alaska","Arizona","Arkansas","California"])
+								.domain([0, d3.max(dataset, function(d) { return d[0]; })])
+								//.range([padding, w-padding * 2]);
+								.range([padding, w - padding * 2]);
+								
+							var yScale = d3.scaleLinear()
+								.domain([0, d3.max(dataset, function(d) { return d[1]; })])
+								//.range([padding, w-padding * 2]);
+								.range([h - padding, padding]);
+							
+							var xAxis = d3.axisBottom().scale(xScale).ticks(5);
+							
+							var yAxis = d3.axisLeft().scale(yScale).ticks(5);
+							
+							//create svg element
+							var svg = d3.select("body")
+										.append("svg")
+										.attr("width", w)
+										.attr("height", h);
+										
+							svg.selectAll("circle")
+								.data(dataset)
+								.enter()
+								.append("circle")
+								.attr("cx", function(d) {
+									return xScale(d[0]);
+								})
+								.attr("cy", function(d) {
+									return h - yScale(d[1]);
+								})
+								.attr("r", 5)
+								.attr("fill", "green");
+								
+							//x axis
+							svg.append("g")
+								.attr("class", "x axis")	
+								.attr("transform", "translate(0," + (h - padding) + ")")
+								.call(xAxis);
+							
+							//y axis
+							svg.append("g")
+								.attr("class", "y axis")	
+								.attr("transform", "translate(" + padding + ", 0)")
+								.call(yAxis);
+
+								*/
+			
 						},
 						drawCatBar: function(viewId, dict, cat, levels, iter){
 							var self = this; 
@@ -704,7 +701,12 @@
 						populateCard: function(dataView){
 							var self = this;
 							////console.log(dataView);
-							self.drawBarChart(dataView['viewId'], dataView['data']);
+							var chartType = self.getChartType(dataView['viewId']); 
+
+							if(chartType === 'bar')
+								self.drawBarChart(dataView['viewId'], dataView['data']);
+							else if(chartType === 'scatter')
+								self.drawScatter(dataView); 
 						},
 						drawBarChart: function(viewId, data){
 							var self = this;

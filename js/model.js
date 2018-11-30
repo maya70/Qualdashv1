@@ -81,7 +81,7 @@
                                     ////console.log(displayVar);
                                     for(var display = 0; display < self.displayVariables.length; display++)
                                     {
-                                        self.aggMonthly(self.displayVariables[display]["metric"], display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
+                                        self.applyAggregateRule(self.displayVariables[display]["metric"], "count", "monthly" , display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
                                     }
                                     self.control.dataReady(self.dataViews, self.data); 
 
@@ -94,7 +94,7 @@
                             self.categoricals[viewId].push(varName);
                             console.log(self.categoricals);
 
-                            self.aggMonthly(self.displayVariables[viewId]["metric"], viewId, self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
+                            self.applyAggregateRule(self.displayVariables[viewId]["metric"], "count", "monthly", viewId, self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
                         },
                         resetCategoricals: function(viewId){
                             var self = this;
@@ -125,9 +125,15 @@
                                     console.log(diff); 
                                     self.data[i][metric] = ((diff > 0) && (diff <= 2))? 1: 0; */
                                 }
+                                else if(metric === "Length of Stay"){
+                                    var adm = self.data[i]["3.06 Date/time arrival at hospital"];
+                                    var disc = self.data[i]["4.01 Date of discharge"];
+                                    var one_day = 1000*60*60*24; 
+                                    self.data[i][metric] = (self.stringToDate(disc).getTime() - self.stringToDate(adm).getTime())/one_day; 
+                                }
 
                             }        
-                            console.log(self.ehr); 
+                            //console.log(self.ehr); 
                             if(metric === "48h Readmission"){
                                 for(var i=0; i< self.data.length; i++){
 
@@ -158,29 +164,13 @@
                                     }
                                     if(found === 0)
                                         self.data[i][metric] = 0; 
-                                }
-                                /* var found = 0; 
-                                for(var at=0; at < adm.length; at++){  
-                                    var a_date = self.stringToDate(adm[at]);
-                                    for( var dt= 0; dt < disc.length; dt++ ){
-                                        var d_date = self.stringToDate(disc[dt]);
-                                        var adt = a_date.getTime(), 
-                                            ddt = d_date.getTime();
-                                        var diff = Math.round((adt - ddt)/one_day);
-                                        if(diff > 0 && diff <=2){
-                                            self.data[i][metric] = 1;
-                                            found = 1; 
-                                            break;
-                                        }
-                                    }
-                                }
-                                if(found === 0)
-                                    self.data[i][metric] = 0;*/
+                                 }
+                               
                                 }                   
                                 
                             }
-                            for(var j=0; j < self.data.length; j++)
-                                    console.log(self.data[j][metric]);
+                            //for(var j=0; j < self.data.length; j++)
+                                //    console.log(self.data[j][metric]);
                             return metric; 
                         },
                         /** Utility function that converts dates from the MINAP-specified format dd/mm/yyyy hh:mm
@@ -203,7 +193,7 @@
                             return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z");
 
                         },
-                        aggMonthly: function(metric, displayId, data, dateVar, displayVar, categoricals){
+                        applyAggregateRule: function(metric, rule, scale, displayId, data, dateVar, displayVar, categoricals){
                             var self = this; 
                             var dict = {};
                             if(displayVar.constructor == Array)
@@ -250,7 +240,7 @@
                                                         }
                             
                                                         //console.log(ordered); 
-                                                        //self.control.drawBarChart(displayId, ordered); 
+                                                        //self.control.drawChart(displayId, ordered); 
                                                         self.dataViews.push({"viewId": displayId, "data": ordered, "metric": self.availMetrics[displayId]['value']});
                             }
                             else if(categoricals[displayId].length === 1){  // count within categories
@@ -288,7 +278,7 @@
 
                                
                                    
-                                    self.control.drawBarChart(displayId, dict, cat, levels);
+                                    self.control.drawChart(displayId, dict, cat, levels);
 
                                
 
@@ -334,7 +324,7 @@
                                                     }
                                //console.log(dict);
                                var levels = [levels0, levels1]; 
-                            self.control.drawBarChart(displayId, dict, categoricals[displayId], levels, 1);
+                            self.control.drawChart(displayId, dict, categoricals[displayId], levels, 1);
 
 
                         }

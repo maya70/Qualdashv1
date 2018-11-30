@@ -30,7 +30,12 @@
 							var self = this; 
 							return self.dataModel.availMetrics; 
 						},						
-						drawBarChart: function(displayId, data, cat, levels, trellis){
+						drawChart: function(displayId, data, cat, levels, trellis){
+							var self = this;
+							// get type of chart from view
+							var view = self.mainView.getChartType(displayId); 
+
+							// tell view to draw bar chart
 							if(!cat)
 								this.mainView.drawBarChart(displayId, data); 
 							else if(!trellis)
