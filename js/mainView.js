@@ -33,7 +33,7 @@
 						getChartType: function(viewId){
 							var self = this; 
 							var viewType = $("#vsel"+viewId +' option:selected').val(); 
-							console.log("TYPE = "+ viewType);
+							//console.log("TYPE = "+ viewType);
 							return viewType; 
 
 						},
@@ -57,6 +57,7 @@
 							
 							var panel = cbody.append("div")
 											.attr("class", "w3-sidebar")
+											.attr("id", "panel"+viewId)
 											.style("background-color", "darkgrey")
 											.style("max-width", "20%")
 											.style("height", "82%").style("padding-bottom", "3px")
@@ -72,7 +73,7 @@
 											.attr("class", "item-content")
 											.attr("id", "card"+viewId)
 											.on("doubleclick", function(d){
-												////console.log(d3.select(this));
+												//////console.log(d3.select(this));
 												// fit to original size
 												//d3.select(this).attr("width", 50)
 												//				.attr("height", 50);
@@ -104,10 +105,10 @@
 												.style("min-width", "65%")
 												.style("margin-left",0)
 												.on("change", function(d){
-													////console.log(this.value);
+													//////console.log(this.value);
 												});
 								var allVars = self.control.getAvailVars(); 
-								////console.log(allVars); 
+								//////console.log(allVars); 
 								for(var m = 0; m < allVars.length; m++){
 								varselect.append("option")
 											.attr("value", allVars[m])
@@ -117,7 +118,7 @@
 							//event delegation to detect change 
 							// suggested by: https://stackoverflow.com/questions/20786696/select-on-change-inside-bootstrap-popover-does-not-fire
 							$(document).on('change', '#varsel'+viewId, function(){
-								//////console.log($('#varsel'+viewId +' option:selected').val()); 
+								////////console.log($('#varsel'+viewId +' option:selected').val()); 
 							});
 							$(':not(#anything)').on('click', function (e) {
 							    self.popSettings.each(function () {
@@ -136,14 +137,14 @@
 									.attr("id", "group-but"+viewId);
 									
 							$(document).on('click', '#group-but'+viewId, function(){
-								////console.log($('#varsel'+viewId +' option:selected').val());
+								//////console.log($('#varsel'+viewId +' option:selected').val());
 								self.addGroup(viewId, $('#varsel'+viewId +' option:selected').val()); 
 							});
 
 						},
 						addGroup: function(viewId, gvar){
-							console.log(gvar);
-							console.log(viewId); 
+							//console.log(gvar);
+							//console.log(viewId); 
 							//TODO: remove the following line
 							//var gvar = "Record Created By";  // I'm hard coding a grouping variable for now
 							var self = this; 
@@ -180,10 +181,11 @@
 												.style("horizontal-align", "left")
 												.style("min-width", "45%")
 												.style("margin-left",0)
-												.on("change", function(d){
-													console.log(this.value);
+												.on("change", function(d){													
+													//console.log(this.value);													
+													self.control.updateMetrics(viewId, this.value); 											
 													var dv = self.getMetricDataView(this.value);
-													console.log(dv); 
+													//console.log(dv); 
 													//TODO: reset here the grouping variables and dicts of this view
 													self.control.resetCategoricals(viewId); 
 													self.drawBarChart(viewId, dv['data']);
@@ -198,7 +200,7 @@
 							}
 							
 							var curMetric = self.availMetrics[(viewId%self.availMetrics.length)]['value'];
-							////console.log(curMetric);
+							//////console.log(curMetric);
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
@@ -211,9 +213,8 @@
 												.style("horizontal-align", "right")
 												.style("min-width", "45%")
 												.on("change", function(){
-													console.log(this.value);
 													var dataViews = self.control.getDataViews(); 
-													console.log(dataViews[viewId]); 
+													//console.log(dataViews[viewId]); 
 													self.populateCard(dataViews[viewId] ); 
 												});
 							
@@ -285,7 +286,7 @@
 							var grid = new Muuri('.grid', {
 							                dragEnabled: true,
 							                dragStartPredicate: function (item, event) {
-							                	////console.log(event.target); 
+							                	//////console.log(event.target); 
 							                    if (event.target.matches('[data-toggle="popover"]') 
 							                    	|| (event.target.matches('[class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se"]')) ) {
 							                      return false;
@@ -304,7 +305,7 @@
 							  $(item.getElement()).css('opacity', 1.0);
 							  $(item.getElement()).css('z-index', 10);
 							  
-							  ////console.log(item.getElement());
+							  //////console.log(item.getElement());
 							  
 							});
 
@@ -325,7 +326,7 @@
 							/*var buttons = d3.selectAll(".control-button"); 
 							buttons.each(function(but){
 								but.class("acco")
-								//////console.log(but); 
+								////////console.log(but); 
 							}); */
 							self.popSettings= jQuery("[data-toggle=popover]").popover({
 						        html : true,
@@ -348,11 +349,11 @@
 							var self = this;						
 							self.dicts = dicts; 
 							var c =0; 
-                            //////console.log(dicts);
-                            //////console.log(cat);
-                            //////console.log(levels);
+                            ////////console.log(dicts);
+                            ////////console.log(cat);
+                            ////////console.log(levels);
                             for(var key in dicts){
-                         	   self.drawCatBar(viewId, dicts[key], cat[1], levels[1], c);
+                         	   self.drawCatBar(viewId, dicts[key], cat[1], levels[1], c, 1);
                          	   c++;	
                          	   self.iter = c; 
                             }
@@ -364,7 +365,7 @@
 						},
 						drawScatter: function(dataView){
 							var self = this; 
-							console.log(dataView);
+							//console.log(dataView);
 							//scale function
 							/*
 							var xScale = d3.scaleLinear()
@@ -416,21 +417,54 @@
 								*/
 			
 						},
-						drawCatBar: function(viewId, dict, cat, levels, iter){
+						drawCatBar: function(viewId, dict, cat, levels, iter, trellis){
 							var self = this; 
 								self.dict = dict;
 								self.cat = cat;
 								self.levels = levels; 
+
+								if(trellis)
+									console.log("this is a trellis view");
 								// sort dict by date
                                 function custom_sort(a,b){
                                     return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
                                 }
-    
+    							
+                                d3.select("#panel"+viewId).append("a")
+									.attr("href", "#")
+									.attr("class", "btn btn-primary control-button")
+									.attr("id", "toggle"+viewId)
+									.text("Toggle")
+									.style("font-size", "7pt")
+									.style("width", "90%")
+									.style("margin-left", "2%")
+									.style("margin-bottom", "100%")
+									.style("margin-top", "-50px")
+									.style("background-color", "lightgrey")
+									.style("padding", 0)
+									.style("color", "black")
+									.on("click", function(){
+										self.control.toggleBars(viewId); 
+									});
+
+
+                                /*.append("svg")
+										.attr("width", 100)
+										.attr("height", 100)
+										.attr("x", 10)
+										.attr("y", 10)
+										.append("rect")
+											.attr("height", 20)
+											.attr("width", 20)
+											.attr("x", 10)
+											.attr("y", 10)
+											.style("color", "red"); */
+
                                 var ordered = [];
                                 var temp = Object.keys(dict);
-                                ////////console.log(temp); 
+                                //////////console.log(temp); 
                                 var orderedKeys = Object.keys(dict).sort(custom_sort);
-                                ////////console.log(orderedKeys);
+                                //////////console.log(orderedKeys);
                                 var xz = orderedKeys,
                                     yz = d3.range(levels.length).map(function(d){
                                         return Array.apply(null, Array(xz.length)).map(Number.prototype.valueOf,0);
@@ -448,13 +482,15 @@
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
                                	
-
+                            self.palette = [];
 
 							if(self.svg && iter === 0){
 							//	d3.selectAll("svg").remove(); 
+								var undef; 
+								self.legend = undef; 
 								d3.select(".mainsvg"+viewId).remove(); 
 							}
-							//////console.log(dict);
+							////////console.log(dict);
 
 							var drawArea = d3.select("#draw-area"+viewId);
 							if(iter > 0)
@@ -464,10 +500,11 @@
 							var parentArea = drawArea.select(function(){
 								return this.parentNode; 
 							});
-							//////console.log(parentArea.node().getBoundingClientRect());
-							var viewshare = self.dicts? Object.keys(self.dicts).length : 1; 
-							////console.log(viewshare); 
-							if(viewshare > 2) viewshare = 2; 
+							////////console.log(parentArea.node().getBoundingClientRect());
+							//var viewshare = self.dicts? Object.keys(self.dicts).length : 1; 
+							var viewshare = trellis? 2 : 1; 
+							//////console.log(viewshare); 
+							//if(viewshare > 2) viewshare = 2; 
 							var svgw = 0.9 * parentArea.node().getBoundingClientRect().width;
 							var svgh = 0.9* parentArea.node().getBoundingClientRect().height / viewshare; 
 
@@ -478,30 +515,7 @@
 										.style("vertical-align", "top")
 										.attr("transform", "translate(0,"+ (-svgh*iter) +")");
 							
-							/*self.cardTitle = d3.select("#mainCardContainer").selectAll("span")
-												.data(function(){
-													var disp = self.control.getDisplayVariables();
-													return disp[0]["y"];	
-												})
-												.enter()
-												.append("span")
-												.text(function(d){
-													return d;
-												})
-												.style("color", "black")
-												.style("margin-top", "5px")
-												.style("font-size", "14pt");
-							self.cardHeader = d3.select("#mainCardContainer")
-												.on('mouseover', function() {
-														d3.select(this)
-														.style('background-color', self.urgencyColor)
-													})
-												.on("mouseout", function(){
-														d3.select(this)
-														.style('background-color', "darkgrey" );
-														//////console.log(d3.select(this).node().getBoundingClientRect().height);
-												});*/
-
+							
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
@@ -537,8 +551,36 @@
 							var series = g.selectAll(".series")
 							  .data(y01z)
 							  .enter().append("g")
-							    .attr("fill", function(d, i) { return color(i); });
+							    .attr("fill", function(d, i) { 
+							    	self.palette[i] = color(i);
+							    	return color(i); });
 
+							 
+							 if(!self.legend)
+							 {	
+							 self.legend = self.svg.selectAll(".legend")
+							 				.data(color.domain())
+							 				.enter().append("g")
+							 					 .attr("class", "legend")
+     											 .attr("transform", function(d, i) { return "translate(0," + i * 15 + ")"; });
+     						 
+     						 // draw legend colored rectangles
+							  self.legend.append("rect")
+							      .attr("x", svgw- 10)
+							      .attr("width", 10)
+							      .attr("height", 10)
+							      .style("fill", color);
+
+							  // draw legend text
+							  self.legend.append("text")
+							      .attr("x", svgw- 14)
+							      .attr("y", 3)
+							      .attr("dy", ".35em")
+							      .style("text-anchor", "end")							      
+							      .text(function(d) { return levels[d];})
+							      	.style("font-size", "7pt");
+							     }
+							
 							var origColor; 
 							var rect = series.selectAll("rect")
 							  .data(function(d) { return d; })
@@ -583,8 +625,8 @@
 								        .attr("transform", "rotate(-65)")
 								        .call(changed);
 
-								console.log(y.domain());
-								console.log(y.range());
+								////console.log(y.domain());
+								////console.log(y.range());
 								g.append("g")
 							      .attr("class", "y axis")
 							      .call(d3.axisLeft(y).ticks(5, "s"))
@@ -630,7 +672,7 @@
 						}
 
 						function resize() {
-							console.log("RESIZE CALLED");
+							//console.log("RESIZE CALLED");
 							var svgw = parseInt(d3.select("#card"+viewId).style("width")) * 0.9,
 								svgh = parseInt(d3.select("#card"+viewId).style("height")) * 0.9;
 
@@ -662,7 +704,7 @@
 									.call(d3.axisLeft(y).ticks(5, "s"))
 							      	.attr("transform", "translate(0,"+ margin.top+")");
 
-							//console.log(self.svg.selectAll("g").selectAll(".bar"));
+							////console.log(self.svg.selectAll("g").selectAll(".bar"));
 							/*self.svg.selectAll("g").selectAll(".bar")
 								.attr("x", function(d, i) { return x(i); })
 							      .attr("y", function(d) { 
@@ -692,7 +734,7 @@
 							else{
 								 var c = 0;
 								 for(var key in self.dicts){
-		                         	   self.drawCatBar(viewId, self.dicts[key], self.cat, self.levels, c);
+		                         	   self.drawCatBar(viewId, self.dicts[key], self.cat, self.levels, c, 1);
 		                         	   c++; 
 		                         	}
 							}
@@ -700,7 +742,7 @@
 						},
 						populateCard: function(dataView){
 							var self = this;
-							////console.log(dataView);
+							//////console.log(dataView);
 							var chartType = self.getChartType(dataView['viewId']); 
 
 							if(chartType === 'bar')
@@ -710,13 +752,13 @@
 						},
 						drawBarChart: function(viewId, data){
 							var self = this;
-							////////console.log(data);
+							//////////console.log(data);
 							var drawArea = d3.select("#draw-area"+viewId);
 							var parentArea = drawArea.select(function(){
 								//d3.select(this.parentNode).on("resize", resize);
 								return this.parentNode; 
 							});
-							//////console.log(parentArea.node().getBoundingClientRect());
+							////////console.log(parentArea.node().getBoundingClientRect());
 							var svgw =  0.9* parentArea.node().getBoundingClientRect().width;
 							var svgh =  0.9* parentArea.node().getBoundingClientRect().height; 
 
@@ -766,8 +808,8 @@
 								        .attr("dy", ".15em")
 								        .attr("transform", "rotate(-65)");
 
-							console.log(y.domain());
-							console.log(y.range());
+							//console.log(y.domain());
+							//console.log(y.range());
 							
 
 							g.append("g")
@@ -808,7 +850,7 @@
 						function resize() {
 							if(!self.cat)
 							{	
-							console.log("RESIZE CALLED 22 ");
+							//console.log("RESIZE CALLED 22 ");
 
 							var svgw = parseInt(d3.select("#card"+viewId).style("width")) * 0.9,
 								svgh = parseInt(d3.select("#card"+viewId).style("height")) * 0.9;
@@ -827,7 +869,7 @@
 							x.rangeRound([0, width]).padding(0.1);
 							y.range([(height), 0]); 
 
-							//console.log(self.svg.selectAll("*"));
+							////console.log(self.svg.selectAll("*"));
 							self.svg.select(".x.axis")
 							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
 							      .call(d3.axisBottom(x))

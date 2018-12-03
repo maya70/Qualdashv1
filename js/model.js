@@ -30,37 +30,49 @@
                                                     "x": "3.06 Date/time arrival at hospital" ,
                                                     "y":"4.04 Death in hospital",
                                                     "xType": "t",
-                                                    "yType": "q"
+                                                    "yType": "q", 
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
                                                  }, 
                                                  {  "metric": "48h Readmission",
                                                     "x": "3.06 Date/time arrival at hospital",
                                                     "y": ["4.01 Date of discharge", "3.06 Date/time arrival at hospital"],
                                                     "xType": "t",
-                                                    "yType": "q"
+                                                    "yType": "q",
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
                                                  },
                                                  {  "metric": "Call-to-Balloon",
                                                     "x": "3.06 Date/time arrival at hospital" ,
                                                     "y":"Delay from Call for Help to Reperfusion Treatment",
                                                     "xType": "t",
-                                                    "yType": "q"
+                                                    "yType": "q", 
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
                                                  }, 
                                                  {  "metric": "Door-to-Balloon",
                                                     "x": "3.06 Date/time arrival at hospital",
                                                     "y": "Delay from Arrival in Hospital to Reperfusion Treatment",
                                                     "xType": "t",
-                                                    "yType": "q"
+                                                    "yType": "q",
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
                                                  },
                                                  {  "metric": "Length of Stay",
                                                     "x": "3.06 Date/time arrival at hospital",
                                                     "y": ["4.01 Date of discharge", "3.06 Date/time arrival at hospital"],
                                                     "xType": "t",
-                                                    "yType": "q"
+                                                    "yType": "q",
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
                                                  },
                                                  {  "metric": "Complications",
                                                     "x": "3.06 Date/time arrival at hospital" ,
                                                     "y":"Bleeding complications",
                                                     "xType": "t",
-                                                    "yType": "q"
+                                                    "yType": "q", 
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
                                                 }];
                           
                         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -71,13 +83,39 @@
                         }
                     },
                     {
+                        updateMetrics: function(viewId, value){
+                            var self = this; 
+                            // get the metric corresponding to value
+                            var metric = "Complications";
+                            var metricId = 5; 
+                            for(var i=0; i < self.availMetrics.length; i++){
+                                if(self.availMetrics[i].value === value)
+                                   { metric = self.availMetrics[i].text; 
+                                    break; 
+                                   }
+                            }
+                            console.log(metric); 
+                            // get index of this metric 
+                            for(var j=0; j < self.displayVariables.length; j++){
+                                if(self.displayVariables[j]['metric'] === metric){
+                                    metricId = j; 
+                                }
+                            }
+
+                            // Copy metric parameters into the newly assigned view
+                            self.displayVariables[viewId]['metric'] = self.displayVariables[metricId]['metric'];
+                            self.displayVariables[viewId]['x'] = self.displayVariables[metricId]['x'];
+                            self.displayVariables[viewId]['y'] = self.displayVariables[metricId]['y'];
+                            self.displayVariables[viewId]['xType'] = self.displayVariables[metricId]['xType'];
+                            self.displayVariables[viewId]['yType'] = self.displayVariables[metricId]['yType'];
+
+                        },
                         readMinapDummy: function(){
                             var self = this; 
                             
                             d3.csv("./data/minap_dummy.csv", function(data){
                                     ////console.log(Object.keys(data[0])); 
-                                    self.data = data; 
-                                    
+                                    self.data = data;                                     
                                     ////console.log(displayVar);
                                     for(var display = 0; display < self.displayVariables.length; display++)
                                     {
@@ -93,7 +131,9 @@
                             ////console.log("VIEW ID = "+ viewId); 
                             self.categoricals[viewId].push(varName);
                             console.log(self.categoricals);
-
+                            console.log(self.displayVariables[viewId]["metric"]); 
+                            console.log(self.displayVariables[viewId]["x"]); 
+                            console.log(self.displayVariables[viewId]["y"]); 
                             self.applyAggregateRule(self.displayVariables[viewId]["metric"], "count", "monthly", viewId, self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
                         },
                         resetCategoricals: function(viewId){
@@ -109,7 +149,7 @@
                                 if(metric === "48h Readmission"){
                                     // data loop calculations
                                     if(!self.ehr[self.data[i]["1.03 NHS number"]]){
-                                        console.log("adding a new EHR");
+                                        
                                         self.ehr[self.data[i]["1.03 NHS number"]] = {}; 
                                         self.ehr[self.data[i]["1.03 NHS number"]]["admissionsT"] = [];
                                         self.ehr[self.data[i]["1.03 NHS number"]]["dischargesT"] = [];

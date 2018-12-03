@@ -53,8 +53,13 @@
 						resetCategoricals: function(viewId){
 							this.dataModel.resetCategoricals(viewId); 
 						},
+						updateMetrics: function(viewId, value){
+							var self = this;
+							console.log(value); 
+							self.dataModel.updateMetrics(viewId, value); 
+						},
 						toggleBars: function(displayId){
-							this.mainView.toggleBarView(); 
+							this.mainView.toggleBarView(displayId); 
 						}
 					}
 		);
