@@ -48,18 +48,19 @@
 							var cbody = container.append("div")
 									.attr("class", "card-body")
 									.style("width", "98%")
-									.style("height", "85%")
+									.style("height", "92%")
 									.style("padding-bottom", "3px")
 									.style("margin-right", "1%")
 									.style("margin-left", "1%")
-									.style("margin-top", "-10px"); 
+									.style("margin-top", "-10px")
+									.style("vertical-align", "top"); 
 									 
 							
 							var panel = cbody.append("div")
 											.attr("class", "w3-sidebar")
 											.attr("id", "panel"+viewId)
 											.style("background-color", "darkgrey")
-											.style("max-width", "20%")
+											.style("max-width", "10%")
 											.style("height", "82%").style("padding-bottom", "3px")
 									.style("margin-right", "1%")
 									.style("margin-left", "0%")
@@ -115,6 +116,17 @@
 											.text(allVars[m])
 											.style("font-size", "9pt");
 									}
+
+							self.pop2 = d3.select("body").append("div")
+											.attr("id", "aa"+viewId)
+											.attr("class", "hidden");
+							self.pop2.append("div")
+											.attr("class","popover-heading" )
+											.text("Axis Controls");
+							var pbody2 = self.pop2.append("div")
+											.attr("class", "popover-body")
+											.attr("id", "cat-popover"); 
+							
 							//event delegation to detect change 
 							// suggested by: https://stackoverflow.com/questions/20786696/select-on-change-inside-bootstrap-popover-does-not-fire
 							$(document).on('change', '#varsel'+viewId, function(){
@@ -155,11 +167,11 @@
 							var header = container.append("div")
 									.attr("class", "form-inline")
 									.style("text-align", "left")
-									.style("max-height", 45)
+									.style("max-height", 35)
 									.style("width", "90%")
 									.style("margin-left", "3px")
 										.append("div").attr("class", "form-group")
-											.style("height", 43)
+											//.style("height", 43)
 											.style("width", "90%")
 											.style("max-height", 45)
 											.style("vertical-align", "top")
@@ -211,11 +223,12 @@
 												.style("font-size", "9pt")
 												.style("vertical-align", "top")
 												.style("horizontal-align", "right")
-												.style("min-width", "45%")
+												//.style("margin-right", "10px")
+												.style("min-width", "43%")
 												.on("change", function(){
 													var dataViews = self.control.getDataViews(); 
 													//console.log(dataViews[viewId]); 
-													self.populateCard(dataViews[viewId] ); 
+													self.populateCard(dataViews[viewId]); 
 												});
 							
 							for(var m = 0; m < self.availViews.length; m++){
@@ -238,12 +251,21 @@
 						createButtons: function(panel, viewId){
 							var self = this; 
 
-							var pbody = panel.append("fieldset")
-											.attr("class", "btn-container");
-								pbody.append("a")
-									.attr("href", "#")
-									.attr("class", "btn btn-primary control-button")
+							var pbody = panel;//.append("fieldset")
+											//.attr("class", "btn-container");
+		/*<button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
+  Popover on top
+</button>*/
+								pbody.append("button")
+									//.attr("href", "#")
+									.attr("id", "split-btn"+viewId)
+									.attr("type", "button")
+									//.attr("class", "btn btn-primary control-button")
+									.attr("class", "fa fa-share-alt")
 									//.attr("tabindex", 0)
+									.style("vertical-align", "top")
+									.style("width", "70%")
+									.style("horizontal-align", "center")
 									.attr("data-toggle", "popover")
 									//.attr("data-trigger", "focus")
 									.attr("data-placement", function(d){
@@ -253,33 +275,56 @@
 											return "left"; 
 									})
 									.attr("data-popover-content","#pp"+viewId)
-									.text("Variables")
-									.style("font-size", "7pt")
-									.style("width", "90%")
-									.style("margin-left", "2%")
-									.style("margin-bottom", "100%")
-									.style("margin-top", "-50px")
+									//.text("XY")
+									//.style("font-size", "7pt")									
+									.style("margin-right", "2%")
+									//.style("margin-bottom", "100%")
+									//.style("margin-top", "-50px")
 									.style("background-color", "lightgrey")
-									.style("padding", 0)
+									//.style("padding", 0)
 									.style("color", "black");
 
-								pbody.append("a")
-									.attr("href", "#")
-									.attr("class", "btn btn-primary control-button")
-									.attr("tabindex", 2)
+								//pbody.append("a")
+								//	.attr("href", "#")
+								//	.attr("class", "btn btn-primary control-button")
+									//.attr("tabindex", 0)
+								pbody.append("button")
+									//.attr("href", "#")
+									.attr("id", "axes-btn"+viewId)
+									.attr("type", "button")
+									//.attr("class", "btn btn-primary control-button")
+									//.attr("class", "btn btn-secondary")
+									.attr("class", "fa fa-arrows")
+									//.attr("tabindex", 0)
+									.style("vertical-align", "top")
 									.attr("data-toggle", "popover")
-									.attr("data-trigger", "focus")
-									.attr("data-placement", "bottom")
-									.attr("data-popover-content","#a2")
-									.text("Axes")
-									.style("font-size", "7pt")
-									.style("width", "90%")
-									.style("margin-left", "2%")
-									.style("margin-top", "-450px")
+									//.attr("data-trigger", "focus")
+									.attr("data-placement", function(d){
+										if(viewId%3 === 0)
+											return "bottom";
+										else
+											return "left"; 
+									})
+									.attr("data-popover-content","#aa"+viewId)
+									//.text("Axes")
+									//.style("font-size", "7pt")
+									.style("width", "70%")
+									//.style("margin-left", "2%")
+									.style("margin-top", "-430%")
+									//.style("vertical-align", "center")
 									.style("background-color", "lightgrey")
-									.style("padding", 0)
+									//.style("padding", 0)
 									.style("color", "black");
 							
+							$("#split-btn"+viewId).tooltip({    
+							    placement : 'bottom',  
+							    title : "Groups"         
+							  });
+
+							 $("#axes-btn"+viewId).tooltip({    
+							    placement : 'bottom',  
+							    title : "Axes"         
+							  });     
 
 						},
 						initGrid: function(){
@@ -341,6 +386,7 @@
 						        }
 						    });
 
+
 							// Muuri setup
 							//$('.item-content').resizable();
 							
@@ -363,6 +409,107 @@
 							//document.getElementById('mainsvg').setAttribute("style","height:700px");
                                
 						},
+						drawPieChart: function(dataView){
+							var self = this; 
+							console.log(dataView);
+							var viewId = dataView['viewId'];
+							var data = dataView['data'];
+							var drawArea = d3.select("#draw-area"+viewId);
+							var parentArea = drawArea.select(function(){
+								//d3.select(this.parentNode).on("resize", resize);
+								return this.parentNode; 
+							});
+							////////console.log(parentArea.node().getBoundingClientRect());
+							var svgw =  0.9* parentArea.node().getBoundingClientRect().width;
+							var svgh =  0.9* parentArea.node().getBoundingClientRect().height; 
+
+							if(self.svg)
+								d3.select(".mainsvg"+viewId).remove(); 
+
+							self.svg = d3.select("#draw-area"+viewId).append("svg")
+											.attr("id", "mainsvg"+viewId)
+											.attr("class", "mainsvg"+viewId)
+											.attr("width", svgw)
+											.attr("height", svgh)											
+											//.attr("transform", "translate(0,10)")
+											.attr("text-anchor", "middle")
+							      			.style("font", "12px sans-serif");
+							
+							
+							var div = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
+
+							var margin = {top: 10, right: 10, bottom: 65, left:30};
+							var width = svgw - margin.left - margin.right; 
+							var height = svgh - margin.top - margin.bottom;
+							
+							var pie = d3.pie()
+									    .sort(null)
+									    .value(d => d.number);
+
+							var arcLabel = function() { 
+											const radius = Math.min(width, height) / 2 ;
+  											return d3.arc().innerRadius(radius).outerRadius(radius);
+											};
+							var arc = d3.arc()
+									    .innerRadius(0)
+									    .outerRadius(Math.min(width, height) / 2 - 1);
+							var color = d3.scaleOrdinal()
+										  .domain(data.map(d => d.date))
+										  .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse());
+										  //.range(d3.quantize(t => d3.interpolateRgb("steelblue", "brown"), data.length).reverse());
+						  const arcs = pie(data);
+
+						  const g = self.svg.append("g")
+						      .attr("transform", `translate(${width / 2},${height / 2})`);
+						  
+						  g.selectAll("path")
+						    .data(arcs)
+						    .enter().append("path")
+						      .attr("fill", d => 
+						      	 color(d.data.date))
+						      .attr("stroke", "white")
+						      .attr("d", arc)
+						    .append("title")
+						      .text(d => `${d.data.date}: ${d.data.number.toLocaleString()}`);
+
+						    // Add labels, using .centroid() to position
+d3.select('g')
+	.selectAll('text')
+	.data(data)
+	.enter()
+	.append('text')
+	.each(function(d) {
+		var centroid = arcLabel.centroid(d);
+		d3.select(this)
+			.attr('x', centroid[0])
+			.attr('y', centroid[1])
+			.attr('dy', '0.33em')
+			.text(d.date);
+	});
+
+ /* const text = g.selectAll("text")
+    .data(arcs)
+    .enter().append("text")
+      .attr("transform", d => `translate(${arcLabel.centroid(d)})`)
+      .attr("dy", "0.35em");
+  
+  text.append("tspan")
+      .attr("x", 0)
+      .attr("y", "-0.7em")
+      .style("font-weight", "bold")
+      .text(d => d.data.date);
+  
+  text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
+      .attr("x", 0)
+      .attr("y", "0.7em")
+      .attr("fill-opacity", 0.7)
+      .text(d => d.data.number.toLocaleString());
+
+*/
+						},
+
 						drawScatter: function(dataView){
 							var self = this; 
 							//console.log(dataView);
@@ -748,7 +895,9 @@
 							if(chartType === 'bar')
 								self.drawBarChart(dataView['viewId'], dataView['data']);
 							else if(chartType === 'scatter')
-								self.drawScatter(dataView); 
+								self.drawScatter(dataView);
+							else if(chartType === 'pie')
+								 self.drawPieChart(dataView); 
 						},
 						drawBarChart: function(viewId, data){
 							var self = this;
