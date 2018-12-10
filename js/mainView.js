@@ -255,8 +255,48 @@
 											//.attr("class", "btn-container");
 		/*<button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
   Popover on top
-</button>*/
-								pbody.append("button")
+</button>*/					var undef; 
+							self.btn_data = [{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-share-alt", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 
+											{"id": "toggle-btn"+viewId, "class": "ctrl-btn fa fa-adjust", "data-toggle": "none", "hidden": true}, 
+											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-arrows", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId}]; 
+							//pbody.style("background-color", "red");
+							var divs = pbody.selectAll(".ctrl-btn")
+											.data(self.btn_data)
+											.enter().append("div")
+											.style("background-color", "darkgrey")
+											.style("max-height", "12%"); 
+
+							divs.append("button")
+								.attr("type", "button")
+								.attr("id", function(d){
+									return d["id"]; 
+								})
+								.attr("class", function(d){
+									return d["class"]; 
+								})
+								.attr("data-toggle", function(d){
+									return d["data-toggle"]; 
+								})
+								.attr("data-placement", function(d){
+										if(viewId%3 === 0)
+											return "bottom";
+										else
+											return "left"; 
+									})
+								.attr("data-popover-content",function(d){
+									return d["data-popover-content"];
+								})
+								.attr("hidden", function(d){
+									if(d["hidden"]) return true; 
+									else 
+										return undef; 
+								})
+								.style("max-width", "90%")
+								.style("vertical-align", "top")
+								.style("background-color", "lightgrey")
+								.style("color", "black"); 
+
+							/*	pbody.append("button")
 									//.attr("href", "#")
 									.attr("id", "split-btn"+viewId)
 									.attr("type", "button")
@@ -283,39 +323,7 @@
 									.style("background-color", "lightgrey")
 									//.style("padding", 0)
 									.style("color", "black");
-
-								//pbody.append("a")
-								//	.attr("href", "#")
-								//	.attr("class", "btn btn-primary control-button")
-									//.attr("tabindex", 0)
-								pbody.append("button")
-									//.attr("href", "#")
-									.attr("id", "axes-btn"+viewId)
-									.attr("type", "button")
-									//.attr("class", "btn btn-primary control-button")
-									//.attr("class", "btn btn-secondary")
-									.attr("class", "fa fa-arrows")
-									//.attr("tabindex", 0)
-									.style("vertical-align", "top")
-									.attr("data-toggle", "popover")
-									//.attr("data-trigger", "focus")
-									.attr("data-placement", function(d){
-										if(viewId%3 === 0)
-											return "bottom";
-										else
-											return "left"; 
-									})
-									.attr("data-popover-content","#aa"+viewId)
-									//.text("Axes")
-									//.style("font-size", "7pt")
-									.style("width", "70%")
-									//.style("margin-left", "2%")
-									.style("margin-top", "-430%")
-									//.style("vertical-align", "center")
-									.style("background-color", "lightgrey")
-									//.style("padding", 0)
-									.style("color", "black");
-							
+							*/ 
 							$("#split-btn"+viewId).tooltip({    
 							    placement : 'bottom',  
 							    title : "Groups"         
@@ -324,7 +332,8 @@
 							 $("#axes-btn"+viewId).tooltip({    
 							    placement : 'bottom',  
 							    title : "Axes"         
-							  });     
+							  });    
+							  
 
 						},
 						initGrid: function(){
@@ -462,6 +471,8 @@
 										  //.range(d3.quantize(t => d3.interpolateRgb("steelblue", "brown"), data.length).reverse());
 						  const arcs = pie(data);
 
+
+
 						  const g = self.svg.append("g")
 						      .attr("transform", "translate("+((width / 2)+margin.left)+","+((height / 2)+margin.top)+")");
 						  
@@ -511,7 +522,11 @@
 								.append("text")
 										.attr("dy", ".35em")
 										.text(function(d) {
-											return d.data.date;
+											//console.log(d); 
+											if(d.data.number === 0)
+												return '';
+											else 
+												return d.data.date;
 										});
 									
 							function midAngle(d){
@@ -546,7 +561,14 @@
 							 
 							var polyline = g.select(".lines").selectAll("polyline")
 								.data(arcs).enter()
-								.append("polyline");
+								.append("polyline")
+								.style("opacity", function(d){
+									console.log(d);
+									if(d.data.number === 0)
+										return 0.0; 
+									else
+										return 1.0; 
+								});
 
 							polyline.transition().duration(1000)
 								.attrTween("points", function(d){
@@ -710,6 +732,7 @@
 								self.dict = dict;
 								self.cat = cat;
 								self.levels = levels; 
+								var undef;
 
 								if(trellis)
 									console.log("this is a trellis view");
@@ -718,23 +741,31 @@
                                     return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
                                 }
     							
-                                d3.select("#panel"+viewId).append("a")
-									.attr("href", "#")
-									.attr("class", "btn btn-primary control-button")
-									.attr("id", "toggle"+viewId)
-									.text("Toggle")
-									.style("font-size", "7pt")
-									.style("width", "90%")
-									.style("margin-left", "2%")
-									.style("margin-bottom", "100%")
-									.style("margin-top", "-50px")
+    							d3.select("#toggle-btn"+viewId)
+    								.attr("hidden", undef); 
+                               		
+                                /* d3.select("#panel"+viewId).append("button")
+									//.attr("href", "#")
+									.attr("id", "toggle-btn"+viewId)
+									.attr("type", "button")
+									.attr("class", "fa fa-adjust")
+									//.text("Toggle")
+									.style("vertical-align", "top")
+									.style("width", "70%")
+									//.style("margin-left", "2%")
+									.style("margin-top", "-1040%")
+									//.style("vertical-align", "center")
 									.style("background-color", "lightgrey")
-									.style("padding", 0)
+									//.style("padding", 0)
 									.style("color", "black")
 									.on("click", function(){
 										self.control.toggleBars(viewId); 
 									});
-
+								*/ 
+									$("#toggle-btn"+viewId).tooltip({    
+									    placement : 'bottom',  
+									    title : "Toggle Groups"         
+									  });     
 
                                 /*.append("svg")
 										.attr("width", 100)
