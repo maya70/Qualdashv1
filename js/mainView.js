@@ -10,7 +10,7 @@
 						self.toggle = "grouped";
 						self.control.viewReady(self); 
 						self.availViews = [{"value": "bar", "text": "Bar Chart"}, 
-											//{"value": "histo", "text": "Histogram"}, 
+											{"value": "line", "text": "Line Chart"}, 
 											{"value": "scatter", "text": "Scatter Plot"}, 
 											{"value": "pie", "text": "Pie Chart"}]; 
 						
@@ -420,8 +420,8 @@
 								return this.parentNode; 
 							});
 							////////console.log(parentArea.node().getBoundingClientRect());
-							var svgw =  0.9* parentArea.node().getBoundingClientRect().width;
-							var svgh =  0.9* parentArea.node().getBoundingClientRect().height; 
+							var svgw =  1.0* parentArea.node().getBoundingClientRect().width;
+							var svgh =  1.0* parentArea.node().getBoundingClientRect().height; 
 
 							if(self.svg)
 								d3.select(".mainsvg"+viewId).remove(); 
@@ -440,7 +440,7 @@
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 10, right: 10, bottom: 65, left:30};
+							var margin = {top: 10, right: 20, bottom: 20, left:20};
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							
@@ -452,9 +452,10 @@
 											const radius = Math.min(width, height) / 2 ;
   											return d3.arc().innerRadius(radius).outerRadius(radius);
 											};
+							var radius = Math.min(width, height) / 2 - 1; 
 							var arc = d3.arc()
 									    .innerRadius(0)
-									    .outerRadius(Math.min(width, height) / 2 - 1);
+									    .outerRadius(radius);
 							var color = d3.scaleOrdinal()
 										  .domain(data.map(d => d.date))
 										  .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), data.length).reverse());
@@ -462,7 +463,7 @@
 						  const arcs = pie(data);
 
 						  const g = self.svg.append("g")
-						      .attr("transform", `translate(${width / 2},${height / 2})`);
+						      .attr("transform", "translate("+((width / 2)+margin.left)+","+((height / 2)+margin.top)+")");
 						  
 						  g.selectAll("path")
 						    .data(arcs)
@@ -474,42 +475,182 @@
 						    .append("title")
 						      .text(d => `${d.data.date}: ${d.data.number.toLocaleString()}`);
 
+						      /* const text = g.selectAll("text")
+								    .data(arcs)
+								    .enter().append("text")
+								      .attr("transform", d => `translate(${arc.centroid(d)})`)
+								      .attr("dy", "0.35em");
+								  
+								  text.append("tspan")
+								      .attr("x", 0)
+								      .attr("y", "-0.7em")
+								      .style("font-weight", "bold")
+								      .style("font-size", "7pt")
+								      .text(d => d.data.date);
+								  
+								  text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
+								      .attr("x", 0)
+								      .attr("y", "0.7em")
+								      .attr("fill-opacity", 0.7)
+								      .text(d => d.data.number.toLocaleString());
+
+							*/
+
+						      g.append("g")
+								.attr("class", "labels");
+
+							  g.append("g")
+								.attr("class", "lines")
+								.style("opacity", 0.3)
+								.style("stroke", "black")
+								.style("stroke-width", "2px" )
+								.style("fill", "none"); 
+						     
+						     var text = g.select(".labels").selectAll("text")
+								.data(arcs).enter()
+								.append("text")
+										.attr("dy", ".35em")
+										.text(function(d) {
+											return d.data.date;
+										});
+									
+							function midAngle(d){
+								return d.startAngle + (d.endAngle - d.startAngle)/2;
+							}
+
+							text.transition().duration(1000)
+								.attrTween("transform", function(d) {
+									this._current = this._current || d;
+									var interpolate = d3.interpolate(this._current, d);
+									this._current = interpolate(0);
+									return function(t) {
+										var d2 = interpolate(t);
+										var pos = arc.centroid(d2);
+										pos[1] *= 2; 
+										pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+										return "translate("+ pos +")";
+									};
+								})
+								.styleTween("text-anchor", function(d){
+									this._current = this._current || d;
+									var interpolate = d3.interpolate(this._current, d);
+									this._current = interpolate(0);
+									return function(t) {
+										var d2 = interpolate(t);
+										return midAngle(d2) < Math.PI ? "start":"end";
+									};
+								});
+
+							text.exit()
+							  .remove();
+							 
+							var polyline = g.select(".lines").selectAll("polyline")
+								.data(arcs).enter()
+								.append("polyline");
+
+							polyline.transition().duration(1000)
+								.attrTween("points", function(d){
+									this._current = this._current || d;
+									var interpolate = d3.interpolate(this._current, d);
+									this._current = interpolate(0);
+									return function(t) {
+										var d2 = interpolate(t);
+										var pos = arc.centroid(d2);
+										pos[1] *= 2; 
+										pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+										return [arc.centroid(d2), arc.centroid(d2), pos];
+									};			
+								});
+							
+							polyline.exit()
+								.remove();
+							
 						    // Add labels, using .centroid() to position
-d3.select('g')
-	.selectAll('text')
-	.data(data)
-	.enter()
-	.append('text')
-	.each(function(d) {
-		var centroid = arcLabel.centroid(d);
-		d3.select(this)
-			.attr('x', centroid[0])
-			.attr('y', centroid[1])
-			.attr('dy', '0.33em')
-			.text(d.date);
-	});
+						   
 
- /* const text = g.selectAll("text")
-    .data(arcs)
-    .enter().append("text")
-      .attr("transform", d => `translate(${arcLabel.centroid(d)})`)
-      .attr("dy", "0.35em");
-  
-  text.append("tspan")
-      .attr("x", 0)
-      .attr("y", "-0.7em")
-      .style("font-weight", "bold")
-      .text(d => d.data.date);
-  
-  text.filter(d => (d.endAngle - d.startAngle) > 0.25).append("tspan")
-      .attr("x", 0)
-      .attr("y", "0.7em")
-      .attr("fill-opacity", 0.7)
-      .text(d => d.data.number.toLocaleString());
-
-*/
 						},
+						drawLineChart: function(dataView){
+							var self = this; 
+							console.log(dataView);
+							var viewId = dataView['viewId'];
+							var data = dataView['data'];
+							var drawArea = d3.select("#draw-area"+viewId);
+							var parentArea = drawArea.select(function(){
+								//d3.select(this.parentNode).on("resize", resize);
+								return this.parentNode; 
+							});
+							var margin = {top: 10, right: 10, bottom: 65, left:30};
+							////////console.log(parentArea.node().getBoundingClientRect());
+							var svgw =  0.9* parentArea.node().getBoundingClientRect().width;
+							var svgh =  0.9* parentArea.node().getBoundingClientRect().height; 
+							var width = svgw - margin.left - margin.right; 
+							var height = svgh - margin.top - margin.bottom;
 
+							if(self.svg)
+								d3.select(".mainsvg"+viewId).remove(); 
+
+							self.svg = d3.select("#draw-area"+viewId).append("svg")
+											.attr("id", "mainsvg"+viewId)
+											.attr("class", "mainsvg"+viewId)
+											.attr("width", svgw)
+											.attr("height", svgh)											
+											.attr("transform", "translate("+ 0+","+0+")")
+											.attr("text-anchor", "middle")
+							      			.style("font", "12px sans-serif");
+											
+							var div = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
+							
+							// parse the date / time
+							//var parseTime = d3.timeParse("%d-%b-%y");
+
+							var g = self.svg.append("g")
+									.attr("transform", "translate(" + margin.left + ", "+ 0 +")");
+
+							// set the ranges
+							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
+								y = d3.scaleLinear().range([height, 0]).nice(); 
+		
+							x.domain(data.map(function(d){
+									return d.date; 
+							}));
+							y.domain([0, d3.max(data, function(d){ return d.number; })]);
+											
+							g.append("g")
+							      .attr("class", "x axis")
+							      .attr("transform", "translate("+ 0+"," + (height+margin.top) + ")")
+							      .call(d3.axisBottom(x))
+									.selectAll("text")	
+								        .style("text-anchor", "end")
+								        .attr("dx", "-.8em")
+								        .attr("dy", ".15em")
+								        .attr("transform", "rotate(-65)");
+
+							//console.log(y.domain());
+							//console.log(y.range());
+						
+							g.append("g")
+							      .attr("class", "y axis")
+							      .call(d3.axisLeft(y).ticks(5,"s"))
+							      .attr("transform", "translate("+0+","+ margin.top+")");
+							
+							// define the line
+							var valueline = d3.line()
+							    .x(function(d) { return x(d.date); })
+							    .y(function(d) { return y(d.number); });
+
+							 // Add the valueline path.
+							  g.append("path")
+							      .data([data])
+							      .attr("class", "line")
+							      .attr("d", valueline)
+							      .style("fill", "none")
+							      .style("stroke", "black");
+
+
+							
+						},
 						drawScatter: function(dataView){
 							var self = this; 
 							//console.log(dataView);
@@ -894,6 +1035,8 @@ d3.select('g')
 
 							if(chartType === 'bar')
 								self.drawBarChart(dataView['viewId'], dataView['data']);
+							else if(chartType === 'line')
+								self.drawLineChart(dataView);
 							else if(chartType === 'scatter')
 								self.drawScatter(dataView);
 							else if(chartType === 'pie')
