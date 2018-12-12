@@ -259,6 +259,7 @@
 							self.btn_data = [{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-share-alt", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 
 											{"id": "toggle-btn"+viewId, "class": "ctrl-btn fa fa-adjust", "data-toggle": "none", "hidden": true}, 
 											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-arrows", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId}]; 
+
 							//pbody.style("background-color", "red");
 							var divs = pbody.selectAll(".ctrl-btn")
 											.data(self.btn_data)
@@ -324,10 +325,15 @@
 									//.style("padding", 0)
 									.style("color", "black");
 							*/ 
+<<<<<<< HEAD
 							$("#split-btn"+viewId).tooltip({    
+=======
+							var split_ttip = $("#split-btn"+viewId).tooltip({    
+>>>>>>> 9ba222dfbd1e1d4cf449df31af41445ca09c2a80
 							    placement : 'bottom',  
 							    title : "Groups"         
 							  });
+
 
 							 $("#axes-btn"+viewId).tooltip({    
 							    placement : 'bottom',  
@@ -742,7 +748,14 @@
                                 }
     							
     							d3.select("#toggle-btn"+viewId)
+<<<<<<< HEAD
     								.attr("hidden", undef); 
+=======
+    								.attr("hidden", undef)
+    								.on("click", function(){
+										self.control.toggleBars(viewId); 
+									});
+>>>>>>> 9ba222dfbd1e1d4cf449df31af41445ca09c2a80
                                		
                                 /* d3.select("#panel"+viewId).append("button")
 									//.attr("href", "#")
