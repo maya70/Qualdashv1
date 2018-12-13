@@ -44,7 +44,28 @@
 							var self = this; 
 							var container = d3.select("#mainCanvas").append("div")
 												.attr("class", "item")
-												.attr("id", "cardcontainer"+viewId);
+												.attr("id", "cardcontainer"+viewId)
+												.on("dblclick", function(){
+													console.log(this);
+													var ph = parseInt($("#mainCanvas").css("height"));   // parent height
+													var curh = parseInt($(this).css("height")),
+														curw = parseInt($(this).css("width"));
+													if(curh <= (0.3*ph))
+													{
+														// grow
+														curh *= 2;
+														curw *= 2;												
+													}
+													else
+													{
+														// shrink
+														curh /= 2;
+														curw /= 2; 
+													}
+													$(this).css("height", curh+"px"); 
+													$(this).css("width", curw+"px"); 
+													self.grid.refreshItems().layout();
+												});
 							
 							self.createHeader(container, viewId);
 							self.setupControls(); 
@@ -269,11 +290,6 @@
 											.style("padding-top", 0)											
 											.style("margin-top", 0); 
 
-							//header.append("label")
-							//	.attr("class", "form-label")
-							//	.attr("for", "sel1")
-							//	.text("Metric: ");
-
 							var metricSelect = header.append("select")
 												.attr("name", "metricselector")
 												.attr("class", "form-control")
@@ -415,11 +431,8 @@
 									//.style("padding", 0)
 									.style("color", "black");
 							*/ 
-<<<<<<< HEAD
-							$("#split-btn"+viewId).tooltip({    
-=======
+
 							var split_ttip = $("#split-btn"+viewId).tooltip({    
->>>>>>> 9ba222dfbd1e1d4cf449df31af41445ca09c2a80
 							    placement : 'bottom',  
 							    title : "Groups"         
 							  });
@@ -433,7 +446,8 @@
 
 						},
 						initGrid: function(){
-							var grid = new Muuri('.grid', {
+							var self = this; 
+							self.grid = new Muuri('.grid', {
 							                dragEnabled: true,
 							                dragStartPredicate: function (item, event) {
 							                	//////console.log(event.target); 
@@ -444,17 +458,17 @@
 							                    return Muuri.ItemDrag.defaultStartPredicate(item, event);
 							                    }
 							                });
-							$('.item-content').resizable();
+							//$('.item-content').resizable();
 
-							grid.on('dragEnd', function (item, event) {
+							self.grid.on('dragEnd', function (item, event) {
 							  //$(".item-content").css('background-color', 'green');
 							  //$(".item-content").css('opacity', 0.5);
-							  $(".item-content").css('z-index', 1);
+							  //$(".item-content").css('z-index', 1);
 
 							  //$(item.getElement()).css('background-color', 'yellow');
 							  $(item.getElement()).css('opacity', 1.0);
-							  $(item.getElement()).css('z-index', 1);
-							  console.log("got it"); 
+							  //$(item.getElement()).css('z-index', 1);
+							  console.log($(item.getElement()).css('z-index')); 
 							  //////console.log(item.getElement());
 							  
 							});
@@ -838,14 +852,10 @@
                                 }
     							
     							d3.select("#toggle-btn"+viewId)
-<<<<<<< HEAD
-    								.attr("hidden", undef); 
-=======
     								.attr("hidden", undef)
     								.on("click", function(){
 										self.control.toggleBars(viewId); 
 									});
->>>>>>> 9ba222dfbd1e1d4cf449df31af41445ca09c2a80
                                		
                                 /* d3.select("#panel"+viewId).append("button")
 									//.attr("href", "#")
