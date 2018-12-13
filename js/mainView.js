@@ -9,6 +9,8 @@
 						self.urgencyColor =  "darkgrey"; // "#009933"; //"#63F3B9";
 						self.toggle = "grouped";
 						self.control.viewReady(self); 
+						self.expanded = {}; 
+						self.cat = {}; 
 						self.availViews = [{"value": "bar", "text": "Bar Chart"}, 
 											{"value": "line", "text": "Line Chart"}, 
 											{"value": "scatter", "text": "Scatter Plot"}, 
@@ -21,10 +23,12 @@
 					{
 						createQualCards: function(dataViews){
 							var self = this; 
+							self.dataViews = dataViews; 
 							self.availMetrics = self.control.getAvailMetrics(); 
 							self.meta = self.control.getMetaData(); 
 							self.metaHier = self.control.buildMetaHier(); 
 							for(var i=0; i< dataViews.length; i++){
+								self.expanded[i] = false; 
 								self.createQualCard(i);
 							}
 							self.initGrid(); 
@@ -42,29 +46,42 @@
 						},
 						createQualCard: function(viewId){
 							var self = this; 
+							//self.ph = parseInt($("#mainCanvas").css("height"));   // parent height
+							
 							var container = d3.select("#mainCanvas").append("div")
 												.attr("class", "item")
 												.attr("id", "cardcontainer"+viewId)
 												.on("dblclick", function(){
 													console.log(this);
-													var ph = parseInt($("#mainCanvas").css("height"));   // parent height
+													
 													var curh = parseInt($(this).css("height")),
 														curw = parseInt($(this).css("width"));
-													if(curh <= (0.3*ph))
+													console.log(self.ph);
+													//if(curh <= (0.25*self.ph))
+													if(self.expanded[viewId] === false)
 													{
 														// grow
+														console.log("growing from "+ curh);
 														curh *= 2;
-														curw *= 2;												
+														curw *= 2;	
+														self.expanded[viewId] = true; 
 													}
 													else
 													{
 														// shrink
+														console.log("shrinking from "+ curh);
 														curh /= 2;
 														curw /= 2; 
+														self.expanded[viewId] = false; 
 													}
 													$(this).css("height", curh+"px"); 
 													$(this).css("width", curw+"px"); 
 													self.grid.refreshItems().layout();
+													//d3.select("#card"+viewId).call(resize); 
+													//var card = document.getElementById("card"+viewId).dispatchEvent("resize"); 
+													//document.getElementById("card"+viewId).dispatchEvent(self.event);
+													//console.log(card); 
+													self.resizeVis(viewId); 
 												});
 							
 							self.createHeader(container, viewId);
@@ -108,6 +125,64 @@
 								.attr("id", "draw-area"+viewId);
 									
 							
+						},
+						resizeVis: function(viewId){
+							var self = this;
+							console.log("RESIZEVIS CALLED ");
+							console.log(viewId); 
+							console.log(self.cat[viewId]); 
+							var margin = self.cat[viewId]? {top: 0, right: 10, bottom: 50, left:30} : {top: 10, right: 10, bottom: 65, left:30}; //TODO: modify this according to different views
+							var svgw = parseInt(d3.select("#card"+viewId).style("width")) * 0.9,
+								svgh = parseInt(d3.select("#card"+viewId).style("height")) * 0.9;
+								// update the range of the scale with new width/ height
+							var width = svgw - margin.right - margin.left, 
+								height = svgh - margin.top - margin.bottom; 
+
+							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
+								y = d3.scaleLinear().range([height, 0]).nice(); 
+							var data = self.dataViews[viewId]['data']; 
+
+							x.domain(data.map(function(d){
+									return d.date; 
+							}));
+							y.domain([0, d3.max(data, function(d){ return d.number; })]);
+							
+							// update svg width and height
+							var iter = self.iter; 
+							self.svg = (self.cat[viewId])? d3.select("#mainsvg"+viewId+"_"+iter) :d3.select("#mainsvg"+viewId); 
+
+							self.svg.attr("width", svgw)
+									.attr("height", svgh);
+
+							x.rangeRound([0, width]).padding(0.1);
+							y.range([(height), 0]); 
+
+							////console.log(self.svg.selectAll("*"));
+							self.svg.select(".x.axis")
+							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
+							      .call(d3.axisBottom(x))
+									.selectAll("text")	
+								        .style("text-anchor", "end")
+								        .attr("dx", "-.8em")
+								        .attr("dy", ".15em")
+								        .attr("transform", "rotate(-65)");	
+
+							self.svg.select(".y.axis")
+									.call(d3.axisLeft(y).ticks(5, "s"))
+							      	.attr("transform", "translate(0,"+ margin.top+")");
+							
+							if(self.cat[viewId]) self.changed(x, y, viewId); 
+							else{
+								self.svg.selectAll(".bar")
+								.attr("x", function(d) { 
+									return x(d.date); })
+							      .attr("y", function(d) { 
+							      	return y(d.number)+ margin.top; })
+							      .attr("width", x.bandwidth())
+							      .attr("height", function(d) { return height  - y(d.number); });
+							}
+							  
+
 						},
 						setupPopover: function(viewId){
 							var self = this; 
@@ -840,7 +915,7 @@
 						drawCatBar: function(viewId, dict, cat, levels, iter, trellis){
 							var self = this; 
 								self.dict = dict;
-								self.cat = cat;
+								self.cat[viewId] = cat;
 								self.levels = levels; 
 								var undef;
 
@@ -857,40 +932,11 @@
 										self.control.toggleBars(viewId); 
 									});
                                		
-                                /* d3.select("#panel"+viewId).append("button")
-									//.attr("href", "#")
-									.attr("id", "toggle-btn"+viewId)
-									.attr("type", "button")
-									.attr("class", "fa fa-adjust")
-									//.text("Toggle")
-									.style("vertical-align", "top")
-									.style("width", "70%")
-									//.style("margin-left", "2%")
-									.style("margin-top", "-1040%")
-									//.style("vertical-align", "center")
-									.style("background-color", "lightgrey")
-									//.style("padding", 0)
-									.style("color", "black")
-									.on("click", function(){
-										self.control.toggleBars(viewId); 
-									});
-								*/ 
+                  
 									$("#toggle-btn"+viewId).tooltip({    
 									    placement : 'bottom',  
 									    title : "Toggle Groups"         
 									  });     
-
-                                /*.append("svg")
-										.attr("width", 100)
-										.attr("height", 100)
-										.attr("x", 10)
-										.attr("y", 10)
-										.append("rect")
-											.attr("height", 20)
-											.attr("width", 20)
-											.attr("x", 10)
-											.attr("y", 10)
-											.style("color", "red"); */
 
                                 var ordered = [];
                                 var temp = Object.keys(dict);
@@ -983,6 +1029,7 @@
 							var series = g.selectAll(".series")
 							  .data(y01z)
 							  .enter().append("g")
+							  	.attr("class", "series"+viewId)
 							    .attr("fill", function(d, i) { 
 							    	self.palette[i] = color(i);
 							    	return color(i); });
@@ -1074,12 +1121,29 @@
 							  else 
 							    transitionStacked();
 							}
-
-						function transitionGrouped() {
+						self.changed = function(newx, newy, nviewId){
+							 console.log("changing"); 
+							 timeout.stop();
+							  if (self.toggle === "grouped") 
+							  	transitionGrouped(newx, newy, nviewId);
+							  else 
+							    transitionStacked(newx, newy, nviewId);
+						};
+						function transitionGrouped(newx, newy, nviewId) {
+							if(newx) x = newx; 
+							if(newy) y = newy; 
+							if(newx) viewId = nviewId; 
 						  y.domain([0, yMax]);
-
+						  if(newx) {
+						  	console.log("HERE");
+						  	console.log(series); 
+						  	console.log(viewId); 
+						  	  series = d3.selectAll(".series"+viewId);
+						  	  console.log(series);
+						  	  rect = series.selectAll("rect");
+						  }
 						  rect.transition()
-						      .duration(500)
+						      .duration(200)
 						      .delay(function(d, i) { return i * 10; })
 						      .attr("x", function(d, i) {
 						      	 return x(xz[i]) + x.bandwidth() / levels.length * this.parentNode.__data__.key; })
@@ -1090,11 +1154,20 @@
 						      .attr("height", function(d) { 
 						      	return y(0) - y(d[1] - d[0]); });
 						}
-						function transitionStacked() {
+						function transitionStacked(newx, newy, nviewId) {
+							if(newx) x = newx; 
+							if(newy) y = newy; 
+							if(newx) viewId = nviewId; 
 						  y.domain([0, y1Max]);
-
+						  if(newx) {
+						  	console.log("THERE");
+						  	console.log(viewId); 
+						  	  series = d3.selectAll(".series"+viewId);
+						  	  console.log(series);
+						  	  rect = series.selectAll("rect");
+						  }
 						  rect.transition()
-						      .duration(500)
+						      .duration(200)
 						      .delay(function(d, i) { return i * 10; })
 						      .attr("y", function(d) { return y(d[1]); })
 						      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
@@ -1103,53 +1176,13 @@
 						      .attr("width", x.bandwidth());
 						}
 
-						function resize() {
-							//console.log("RESIZE CALLED");
-							var svgw = parseInt(d3.select("#card"+viewId).style("width")) * 0.9,
-								svgh = parseInt(d3.select("#card"+viewId).style("height")) * 0.9;
-
-							// update svg width and height
-							self.svg = d3.select("#mainsvg"+viewId+"_"+iter); 
-
-							self.svg.attr("width", svgw)
-												.attr("height", svgh);
-
-
-						 	// update the range of the scale with new width/ height
-							var width = svgw - margin.right - margin.left, 
-								height = svgh - margin.top - margin.bottom; 
-
-							x.rangeRound([0, width]).padding(0.1);
-							y.range([height, 0]); 
-
-
-							self.svg.select(".x.axis")
-							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
-							      .call(d3.axisBottom(x))
-									.selectAll("text")	
-								        .style("text-anchor", "end")
-								        .attr("dx", "-.8em")
-								        .attr("dy", ".15em")
-								        .attr("transform", "rotate(-65)");
-							
-							self.svg.select(".y.axis")
-									.call(d3.axisLeft(y).ticks(5, "s"))
-							      	.attr("transform", "translate(0,"+ margin.top+")");
-
-							////console.log(self.svg.selectAll("g").selectAll(".bar"));
-							/*self.svg.selectAll("g").selectAll(".bar")
-								.attr("x", function(d, i) { return x(i); })
-							      .attr("y", function(d) { 
-							      	return y(d.number)+ margin.top; })
-							      .attr("width", x.bandwidth())
-							      .attr("height", function(d) { return height  - y(d.number); })*/
-							     changed(); 
-
-						}
 						 
-						$("#card"+viewId).resize(function(e){
+						/*$("#card"+viewId).resize(function(e){
 							 resize(); 
-						});
+						});*/
+
+						//self.event = new Event('resize');
+						//document.getElementById("#card"+viewId).addEventListener("resize", resize);
 						
 						},
 
@@ -1162,11 +1195,11 @@
 								self.toggle = "grouped";
 
 							if(self.iter < 1)
-								self.drawCatBar(viewId, self.dict, self.cat, self.levels, 0); 
+								self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
 							else{
 								 var c = 0;
 								 for(var key in self.dicts){
-		                         	   self.drawCatBar(viewId, self.dicts[key], self.cat, self.levels, c, 1);
+		                         	   self.drawCatBar(viewId, self.dicts[key], self.cat[viewId], self.levels, c, 1);
 		                         	   c++; 
 		                         	}
 							}
@@ -1283,59 +1316,7 @@
 							      });
 
 
-						function resize() {
-							if(!self.cat)
-							{	
-							//console.log("RESIZE CALLED 22 ");
-
-							var svgw = parseInt(d3.select("#card"+viewId).style("width")) * 0.9,
-								svgh = parseInt(d3.select("#card"+viewId).style("height")) * 0.9;
-
-							// update svg width and height
-							self.svg = d3.select("#mainsvg"+viewId); 
-
-							self.svg.attr("width", svgw)
-												.attr("height", svgh);
-
-
-						 	// update the range of the scale with new width/ height
-							var width = svgw - margin.right - margin.left, 
-								height = svgh - margin.top - margin.bottom; 
-
-							x.rangeRound([0, width]).padding(0.1);
-							y.range([(height), 0]); 
-
-							////console.log(self.svg.selectAll("*"));
-							self.svg.select(".x.axis")
-							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
-							      .call(d3.axisBottom(x))
-									.selectAll("text")	
-								        .style("text-anchor", "end")
-								        .attr("dx", "-.8em")
-								        .attr("dy", ".15em")
-								        .attr("transform", "rotate(-65)");
-							
-							
-
-							self.svg.select(".y.axis")
-									.call(d3.axisLeft(y).ticks(5, "s"))
-							      	.attr("transform", "translate(0,"+ margin.top+")");
-							self.svg.selectAll(".bar")
-								.attr("x", function(d) { 
-									return x(d.date); })
-							      .attr("y", function(d) { 
-							      	return y(d.number)+ margin.top; })
-							      .attr("width", x.bandwidth())
-							      .attr("height", function(d) { return height  - y(d.number); })
-							}
-						}
-						 
-						$("#card"+viewId).resize(function(e){
-							resize(); 
-						});
-						//d3.select("#card"+viewId).on("resize", resize); 
-						//resize(); 
-
+						
 						}
 					}
 		);
