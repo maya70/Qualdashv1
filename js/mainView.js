@@ -14,6 +14,7 @@
 											{"value": "scatter", "text": "Scatter Plot"}, 
 											{"value": "pie", "text": "Pie Chart"}]; 
 						
+							
 						//self.createQualCard(1);
 						//self.cardSetupDrag(1);
 					},
@@ -21,6 +22,8 @@
 						createQualCards: function(dataViews){
 							var self = this; 
 							self.availMetrics = self.control.getAvailMetrics(); 
+							self.meta = self.control.getMetaData(); 
+							self.metaHier = self.control.buildMetaHier(); 
 							for(var i=0; i< dataViews.length; i++){
 								self.createQualCard(i);
 							}
@@ -96,11 +99,39 @@
 							var pbody = self.pop.append("div")
 											.attr("class", "popover-body")
 											.attr("id", "cat-popover"); 
-							var varselect=	pbody.append("select")
+
+							var tabvar = pbody.append("ul")
+												.attr("class", "nav nav-tabs");
+							var qvar = tabvar.append("li")
+										.attr("class", "active")
+										.append("a")
+											.attr("data-toggle", "tab")
+											.attr("href", "#qvar"+viewId)
+											.text("Quantiative");
+
+							var nvar = tabvar.append("li")										
+										.append("a")
+											.attr("data-toggle", "tab")
+											.attr("href", "#nvar"+viewId)
+											.text("Categorical");
+							var tabs = pbody.append("div")
+								.attr("class", "tab-content");
+
+							var qtab = tabs.append("div")
+										.attr("id", "qvar"+viewId)
+										.attr("class", "tab-pane fade in active");
+
+							var ntab = tabs.append("div")
+										.attr("id", "nvar"+viewId)
+										.attr("class", "tab-pane fade");
+							
+
+
+							var qvarselect=	qtab.append("select")
 												.attr("name", "varselector")
 												.attr("class", "form-control")
 												.style("vertical-align", "top")
-												.attr("id", "varsel"+viewId)
+												.attr("id", "qvarsel"+viewId)
 												.style("font-size", "9pt")
 												.style("horizontal-align", "left")
 												.style("min-width", "65%")
@@ -108,14 +139,64 @@
 												.on("change", function(d){
 													//////console.log(this.value);
 												});
-								var allVars = self.control.getAvailVars(); 
-								//////console.log(allVars); 
-								for(var m = 0; m < allVars.length; m++){
-								varselect.append("option")
-											.attr("value", allVars[m])
-											.text(allVars[m])
-											.style("font-size", "9pt");
-									}
+								//var allVars = self.control.getAvailVars(); 
+								
+								for(var m = 0; m < self.meta.length; m++){
+								if(self.meta[m]['fieldType'] === "q")
+								{
+									qvarselect.append("option")
+												.attr("value", self.meta[m]['fieldName'])
+												.text(self.meta[m]['fieldName'])
+												.style("font-size", "9pt");
+									}	
+								}
+
+								qtab.append("button")
+									.attr("type", "submit")						
+									.attr("class", "btn_vg_parse hide-vl")
+									.text( "Add")
+									.attr("id", "quantity-but"+viewId);
+							
+							var nvarselect=	ntab.append("select")
+												.attr("name", "varselector")
+												.attr("class", "form-control")
+												.style("vertical-align", "top")
+												.attr("id", "nvarsel"+viewId)
+												.style("font-size", "9pt")
+												.style("horizontal-align", "left")
+												.style("min-width", "65%")
+												.style("margin-left",0)
+												.on("change", function(d){
+													//////console.log(this.value);
+												});
+								//var allVars = self.control.getAvailVars(); 
+								
+								for(var m = 0; m < self.meta.length; m++){
+								if(self.meta[m]['fieldType'] === "n")
+								{
+									nvarselect.append("option")
+												.attr("value", self.meta[m]['fieldName'])
+												.text(self.meta[m]['fieldName'])
+												.style("font-size", "9pt");
+									}	
+								}
+
+								ntab.append("button")
+									.attr("type", "submit")						
+									.attr("class", "btn_vg_parse hide-vl")
+									.text( "Split")
+									.attr("id", "group-but"+viewId);
+							
+							$(document).on('click', '#group-but'+viewId, function(){
+								//////console.log($('#varsel'+viewId +' option:selected').val());
+								self.addGroup(viewId, $('#nvarsel'+viewId +' option:selected').val()); 
+							});
+
+							$(document).on('click', '#quantity-but'+viewId, function(){
+								//////console.log($('#varsel'+viewId +' option:selected').val());
+								self.addGroup(viewId, $('#qvarsel'+viewId +' option:selected').val()); 
+							});
+
 
 							self.pop2 = d3.select("body").append("div")
 											.attr("id", "aa"+viewId)
@@ -127,11 +208,13 @@
 											.attr("class", "popover-body")
 											.attr("id", "cat-popover"); 
 							
+							//self.drawCircles(pbody2); 
 							//event delegation to detect change 
 							// suggested by: https://stackoverflow.com/questions/20786696/select-on-change-inside-bootstrap-popover-does-not-fire
-							$(document).on('change', '#varsel'+viewId, function(){
-								////////console.log($('#varsel'+viewId +' option:selected').val()); 
-							});
+							///$(document).on('change', '#varsel'+viewId, function(){
+								//console.log($('#varsel'+viewId +' option:selected').val()); 
+							//});
+
 							$(':not(#anything)').on('click', function (e) {
 							    self.popSettings.each(function () {
 							        if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
@@ -142,17 +225,24 @@
 							});
 
 							
-							pbody.append("button")
-									.attr("type", "submit")						
-									.attr("class", "btn_vg_parse hide-vl")
-									.text( "Add Grouping")
-									.attr("id", "group-but"+viewId);
 									
-							$(document).on('click', '#group-but'+viewId, function(){
-								//////console.log($('#varsel'+viewId +' option:selected').val());
-								self.addGroup(viewId, $('#varsel'+viewId +' option:selected').val()); 
-							});
-
+							
+						},
+						drawCircles: function(pbody){
+							var self = this;
+							var width = 100, 
+								height = 100; 
+							var color = d3.scaleLinear()
+									    .domain([0, 5])
+									    .range(["hsl(152,80%,80%)", "hsl(228,30%,40%)"])
+									    .interpolate(d3.interpolateHcl);
+							var format = d3.format(",d"); 
+							var pack = data => d3.pack()
+											    .size([width, height])
+											    .padding(3)
+											  (d3.hierarchy(data)
+											    .sum(d => d.size)
+											    .sort((a, b) => b.value - a.value));
 						},
 						addGroup: function(viewId, gvar){
 							//console.log(gvar);
@@ -363,8 +453,8 @@
 
 							  //$(item.getElement()).css('background-color', 'yellow');
 							  $(item.getElement()).css('opacity', 1.0);
-							  $(item.getElement()).css('z-index', 10);
-							  
+							  $(item.getElement()).css('z-index', 1);
+							  console.log("got it"); 
 							  //////console.log(item.getElement());
 							  
 							});

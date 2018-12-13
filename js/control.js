@@ -10,14 +10,21 @@
 					},
 					{
 						viewReady: function(view){
-							var self = this; 
+							var self = this; 						
 							self.dataModel.readMinapDummy(); 
+						},
+						getMetaData: function(){
+							var self = this; 
+							return self.dataModel.getMetaData(); 
 						},
 						dataReady: function(dataViews, rawData){
 							var self = this;	
 							self.dataViews = dataViews; 						
 							self.allVars =  Object.keys(rawData[0]); 
 							self.mainView.createQualCards(dataViews);
+						},
+						buildMetaHier: function(){
+							return this.dataModel.buildMetaHierarchy(); 
 						},
 						getDataViews: function(){
 							return this.dataViews; 
