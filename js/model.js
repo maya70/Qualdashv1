@@ -110,19 +110,29 @@
                             self.displayVariables[viewId]['yType'] = self.displayVariables[metricId]['yType'];
 
                         },
+                        getMetaData: function(){
+                            return this.meta; 
+                        },
                         readMinapDummy: function(){
                             var self = this; 
-                            
-                            d3.csv("./data/minap_dummy.csv", function(data){
-                                    ////console.log(Object.keys(data[0])); 
-                                    self.data = data;                                     
-                                    ////console.log(displayVar);
-                                    for(var display = 0; display < self.displayVariables.length; display++)
-                                    {
-                                        self.applyAggregateRule(self.displayVariables[display]["metric"], "count", "monthly" , display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
-                                    }
-                                    self.control.dataReady(self.dataViews, self.data); 
+                            self.meta = [];
+                            d3.csv("./data/minap_meta.csv", function(meta){
+                                for(var k=0; k < meta.length; k++)
+                                    if(meta[k]['fieldName'] !== "")
+                                        self.meta.push(meta[k]); 
+                                //self.meta = meta; 
+                                console.log(meta); 
+                                d3.csv("./data/minap_dummy.csv", function(data){
+                                        console.log(data); 
+                                        self.data = data;                                     
+                                        ////console.log(displayVar);
+                                        for(var display = 0; display < self.displayVariables.length; display++)
+                                        {
+                                            self.applyAggregateRule(self.displayVariables[display]["metric"], "count", "monthly" , display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
+                                        }
+                                        self.control.dataReady(self.dataViews, self.data); 
 
+                                    });
                                 });
                             },
                         addCategorical: function(viewId, varName){
@@ -193,6 +203,7 @@
                                     var found = 0; 
                                     for(var dt = 0; dt < disc.length; dt++){
                                         var d_date = self.stringToDate(disc[dt]);
+                                        
                                          var adt = a_date.getTime(), 
                                              ddt = d_date.getTime();
                                         var diff = Math.round((adt - ddt)/one_hour);
@@ -218,14 +229,15 @@
                         */
                         stringToDate: function(str){
                             var self = this;
+                            
                             var strings = str.split(" ");
                             var date = strings[0],
                                 time = strings[1];
-                            var dateParts = date.split("/");
+                            var dateParts = date.split("-");
                             var timeParts = time.split(":");
                             var day = dateParts[0],
                                 month = dateParts[1],
-                                year = dateParts[2];
+                                year = "20"+dateParts[2];
                             var hour = timeParts[0],
                                 minute = timeParts[1],
                                 second = timeParts[1];
@@ -233,18 +245,51 @@
                             return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z");
 
                         },
+                        buildMetaHierarchy: function(){
+                            var self = this; 
+                            var n=0, q=1, t=2, o=3; 
+                            self.metaHier = {};
+                            self.metaHier['name'] = "types"; 
+                            self.metaHier['children'] = []; 
+                            self.metaHier['children'].push({'name':'n', 'children': []});
+                            self.metaHier['children'].push({'name':'q', 'children': []});
+                            self.metaHier['children'].push({'name':'t', 'children': []});
+                            self.metaHier['children'].push({'name':'o', 'children': []});
+                            self.metaHier['children'][q]['children'].push({'name': 'delay', 'children': []});
+
+                            for(var i=0; i < self.meta.length; i++){
+                                var type; 
+                                if( self.meta[i]['fieldType'] === "n")
+                                    type = n; 
+                                else if(self.meta[i]['fieldType'] === "q")
+                                    type = q; 
+                                else if(self.meta[i]['fieldType'] === "t")
+                                    type = t;
+                                else if(self.meta[i]['fieldType'] === "o")
+                                    type = o; 
+
+                                self.metaHier['children'][type]['children'].push({'name': self.meta[i]['fieldName'], 
+                                                                                   'children':[] });
+
+
+                            }
+                            console.log(self.meta);
+                            console.log("METAHIER: ");
+                            console.log(self.metaHier); 
+
+                        },
                         applyAggregateRule: function(metric, rule, scale, displayId, data, dateVar, displayVar, categoricals){
                             var self = this; 
                             var dict = {};
                             if(displayVar.constructor == Array)
                                 displayVar = self.calculateDerivedVar(metric, displayVar); 
-                            //console.log(data[0][metric]); 
+                            
+                            console.log(data[0][metric]); 
 
                             if(!categoricals){
                                                         for(var i=0; i< data.length; i++){
                                                             // get the month of this entry
-                                                            var date = self.stringToDate(data[i][dateVar]);
-                                                            ////console.log(date); 
+                                                            var date = self.stringToDate(data[i][dateVar]);                                                        
                                                             var month = self.months[date.getMonth()];
                                                             var year = date.getYear()+1900; 
                                                             var my = month+"-"+year; 
@@ -285,12 +330,12 @@
                             }
                             else if(categoricals[displayId].length === 1){  // count within categories
                                 var cat = categoricals[displayId][0];
-                                //console.log(cat);
+                                console.log(cat);
 
                                 var levels = d3.map(self.data, function(item){
                                     return item[cat];
                                     }).keys();
-                                //console.log(levels);
+                                console.log(levels);
                                 for(var i=0; i< data.length; i++){
                                                         // get the month of this entry
                                                         var date = self.stringToDate(data[i][dateVar]);
