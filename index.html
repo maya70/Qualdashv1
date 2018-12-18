@@ -231,6 +231,13 @@ div.tooltip {
   background: lightgrey;
  
 }    
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+  color: black;
+  font-weight: bold;  
+  background-color: #eee; 
+}
+
+
 </style>
 
 </head>
@@ -263,10 +270,25 @@ div.tooltip {
  
 
 <!-- Top container -->
-<div class="w3-bar w3-top w3-black w3-large" style="z-index:4">
-  <button class="w3-button w3-black w3-xlarge" onclick="w3_open()">☰</button>
+<div class="w3-bar w3-top w3-white w3-large" style="z-index:4; max-height: 45px; ">
+  <button class="w3-button w3-black w3-xlarge" onclick="w3_open()" style="vertical-align: top;">☰</button>
   <!--button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button-->
-  <span class="w3-bar-item w3-right"> QualDash &copy </span>
+
+  <!-- Header -->
+  <header class="w3-container" style="padding-top:6px; padding-bottom: 0px; width: 50%; display:inline-block;">
+    
+    <div class="w3-col" style="width: 20%; background-color: green; ">
+  
+</div>
+     <ul class="nav nav-tabs" style="width: 50%; display:inline;">
+      <li class="active nav-item"><a data-toggle="tab" href="#home">Home</a></li>
+      <li class="nav-item" ><a data-toggle="tab" href="#can1">Root Cause</a></li>
+      <li class="nav-item"><a data-toggle="tab" href="#can2">Database Status</a></li>
+      <li class="nav-item"><a data-toggle="tab" href="#can3">>></a></li>  
+    </ul>
+</header>
+    <button class="w3-button w3-teal w3-medium w3-right" onclick="openRightMenu()">Data Quality</button>
+     <span class="w3-bar-item w3-right"> QualDash &copy </span> 
 </div>
 
 <!-- Sidebar/menu -->
@@ -306,33 +328,7 @@ div.tooltip {
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-history fa-fw"></i> Query History</a>
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a><br><br>
   </div>
-    <!--div class="w3-third">
-        <h5>Database Status</h5>
-        <table class="w3-table w3-striped w3-white">
-          <tr>
-            <td><i class="fa fa-user w3-text-blue w3-large"></i></td>
-            <td>Recent activity.</td>
-            <td><i>10 mins</i></td>
-          </tr>
-          <tr>
-            <td><i class="fa fa-bell w3-text-red w3-large"></i></td>
-            <td>Database error.</td>
-            <td><i>15 mins</i></td>
-          </tr>
-          <tr>
-            <td><i class="fa fa-users w3-text-yellow w3-large"></i></td>
-            <td>Over 50 entries today.</td>
-            <td><i>17 mins</i></td>
-          </tr>
-          <tr>
-            <td><i class="fa fa-comment w3-text-red w3-large"></i></td>
-            <td>New comments.</td>
-            <td><i>25 mins</i></td>
-          </tr>
-        
-        </table>
-      </div-->
-<!--/nav-->
+   
 </div>
 <div class="w3-sidebar w3-bar-block w3-card w3-animate-right" style="right:0;" id="rightMenu">
   <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-medium">Hide &times;</button>
@@ -361,14 +357,7 @@ div.tooltip {
 <!-- !PAGE CONTENT! -->
 <div id="main" class="w3-main" style="margin-left:0px;margin-top:43px;">
 
-  <!-- Header -->
-  <header class="w3-container" style="padding-top:6px; padding-bottom: 6px;">
-    
-    <div class="w3-row">
-    
-      
-</div>
-  </header>
+  
 
   <div class="w3-row-padding w3-margin-bottom">
     <div class="w3-col" style="width: 20%">
@@ -376,15 +365,9 @@ div.tooltip {
   
   
 </div>
-<button class="w3-button w3-teal w3-medium w3-right" onclick="openRightMenu()">Data Quality</button>
-<ul class="nav nav-tabs">
-  <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-  <li><a data-toggle="tab" href="#can1">Root Cause</a></li>
-  <li><a data-toggle="tab" href="#can2">Database Status</a></li>
-  <li><a data-toggle="tab" href="#can3">>></a></li>
-  
-</ul>
 
+ <div class="w3-row-padding w3-margin-top">
+ 
 
 <div class="tab-content">
  <div id="home" class="tab-pane fade in active">
@@ -496,6 +479,7 @@ div.tooltip {
     <!--h4>FOOTER</h4-->
     <!--p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p-->
   </footer>
+</div>
 
   <!-- End page content -->
 </div>
