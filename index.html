@@ -265,7 +265,7 @@ div.tooltip {
 </style>
 
 </head>
-<body class="w3-light-grey" onresize="refreshLayout()">
+<body class="w3-light-grey" onresize="refreshLayout();" onload="loadFunction(); ">
 
 
       <!-- Content for Popover #1 -->    
@@ -490,25 +490,29 @@ function closeRightMenu() {
 
 function layout2x3() {
   var cards = d3.selectAll(".item"); 
+  console.log($("#mainCanvas").css("height"));
+
   cards.each(function(){
     console.log($(this).css("width")); 
     $(this).css("width", "46%");
-    $(this).css("height", "28%");
+    $(this).css("height", "300px");
   });
  $Q.mainControl.refreshGrid(); 
 }
 
 function layout3x2() {
+  console.log($("#mainCanvas").css("height"));
   var cards = d3.selectAll(".item"); 
   cards.each(function(){
     console.log($(this).css("width")); 
     $(this).css("width", "32%");
-    $(this).css("height", "28%");
+    $(this).css("height", "300px");
   });
  $Q.mainControl.refreshGrid(); 
 }
 
 function layout1x1() {
+  console.log($("#mainCanvas").css("height"));
   var cards = d3.selectAll(".item"); 
   cards.each(function(){
     console.log($(this).css("width")); 
@@ -521,7 +525,9 @@ function layout1x1() {
 function refreshLayout() {
  $Q.mainControl.refreshGrid();  
 }
-
+function loadFunction() {
+  closeRightMenu(); 
+}
 function openCity(evt, cityName) {
     // Declare all variables
     var i, tabcontent, tablinks;

@@ -291,6 +291,12 @@
 							$(document).on('click', '#group-but'+viewId, function(){
 								//////console.log($('#varsel'+viewId +' option:selected').val());
 								self.addGroup(viewId, $('#nvarsel'+viewId +' option:selected').val()); 
+								self.popSettings.each(function () {
+							        //if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+							            $(this).popover('hide');
+							          //  return;
+							        //}
+							    });
 							});
 
 							$(document).on('click', '#quantity-but'+viewId, function(){
@@ -324,6 +330,7 @@
 							        }
 							    });
 							});
+							
 
 							
 									
@@ -581,13 +588,13 @@
 						        html : true,
 						        container: '#home',
 						        content: function() {
-						          var content = $(this).attr("data-popover-content");
+						          var content = $(this).attr("data-popover-content");						    
 						          return $(content).children(".popover-body").html();
 						        },
 						        title: function() {
 						          var title = $(this).attr("data-popover-content");
 						          return $(title).children(".popover-heading").html();
-						        }
+								   }
 						    });
 
 
