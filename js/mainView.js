@@ -302,6 +302,12 @@
 							$(document).on('click', '#quantity-but'+viewId, function(){
 								//////console.log($('#varsel'+viewId +' option:selected').val());
 								self.addGroup(viewId, $('#qvarsel'+viewId +' option:selected').val()); 
+								self.popSettings.each(function () {
+							        //if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+							            $(this).popover('hide');
+							          //  return;
+							        //}
+							    });
 							});
 
 
