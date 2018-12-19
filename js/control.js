@@ -65,6 +65,10 @@
 							console.log(value); 
 							self.dataModel.updateMetrics(viewId, value); 
 						},
+						refreshGrid: function(){
+							var self = this;
+							self.mainView.refreshGrid(); 
+						},
 						toggleBars: function(displayId){
 							this.mainView.toggleBarView(displayId); 
 						}

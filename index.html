@@ -117,7 +117,7 @@ div.tooltip {
 }
 .item {
   position: absolute;
-  width: 30%;
+  width: 32%;
   height: 25%;
   line-height: 200px;
   margin: 3px;
@@ -237,11 +237,35 @@ div.tooltip {
   background-color: #eee; 
 }
 
+.tab-content{
+  max-height: inherit; 
+}
+
+.page-content{
+  max-height: 500px; 
+}
+.topright-panel{
+  margin-left: 2px; 
+  margin-top: 5px; 
+  margin-bottom: 5px; 
+  margin-right: 5px; 
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+#b11{
+  margin-right: 20px; 
+}
+#compCanvas{
+  min-height: 600px;
+  min-width: 600px;
+  background-color: red; 
+
+}
 
 </style>
 
 </head>
-<body class="w3-light-grey">
+<body class="w3-light-grey" onresize="refreshLayout()">
 
 
       <!-- Content for Popover #1 -->    
@@ -276,19 +300,25 @@ div.tooltip {
 
   <!-- Header -->
   <header class="w3-container" style="padding-top:6px; padding-bottom: 0px; width: 50%; display:inline-block;">
-    
-    <div class="w3-col" style="width: 20%; background-color: green; ">
-  
-</div>
-     <ul class="nav nav-tabs" style="width: 50%; display:inline;">
+    <ul class="nav nav-tabs" style="width: 50%; display:inline;">
       <li class="active nav-item"><a data-toggle="tab" href="#home">Home</a></li>
-      <li class="nav-item" ><a data-toggle="tab" href="#can1">Root Cause</a></li>
-      <li class="nav-item"><a data-toggle="tab" href="#can2">Database Status</a></li>
+      <li class="nav-item" ><a data-toggle="tab" href="#compCanvas">Comparators</a></li>
+      <!--li class="nav-item"><a data-toggle="tab" href="#can2">Database Status</a></li-->
       <li class="nav-item"><a data-toggle="tab" href="#can3">>></a></li>  
     </ul>
-</header>
-    <button class="w3-button w3-teal w3-medium w3-right" onclick="openRightMenu()">Data Quality</button>
-     <span class="w3-bar-item w3-right"> QualDash &copy </span> 
+  </header>
+         <div class="w3-bar w3-border w3-card-4 w3-light-grey w3-right" style="max-width: 130px; display: inline; margin-top: 5px; ">
+            <button class="w3-button w3-light-grey w3-small w3-right w3-round topright-panel" onclick="openRightMenu()">Data Quality</button>
+          </div>
+  
+      <div class="w3-bar w3-border w3-card-4 w3-light-grey w3-right" style="width: 200px; display: inline; margin-top: 5px; ">
+           <button class="w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right  w3-border-left topright-panel" id="b11" onclick="layout1x1()">1x1</button>
+           <button class="w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b22" onclick="layout2x3()">2x2</button>
+           <button class="active w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b32" onclick="layout3x2()">3x2</button>
+          <!--a class="w3-button w3-light-grey w3-small w3-right w3-round  topright-panel">Layouts:</a-->
+
+      </div>
+
 </div>
 
 <!-- Sidebar/menu -->
@@ -357,126 +387,34 @@ div.tooltip {
 <!-- !PAGE CONTENT! -->
 <div id="main" class="w3-main" style="margin-left:0px;margin-top:43px;">
 
-  
-
-  <div class="w3-row-padding w3-margin-bottom">
-    <div class="w3-col" style="width: 20%">
+<div class="w3-row-padding w3-margin-bottom page-content">
     
-  
-  
-</div>
-
- <div class="w3-row-padding w3-margin-top">
+ <div class="w3-row-padding w3-margin-top page-content">
  
-
-<div class="tab-content">
+ <div class="tab-content">
  <div id="home" class="tab-pane fade in active">
   <div class="w3-panel">
     <!--div class="w3-row-padding" id= "mainCanvas" style="margin:0 -16px; min-height: 700px;">
     </div-->
     <div class="grid" id="mainCanvas">
-  <!--div class="item">
-    <div class="item-content" id="myitem"><a href="#" data-toggle="popover" class="pop" title="Popover Header" data-container="body" style="position:relative;" data-content="Some content inside the popover">Toggle</a></div>
-  </div>
-  <div class="item">
-    <div class="item-content">2</div>
-  </div>
-  <div class="item">
-    <div class="item-content">3</div>
-  </div>
-  <div class="item">
-    <div class="item-content">4</div>
-  </div>
-  <div class="item">
-    <div class="item-content">5</div>
-  </div>
-  <div class="item">
-    <div class="item-content">6</div>
-  </div-->
+        
   
-</div>
+    </div>
    </div>
- </div>  
+ </div> 
+ <div id="compCanvas" class="tab-pane fade">
+    
+ </div>   
 </div>
 
-  <div id="can1" class="tab-pane fade">
-  </div>
-
-  <hr>
- 
-  <hr>
+</div>
 
  
-  <hr>
-  <!--div class="w3-container">
-    <h5>Recent Users</h5>
-    <ul class="w3-ul w3-card-4 w3-white">
-      <li class="w3-padding-16">
-        <img src="/w3images/avatar2.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-        <span class="w3-xlarge">Mike</span><br>
-      </li>
-      <li class="w3-padding-16">
-        <img src="/w3images/avatar5.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-        <span class="w3-xlarge">Jill</span><br>
-      </li>
-      <li class="w3-padding-16">
-        <img src="/w3images/avatar6.png" class="w3-left w3-circle w3-margin-right" style="width:35px">
-        <span class="w3-xlarge">Jane</span><br>
-      </li>
-    </ul>
-  </div-->
-  <hr>
-
-  <!--div class="w3-container">
-    <h5>Recent Comments</h5>
-    <div class="w3-row">
-      <div class="w3-col m2 text-center">
-        <img class="w3-circle" src="/w3images/avatar3.png" style="width:96px;height:96px">
-      </div>
-      <div class="w3-col m10 w3-container">
-        <h4>John <span class="w3-opacity w3-medium">Sep 29, 2014, 9:12 PM</span></h4>
-        <p>Keep up the GREAT work! I am cheering for you!! Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
-      </div>
-    </div-->
-
-    <!--div class="w3-row">
-      <div class="w3-col m2 text-center">
-        <img class="w3-circle" src="/w3images/avatar1.png" style="width:96px;height:96px">
-      </div>
-      <div class="w3-col m10 w3-container">
-        <h4>Bo <span class="w3-opacity w3-medium">Sep 28, 2014, 10:15 PM</span></h4>
-        <p>Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><br>
-      </div>
-    </div>
-  </div-->
-  <br>
-  <!--div class="w3-container w3-dark-grey w3-padding-32">
-    <div class="w3-row">
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-green">Demographic</h5>
-        <p>Language</p>
-        <p>Country</p>
-        <p>City</p>
-      </div>
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-red">System</h5>
-        <p>Browser</p>
-        <p>OS</p>
-        <p>More</p>
-      </div>
-      <div class="w3-container w3-third">
-        <h5 class="w3-bottombar w3-border-orange">Target</h5>
-        <p>Users</p>
-        <p>Active</p>
-        <p>Geo</p>
-        <p>Interests</p>
-      </div>
-    </div>
-  </div-->
 
   <!-- Footer -->
-  <footer class="w3-container w3-padding-16 w3-light-grey">
+  <footer class="w3-container  w3-light-grey w3-center" style="width: 100%; align-content: : left;">
     <!--h4>FOOTER</h4-->
+    <span class="w3-bar-item" > QualDash &copy </span> 
     <!--p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p-->
   </footer>
 </div>
@@ -536,18 +474,52 @@ function w3_open() {
   document.getElementById("main").style.marginLeft = "25%";
   document.getElementById("mySidebar").style.width = "25%";
   document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("openNav").style.display = 'none';
+  //document.getElementById("openNav").style.display = 'none';
 }
 function w3_close() {
   document.getElementById("main").style.marginLeft = "0%";
   document.getElementById("mySidebar").style.display = "none";
-  document.getElementById("openNav").style.display = "inline-block";
+  //document.getElementById("openNav").style.display = "inline-block";
 }
 function openRightMenu() {
     document.getElementById("rightMenu").style.display = "block";
 }
 function closeRightMenu() {
     document.getElementById("rightMenu").style.display = "none";
+}
+
+function layout2x3() {
+  var cards = d3.selectAll(".item"); 
+  cards.each(function(){
+    console.log($(this).css("width")); 
+    $(this).css("width", "46%");
+    $(this).css("height", "28%");
+  });
+ $Q.mainControl.refreshGrid(); 
+}
+
+function layout3x2() {
+  var cards = d3.selectAll(".item"); 
+  cards.each(function(){
+    console.log($(this).css("width")); 
+    $(this).css("width", "32%");
+    $(this).css("height", "28%");
+  });
+ $Q.mainControl.refreshGrid(); 
+}
+
+function layout1x1() {
+  var cards = d3.selectAll(".item"); 
+  cards.each(function(){
+    console.log($(this).css("width")); 
+    $(this).css("width", "95%");
+    $(this).css("height", "700px");
+  });
+ $Q.mainControl.refreshGrid(); 
+}
+
+function refreshLayout() {
+ $Q.mainControl.refreshGrid();  
 }
 
 function openCity(evt, cityName) {

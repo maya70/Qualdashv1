@@ -27,12 +27,17 @@
 							self.availMetrics = self.control.getAvailMetrics(); 
 							self.meta = self.control.getMetaData(); 
 							self.metaHier = self.control.buildMetaHier(); 
+
+
+							
 							for(var i=0; i< dataViews.length; i++){
 								self.expanded[i] = false; 
+								self.setupPopover(i);
 								self.createQualCard(i);
+								self.setupControls(); 
 							}
 							self.initGrid(); 
-							for(var i=0; i< dataViews.length-1; i++){
+							for(var i=0; i< dataViews.length; i++){
 								self.populateCard(dataViews[i]);
 							}
 	
@@ -47,7 +52,7 @@
 						createQualCard: function(viewId){
 							var self = this; 
 							//self.ph = parseInt($("#mainCanvas").css("height"));   // parent height
-							
+
 							var container = d3.select("#mainCanvas").append("div")
 												.attr("class", "item")
 												.attr("id", "cardcontainer"+viewId)
@@ -85,7 +90,7 @@
 												});
 							
 							self.createHeader(container, viewId);
-							self.setupControls(); 
+							
 							var cbody = container.append("div")
 									.attr("class", "card-body")
 									.style("width", "98%")
@@ -106,7 +111,7 @@
 									.style("margin-right", "1%")
 									.style("margin-left", "0%")
 									.style("overflow", "visible"); 
-							self.setupPopover(viewId);
+							
 							self.createButtons(panel, viewId); 
 
 
@@ -549,10 +554,15 @@
 							});
 
 						},
-						
+						refreshGrid: function() {
+							var self = this;
+							self.grid.refreshItems().layout();	
+							for(var i=0; i< self.dataViews.length; i++)
+									self.resizeVis(i); 
+						},
 						setupControls: function(){
 							var self = this;
-							d3.select("#cat-button").on("click", function(o){
+							/*d3.select("#cat-button").on("click", function(o){
 								var pan = this.nextElementSibling; 
 								if(pan){
 									if(pan.style.display === "none"){
@@ -561,7 +571,7 @@
 				                       		 else
 				                            	pan.style.display = "none"; 
 								}
-							});
+							});*/ 
 							/*var buttons = d3.selectAll(".control-button"); 
 							buttons.each(function(but){
 								but.class("acco")
