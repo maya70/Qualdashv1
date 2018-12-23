@@ -313,7 +313,7 @@ div.tooltip {
   
       <div class="w3-bar w3-border w3-card-4 w3-light-grey w3-right" style="width: 200px; display: inline; margin-top: 5px; ">
            <button class="w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right  w3-border-left topright-panel" id="b11" onclick="layout1x1()">1x1</button>
-           <button class="w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b22" onclick="layout2x3()">2x2</button>
+           <button class="w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b22" onclick="layout2x3()">2x3</button>
            <button class="active w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b32" onclick="layout3x2()">3x2</button>
           <!--a class="w3-button w3-light-grey w3-small w3-right w3-round  topright-panel">Layouts:</a-->
 
@@ -458,13 +458,27 @@ function addGroup(id){
   $Q.mainControl.addCategorical(id, categoricals[cat_count]);
   cat_count++; 
 }*/
-
+function tableFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
 function toggleBars(displayId){
   $Q.mainControl.toggleBars(displayId); 
 }
 //$(".draggablediv").resizable(
  // ); 
-
+function footerFunction(id) {
+  var x = document.getElementById(id);
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else { 
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
 $('body')
   .on('mousedown', '.popover', function(e) {
     //console.log("clicked inside popover")
@@ -589,6 +603,11 @@ var drag = d3.drag();
 
 <script type="text/javascript" src="js/util.js"></script>
 <script type="text/javascript" src="js/model.js"></script>
+<script type="text/javascript" src="js/vBar.js"></script>
+<script type="text/javascript" src="js/vLine.js"></script>
+<script type="text/javascript" src="js/vPie.js"></script>
+<script type="text/javascript" src="js/vScatter.js"></script>
+<script type="text/javascript" src="js/vCard.js"></script>
 <script type="text/javascript" src="js/mainView.js"></script>
 <script type="text/javascript" src="js/control.js"></script>
 <script type="text/javascript" src="js/main.js"></script>
