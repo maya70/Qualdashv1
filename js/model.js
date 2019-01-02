@@ -326,7 +326,10 @@
                             
                                                         //console.log(ordered); 
                                                         //self.control.drawChart(displayId, ordered); 
-                                                        self.dataViews.push({"viewId": displayId, "data": ordered, "metric": self.availMetrics[displayId]['value']});
+                                                        self.dataViews.push({"viewId": displayId,   
+                                                                            "data": ordered, 
+                                                                            "metric": self.availMetrics[displayId]['value'], 
+                                                                            "metricLabel": self.availMetrics[displayId]['text']});
                             }
                             else if(categoricals[displayId].length === 1){  // count within categories
                                 var cat = categoricals[displayId][0];

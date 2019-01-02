@@ -31,7 +31,7 @@
 												}
 												$(this).css("height", curh+"px"); 
 												$(this).css("width", curw+"px"); 
-												self.parent.refreshGrid(); 
+												self.parent.refreshGrid(1); 
 												self.resizeVis(); 
 											});
 						
@@ -71,58 +71,103 @@
 						
 					},
 					{
-						resizeVis: function(){
+						resizeVis: function(refresh){
 							var self = this;
-							var margin = self.cat? {top: 0, right: 10, bottom: 50, left:30} : {top: 10, right: 10, bottom: 65, left:30}; //TODO: modify this according to different views
-							var svgw = parseInt(d3.select("#card"+self.id).style("width")) * 0.9,
-								svgh = parseInt(d3.select("#card"+self.id).style("height")) * 0.9;
-								// update the range of the scale with new width/ height
-							var width = svgw - margin.right - margin.left, 
-								height = svgh - margin.top - margin.bottom; 
-
-							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
-								y = d3.scaleLinear().range([height, 0]).nice(); 
-							var data = self.parent.dataViews[self.id]['data']; 							
-							x.domain(data.map(function(d){
-									return d.date; 
-							}));
-							y.domain([0, d3.max(data, function(d){ return d.number; })]);
+							//console.log(self.svg); 
+							self.vis.resize(); 
+							var mainsvgW = parseInt(self.vis.getMainSVG(self.id).style("width"));
+							var drawAreaW = parseInt(d3.select("#draw-area"+self.id).style("width"));
+							var ssvgW = drawAreaW - mainsvgW - 40; 
+							var xoffset = mainsvgW + 30 ;
+							var mainsvgH = parseInt(self.vis.getMainSVG(self.id).style("height"));
+							var drawAreaH = parseInt(d3.select("#draw-area"+self.id).style("height"));
+							var ssvgH = drawAreaH / 3; 
 							
-							// update svg width and height
-							var iter = self.iter; 
-							self.svg = (self.cat)? d3.select("#mainsvg"+self.id+"_"+iter) :d3.select("#mainsvg"+self.id); 
+								
+							if(self.expanded && !self.ssvg1){
+								
+								self.ssvg1 = d3.select("#draw-area"+self.id).append("svg")
+											.attr("id", "ssvg1"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", ssvgW)
+											.attr("height", ssvgH)	
+											.style("position", "absolute")
+											.style("top", 0)
+											.style("left", xoffset);										
+											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
+								self.ssvg1.append("rect")
+											.attr("x", 5)
+											.attr("y", 5)
+											.attr("width", ssvgW-10)
+											.attr("height", ssvgH - 10)
+											.style("stroke", "red")
+											.style("fill", "none"); 
+								self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
+											.attr("id", "ssvg2"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", ssvgW)
+											.attr("height", ssvgH)	
+											.style("position", "absolute")
+											.style("top", ssvgH)
+											.style("left", xoffset);										
+											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
+								self.ssvg2.append("rect")
+											.attr("x", 5)
+											.attr("y", 5)
+											.attr("width", ssvgW-10)
+											.attr("height", ssvgH - 10)
+											.style("stroke", "red")
+											.style("fill", "none"); 
+								self.ssvg3 = d3.select("#draw-area"+self.id).append("svg")
+											.attr("id", "ssvg3"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", ssvgW)
+											.attr("height", ssvgH)	
+											.style("position", "absolute")
+											.style("top", (ssvgH * 2))
+											.style("left", xoffset);										
+											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
+								self.ssvg3.append("rect")
+											.attr("x", 5)
+											.attr("y", 5)
+											.attr("width", ssvgW-10)
+											.attr("height", ssvgH - 10)
+											.style("stroke", "red")
+											.style("fill", "none"); 
 
-							self.svg.attr("width", svgw)
-									.attr("height", svgh);
-
-							x.rangeRound([0, width]).padding(0.1);
-							y.range([(height), 0]); 
-
-							////console.log(self.svg.selectAll("*"));
-							self.svg.select(".x.axis")
-							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
-							      .call(d3.axisBottom(x))
-									.selectAll("text")	
-								        .style("text-anchor", "end")
-								        .attr("dx", "-.8em")
-								        .attr("dy", ".15em")
-								        .attr("transform", "rotate(-65)");	
-
-							self.svg.select(".y.axis")
-									.call(d3.axisLeft(y).ticks(5, "s"))
-							      	.attr("transform", "translate(0,"+ margin.top+")");
+								self.ssvg4 = d3.select("#draw-area"+self.id).append("svg")
+											.attr("id", "ssvg4"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", mainsvgW)
+											.attr("height", ssvgH)	
+											.style("position", "absolute")
+											.style("top", (ssvgH * 2))
+											.style("left", 30);										
+											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
+								self.ssvg4.append("rect")
+											.attr("x", 5)
+											.attr("y", 5)
+											.attr("width", mainsvgW-10)
+											.attr("height", ssvgH - 10)
+											.style("stroke", "red")
+											.style("fill", "none"); 
+								
+							}
+							else if(!refresh || ((xoffset + ssvgW) > drawAreaW)){
+								var undef;								
+								d3.selectAll(".ssvg"+self.id).remove(); 
+								self.ssvg1 = undef;
+								self.ssvg2 = undef;
+								self.ssvg3 = undef;
+								self.ssvg4 = undef;
+								self.expanded = false; 
+								self.vis.resize();  
+							}
 							
-							if(self.cat) self.changed(x, y, self.id); 
-							else{
-								self.svg.selectAll(".bar")
-								.attr("x", function(d) { 
-									return x(d.date); })
-							      .attr("y", function(d) { 
-							      	return y(d.number)+ margin.top; })
-							      .attr("width", x.bandwidth())
-							      .attr("height", function(d) { return height  - y(d.number); });
-							}		  
-
 						},
 						createHeader: function(container, viewId){
 							var self = this; 

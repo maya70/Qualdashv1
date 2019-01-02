@@ -118,7 +118,7 @@ div.tooltip {
 .item {
   position: absolute;
   width: 32%;
-  height: 25%;
+  height: 28%;
   line-height: 200px;
   margin: 3px;
   z-index: 1;
@@ -199,7 +199,8 @@ div.tooltip {
       vertical-align: top; 
     }
     .form-inline{
-      max-height: 35px;
+      max-height: 40px;
+      min-height: 36px; 
       padding-top: 0px;
       padding-bottom: 0px;
       margin-top: 0px;
@@ -236,6 +237,12 @@ div.tooltip {
   font-weight: bold;  
   background-color: #eee; 
 }
+.nav-tabs>li{
+  display: inline-block;
+}
+.nav>li{
+  display: inline-block;
+}
 
 .tab-content{
   max-height: inherit; 
@@ -259,7 +266,24 @@ div.tooltip {
   min-height: 600px;
   min-width: 600px;
   background-color: red; 
+}
 
+.expansion-canvas{
+  min-height: 600px;
+  min-width: 600px;
+  background-color: green; 
+}
+#navTabs {
+  white-space: nowrap;
+  display:block!important;
+  flex-wrap: nowrap;
+  max-width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch
+}
+svg{
+  display: inline-block;
 }
 
 </style>
@@ -294,17 +318,17 @@ div.tooltip {
  
 
 <!-- Top container -->
-<div class="w3-bar w3-top w3-white w3-large" style="z-index:4; max-height: 45px; ">
+<div class="w3-bar w3-top w3-white w3-large" style="z-index:4; max-height: 45px; display: inline-block; ">
   <button class="w3-button w3-black w3-xlarge" onclick="w3_open()" style="vertical-align: top;">☰</button>
   <!--button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button-->
 
   <!-- Header -->
-  <header class="w3-container" style="padding-top:6px; padding-bottom: 0px; width: 50%; display:inline-block;">
-    <ul class="nav nav-tabs" style="width: 50%; display:inline;">
-      <li class="active nav-item"><a data-toggle="tab" href="#home">Home</a></li>
-      <li class="nav-item" ><a data-toggle="tab" href="#compCanvas">Comparators</a></li>
+  <header class="w3-container w3-medium" style="padding-top:6px; padding-bottom: 0px; display:inline-block; ">
+    <ul id="navTabs" class="nav nav-tabs" style="width: 100%; max-height: 45px;  width: 500px; max-height: 45px; overflow-x: scroll; overflow-y: scroll;">
+      <li class="active nav-item px-1"><a class="nav-link" data-toggle="tab" href="#home" style="display:inline-block;">Home</a></li>
+      <li class="nav-item px-1" ><a class="nav-link" data-toggle="tab" href="#compCanvas" style="display:inline-block;">Comparators</a></li>
       <!--li class="nav-item"><a data-toggle="tab" href="#can2">Database Status</a></li-->
-      <li class="nav-item"><a data-toggle="tab" href="#can3">>></a></li>  
+      <li class="nav-item px-1"><a class="nav-link" data-toggle="tab" href="#expPlaceHolder" style="display: inline-block;">>></a></li>  
     </ul>
   </header>
          <div class="w3-bar w3-border w3-card-4 w3-light-grey w3-right" style="max-width: 130px; display: inline; margin-top: 5px; ">
@@ -389,9 +413,9 @@ div.tooltip {
 
 <div class="w3-row-padding w3-margin-bottom page-content">
     
- <div class="w3-row-padding w3-margin-top page-content">
+<div class="w3-row-padding w3-margin-top page-content">
  
- <div class="tab-content">
+<div id="tabsParent" class="tab-content">
  <div id="home" class="tab-pane fade in active">
   <div class="w3-panel">
     <!--div class="w3-row-padding" id= "mainCanvas" style="margin:0 -16px; min-height: 700px;">
@@ -402,9 +426,12 @@ div.tooltip {
     </div>
    </div>
  </div> 
- <div id="compCanvas" class="tab-pane fade">
-    
- </div>   
+ <div id="compCanvas" class="tab-pane fade">   
+ </div> 
+
+<div id="expPlaceHolder" class="expansion-canvas tab-pane fade">   
+ </div> 
+
 </div>
 
 </div>
@@ -526,7 +553,32 @@ function layout3x2() {
 }
 
 function layout1x1() {
-  console.log($("#mainCanvas").css("height"));
+  //console.log($("#mainCanvas").css("height"));
+  var cardObjects = $Q.mainControl.getDataViews();
+  //console.log(cardObjects); 
+  
+  var tabContainer = document.getElementById("navTabs"); //d3.select("#navTabs");
+
+  cardObjects.forEach(function(obj, id){
+    var newItem = document.createElement("LI");
+        newItem.setAttribute("class", "nav-item px-1")
+        newItem.setAttribute("style", "display: inline-block")
+    var anchor = document.createElement("a");
+    var node = document.createTextNode(obj['metricLabel']);
+        anchor.appendChild(node);
+        anchor.setAttribute("class", "nav-link"); 
+        anchor.setAttribute("id", "newtab"+id); 
+        anchor.setAttribute("href", "#modal-one");
+        newItem.appendChild(anchor);
+    tabContainer.insertBefore(newItem, tabContainer.childNodes[tabContainer.childNodes.length-2]); 
+    /* console.log(obj['metricLabel']);
+      tabContainer.append("li")
+        .attr("class","nav-item").append("a")
+              .attr("data-toggle", "tab")
+              .attr("href", "#expPlaceHolder")
+              .text(obj['metricLabel']);*/
+  });
+  
   var cards = d3.selectAll(".item"); 
   cards.each(function(){
     console.log($(this).css("width")); 

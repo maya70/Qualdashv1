@@ -240,12 +240,13 @@
 							});
 
 						},
-						refreshGrid: function() {
+						refreshGrid: function(singleCard) {
 							var self = this;
 							self.grid.refreshItems().layout();	
-							self.cards.forEach(function(card){
-								card.resizeVis(); 
-							});
+							if(!singleCard)
+								self.cards.forEach(function(card){
+									card.resizeVis(1); 
+								});
 							//for(var i=0; i< self.dataViews.length; i++)
 							//		self.resizeVis(i); 
 						},

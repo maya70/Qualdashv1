@@ -366,7 +366,68 @@
 						
 						},
 
+						resize: function(){
+							var self = this;
+							var margin = self.cat? {top: 0, right: 10, bottom: 50, left:30} : {top: 10, right: 10, bottom: 65, left:30}; //TODO: modify this according to different views
+							var scale = self.parent.expanded? 0.6 : 0.9; 
+							var parentW = parseInt(d3.select("#card"+self.id).style("width")),
+								parentH = parseInt(d3.select("#card"+self.id).style("height"));
+							var svgw = parentW * scale,
+								svgh = parentH * scale;
+								// update the range of the scale with new width/ height
+							var width = svgw - margin.right - margin.left, 
+								height = svgh - margin.top - margin.bottom; 
 
+							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
+								y = d3.scaleLinear().range([height, 0]).nice(); 
+							var data = self.data; 							
+							x.domain(data.map(function(d){
+									return d.date; 
+							}));
+							y.domain([0, d3.max(data, function(d){ return d.number; })]);
+							
+							// update svg width and height
+							var iter = self.iter; 
+							self.svg = self.getMainSVG(self.id); 
+							var xoffset = self.parent.expanded? (scale - 0.9) * width : 0; 
+							self.svg.attr("width", svgw)
+									.attr("height", svgh)
+									.attr("transform", "translate("+ xoffset +",0)" );
+
+							x.rangeRound([0, width]).padding(0.1);
+							y.range([(height), 0]); 
+
+							////console.log(self.svg.selectAll("*"));
+							self.svg.select(".x.axis")
+							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
+							      .call(d3.axisBottom(x))
+									.selectAll("text")	
+								        .style("text-anchor", "end")
+								        .attr("dx", "-.8em")
+								        .attr("dy", ".15em")
+								        .attr("transform", "rotate(-65)");	
+
+							self.svg.select(".y.axis")
+									.call(d3.axisLeft(y).ticks(5, "s"))
+							      	.attr("transform", "translate(0,"+ margin.top+")");
+							
+							if(self.cat) self.changed(x, y, self.id); 
+							else{
+								self.svg.selectAll(".bar")
+								.attr("x", function(d) { 
+									return x(d.date); })
+							      .attr("y", function(d) { 
+							      	return y(d.number)+ margin.top; })
+							      .attr("width", x.bandwidth())
+							      .attr("height", function(d) { return height  - y(d.number); });
+							}		
+
+
+						},
+						getMainSVG: function(id){
+							var self = this; 
+							return (self.cat)? d3.select("#mainsvg"+id+"_"+iter) :d3.select("#mainsvg"+id); 
+						},
 						toggleBarView: function(viewId){
 							var self = this;
 							if(self.toggle === "grouped")
