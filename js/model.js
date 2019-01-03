@@ -13,67 +13,12 @@
                          *  Defaults for each audit are set here
                          *  On launching the site it will display metrics in this order 
                          */ 
-                        self.availMetrics = control.savedMetrics || [{"value": "4.04 Death in hospital", 
-                                              "text": "Mortality"},
-                                              {"value": "derived_readmission", 
-                                                "text": "48h Readmission"}, 
-                                              {"value": "Delay from Call for Help to Reperfusion Treatment", 
-                                              "text": "Call-to-Balloon"},
-                                              {"value": "Delay from Arrival in Hospital to Reperfusion Treatment", 
-                                                "text": "Door-to-Balloon"},
-                                              {"value": "derived_los", 
-                                              "text": "Length of Stay"},
-                                              {"value": "Bleeding complications", // TODO: check how to calcul. complication rates 
-                                                "text": "Complications"
-                                              }];   
-                        self.displayVariables = control.savedVariables || [{  "metric": "Mortality",
-                                                    "x": "3.06 Date/time arrival at hospital" ,
-                                                    "y":"4.04 Death in hospital",
-                                                    "xType": "t",
-                                                    "yType": "q", 
-                                                    "aggregate": "count",
-                                                    "scale": "monthly"
-                                                 }, 
-                                                 {  "metric": "48h Readmission",
-                                                    "x": "3.06 Date/time arrival at hospital",
-                                                    "y": ["4.01 Date of discharge", "3.06 Date/time arrival at hospital"],
-                                                    "xType": "t",
-                                                    "yType": "q",
-                                                    "aggregate": "count",
-                                                    "scale": "monthly"
-                                                 },
-                                                 {  "metric": "Call-to-Balloon",
-                                                    "x": "3.06 Date/time arrival at hospital" ,
-                                                    "y":"Delay from Call for Help to Reperfusion Treatment",
-                                                    "xType": "t",
-                                                    "yType": "q", 
-                                                    "aggregate": "count",
-                                                    "scale": "monthly"
-                                                 }, 
-                                                 {  "metric": "Door-to-Balloon",
-                                                    "x": "3.06 Date/time arrival at hospital",
-                                                    "y": "Delay from Arrival in Hospital to Reperfusion Treatment",
-                                                    "xType": "t",
-                                                    "yType": "q",
-                                                    "aggregate": "count",
-                                                    "scale": "monthly"
-                                                 },
-                                                 {  "metric": "Length of Stay",
-                                                    "x": "3.06 Date/time arrival at hospital",
-                                                    "y": ["4.01 Date of discharge", "3.06 Date/time arrival at hospital"],
-                                                    "xType": "t",
-                                                    "yType": "q",
-                                                    "aggregate": "count",
-                                                    "scale": "monthly"
-                                                 },
-                                                 {  "metric": "Complications",
-                                                    "x": "3.06 Date/time arrival at hospital" ,
-                                                    "y":"Bleeding complications",
-                                                    "xType": "t",
-                                                    "yType": "q", 
-                                                    "aggregate": "count",
-                                                    "scale": "monthly"
-                                                }];
+                        self.audit = $Q.getUrlVars()["audit"];
+                        var auditMetrics = (self.audit==="picanet")? $Q.Picanet.availMetrics : $Q.Minap.availMetrics; 
+                        var auditVariables = (self.audit==="picanet")? $Q.Picanet.displayVariables : $Q.Minap.displayVariables; 
+                        
+                        self.availMetrics = control.savedMetrics || auditMetrics ;   
+                        self.displayVariables = control.savedVariables || auditVariables;
                           
                         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                         //self.dateVar = self.;
@@ -113,7 +58,11 @@
                         getMetaData: function(){
                             return this.meta; 
                         },
-                        readMinapDummy: function(){
+                        getAudit: function() {
+                            var self = this;
+                            return self.audit; 
+                        },
+                        readMinapData: function(){
                             var self = this; 
                             self.meta = [];
                             d3.csv("./data/minap_meta.csv", function(meta){
@@ -123,6 +72,28 @@
                                 //self.meta = meta; 
                                 console.log(meta); 
                                 d3.csv("./data/minap_dummy.csv", function(data){
+                                        console.log(data); 
+                                        self.data = data;                                     
+                                        ////console.log(displayVar);
+                                        for(var display = 0; display < self.displayVariables.length; display++)
+                                        {
+                                            self.applyAggregateRule(self.displayVariables[display]["metric"], "count", "monthly" , display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
+                                        }
+                                        self.control.dataReady(self.dataViews, self.data); 
+
+                                    });
+                                });
+                            },
+                        readPicanetData: function(){
+                            var self = this; 
+                            self.meta = [];
+                            d3.csv("./data/picanet_meta.csv", function(meta){
+                                for(var k=0; k < meta.length; k++)
+                                    if(meta[k]['fieldName'] !== "")
+                                        self.meta.push(meta[k]); 
+                                //self.meta = meta; 
+                                console.log(meta); 
+                                d3.csv("./data/picanet_data.csv", function(data){
                                         console.log(data); 
                                         self.data = data;                                     
                                         ////console.log(displayVar);

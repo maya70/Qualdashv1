@@ -278,9 +278,9 @@ div.tooltip {
   display:block!important;
   flex-wrap: nowrap;
   max-width: 100%;
-  overflow-x: scroll;
+  overflow-x: hidden;
   overflow-y: hidden;
-  -webkit-overflow-scrolling: touch
+  
 }
 svg{
   display: inline-block;
@@ -324,7 +324,7 @@ svg{
 
   <!-- Header -->
   <header class="w3-container w3-medium" style="padding-top:6px; padding-bottom: 0px; display:inline-block; ">
-    <ul id="navTabs" class="nav nav-tabs" style="width: 100%; max-height: 45px;  width: 500px; max-height: 45px; overflow-x: scroll; overflow-y: scroll;">
+    <ul id="navTabs" class="nav nav-tabs" style="width: 100%; max-height: 45px;  width: 500px; max-height: 45px; ">
       <li class="active nav-item px-1"><a class="nav-link" data-toggle="tab" href="#home" style="display:inline-block;">Home</a></li>
       <li class="nav-item px-1" ><a class="nav-link" data-toggle="tab" href="#compCanvas" style="display:inline-block;">Comparators</a></li>
       <!--li class="nav-item"><a data-toggle="tab" href="#can2">Database Status</a></li-->
@@ -463,28 +463,8 @@ var mySidebar = document.getElementById("mySidebar");
 var overlayBg = document.getElementById("myOverlay");
 
 var cat_count = 0; 
-// Toggle between showing and hiding the sidebar, and add overlay effect
-/*function w3_open() {
-    if (mySidebar.style.display === 'block') {
-        mySidebar.style.display = 'none';
-        overlayBg.style.display = "none";
-    } else {
-        mySidebar.style.display = 'block';
-        overlayBg.style.display = "block";
-    }
-}
 
-// Close the sidebar with the close button
-function w3_close() {
-    mySidebar.style.display = "none";
-    overlayBg.style.display = "none";
-}
 
-function addGroup(id){
-  var categoricals = ["Record Created By", "Patient District Number", "1.09 Patient admin status"];
-  $Q.mainControl.addCategorical(id, categoricals[cat_count]);
-  cat_count++; 
-}*/
 function tableFunction(id) {
   var x = document.getElementById(id);
   if (x.className.indexOf("w3-show") == -1) {

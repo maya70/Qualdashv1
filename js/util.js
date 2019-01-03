@@ -5,8 +5,6 @@ var $Q = QUALDASH;
 
 $Q.classes = {};
 
-
-
 /**
  * Simple class inheritance.
  * Does not handle calling the superclass constructor.
@@ -67,4 +65,76 @@ $Q.Control_getDisplayVariable = function(){
 	return $Q.displayVariable; 
 };
 
+$Q.getUrlVars = function() {
+    var vars = {};
+    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+        vars[key] = value;
+    });
+    if(window.location.href.indexOf('audit') < 0)
+      vars['audit'] = 'minap'; 
+    return vars;
+}; 
 
+$Q.Minap = {
+    "availMetrics": [{"value": "4.04 Death in hospital", 
+                                              "text": "Mortality"},
+                                              {"value": "derived_readmission", 
+                                                "text": "48h Readmission"}, 
+                                              {"value": "Delay from Call for Help to Reperfusion Treatment", 
+                                              "text": "Call-to-Balloon"},
+                                              {"value": "Delay from Arrival in Hospital to Reperfusion Treatment", 
+                                                "text": "Door-to-Balloon"},
+                                              {"value": "derived_los", 
+                                              "text": "Length of Stay"},
+                                              {"value": "Bleeding complications", // TODO: check how to calcul. complication rates 
+                                                "text": "Complications"
+                                              }], 
+    "displayVariables": [{  "metric": "Mortality",
+                                                    "x": "3.06 Date/time arrival at hospital" ,
+                                                    "y":"4.04 Death in hospital",
+                                                    "xType": "t",
+                                                    "yType": "q", 
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
+                                                 }, 
+                                                 {  "metric": "48h Readmission",
+                                                    "x": "3.06 Date/time arrival at hospital",
+                                                    "y": ["4.01 Date of discharge", "3.06 Date/time arrival at hospital"],
+                                                    "xType": "t",
+                                                    "yType": "q",
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
+                                                 },
+                                                 {  "metric": "Call-to-Balloon",
+                                                    "x": "3.06 Date/time arrival at hospital" ,
+                                                    "y":"Delay from Call for Help to Reperfusion Treatment",
+                                                    "xType": "t",
+                                                    "yType": "q", 
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
+                                                 }, 
+                                                 {  "metric": "Door-to-Balloon",
+                                                    "x": "3.06 Date/time arrival at hospital",
+                                                    "y": "Delay from Arrival in Hospital to Reperfusion Treatment",
+                                                    "xType": "t",
+                                                    "yType": "q",
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
+                                                 },
+                                                 {  "metric": "Length of Stay",
+                                                    "x": "3.06 Date/time arrival at hospital",
+                                                    "y": ["4.01 Date of discharge", "3.06 Date/time arrival at hospital"],
+                                                    "xType": "t",
+                                                    "yType": "q",
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
+                                                 },
+                                                 {  "metric": "Complications",
+                                                    "x": "3.06 Date/time arrival at hospital" ,
+                                                    "y":"Bleeding complications",
+                                                    "xType": "t",
+                                                    "yType": "q", 
+                                                    "aggregate": "count",
+                                                    "scale": "monthly"
+                                                }]
+};

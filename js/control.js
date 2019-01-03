@@ -10,8 +10,12 @@
 					},
 					{
 						viewReady: function(view){
-							var self = this; 						
-							self.dataModel.readMinapDummy(); 
+							var self = this; 	
+							self.audit = self.dataModel.getAudit(); 					
+							if(self.audit === "minap")
+								self.dataModel.readMinapData(); 
+							else 
+								self.dataModel.readPicanetData(); 
 						},
 						getMetaData: function(){
 							var self = this; 
