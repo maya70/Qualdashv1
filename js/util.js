@@ -75,6 +75,85 @@ $Q.getUrlVars = function() {
     return vars;
 }; 
 
+$Q.Picanet = {
+  "availMetrics": [{"value": "mortality", 
+                    "text": "Mortality"},
+                    {"value": "derived_readmission", 
+                      "text": "48h Readmission"}, 
+                    {"value": "bed_days", 
+                    "text": "Bed Days and Extubation"},
+                    {"value": "retrievals", 
+                      "text": "Retrievals and Refusals"},
+                    {"value": "case_mix", 
+                    "text": "Specialty Case Mix"},
+                    {"value": "dependency", // TODO: check how to calcul. complication rates 
+                      "text": "Dependency"
+                    }], 
+"displayVariables": [{  "metric": "Mortality",
+                        "x": "AdMonth",
+                        "y": ["death", "smr"],                                     
+                        "categories": ["year", "siteidscr"], 
+                        "xType": "t",
+                        "yType": "q", 
+                        "aggregate": "count",
+                        "scale": "monthly",
+                        "children": [
+                                {"x": "admission",
+                                "y": "diagnosis",
+                                "xType": "q",
+                                "yType": "n", 
+                                "aggregate": "count"
+                                }
+                        ]
+                     }, 
+                     {  "metric": "48h Readmission",
+                        "x": "",
+                        "y": [""],
+                        "categories": [], 
+                        "xType": "t",
+                        "yType": "q",
+                        "aggregate": "count",
+                        "scale": "monthly"
+                     },
+                     {  "metric": "Bed Days and Extubation",
+                        "x": "" ,
+                        "y":"",
+                        "categories": [], 
+                        "xType": "t",
+                        "yType": "q", 
+                        "aggregate": "count",
+                        "scale": "monthly"
+                     }, 
+                     {  "metric": "Retrievals and Refusals",
+                        "x": "",
+                        "y": "",
+                        "categories": [], 
+                        "xType": "t",
+                        "yType": "q",
+                        "aggregate": "count",
+                        "scale": "monthly"
+                     },
+                     {  "metric": "Specialty Case Mix",
+                        "x": "",
+                        "y": [""],
+                        "categories": [], 
+                        "xType": "t",
+                        "yType": "q",
+                        "aggregate": "count",
+                        "scale": "monthly"
+                     },
+                     {  "metric": "Dependency",
+                        "x": "" ,
+                        "y":"",
+                        "categories": [], 
+                        "xType": "t",
+                        "yType": "q", 
+                        "aggregate": "count",
+                        "scale": "monthly"
+                    }]
+
+};
+
 $Q.Minap = {
     "availMetrics": [{"value": "4.04 Death in hospital", 
                                               "text": "Mortality"},

@@ -77,7 +77,7 @@
                                         ////console.log(displayVar);
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
-                                            self.applyAggregateRule(self.displayVariables[display]["metric"], "count", "monthly" , display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
+                                            self.applyAggregateRule(self.displayVariables[display], display, data);
                                         }
                                         self.control.dataReady(self.dataViews, self.data); 
 
@@ -93,13 +93,14 @@
                                         self.meta.push(meta[k]); 
                                 //self.meta = meta; 
                                 console.log(meta); 
-                                d3.csv("./data/picanet_data.csv", function(data){
+                                d3.csv("./data/picanet_admission/2014.csv", function(data){
                                         console.log(data); 
                                         self.data = data;                                     
                                         ////console.log(displayVar);
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
-                                            self.applyAggregateRule(self.displayVariables[display]["metric"], "count", "monthly" , display, data, self.displayVariables[display]["x"], self.displayVariables[display]["y"]);
+                                            self.applyAggregateRule(self.displayVariables[0],                                                                     
+                                                                    0, data);
                                         }
                                         self.control.dataReady(self.dataViews, self.data); 
 
@@ -115,7 +116,7 @@
                             console.log(self.displayVariables[viewId]["metric"]); 
                             console.log(self.displayVariables[viewId]["x"]); 
                             console.log(self.displayVariables[viewId]["y"]); 
-                            self.applyAggregateRule(self.displayVariables[viewId]["metric"], "count", "monthly", viewId, self.data, self.displayVariables[viewId]["x"], self.displayVariables[viewId]["y"], self.categoricals );
+                            self.applyAggregateRule(self.displayVariables[viewId], viewId, self.data, self.categoricals );
                         },
                         resetCategoricals: function(viewId){
                             var self = this;
@@ -249,9 +250,17 @@
                             console.log(self.metaHier); 
 
                         },
-                        applyAggregateRule: function(metric, rule, scale, displayId, data, dateVar, displayVar, categoricals){
+
+                        applyAggregateRule: function(displayObj, displayId, data, categoricals){
                             var self = this; 
                             var dict = {};
+                            var metric = displayObj["metric"],
+                                rule = displayObj["aggregate"],
+                                scale = displayObj["scale"],
+                                dateVar = displayObj["x"],
+                                displayVar = displayObj["y"];
+
+
                             if(displayVar.constructor == Array)
                                 displayVar = self.calculateDerivedVar(metric, displayVar); 
                             
