@@ -7,6 +7,7 @@
                         self.control = control; 
                         self.dataViews = []; 
                         self.ehr = {};  // keeps a dictionary by patient NHS number for patient pathway calculations (including 48h readmission)
+                        self.unitID = "2251";
 
                         /** availMetrics keeps a list of metrics that are made available 
                          *  in a drop-down menu for users to select from in each QualCard
@@ -88,9 +89,16 @@
                             var self = this; 
                             self.meta = [];
                             d3.csv("./data/picanet_meta.csv", function(meta){
-                                for(var k=0; k < meta.length; k++)
-                                    if(meta[k]['fieldName'] !== "")
-                                        self.meta.push(meta[k]); 
+                                for(var k=0; k < meta.length; k++){
+                                    if(meta[k]['COLUMN_NAME'] !== ""){
+                                        var metaEntry = {}; 
+                                        metaEntry['fieldName'] = meta[k]['COLUMN_NAME'].toLowerCase();
+                                        metaEntry['fieldType'] = (meta[k]['DATA_TYPE'] === "datetime")? "t" :
+                                                                    (( meta[k]['DATA_TYPE'] === "smallint" )?"o" : 
+                                                                        ((meta[k]['DATA_TYPE'] === "nvarchar" || meta[k]['DATA_TYPE'] === "varchar" || meta[k]['DATA_TYPE'] === "bit")? "n" : "q"));
+                                        self.meta.push(metaEntry); 
+                                    }
+                                }
                                 //self.meta = meta; 
                                 console.log(meta); 
                                 d3.csv("./data/picanet_admission/2014.csv", function(data){
@@ -99,7 +107,7 @@
                                         ////console.log(displayVar);
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
-                                            self.applyAggregateRule(self.displayVariables[0],                                                                     
+                                            self.applyAggregateRule2(self.displayVariables[0],                                                                     
                                                                     0, data);
                                         }
                                         self.control.dataReady(self.dataViews, self.data); 
@@ -122,12 +130,21 @@
                             var self = this;
                             self.categoricals[viewId] = []; 
                         },
-                        calculateDerivedVar: function(metric, vars){
+                        calculateDerivedVar: function(metric, yvar){
                             console.log("Calculating "+ metric); 
                             var self = this; 
                             var derived = []; 
                             for(var i=0; i< self.data.length; i++){
                                 var rec = self.data[i]; 
+                                
+                                if(yvar === "death"){
+                                    if(rec["unitdisstatus"] === "1")
+                                        self.data[i][yvar] = 1;
+                                    else
+                                        self.data[i][yvar] = 0;
+                                }
+
+                                
                                 if(metric === "48h Readmission"){
                                     // data loop calculations
                                     if(!self.ehr[self.data[i]["1.03 NHS number"]]){
@@ -251,67 +268,155 @@
 
                         },
 
-                        applyAggregateRule: function(displayObj, displayId, data, categoricals){
+                        applyAggregateRule2: function(displayObj, displayId, data, redraw){
                             var self = this; 
                             var dict = {};
                             var metric = displayObj["metric"],
                                 rule = displayObj["aggregate"],
                                 scale = displayObj["scale"],
                                 dateVar = displayObj["x"],
-                                displayVar = displayObj["y"];
-
-
-                            if(displayVar.constructor == Array)
-                                displayVar = self.calculateDerivedVar(metric, displayVar); 
+                                displayVar = displayObj["y"],
+                                categoricals = displayObj["categories"];
                             
-                            console.log(data[0][metric]); 
+                            if(displayVar === "derived")
+                                displayVar = self.calculateDerivedVar(metric, displayVar); 
+                            if(displayVar.constructor == Array){
+                                // The 2 elements form a dual y-axis 
+                                var xlevels = d3.map(self.data, function(item){
+                                                return item[dateVar];
+                                                }).keys();
+                                
+                                xlevels.forEach(function(level){
+                                    dict[level] = {};
+                                    dict[level][displayVar[0]] = 0;
+                                    dict[level][displayVar[1]] = 0;
+                                });
+                                console.log(dict);
+                                displayVar.forEach(function(yvar){
+                                    if(yvar.indexOf("_") > 0 ){
+                                        // this is a derived variable
+                                        var strs = yvar.split("_");
+                                        var rule = strs[0]; 
+                                        var vname = strs[1];
+                                        if(rule === "der")
+                                            {
+                                                self.calculateDerivedVar(metric, vname); 
+                                                for(var i=0; i < self.data.length; i++){
+                                                    // calculate aggregate from derived values
+                                                    if(self.data[i]["siteidscr"] === self.unitID)
+                                                        dict[self.data[i][dateVar]][yvar] += self.data[i][vname];  
+                                                    }
+                                            }
+                                        else{ // this is a value that cannot be calculated on a per-record basis 
+                                            // set a random for now
+                                            //TODO: calculate this aggregate properly
+                                            for(var key in dict)
+                                                dict[key][yvar] = Math.random(); 
+                                        }
+                                    }
+                                    else{
+                                        for(var i=0; i < self.data.length; i++){
+                                            // calculate aggregate from original values
+                                             if(self.data[i]["siteidscr"] === self.unitID)
+                                                dict[self.data[i][dateVar]][yvar] += self.data[i][yvar];  
+                                            }
+                                    }
+                                });
+                                
+                                // sort dict by date
+                                function custom_sort(a,b){
+                                    return parseInt(a) - parseInt(b); 
+                                }
+    
+                                var ordered = [];
+                                var temp = Object.keys(dict);
+                                ////console.log(temp); 
+                                var orderedKeys = Object.keys(dict).sort(custom_sort);
+                                ////console.log(orderedKeys);
+    
+                                for(var k= 0; k < orderedKeys.length; k++){
+                                    var obj = {};
+                                    obj[orderedKeys[k]] = dict[orderedKeys[k]];
+                                    ordered.push(obj); 
+                                }
+                                console.log(ordered); 
+                                self.dataViews.push({"viewId": displayId,   
+                                                    "data": ordered, 
+                                                    "metric": self.availMetrics[displayId]['value'], 
+                                                    "mark": displayObj["mark"],
+                                                    "cats": displayId["categories"],
+                                                    "ylength": displayObj["y"].length, 
+                                                    "metricLabel": self.availMetrics[displayId]['text']});        
+                            }
+
+
+                        },
+
+                        applyAggregateRule: function(displayObj, displayId, data, redraw){
+                            var self = this; 
+                            var dict = {};
+                            var metric = displayObj["metric"],
+                                rule = displayObj["aggregate"],
+                                scale = displayObj["scale"],
+                                dateVar = displayObj["x"],
+                                displayVar = displayObj["y"],
+                                categoricals = displayObj["categories"];
+                            
+                            if(displayVar === "derived")
+                                displayVar = self.calculateDerivedVar(metric, displayVar); 
+                            //else if(displayVar.constructor == Array){}
+                            
+                            console.log(categoricals); 
 
                             if(!categoricals){
-                                                        for(var i=0; i< data.length; i++){
-                                                            // get the month of this entry
-                                                            var date = self.stringToDate(data[i][dateVar]);                                                        
-                                                            var month = self.months[date.getMonth()];
-                                                            var year = date.getYear()+1900; 
-                                                            var my = month+"-"+year; 
-                                                            ////console.log(my); 
-                                                            dict[my] = dict[my]? dict[my]+parseInt(data[i][displayVar]) : parseInt(data[i][displayVar]);
+                                for(var i=0; i< data.length; i++){
+                                    // get the month of this entry
+                                    var date = self.stringToDate(data[i][dateVar]);                                                        
+                                    var month = self.months[date.getMonth()];
+                                    var year = date.getYear()+1900; 
+                                    var my = month+"-"+year; 
+                                    ////console.log(my); 
+                                    dict[my] = dict[my]? dict[my]+parseInt(data[i][displayVar]) : parseInt(data[i][displayVar]);
+    
+                                }
+    
+                                //console.log(dict); 
+                                var sum=0; 
+                                for(var key in dict){
+                                    sum += dict[key];
+                                }
                             
-                                                        }
-                            
-                                                        //console.log(dict); 
-                                                        var sum=0; 
-                                                        for(var key in dict){
-                                                            sum += dict[key];
-                                                        }
-                                                    
-                            
-                                                        // sort dict by date
-                                                        function custom_sort(a,b){
-                                                            return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
-                                                        }
-                            
-                                                        var ordered = [];
-                                                        var temp = Object.keys(dict);
-                                                        ////console.log(temp); 
-                                                        var orderedKeys = Object.keys(dict).sort(custom_sort);
-                                                        ////console.log(orderedKeys);
-                            
-                                                        for(var k= 0; k < orderedKeys.length; k++){
-                                                            var obj = {};
-                                                            obj['date'] = orderedKeys[k];
-                                                            obj['number'] = dict[orderedKeys[k]];
-                                                            ordered.push(obj); 
-                            
-                                                        }
-                            
-                                                        //console.log(ordered); 
-                                                        //self.control.drawChart(displayId, ordered); 
-                                                        self.dataViews.push({"viewId": displayId,   
-                                                                            "data": ordered, 
-                                                                            "metric": self.availMetrics[displayId]['value'], 
-                                                                            "metricLabel": self.availMetrics[displayId]['text']});
+    
+                                // sort dict by date
+                                function custom_sort(a,b){
+                                    return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
+                                }
+    
+                                var ordered = [];
+                                var temp = Object.keys(dict);
+                                ////console.log(temp); 
+                                var orderedKeys = Object.keys(dict).sort(custom_sort);
+                                ////console.log(orderedKeys);
+    
+                                for(var k= 0; k < orderedKeys.length; k++){
+                                    var obj = {};
+                                    obj['date'] = orderedKeys[k];
+                                    obj['number'] = dict[orderedKeys[k]];
+                                    ordered.push(obj); 
+    
+                                }
+    
+                                //console.log(ordered); 
+                                //self.control.drawChart(displayId, ordered); 
+                                self.dataViews.push({"viewId": displayId,   
+                                                    "data": ordered, 
+                                                    "metric": self.availMetrics[displayId]['value'], 
+                                                    "metricLabel": self.availMetrics[displayId]['text']});
                             }
-                            else if(categoricals[displayId].length === 1){  // count within categories
+                            else
+                                self.categoricals[displayId] = categoricals;
+
+                            if(self.categoricals[displayId].length === 1){  // count within categories
                                 var cat = categoricals[displayId][0];
                                 console.log(cat);
 
@@ -337,22 +442,15 @@
 
                                                         }
                                                         var level = data[i][cat];
-                                                        dict[my][level] += parseInt(data[i][displayVar]); 
-                                                        
+                                                        dict[my][level] += parseInt(data[i][displayVar]);                                                        
                                                     }
-
-
-                                //console.log(dict);
-
-                               
-                                   
+                                //console.log(dict);                             
+                               if(redraw)    
                                     self.control.drawChart(displayId, dict, cat, levels);
 
-                               
-
                             }
-                        else if(categoricals[displayId].length === 2){
-                            
+                        else if(self.categoricals[displayId].length === 2){
+                            console.log("TWO CATS"); 
 
                             // new variable divides the trellis
                             var levels0 = d3.map(self.data, function(item){
@@ -392,11 +490,12 @@
                                                     }
                                //console.log(dict);
                                var levels = [levels0, levels1]; 
-                            self.control.drawChart(displayId, dict, categoricals[displayId], levels, 1);
+                            if(redraw)
+                                self.control.drawChart(displayId, dict, categoricals[displayId], levels, 1);
 
 
                         }
-                        else if(categoricals[displayId].length === 3){
+                        else if(self.categoricals[displayId].length > 2 ){
 
                             
                         }

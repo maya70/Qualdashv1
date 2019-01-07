@@ -8,6 +8,14 @@
 							self.id = dataView['viewId'];
 							self.data = dataView['data'];
 							self.parent = pCard;
+							if(dataView.ylength > 1)
+								self.drawDualBar();
+							else 
+								self.drawBaseBar(); 
+					},
+					{
+						drawBaseBar: function(){
+							var self = this; 
 							var drawArea = d3.select("#draw-area"+self.id);
 							var parentArea = drawArea.select(function(){
 								//d3.select(this.parentNode).on("resize", resize);
@@ -90,8 +98,12 @@
 							      	d3.select(this).style("fill", "steelblue");
 							      });
 						
-					},
-					{
+						},
+						drawDualBar: function(){
+							var self = this;
+							 
+
+						},
 						drawCatBar: function(viewId, dict, cat, levels, iter, trellis){
 							var self = this; 
 								self.dict = dict;

@@ -6,7 +6,6 @@
 			"granP": "count",
 			"granT": "monthly",
 			"target":["trend", "distribution", "value", "distribution"],
-			"refselectors": ["2014", "", "1", ""],
 			"vroles":["in", "in", "out", "out"],
 	     	"children": [{"task": "Does the local SMR fall in the Danger zone?",
 	     					"linkToParent": "isA", 

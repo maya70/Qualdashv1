@@ -300,9 +300,15 @@
 							  
 
 						},
-						getChartType: function(){
+						getChartType: function(dataView){
 							var self = this; 
-							var viewType = $("#vsel"+self.id +' option:selected').val(); 
+							//console.log(dataView); 
+							var viewType; 
+							if(dataView.mark){
+								viewType = dataView.mark; 
+							}
+							else 
+								viewType = $("#vsel"+self.id +' option:selected').val(); 
 							//console.log("TYPE = "+ viewType);
 							return viewType; 
 
@@ -310,7 +316,7 @@
 						
 						populateCard: function(dataView){
 							var self = this; 
-							var chartType = self.getChartType(dataView['viewId']); 
+							var chartType = self.getChartType(dataView); 
 							
 							if(chartType === 'bar')
 								self.vis = new $Q.BarChart(dataView, self);
