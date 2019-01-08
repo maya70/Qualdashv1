@@ -11,20 +11,20 @@
 											.attr("class", "item")
 											.attr("id", "cardcontainer"+viewId)
 											.on("dblclick", function(){
-												//console.log(this);	
+												////console.log(this);	
 												var curh = parseInt($(this).css("height")),
 													curw = parseInt($(this).css("width"));
 												
 												if(self.expanded === false)
 												{  // grow
-													//console.log("growing from "+ curh);
+													////console.log("growing from "+ curh);
 													curh *= 2;
 													curw *= 2;	
 													self.expanded = true; 
 												}
 												else
 												{   // shrink
-													//console.log("shrinking from "+ curh);
+													////console.log("shrinking from "+ curh);
 													curh /= 2;
 													curw /= 2; 
 													self.expanded = false; 
@@ -73,7 +73,7 @@
 					{
 						resizeVis: function(refresh){
 							var self = this;
-							//console.log(self.svg); 
+							////console.log(self.svg); 
 							self.vis.resize(); 
 							var mainsvgW = parseInt(self.vis.getMainSVG(self.id).style("width"));
 							var drawAreaW = parseInt(d3.select("#draw-area"+self.id).style("width"));
@@ -196,10 +196,10 @@
 												.style("min-width", "45%")
 												.style("margin-left",0)
 												.on("change", function(d){													
-													//console.log(this.value);													
+													////console.log(this.value);													
 													self.parent.control.updateMetrics(viewId, this.value); 											
 													var dv = self.parent.getMetricDataView(this.value);
-													//console.log(dv); 
+													////console.log(dv); 
 													//TODO: reset here the grouping variables and dicts of this view
 													self.parent.control.resetCategoricals(viewId); 
 													self.drawBarChart(viewId, dv['data']);
@@ -214,7 +214,7 @@
 							}
 							
 							var curMetric = self.parent.availMetrics[(viewId%self.parent.availMetrics.length)]['value'];
-							//////console.log(curMetric);
+							////////console.log(curMetric);
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
@@ -229,7 +229,7 @@
 												.style("min-width", "43%")
 												.on("change", function(){
 													var dataViews = self.parent.control.getDataViews(); 
-													//console.log(dataViews[viewId]); 
+													////console.log(dataViews[viewId]); 
 													self.populateCard(dataViews[viewId]); 
 												});
 							
@@ -302,18 +302,21 @@
 						},
 						getChartType: function(dataView){
 							var self = this; 
-							//console.log(dataView); 
+							////console.log(dataView); 
 							var viewType; 
 							if(dataView.mark){
 								viewType = dataView.mark; 
 							}
 							else 
 								viewType = $("#vsel"+self.id +' option:selected').val(); 
-							//console.log("TYPE = "+ viewType);
+							////console.log("TYPE = "+ viewType);
 							return viewType; 
 
 						},
-						
+						drawCatBar: function(displayId, data, cat, levels, trellis){
+							var self = this;
+							self.vis.drawCatBar(displayId, data, cat, levels, trellis);
+						},
 						populateCard: function(dataView){
 							var self = this; 
 							var chartType = self.getChartType(dataView); 
@@ -329,7 +332,7 @@
 						},
 						drawPieChart: function(dataView){
 							var self = this; 
-							console.log(dataView);
+							//console.log(dataView);
 							var viewId = dataView['viewId'];
 							var data = dataView['data'];
 							
@@ -337,7 +340,7 @@
 						},
 						drawScatter: function(dataView){
 							var self = this; 
-							//console.log(dataView);
+							////console.log(dataView);
 							//scale function
 							/*
 							var xScale = d3.scaleLinear()

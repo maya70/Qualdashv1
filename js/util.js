@@ -86,18 +86,22 @@ $Q.Picanet = {
                       "text": "Retrievals and Refusals"},
                     {"value": "case_mix", 
                     "text": "Specialty Case Mix"},
-                    {"value": "dependency", // TODO: check how to calcul. complication rates 
+                    {"value": "dependency", 
                       "text": "Dependency"
                     }], 
 "displayVariables": [{  "metric": "Mortality",
                         "mark": "bar",
                         "x": "admonth",
-                        "y": ["der_death", "agg_smr"],                                     
-                        "categories": ["year", "siteidscr"], 
+                        "y": ["eventidscr", "der_death"], 
+                        "yscale": ["patient", "patient"],                         
                         "xType": "t",
-                        "yType": "q", 
-                        "aggregate": "count",
-                        "scale": "monthly",
+                        "yType": ["q", "q"],  
+                        "yaggregates": ["count", "sum"], 
+                        "xspan": "year",    
+                        "yspan": "unit",                            
+                        "categories": ["primarydiagnosisgroup"], 
+                        "overlays": ["smrlocal", "smrglobalmin", "smrglobalmax"], // from any variables with "value" target and "q" type
+                        "compareTo": ["3years", "siteidscr"],
                         "children": [
                                 {"x": "admission",
                                 "y": "diagnosis",

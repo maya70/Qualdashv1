@@ -5,11 +5,8 @@
 					function MainView(control){
 						var self = this;
 						self.control = control;
-						self.iter = 0; 												
-						self.toggle = "grouped";
 						self.control.viewReady(self); 
-						self.expanded = {}; 
-						self.cat = {}; 
+						self.expanded = {}; 						
 						self.cards = [];
 						self.availViews = [{"value": "bar", "text": "Bar Chart"}, 
 											{"value": "line", "text": "Line Chart"}, 
@@ -250,6 +247,11 @@
 							//for(var i=0; i< self.dataViews.length; i++)
 							//		self.resizeVis(i); 
 						},
+						drawCatBar: function(displayId, data, cat, levels, trellis) {
+							var self = this;
+							self.cards[displayId].drawCatBar(displayId, data, cat, levels, trellis);
+
+						},
 						setupControls: function(){
 							var self = this;
 							self.popSettings= jQuery("[data-toggle=popover]").popover({
@@ -265,7 +267,6 @@
 								   }
 						    });							
 						},
-						
 						populateCards: function(dataViews){
 							var self = this;
 							//////console.log(dataView);

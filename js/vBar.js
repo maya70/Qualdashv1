@@ -3,15 +3,22 @@
 	$Q.BarChart = $Q.defineClass(
 					null, 
 					function BarChart(dataView, pCard){
-						var self = this;
-							//////////console.log(data);
-							self.id = dataView['viewId'];
-							self.data = dataView['data'];
-							self.parent = pCard;
-							if(dataView.ylength > 1)
-								self.drawDualBar();
-							else 
+						var self = this;						
+						self.id = dataView['viewId'];
+						self.data = dataView['data'];
+						self.parent = pCard;
+						self.iter = 0; 												
+						self.toggle = "grouped";
+						
+						if(dataView.ylength > 1){
+							(dataView['yscale'][0] === dataView['yscale'][0])?
+							 self.drawCatBar2()
+							 : self.drawDualBar();
+						}
+						else {
+							//if()
 								self.drawBaseBar(); 
+							}
 					},
 					{
 						drawBaseBar: function(){
@@ -104,9 +111,22 @@
 							 
 
 						},
+						drawCatBar2: function(viewId, dict, cat, levels, iter, trellis){
+							var self = this; 
+							console.log("I AM HERE"); 
+							//self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
+							//drawCatBar(displayId, data, cat, levels,0);
+						},
 						drawCatBar: function(viewId, dict, cat, levels, iter, trellis){
+
+							console.log(dict);
+							console.log(cat);
+							console.log(levels);
+							console.log(iter);
+							
 							var self = this; 
 								self.dict = dict;
+								self.cat = {}; 	
 								self.cat[viewId] = cat;
 								self.levels = levels; 
 								var undef;
@@ -121,7 +141,7 @@
     							d3.select("#toggle-btn"+viewId)
     								.attr("hidden", undef)
     								.on("click", function(){
-										self.parent.control.toggleBars(viewId); 
+										self.toggleBarView(viewId); 
 									});
                                		
                   
@@ -160,17 +180,15 @@
 								self.legend = undef; 
 								d3.select(".mainsvg"+viewId).remove(); 
 							}
-							////////console.log(dict);
-
+							
 							var drawArea = d3.select("#draw-area"+viewId);
 							if(iter > 0)
 								drawArea.style("overflow-y", "scroll"); 
-
-							
+					
 							var parentArea = drawArea.select(function(){
 								return this.parentNode; 
 							});
-							////////console.log(parentArea.node().getBoundingClientRect());
+							//console.log(parentArea.node().getBoundingClientRect());
 							//var viewshare = self.dicts? Object.keys(self.dicts).length : 1; 
 							var viewshare = trellis? 2 : 1; 
 							//////console.log(viewshare); 
@@ -198,10 +216,8 @@
 							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
 
 							var timeout = d3.timeout(function() {
-											  d3.select("input[value=\"grouped\"]")
-											      .property("checked", true)
-											      .dispatch("change");
-											}, 2000);
+											  changed(); 
+											}, 4000);
 
 							//g.append("circle").attr("cx", 40).attr("cy", 50).attr("r", 100).style("fill", "red");
 
@@ -322,6 +338,7 @@
 							    transitionStacked(newx, newy, nviewId);
 						};
 						function transitionGrouped(newx, newy, nviewId) {
+							
 							if(newx) x = newx; 
 							if(newy) y = newy; 
 							if(newx) viewId = nviewId; 
@@ -334,10 +351,11 @@
 						  	  console.log(series);
 						  	  rect = series.selectAll("rect");
 						  }
+
 						  rect.transition()
-						      .duration(200)
-						      .delay(function(d, i) { return i * 10; })
-						      .attr("x", function(d, i) {
+						      .duration(400)
+						      .delay(function(d, i) { return i * 20; })
+						      .attr("x", function(d, i) {							         
 						      	 return x(xz[i]) + x.bandwidth() / levels.length * this.parentNode.__data__.key; })
 						      .attr("width", x.bandwidth() / levels.length)
 						    .transition()
@@ -347,6 +365,10 @@
 						      	return y(0) - y(d[1] - d[0]); });
 						}
 						function transitionStacked(newx, newy, nviewId) {
+							console.log(newx);
+							console.log(newy);
+							console.log(nviewId);
+							
 							if(newx) x = newx; 
 							if(newy) y = newy; 
 							if(newx) viewId = nviewId; 
@@ -438,7 +460,7 @@
 						},
 						getMainSVG: function(id){
 							var self = this; 
-							return (self.cat)? d3.select("#mainsvg"+id+"_"+iter) :d3.select("#mainsvg"+id); 
+							return (self.cat)? d3.select("#mainsvg"+id+"_"+self.iter) :d3.select("#mainsvg"+id); 
 						},
 						toggleBarView: function(viewId){
 							var self = this;
