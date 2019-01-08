@@ -401,8 +401,7 @@
 							
 							for(var key in sdata){
 								data.push({'date': key, 'number': sdata[key][Object.keys(sdata[key])[0]]['value'] });								
-							}
-							console.log(data); 
+							}							
 							return data; 
 						},
 						resize: function(){

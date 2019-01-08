@@ -98,6 +98,7 @@
 											.style("left", xoffset);										
 											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
 								self.ssvg1.append("rect")
+											.attr("id","draw-rect")											
 											.attr("x", 5)
 											.attr("y", 5)
 											.attr("width", ssvgW-10)
@@ -106,8 +107,10 @@
 											.style("fill", "none"); 
 
 								// populate the first slave
-								var cats = self.getSlaveCategories(); 
+								var cats = self.getSlaves(); 
 								console.log(cats);
+								self.subVis1 = new $Q.SubPieChart(self.id, cats['data'][Object.keys(cats['data'])[0]] , self.ssvg1, ssvgW-10, ssvgH-10);
+
 
 								self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg2"+self.id)
@@ -126,6 +129,9 @@
 											.attr("height", ssvgH - 10)
 											.style("stroke", "black")
 											.style("fill", "none"); 
+
+								self.subVis2 = new $Q.SubPieChart(self.id, cats['data'][Object.keys(cats['data'])[1]] , self.ssvg2, ssvgW-10, ssvgH-10);
+
 								self.ssvg3 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg3"+self.id)
 											.attr("class", "ssvg"+self.id)
@@ -175,9 +181,9 @@
 							}
 							
 						},
-						getSlaveCategories: function(){
+						getSlaves: function(){
 								var self = this;
-								return self.parent.control.getSlaves(self.id);
+								return self.parent.getSlaves(self.id);
 							},
 						createHeader: function(container, viewId){
 							var self = this; 

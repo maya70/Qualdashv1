@@ -27,9 +27,7 @@
 							self.allVars =  Object.keys(rawData[0]); 
 							self.mainView.createQualCards(dataViews);
 						},
-						getSlaves: function(viewId){
-							return this.dataModel.getSlaves(viewId); 
-						},
+						
 						buildMetaHier: function(){
 							return this.dataModel.buildMetaHierarchy(); 
 						},

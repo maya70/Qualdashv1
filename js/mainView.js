@@ -35,7 +35,10 @@
 							var self = this;
 							self.cards.push(new $Q.QualCard(self, viewId));
 						},
-						
+						getSlaves: function(viewId){
+							var self = this;
+							return self.dataViews[viewId]['slaves'];
+						},
 						setupPopover: function(viewId){
 							var self = this; 
 							self.pop = d3.select("body").append("div")

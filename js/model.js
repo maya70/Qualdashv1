@@ -8,6 +8,7 @@
                         self.dataViews = []; 
                         self.ehr = {};  // keeps a dictionary by patient NHS number for patient pathway calculations (including 48h readmission)
                         self.unitID = "194281";
+                        self.slaveCats = {};
                         self.slaves = {};
                         /** availMetrics keeps a list of metrics that are made available 
                          *  in a drop-down menu for users to select from in each QualCard
@@ -282,14 +283,20 @@
                         },
                         /**
                          * Handle the case where we have 2 quantitatives in the master task
-                         * This will toss any categories as slaves
-                         * This will also build the corresponding slave data structures 
+                         * This will toss all categories as slaves
+                         * 
                          **/
-                        handle2Q: function(viewId){
+                        list2QCats: function(viewId){
                             var self = this;
-                            var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap; 
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
                             var cats = auditVars['displayVariables'][viewId]['categories'];
-                            self.slaves[viewId] = cats; 
+                            return cats; 
+                        },
+                        list2QComp: function(viewId){
+                            var self = this;
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
+                            var comps = auditVars['displayVariables'][viewId]['compareTo'];
+                            return comps;
                         },
                         applyAggregateRule2: function(displayObj, displayId, data, redraw){
                             var self = this; 
@@ -300,7 +307,8 @@
                                 dateVar = displayObj["x"],
                                 displayVar = displayObj["y"],
                                 categoricals = displayObj["categories"],
-                                levels = []; 
+                                levels = [],
+                                slaves = {}; 
                             
                             // prepare the dict
                             if(displayVar.constructor == Array){                                
@@ -315,10 +323,14 @@
                                     });
                                 //console.log(dict);
                                 // any categoricals will be tossed for slave views + popover
-                                self.slaves[displayId] = self.handle2Q(displayId);
-                                console.log(self.slaves);                                   
+                                slaves['cats'] = self.list2QCats(displayId); 
+                                slaves['compareTo'] = self.list2QComp(displayId);
+                                slaves['data'] = {}; 
+
+                                
                             }
                             // one big for loop fits all
+                            var ownrecords = 0;  // keep a count of this unit's records
                             for(var i=0; i < self.data.length; i++){
                                 /**
                                  * handle multiple quantitative variables
@@ -345,6 +357,7 @@
                                             // select yspan items
                                             if(displayObj["yspan"] === "unit" && self.data[i]["siteidscr"] === self.unitID )
                                             {
+                                                ownrecords++; 
                                                 // update x-bin   
                                                 if(!dict[self.data[i][dateVar]][yvar]["value"])
                                                     dict[self.data[i][dateVar]][yvar]["value"] = 0;                                             
@@ -356,9 +369,33 @@
                                             }
                                         });
 
-                                        // setup fake categories and levels for bar chart (or other vis)
+                                        // setup fake categories and levels for main bar chart (or other vis)
                                         categoricals = displayObj["yaggregates"][0];                                         
                                         levels = displayVar; 
+
+                                        // setup data aggregates for slave categories (this unit only)
+                                        if(displayObj["yspan"] === "unit" && self.data[i]["siteidscr"] === self.unitID ){
+                                            slaves['cats'].forEach(function(cat){
+                                                // get the current rec's level of this categorical
+                                                var lev = self.data[i][cat];
+                                                if(!slaves['data'][cat])
+                                                    slaves['data'][cat] = {};
+                                                if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = 1;
+                                                else slaves['data'][cat][lev]++;  
+                                            });
+                                        }
+                                        // setup comparators from other units if needed
+                                        slaves['compareTo'].forEach(function(comp){
+                                            if(comp === "siteidscr"){
+                                                var lev = self.data[i][comp];
+                                                if(!slaves['data'][comp])
+                                                    slaves['data'][comp] = {};
+                                                if(!slaves['data'][comp][lev])
+                                                    slaves['data'][comp][lev] = 1;
+                                                else
+                                                    slaves['data'][comp][lev]++; 
+                                            }
+                                        });                                        
                                      }
                                 
                                 /**
@@ -400,8 +437,19 @@
                                         ordered.push(obj); 
                                     }
                                 **/
-                                ////console.log(ordered); 
-                               // //console.log(displayObj["yscale"]);
+                                
+                                // filter comparators to only units with similar no. of admissions
+                                var filtered = {}; 
+                                filtered['data'] = {};
+                                filtered['data'][slaves['compareTo'][0]] = {};
+
+                                for(var key in slaves['data'][slaves['compareTo'][0]]){
+                                    if(Math.abs(slaves['data'][slaves['compareTo'][0]][key] - ownrecords) <=100 )
+                                        filtered['data'][slaves['compareTo'][0]][key] = slaves['data'][slaves['compareTo'][0]][key]; 
+                                }
+                                slaves['data'][slaves['compareTo'][0]] = filtered['data'][slaves['compareTo'][0]]; 
+                                console.log(slaves['data'][slaves['compareTo'][0]]);
+                                console.log("OWN "+ ownrecords); 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
                                                     "metric": self.availMetrics[displayId]['value'], 
@@ -409,12 +457,10 @@
                                                     "yscale": displayObj["yscale"],
                                                     "cats": categoricals,
                                                     "levels": levels,
+                                                    "slaves": slaves, 
                                                     "ylength": displayObj["y"].length, 
-                                                    "metricLabel": self.availMetrics[displayId]['text']});        
-                            
-
+                                                    "metricLabel": self.availMetrics[displayId]['text']});                                 
                         },
-
                         applyAggregateRule: function(displayObj, displayId, data, redraw){
                             var self = this; 
                             var dict = {};
