@@ -4,15 +4,17 @@
 					null, 
 					function BarChart(dataView, pCard){
 						var self = this;						
-						self.id = dataView['viewId'];
-						self.data = dataView['data'];
 						self.parent = pCard;
+						self.audit = self.parent.getAuditInfo(); 
+						self.id = dataView['viewId'];
+						self.data = self.audit=== "picanet"? self.fixDataFormat(dataView['data']) : dataView['data'];						
 						self.iter = 0; 												
 						self.toggle = "grouped";
 						
+						
 						if(dataView.ylength > 1){
 							(dataView['yscale'][0] === dataView['yscale'][0])?
-							 self.drawCatBar2()
+							 self.drawCatBar2(dataView,0)
 							 : self.drawDualBar();
 						}
 						else {
@@ -21,6 +23,9 @@
 							}
 					},
 					{
+						getData: function(){
+							return this;
+						},
 						drawBaseBar: function(){
 							var self = this; 
 							var drawArea = d3.select("#draw-area"+self.id);
@@ -111,19 +116,15 @@
 							 
 
 						},
-						drawCatBar2: function(viewId, dict, cat, levels, iter, trellis){
+						drawCatBar2: function(dataView, trellis){
 							var self = this; 
-							console.log("I AM HERE"); 
+							console.log("I AM HERE");
+							
+							self.drawCatBar(dataView['viewId'], dataView['data'], dataView['cats'], dataView['levels'], self.iter);
 							//self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
 							//drawCatBar(displayId, data, cat, levels,0);
 						},
 						drawCatBar: function(viewId, dict, cat, levels, iter, trellis){
-
-							console.log(dict);
-							console.log(cat);
-							console.log(levels);
-							console.log(iter);
-							
 							var self = this; 
 								self.dict = dict;
 								self.cat = {}; 	
@@ -145,10 +146,10 @@
 									});
                                		
                   
-									$("#toggle-btn"+viewId).tooltip({    
-									    placement : 'bottom',  
-									    title : "Toggle Groups"         
-									  });     
+								$("#toggle-btn"+viewId).tooltip({    
+								    placement : 'bottom',  
+								    title : "Toggle Groups"         
+								  });     
 
                                 var ordered = [];
                                 var temp = Object.keys(dict);
@@ -160,13 +161,14 @@
                                         return Array.apply(null, Array(xz.length)).map(Number.prototype.valueOf,0);
                                     });
                                     for(var kx=0; kx < xz.length; kx++ ){
-                                        for(var ky=0; ky < levels.length; ky++){
+                                        for(var ky=0; ky < levels.length; ky++){  
+                                         if(self.audit === "picanet")
+                                         	yz[ky][kx] += dict[xz[kx]][levels[ky]]['value'];
+                                         else                                      	
                                             yz[ky][kx] += dict[xz[kx]][levels[ky]];
                                         }
                                     }
                                     
-
-
                                    var y01z = d3.stack().keys(d3.range(levels.length))(d3.transpose(yz)),
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
@@ -193,22 +195,23 @@
 							var viewshare = trellis? 2 : 1; 
 							//////console.log(viewshare); 
 							//if(viewshare > 2) viewshare = 2; 
-							var svgw = 0.9 * parentArea.node().getBoundingClientRect().width;
-							var svgh = 0.9* parentArea.node().getBoundingClientRect().height / viewshare; 
-
+							var scale = self.parent.expanded? 0.6 : 0.9; 
+							var svgw = scale * parentArea.node().getBoundingClientRect().width;
+							var svgh = scale * parentArea.node().getBoundingClientRect().height / viewshare; 
+							var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
 							self.parent.svg = d3.select("#draw-area"+viewId).append("svg")
 										.attr("id", "mainsvg"+viewId+"_"+iter)
 										.attr("class", "mainsvg"+viewId)
 										.attr("width", svgw).attr("height", svgh)
 										.style("vertical-align", "top")
-										.attr("transform", "translate(0,"+ (-svgh*iter) +")");
+										.attr("transform", "translate("+shift+","+ (-svgh*iter) +")");
 							
 							
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 0, right: 10, bottom: 50, left:30};							
+							var margin = {top: 0, right: 10, bottom: 50, left: 30};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							
@@ -232,7 +235,7 @@
 
 							var color = d3.scaleOrdinal()
 							    .domain(d3.range(levels.length))
-							    .range(d3.schemeCategory20c);
+							    .range(d3.schemeCategory10);
 
 							var series = g.selectAll(".series")
 							  .data(y01z)
@@ -331,7 +334,7 @@
 							}
 						self.changed = function(newx, newy, nviewId){
 							 console.log("changing"); 
-							 timeout.stop();
+							 //timeout.stop();
 							  if (self.toggle === "grouped") 
 							  	transitionGrouped(newx, newy, nviewId);
 							  else 
@@ -343,18 +346,15 @@
 							if(newy) y = newy; 
 							if(newx) viewId = nviewId; 
 						  y.domain([0, yMax]);
-						  if(newx) {
-						  	console.log("HERE");
-						  	console.log(series); 
-						  	console.log(viewId); 
+						  if(newx) {  	
 						  	  series = d3.selectAll(".series"+viewId);
-						  	  console.log(series);
+						  	  //console.log(series);
 						  	  rect = series.selectAll("rect");
 						  }
-
+						  //console.log(xz);
 						  rect.transition()
-						      .duration(400)
-						      .delay(function(d, i) { return i * 20; })
+						      .duration(1000)
+						      //.delay(function(d, i) { return i * 10; })
 						      .attr("x", function(d, i) {							         
 						      	 return x(xz[i]) + x.bandwidth() / levels.length * this.parentNode.__data__.key; })
 						      .attr("width", x.bandwidth() / levels.length)
@@ -365,17 +365,13 @@
 						      	return y(0) - y(d[1] - d[0]); });
 						}
 						function transitionStacked(newx, newy, nviewId) {
-							console.log(newx);
-							console.log(newy);
-							console.log(nviewId);
-							
 							if(newx) x = newx; 
 							if(newy) y = newy; 
 							if(newx) viewId = nviewId; 
 						  y.domain([0, y1Max]);
 						  if(newx) {
-						  	console.log("THERE");
-						  	console.log(viewId); 
+						  	//console.log("THERE");
+						  	//console.log(viewId); 
 						  	  series = d3.selectAll(".series"+viewId);
 						  	  console.log(series);
 						  	  rect = series.selectAll("rect");
@@ -399,7 +395,16 @@
 						//document.getElementById("#card"+viewId).addEventListener("resize", resize);
 						
 						},
-
+						fixDataFormat: function(sdata){
+							var self = this;						
+							var data = [];
+							
+							for(var key in sdata){
+								data.push({'date': key, 'number': sdata[key][Object.keys(sdata[key])[0]]['value'] });								
+							}
+							console.log(data); 
+							return data; 
+						},
 						resize: function(){
 							var self = this;
 							var margin = self.cat? {top: 0, right: 10, bottom: 50, left:30} : {top: 10, right: 10, bottom: 65, left:30}; //TODO: modify this according to different views
@@ -414,7 +419,9 @@
 
 							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
 								y = d3.scaleLinear().range([height, 0]).nice(); 
-							var data = self.data; 							
+							//var data = self.audit === "picanet"? self.fixDataFormat() :self.data; 							
+							var data = self.data; 
+							console.log(data);
 							x.domain(data.map(function(d){
 									return d.date; 
 							}));

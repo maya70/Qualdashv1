@@ -101,7 +101,7 @@ $Q.Picanet = {
                         "yspan": "unit",                            
                         "categories": ["primarydiagnosisgroup"], 
                         "overlays": ["smrlocal", "smrglobalmin", "smrglobalmax"], // from any variables with "value" target and "q" type
-                        "compareTo": ["3years", "siteidscr"],
+                        "compareTo": ["year", "siteidscr"],
                         "children": [
                                 {"x": "admission",
                                 "y": "diagnosis",

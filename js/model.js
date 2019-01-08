@@ -7,8 +7,8 @@
                         self.control = control; 
                         self.dataViews = []; 
                         self.ehr = {};  // keeps a dictionary by patient NHS number for patient pathway calculations (including 48h readmission)
-                        self.unitID = "2251";
-
+                        self.unitID = "194281";
+                        self.slaves = {};
                         /** availMetrics keeps a list of metrics that are made available 
                          *  in a drop-down menu for users to select from in each QualCard
                          *  Defaults for each audit are set here
@@ -108,7 +108,7 @@
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
                                             self.applyAggregateRule2(self.displayVariables[0],                                                                     
-                                                                    0, data);
+                                                                    display, data);
                                         }
                                         //console.log(self.dataViews);
                                         self.control.dataReady(self.dataViews, self.data); 
@@ -130,6 +130,9 @@
                         resetCategoricals: function(viewId){
                             var self = this;
                             self.categoricals[viewId] = []; 
+                        },
+                        getSlaves: function(viewId){
+                            return this.slaves[viewId]; 
                         },
                         getDerivedValue: function(vname, recId){
                             var self = this;
@@ -277,7 +280,17 @@
                             //console.log(self.metaHier); 
 
                         },
-
+                        /**
+                         * Handle the case where we have 2 quantitatives in the master task
+                         * This will toss any categories as slaves
+                         * This will also build the corresponding slave data structures 
+                         **/
+                        handle2Q: function(viewId){
+                            var self = this;
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap; 
+                            var cats = auditVars['displayVariables'][viewId]['categories'];
+                            self.slaves[viewId] = cats; 
+                        },
                         applyAggregateRule2: function(displayObj, displayId, data, redraw){
                             var self = this; 
                             var dict = {};
@@ -286,7 +299,8 @@
                                 scale = displayObj["scale"],
                                 dateVar = displayObj["x"],
                                 displayVar = displayObj["y"],
-                                categoricals = displayObj["categories"];
+                                categoricals = displayObj["categories"],
+                                levels = []; 
                             
                             // prepare the dict
                             if(displayVar.constructor == Array){                                
@@ -300,6 +314,9 @@
                                     dict[level][displayVar[1]] = {};
                                     });
                                 //console.log(dict);
+                                // any categoricals will be tossed for slave views + popover
+                                self.slaves[displayId] = self.handle2Q(displayId);
+                                console.log(self.slaves);                                   
                             }
                             // one big for loop fits all
                             for(var i=0; i < self.data.length; i++){
@@ -307,7 +324,7 @@
                                  * handle multiple quantitative variables
                                 **/
                                 if(displayVar.constructor == Array){
-                                    // the main dict will hold aggregates for all variables assigned to y-axis
+                                    // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                     displayVar.forEach(function(yvar, id){
                                             var vname;
                                             var vval; 
@@ -339,8 +356,9 @@
                                             }
                                         });
 
-                                        // any categoricals will be tossed for slave views + popover
-
+                                        // setup fake categories and levels for bar chart (or other vis)
+                                        categoricals = displayObj["yaggregates"][0];                                         
+                                        levels = displayVar; 
                                      }
                                 
                                 /**
@@ -365,30 +383,32 @@
                                /**
                                 * In all cases sort dict by date (assuming x-axis is temporal)
                                 * TODO: handle the case where x-axis is not actually temporal
+                                *
+                                    function custom_sort(a,b){
+                                        return parseInt(a) - parseInt(b); 
+                                    }
+        
+                                    var ordered = [];
+                                    var temp = Object.keys(dict);
+                                    //////console.log(temp); 
+                                    var orderedKeys = Object.keys(dict).sort(custom_sort);
+                                    //////console.log(orderedKeys);
+        
+                                    for(var k= 0; k < orderedKeys.length; k++){
+                                        var obj = {};
+                                        obj[orderedKeys[k]] = dict[orderedKeys[k]];
+                                        ordered.push(obj); 
+                                    }
                                 **/
-                                function custom_sort(a,b){
-                                    return parseInt(a) - parseInt(b); 
-                                }
-    
-                                var ordered = [];
-                                var temp = Object.keys(dict);
-                                //////console.log(temp); 
-                                var orderedKeys = Object.keys(dict).sort(custom_sort);
-                                //////console.log(orderedKeys);
-    
-                                for(var k= 0; k < orderedKeys.length; k++){
-                                    var obj = {};
-                                    obj[orderedKeys[k]] = dict[orderedKeys[k]];
-                                    ordered.push(obj); 
-                                }
                                 ////console.log(ordered); 
                                // //console.log(displayObj["yscale"]);
                                 self.dataViews.push({"viewId": displayId,   
-                                                    "data": ordered, 
+                                                    "data": dict, 
                                                     "metric": self.availMetrics[displayId]['value'], 
                                                     "mark": displayObj["mark"],
                                                     "yscale": displayObj["yscale"],
                                                     "cats": categoricals,
+                                                    "levels": levels,
                                                     "ylength": displayObj["y"].length, 
                                                     "metricLabel": self.availMetrics[displayId]['text']});        
                             

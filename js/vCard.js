@@ -73,7 +73,8 @@
 					{
 						resizeVis: function(refresh){
 							var self = this;
-							////console.log(self.svg); 
+							////console.log(self.svg);
+							
 							self.vis.resize(); 
 							var mainsvgW = parseInt(self.vis.getMainSVG(self.id).style("width"));
 							var drawAreaW = parseInt(d3.select("#draw-area"+self.id).style("width"));
@@ -101,8 +102,13 @@
 											.attr("y", 5)
 											.attr("width", ssvgW-10)
 											.attr("height", ssvgH - 10)
-											.style("stroke", "red")
+											.style("stroke", "black")
 											.style("fill", "none"); 
+
+								// populate the first slave
+								var cats = self.getSlaveCategories(); 
+								console.log(cats);
+
 								self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg2"+self.id)
 											.attr("class", "ssvg"+self.id)
@@ -118,7 +124,7 @@
 											.attr("y", 5)
 											.attr("width", ssvgW-10)
 											.attr("height", ssvgH - 10)
-											.style("stroke", "red")
+											.style("stroke", "black")
 											.style("fill", "none"); 
 								self.ssvg3 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg3"+self.id)
@@ -135,7 +141,7 @@
 											.attr("y", 5)
 											.attr("width", ssvgW-10)
 											.attr("height", ssvgH - 10)
-											.style("stroke", "red")
+											.style("stroke", "black")
 											.style("fill", "none"); 
 
 								self.ssvg4 = d3.select("#draw-area"+self.id).append("svg")
@@ -153,7 +159,7 @@
 											.attr("y", 5)
 											.attr("width", mainsvgW-10)
 											.attr("height", ssvgH - 10)
-											.style("stroke", "red")
+											.style("stroke", "black")
 											.style("fill", "none"); 
 								
 							}
@@ -169,6 +175,10 @@
 							}
 							
 						},
+						getSlaveCategories: function(){
+								var self = this;
+								return self.parent.control.getSlaves(self.id);
+							},
 						createHeader: function(container, viewId){
 							var self = this; 
 							var header = container.append("div")
@@ -299,6 +309,9 @@
 							  });    
 							  
 
+						},
+						getAuditInfo: function(){
+							return this.parent.control.audit; 
 						},
 						getChartType: function(dataView){
 							var self = this; 
