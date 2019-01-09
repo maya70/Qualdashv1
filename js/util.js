@@ -98,10 +98,10 @@ $Q.Picanet = {
                         "yType": ["q", "q"],  
                         "yaggregates": ["count", "sum"], 
                         "xspan": "year",    
-                        "yspan": "unit",                            
+                        "yspan": "unit",  
+                        "overlays": ["smrlocal", "smrglobalmin", "smrglobalmax"], // from any variables with "value" target and "q" type                          
                         "categories": ["primarydiagnosisgroup"], 
-                        "overlays": ["smrlocal", "smrglobalmin", "smrglobalmax"], // from any variables with "value" target and "q" type
-                        "compareTo": ["siteidscr", "ext_year" ],
+                        "compareTo": {"siteidscr": "smr", "ext_year":"der_death"},
                         "children": [
                                 {"x": "admission",
                                 "y": "diagnosis",

@@ -29,7 +29,7 @@
 							"granP": "unit",
 							"granT": "snap",
 							"target":["proportion"]}, 
-	     			{"task": "How does the unit compare to other units in terms of SMR?",
+	     			{"task": "How does the unit compare to similar units in terms of SMR?",
 	     					"linkToParent": "alters", 
 	     				  "variables":["siteidscr"],
 							"vtypes":["n"],

@@ -8,7 +8,7 @@
 							self.id = viewId;
 							self.data = [];
 							for(var key in data){
-								self.data.push({'date': key, 'number': data[key]});
+								self.data.push({'date': key, 'number': data[key].length});
 							}
 							self.svg = pSVG;
 
@@ -80,20 +80,30 @@
 							function midAngle(d){
 								return d.startAngle + (d.endAngle - d.startAngle)/2;
 							}
+							var newarc = d3.arc()
+										.innerRadius(radius / 4)
+										.outerRadius(radius/2);
 
 							text.transition().duration(1000)
 								.attrTween("transform", function(d) {
-									this._current = this._current || d;
-									var interpolate = d3.interpolate(this._current, d);
-									this._current = interpolate(0);
+									//this._current = this._current || d;
+									//var interpolate = d3.interpolate(this._current, d);
+									//this._current = interpolate(0);
+									
 									return function(t) {
-										var d2 = interpolate(t);
-										var pos = arc.centroid(d2);
-										pos[1] *= 2.0; 
-										pos[0] =  Math.atan(midAngle(d2));
-										//radius * (midAngle(d2) < Math.PI ? 1 : -1);
-										return "translate("+ pos +")";
+										//var d2 = interpolate(t);
+										//var pos = arc.centroid(d2);
+										//pos[1] *= 2.0; 
+										//pos[0] =  Math.atan(midAngle(d2));
+												//radius * (midAngle(d2) < Math.PI ? 1 : -1);
+										var midAngle = d.endAngle < Math.PI ? d.startAngle/2 + d.endAngle/2 : d.startAngle/2  + d.endAngle/2 + Math.PI; 
+										return (Math.abs(d.endAngle - d.startAngle) >= (Math.PI/8) )? 
+												"translate("+ newarc.centroid(d) +") rotate(-90) rotate("+ (midAngle* 180/Math.PI) + ")"
+												: "translate(0,0)";
 									};
+								})
+								.style("opacity", function(d){
+									return (Math.abs(d.endAngle - d.startAngle) >= (Math.PI/8) )? 1: 0 ;
 								})
 								.styleTween("text-anchor", function(d){
 									this._current = this._current || d;

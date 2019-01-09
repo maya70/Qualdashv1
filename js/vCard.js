@@ -109,7 +109,13 @@
 								// populate the first slave
 								var cats = self.getSlaves(); 
 								console.log(cats);
-								self.subVis1 = new $Q.SubPieChart(self.id, cats['data'][Object.keys(cats['data'])[0]] , self.ssvg1, ssvgW-10, ssvgH-10);
+
+								// handle the first visualization: a categorical
+								var cat1 = cats['cats'][0];
+								var catdata = cats['data'][cat1];
+								console.log(catdata);
+
+								self.subVis1 = new $Q.SubPieChart(self.id, catdata , self.ssvg1, ssvgW-10, ssvgH-10);
 
 
 								self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
@@ -130,7 +136,7 @@
 											.style("stroke", "black")
 											.style("fill", "none"); 
 
-								self.subVis2 = new $Q.SubPieChart(self.id, cats['data'][Object.keys(cats['data'])[1]] , self.ssvg2, ssvgW-10, ssvgH-10);
+								//self.subVis2 = new $Q.SubPieChart(self.id, cats['data'][Object.keys(cats['data'])[1]] , self.ssvg2, ssvgW-10, ssvgH-10);
 
 								self.ssvg3 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg3"+self.id)
