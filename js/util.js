@@ -89,6 +89,10 @@ $Q.Picanet = {
                     {"value": "dependency", 
                       "text": "Dependency"
                     }], 
+"variableDict": {"primarydiagnosisgroup": "Diagnosis",
+                  "adtype": "Ad. type",
+                  "sex": "Gender",
+                  "ethnic": "Ethnic"},
 "displayVariables": [{  "metric": "Mortality",
                         "mark": "bar",
                         "x": "admonth",
@@ -100,7 +104,7 @@ $Q.Picanet = {
                         "xspan": "year",    
                         "yspan": "unit",  
                         "overlays": ["smrlocal", "smrglobalmin", "smrglobalmax"], // from any variables with "value" target and "q" type                          
-                        "categories": ["primarydiagnosisgroup"], 
+                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"], 
                         "compareTo": {"siteidscr": "smr", "ext_year":"der_death"},
                         "children": [
                                 {"x": "admission",

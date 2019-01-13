@@ -2,15 +2,29 @@
 	'use strict'
 	$Q.SubPieChart = $Q.defineClass(
 					null, 
-					function SubPieChart(viewId, data, pSVG, svgw, svgh){
-						var self = this;
+					function SubPieChart(viewId, data, parent, svgw, svgh){
+						var self = this;									
+						self.draw(viewId, data, parent, svgw, svgh);
+							
+					},
+					{
+						draw: function(viewId, data, parent, svgw, svgh){
+							var self = this;
 							//////////console.log(data);
+							self.parent = parent; 
 							self.id = viewId;
 							self.data = [];
 							for(var key in data){
 								self.data.push({'date': key, 'number': data[key].length});
 							}
-							self.svg = pSVG;
+							if(self.parent.g1){
+								var undef;
+								d3.selectAll(".slave-draw-area-1"+self.id).remove(); 
+								//self.parent.g1 = undef; 
+							}
+
+							//self.svg = pSVG;
+							self.parent.g1 = self.parent.ssvg1.append("g").attr("class", "slave-draw-area-1"+self.id);
 
 							var margin = {top: 10, right: 20, bottom: 20, left:20};
 							var width = svgw - margin.left - margin.right; 
@@ -34,7 +48,7 @@
 										  //.range(d3.quantize(t => d3.interpolateRgb("steelblue", "brown"), data.length).reverse());
 	 					    const arcs = pie(self.data);
 
-							const g = self.svg.append("g")
+							const g = self.parent.g1.append("g")
 						      .attr("transform", "translate("+((width / 2)+margin.left)+","+((height / 2)+margin.top)+")")
 						      .attr("text-anchor", "middle")
 							  .style("font", "12px sans-serif");
@@ -146,10 +160,7 @@
 							polyline.exit()
 								.remove();
 							*/
-						
 							
-					},
-					{
-
+						}
 					});
  })(QUALDASH);

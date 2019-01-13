@@ -295,7 +295,7 @@
                         list2QComp: function(viewId){
                             var self = this;
                             var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
-                            var comps = Object.keys(auditVars['displayVariables'][viewId]['compareTo']);
+                            var comps = auditVars['displayVariables'][viewId]['compareTo'];
                             return comps;
                         },
                         applyAggregateRule2: function(displayObj, displayId, data, redraw){
@@ -384,19 +384,18 @@
                                                 else slaves['data'][cat][lev].push(i);  
                                             });
                                         }
-                                        // setup comparator data
-                                        slaves['compareTo'].forEach(function(comp){
-                                            if(comp.indexOf("_") < 0){  // comparator is not an external file
+                                        // setup comparators from other units if needed
+                                        /*slaves['compareTo'].forEach(function(comp){
+                                            if(comp === "siteidscr"){
                                                 var lev = self.data[i][comp];
                                                 if(!slaves['data'][comp])
                                                     slaves['data'][comp] = {};
-            
                                                 if(!slaves['data'][comp][lev])
-                                                    slaves['data'][comp][lev] = [];
-                                                
-                                                slaves['data'][comp][lev].push(i); 
+                                                    slaves['data'][comp][lev] = 1;
+                                                else
+                                                    slaves['data'][comp][lev]++; 
                                             }
-                                        });                                        
+                                        }); */                                       
                                      }
                                 
                                 /**
@@ -441,21 +440,16 @@
                                 
                                 // filter comparators to only units with similar no. of admissions
                                 var filtered = {}; 
-                                slaves['compareTo'].forEach(function(comp){
-                                    if(comp.indexOf("_") < 0) {   // this is not an external file
-                                        filtered[comp] = {};
-                                        for(var key in slaves['data'][comp]){
-                                            if(Math.abs(slaves['data'][comp][key].length - ownrecords) <= 100)
-                                                filtered[comp][key] = slaves['data'][comp][key];
-                                        }
-                                      slaves['data'][comp] = filtered[comp];
-                                    }
+                                filtered['data'] = {};
+                                filtered['data'][slaves['compareTo'][0]] = {};
 
-                                });
-                                
-                                console.log(slaves['data']);
-                                console.log("OWN "+ ownrecords);
-
+                                for(var key in slaves['data'][slaves['compareTo'][0]]){
+                                    if(Math.abs(slaves['data'][slaves['compareTo'][0]][key] - ownrecords) <=100 )
+                                        filtered['data'][slaves['compareTo'][0]][key] = slaves['data'][slaves['compareTo'][0]][key]; 
+                                }
+                                /*slaves['data'][slaves['compareTo'][0]] = filtered['data'][slaves['compareTo'][0]]; 
+                                console.log(slaves['data'][slaves['compareTo'][0]]);
+                                console.log("OWN "+ ownrecords); */
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
                                                     "metric": self.availMetrics[displayId]['value'], 
