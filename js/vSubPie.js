@@ -5,34 +5,36 @@
 					function SubPieChart(viewId, data, parent, svgw, svgh){
 						var self = this;	
 						self.parent = parent; 
-						var parentData = parent.parent.dataViews[viewId]['data'];
-
-						var cats = Object.keys(data);
-						self.dataLinks = {};
-
-						cats.forEach(function(cat){
-							var dataLinks = {};
-							for(var key in parentData){
-								dataLinks[key] = {};
-								for(var kk in parentData[key]){
-									dataLinks[key][kk] = {};
-									dataLinks[key][kk]['data'] = []; 
-									dataLinks[key][kk]['value'] = 0; 
-									for(var i=0; i < parentData[key][kk]['data'].length; i++){
-										if(self.foundMatch(parentData[key][kk]['data'][i], cat, data)){
-											dataLinks[key][kk]['data'].push(parentData[key][kk]['data'][i]);
-											dataLinks[key][kk]['value']++; 
-										}
-									}
-								}
-							}
-							self.dataLinks[cat] = dataLinks;
-						});
-						console.log(self.dataLinks);
+						
 						self.draw(viewId, data, parent, svgw, svgh);
 							
 					},
 					{
+						updateDataLinks: function(viewId, data, parent){
+							var self = this; 
+							var parentData = parent.parent.dataViews[viewId]['data'];
+							var cats = Object.keys(data);
+							self.dataLinks = {};
+							cats.forEach(function(cat){
+								var dataLinks = {};
+								for(var key in parentData){
+									dataLinks[key] = {};
+									for(var kk in parentData[key]){
+										dataLinks[key][kk] = {};
+										dataLinks[key][kk]['data'] = []; 
+										dataLinks[key][kk]['value'] = 0; 
+										for(var i=0; i < parentData[key][kk]['data'].length; i++){
+											if(self.foundMatch(parentData[key][kk]['data'][i], cat, data)){
+												dataLinks[key][kk]['data'].push(parentData[key][kk]['data'][i]);
+												dataLinks[key][kk]['value']++; 
+											}
+										}
+									}
+								}
+								self.dataLinks[cat] = dataLinks;
+							});
+							console.log(self.dataLinks);
+						},
 						foundMatch: function(datum, cat, piedata){
 							var self = this; 
 							for(var i=0; i < piedata[cat].length; i++)
@@ -43,6 +45,7 @@
 						draw: function(viewId, data, parent, svgw, svgh){
 							var self = this;
 							//////////console.log(data);
+							self.updateDataLinks(viewId, data, parent);
 							self.parent = parent; 
 							self.id = viewId;
 							self.data = [];
@@ -85,11 +88,6 @@
 						      .attr("text-anchor", "middle")
 							  .style("font", "12px sans-serif");
 						  
-							/*g.append("circle")
-									.attr("fill", "red")
-									.attr("cx", 0)
-									.attr("cy", 0)
-									.attr("r", 30);*/
 							  var origColor;
 
 							  g.selectAll("path")
@@ -101,11 +99,12 @@
 							      .attr("stroke", "white")
 							      .on("mouseover", function(d){		
 							      	self.parent.highlight(self.dataLinks[d.data.date], viewId);
-							      	//console.log(self.dataLinks[d.data.date]);			
+							      	console.log(self.dataLinks[d.data.date]);			
 							      	origColor = d3.select(this).style("fill");
 							      	d3.select(this).style("fill", "brown");
 							      })
 							      .on("mouseout", function(d){
+							      	self.parent.nohighlight(); 
 							      	d3.select(this).style("fill", origColor);
 							      })
 							      //.on("click", function(d){							      	
@@ -176,35 +175,7 @@
 
 							text.exit()
 							  .remove();
-							/* 
-							var polyline = g.select(".lines").selectAll("polyline")
-								.data(arcs).enter()
-								.append("polyline")
-								.style("opacity", function(d){
-									console.log(d);
-									if(d.data.number === 0)
-										return 0.0; 
-									else
-										return 1.0; 
-								});
-
-							polyline.transition().duration(1000)
-								.attrTween("points", function(d){
-									this._current = this._current || d;
-									var interpolate = d3.interpolate(this._current, d);
-									this._current = interpolate(0);
-									return function(t) {
-										var d2 = interpolate(t);
-										var pos = arc.centroid(d2);
-										pos[1] *= 2; 
-										pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-										return [arc.centroid(d2), arc.centroid(d2), pos];
-									};			
-								});
 							
-							polyline.exit()
-								.remove();
-							*/
 							
 						}
 					});

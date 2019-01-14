@@ -32,46 +32,41 @@
 								self.shadeCatBar(hdata, viewId);
 							}	
 						},
+						removeShade: function(){
+							var self = this;
+							self.parent.svg.selectAll(".shades").remove(); 
+						},
 						shadeCatBar: function(dict, viewId){
 							var self = this; 
-							//drawCatBar: function(viewId, dict, cat, levels, iter, trellis){							
-								//self.dict = dict;
-								//self.cat = {}; 	
-								//self.cat[viewId] = cat;
-								//self.levels = levels; 
-								var undef;
-                                var ordered = [];
-                                
-                                //////////console.log(temp); 
-                                var orderedKeys = Object.keys(dict);
-                                //////////console.log(orderedKeys);
-                                var xz = orderedKeys,
-                                    yz = d3.range(self.levels.length).map(function(d){
-                                        return Array.apply(null, Array(xz.length)).map(Number.prototype.valueOf,0);
-                                    });
-                                    for(var kx=0; kx < xz.length; kx++ ){
-                                        for(var ky=0; ky < self.levels.length; ky++){  
-                                         if(self.audit === "picanet")
-                                         	yz[ky][kx] += dict[xz[kx]][self.levels[ky]]['value'];
-                                         else                                      	
-                                            yz[ky][kx] += dict[xz[kx]][self.levels[ky]];
-                                        }
+							var undef;
+                            var ordered = [];
+                            
+                            //////////console.log(temp); 
+                            var orderedKeys = Object.keys(dict);
+                            //////////console.log(orderedKeys);
+                            var xz = orderedKeys,
+                                yz = d3.range(self.levels.length).map(function(d){
+                                    return Array.apply(null, Array(xz.length)).map(Number.prototype.valueOf,0);
+                                });
+                                for(var kx=0; kx < xz.length; kx++ ){
+                                    for(var ky=0; ky < self.levels.length; ky++){  
+                                     if(self.audit === "picanet")
+                                     	yz[ky][kx] += dict[xz[kx]][self.levels[ky]]['value'];
+                                     else                                      	
+                                        yz[ky][kx] += dict[xz[kx]][self.levels[ky]];
                                     }
-                                    
-                                   var y01z = d3.stack().keys(d3.range(self.levels.length))(d3.transpose(yz)),
-                                        yMax = d3.max(yz, function(y) { return d3.max(y); }),
-                                        y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
-    
-                               	                            
+                                }
+                                
+                               var y01z = d3.stack().keys(d3.range(self.levels.length))(d3.transpose(yz));
+                                    //yMax = self.yMax, // d3.max(yz, function(y) { return d3.max(y); }),
+                                    //y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
+
+                           	                            
 							var drawArea = d3.select("#draw-area"+viewId);							
 							var parentArea = drawArea.select(function(){
 								return this.parentNode; 
 							});
-							//console.log(parentArea.node().getBoundingClientRect());
-							//var viewshare = self.dicts? Object.keys(self.dicts).length : 1; 
 							
-							//////console.log(viewshare); 
-							//if(viewshare > 2) viewshare = 2; 
 							var scale =  0.6; 
 							var svgw = scale * parentArea.node().getBoundingClientRect().width;
 							var svgh = scale * parentArea.node().getBoundingClientRect().height; 
@@ -83,7 +78,6 @@
 							
 
 							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
-
 							
 							var x = d3.scaleBand()
 									    .domain(xz)
@@ -91,7 +85,7 @@
 									    .padding(0.08);
 
 							var y = d3.scaleLinear()
-							    .domain([0, y1Max])
+							    .domain([0, self.yMax])
 							    .range([height, 0]);
 
 							
@@ -114,13 +108,14 @@
 							    rect.transition()
 								    .delay(function(d, i) { return i * 10; })
 								    .attr("y", function(d) { return y(d[1]); })
-								    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+								    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+								    .call(changed);
 
-								
-							
+												
 							function changed() {
-							  timeout.stop();
-							  if (self.toggle === "grouped") 
+							  
+							  console.log(self.toggle);
+							  if (self.toggle === "grouped")
 							  	transitionGrouped();
 							  else 
 							    transitionStacked();
@@ -128,14 +123,14 @@
 						
 						function transitionGrouped() {
 							
-							y.domain([0, yMax]);
+							y.domain([0, self.yMax]);
 						  //console.log(xz);
 						  rect.transition()
-						      .duration(1000)
+						      .duration(200)
 						      //.delay(function(d, i) { return i * 10; })
 						      .attr("x", function(d, i) {							         
-						      	 return x(xz[i]) + x.bandwidth() / levels.length * this.parentNode.__data__.key; })
-						      .attr("width", x.bandwidth() / levels.length)
+						      	 return x(xz[i]) + x.bandwidth() / self.levels.length * this.parentNode.__data__.key; })
+						      .attr("width", x.bandwidth() / self.levels.length)
 						    .transition()
 						      .attr("y", function(d) { 
 						      	return y(d[1] - d[0]); })
@@ -143,12 +138,13 @@
 						      	return y(0) - y(d[1] - d[0]); });
 						}
 						function transitionStacked() {
-							 y.domain([0, y1Max]);
+							 y.domain([0, self.yMax]);
 						  
 						  rect.transition()
 						      .duration(200)
 						      .delay(function(d, i) { return i * 10; })
-						      .attr("y", function(d) { return y(d[1]); })
+						      .attr("y", function(d) { 
+						      	return y(d[1]); })
 						      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
 						    .transition()
 						      .attr("x", function(d, i) { return x(xz[i]); })
@@ -307,7 +303,7 @@
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
-                               	
+                               	self.yMax = y1Max; 
                             self.palette = [];
 
 							if(self.parent.svg && iter === 0){
