@@ -165,6 +165,102 @@
 							self.subVis1 = new $Q.SubPieChart(self.id, catdata , self, ssvgW-10, ssvgH-10);
 
 						},
+						createSlave2: function(slaves, ssvgW, ssvgH, xoffset){
+							var self = this;
+							var quant1 = slaves['quants'][0]['q'];
+							var qdata = slaves['data'][quant1];
+							console.log(qdata);
+						
+							var tabW = ssvgW/ slaves['quants'].length;
+							
+							self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
+											.attr("id", "ssvg2"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", ssvgW)
+											.attr("height", ssvgH)	
+											.style("position", "absolute")
+											.style("top", ssvgH + 3)
+											.style("left", xoffset);										
+											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
+							
+							var tabs = self.ssvg2.selectAll(".qtabs"+self.id)
+										.data(slaves['quants'])
+										.enter().append("g")
+										.attr("class", "qstabs"+self.id)
+										.attr("transform", function(d, i){
+											return "translate("+ (i*tabW) + ",0)"; 
+										})
+										.on("click", function(d){
+											// deselect all tabs
+											var all = d3.selectAll(".rqtabs"+self.id);
+												all.attr("active", 0);
+												all.style("fill", "lightgrey");
+												all.style("stroke", "white");
+
+											// select only current tab
+											var r = d3.select(this).select("rect");
+												r.attr("active", 1);
+												r.style("fill", "white");
+												r.style("stroke", "black");			
+											
+											qdata = slaves['data'][d['q']];
+											console.log(qdata);
+											//self.subVis2.draw(self.id, qdata , self, ssvgW-10, ssvgH-10);
+
+										})
+										.on("mouseover", function(d){
+											d3.select(this).select("rect").style("fill", "white");
+											//d3.select(this).style("fill", "white");
+										     
+										})
+										.on("mouseout", function(d){
+											d3.select(this).select("rect").style("fill", function(d){
+												var a = d3.select(this).attr("active");
+												return a === "1"? "white" : "lightgrey"; 
+											});												
+										});
+
+
+							tabs.append("rect")
+								.attr("class", "rqtabs"+self.id)
+								.attr("x", 0)
+								.attr("y", 0)
+								.attr("width", tabW )
+								.attr("active", function(d,i){
+									return i===0? 1 : 0; 
+								})
+								.attr("height", 15 )
+								.style("fill", function(d){
+									var a = d3.select(this).attr("active");
+									return a === "1"? "white" : "lightgrey"; 
+								})
+								.style("rx", 5)
+								.style("stroke", function(d){
+									var a = d3.select(this).attr("active");
+									return a === "1"? "black" : "white"; 
+								});
+
+							tabs.append("text")
+								.attr("dy", "1.2em")
+								.attr("dx", "8.3em")
+							    .text(function(d) { 
+							    	return $Q.Picanet["variableDict"][d['q']]; })
+							    .style("font", "8px sans-serif")
+							     .style("text-anchor", "bottom");
+							
+							self.ssvg2.append("rect")
+									.attr("id","draw-rect-2-"+self.id)											
+									.attr("x", 5)
+									.attr("y", 15)
+									.attr("width", ssvgW-10)
+									.attr("height", ssvgH - 30)
+									.style("stroke", "black")
+									.style("fill", "none"); 
+							
+							self.subVis2 = new $Q.SubBarChart(self.id, qdata , self, ssvgW-10, ssvgH-10);
+
+						},
 						nohighlight: function(){
 							var self = this;
 							self.vis.removeShade(); 
@@ -191,32 +287,13 @@
 								
 								
 								// populate the first slave
-								var cats = self.getSlaves(); 
-								console.log(cats);
+								var slaves = self.getSlaves(); 
+								console.log(slaves);
 
 								// handle the first visualization: a categorical
 								
-								self.createSlave1(cats, ssvgW, ssvgH, xoffset);
-
-								self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "ssvg2"+self.id)
-											.attr("class", "ssvg"+self.id)
-											.style("display", "inline-block")
-											.attr("width", ssvgW)
-											.attr("height", ssvgH)	
-											.style("position", "absolute")
-											.style("top", ssvgH)
-											.style("left", xoffset);										
-											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-								self.ssvg2.append("rect")
-											.attr("x", 5)
-											.attr("y", 5)
-											.attr("width", ssvgW-10)
-											.attr("height", ssvgH - 10)
-											.style("stroke", "black")
-											.style("fill", "none"); 
-
-								//self.subVis2 = new $Q.SubPieChart(self.id, cats['data'][Object.keys(cats['data'])[1]] , self.ssvg2, ssvgW-10, ssvgH-10);
+								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
+								self.createSlave2(slaves, ssvgW, ssvgH, xoffset);
 
 								self.ssvg3 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg3"+self.id)

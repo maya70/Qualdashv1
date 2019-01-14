@@ -248,8 +248,6 @@
 						},
 						drawCatBar2: function(dataView, trellis){
 							var self = this; 
-							console.log("I AM HERE");
-							console.log(dataView['data']);
 							self.drawCatBar(dataView['viewId'], dataView['data'], dataView['cats'], dataView['levels'], self.iter);
 							//self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
 							//drawCatBar(displayId, data, cat, levels,0);

@@ -143,6 +143,9 @@
                                 else
                                     return 0; 
                             }
+                            else if(vname === "smr" && self.audit === "picanet"){
+                                return self.data[recId]["pim3_s"]; 
+                            }
                         },
                         calculateDerivedVar: function(metric, yvar){
                             //console.log("Calculating "+ metric); 
@@ -295,8 +298,31 @@
                         list2QComp: function(viewId){
                             var self = this;
                             var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
-                            var comps = auditVars['displayVariables'][viewId]['compareTo'];
+                            var comps = auditVars['displayVariables'][viewId]['quantities'];
                             return comps;
+                        },
+                        computeVar: function(yvar, displayObj, i, sid){
+                            var self = this;
+                            var vname;
+                            var vval; 
+                            if(yvar.indexOf("_") < 0 ){
+                                // this is a database variable
+                                vname = yvar; 
+                                vval = (displayObj["yaggregates"][sid] === "count")? 1 : self.data[i][vname];  
+                            }
+                            else{
+                                // this is a derived variable
+                                var strs = yvar.split("_");
+                                var rule = strs[0]; 
+                                vname = strs[1];
+                                var derval = self.getDerivedValue(vname, i);
+                                vval = (displayObj["yaggregates"][sid] === "count")? ((derval>0)? 1: 0) 
+                                            : derval;  
+                            }
+                            if(!vval && yvar === "der_smr")
+                                console.log(i);
+                            return vval; 
+
                         },
                         applyAggregateRule2: function(displayObj, displayId, data, redraw){
                             var self = this; 
@@ -324,13 +350,14 @@
                                 //console.log(dict);
                                 // any categoricals will be tossed for slave views + popover
                                 slaves['cats'] = self.list2QCats(displayId); 
-                                slaves['compareTo'] = self.list2QComp(displayId);
+                                slaves['quants'] = self.list2QComp(displayId);
                                 slaves['data'] = {}; 
 
                                 
-                            }
+                                }
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
+                            var observedDeathsNational = {}; 
                             for(var i=0; i < self.data.length; i++){
                                 /**
                                  * handle multiple quantitative variables
@@ -338,21 +365,13 @@
                                 if(displayVar.constructor == Array){
                                     // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                     displayVar.forEach(function(yvar, id){
-                                            var vname;
-                                            var vval; 
-                                            if(yvar.indexOf("_") < 0 ){
-                                                // this is a database variable
-                                                vname = yvar; 
-                                                vval = (displayObj["yaggregates"][id] === "count")? 1 : self.data[i][vname];  
-                                            }
-                                            else{
-                                                // this is a derived variable
-                                                var strs = yvar.split("_");
-                                                var rule = strs[0]; 
-                                                vname = strs[1];
-                                                var derval = self.getDerivedValue(vname, i);
-                                                vval = (displayObj["yaggregates"][id] === "count")? ((derval>0)? 1: 0) 
-                                                            : derval;  
+                                            //var vname;
+                                            var vval = self.computeVar(yvar, displayObj, i, id);
+                                            if(yvar === "der_death"){
+                                                if(!observedDeathsNational[self.data[i][dateVar]])
+                                                    observedDeathsNational[self.data[i][dateVar]] = vval; 
+                                                else
+                                                    observedDeathsNational[self.data[i][dateVar]] += vval; 
                                             }
                                             // select yspan items
                                             if(displayObj["yspan"] === "unit" && self.data[i]["siteidscr"] === self.unitID )
@@ -384,6 +403,33 @@
                                                 else slaves['data'][cat][lev].push(i);  
                                             });
                                         }
+                                        // setup quantitative slaves
+                                        slaves['quants'].forEach(function(quant, sid){
+                                            var subYlength = 1; 
+                                            // if we need national data
+                                            if(quant['granP'].constructor == Array || quant['granP'] === "national"){
+                                                subYlength = 2; 
+                                                if(!slaves['data'][quant['q']])
+                                                    slaves['data'][quant['q']] = {}; 
+                                                if(!slaves['data'][quant['q']][self.data[i][dateVar]])
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]] =  {};
+                                                if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = parseFloat(self.computeVar(quant['q'], quant, i, sid));
+                                                    
+                                                else{
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += parseFloat(self.computeVar(quant['q'], quant, i, sid));
+                                                    //console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
+                                                }
+                                                if(!slaves['data'][quant['q']][self.data[i][dateVar]])
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]] = {};
+                                                if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i]["siteidscr"] === self.unitID )? parseFloat(self.computeVar(quant['q'], quant, i, sid)) : 0;                                               
+                                                else
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i]["siteidscr"] === self.unitID )? parseFloat(self.computeVar(quant['q'], quant, i, sid)) : 0;
+
+                                            }
+
+                                        }); 
                                         // setup comparators from other units if needed
                                         /*slaves['compareTo'].forEach(function(comp){
                                             if(comp === "siteidscr"){
@@ -411,12 +457,26 @@
                                 /**
                                  * handle comparators
                                  **/
-                                 if(displayObj["compareTo"]){
-
-                                 }
 
                             } // end for data records
 
+                             if(displayObj["quantities"]){
+                                    displayObj["quantities"].forEach(function(quant){
+                                        if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
+                                            //var national = slaves['data'][quant['q']]['national'];
+                                            //var unit = slaves['data'][quant['q']]['unit'];
+                                            for(var key in slaves['data'][quant['q']]){
+                                                slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
+                                                slaves['data'][quant['q']][key]['unit'] = dict[key]["der_death"]['value'] / slaves['data'][quant['q']][key]['unit']; 
+                                                //national = observedDeathsNational[key] / national;
+                                                //unit = dict[key]["der_death"]['value'] / unit; 
+                                            }
+                                            //slaves['data'][quant['q']]['national'] = national;
+                                            //slaves['data'][quant['q']]['unit'] = unit; 
+                                        }
+                                    });
+                                 }
+                                 console.log(slaves['data']); 
                                /**
                                 * In all cases sort dict by date (assuming x-axis is temporal)
                                 * TODO: handle the case where x-axis is not actually temporal
@@ -439,7 +499,7 @@
                                 **/
                                 
                                 // filter comparators to only units with similar no. of admissions
-                                var filtered = {}; 
+                                /*var filtered = {}; 
                                 filtered['data'] = {};
                                 filtered['data'][slaves['compareTo'][0]] = {};
 
