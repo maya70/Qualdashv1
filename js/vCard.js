@@ -165,6 +165,10 @@
 							self.subVis1 = new $Q.SubPieChart(self.id, catdata , self, ssvgW-10, ssvgH-10);
 
 						},
+						highlight: function(hdata, viewId){
+							var self = this ;
+							self.vis.highlight(hdata, viewId);
+						},
 						resizeVis: function(refresh){
 							var self = this;
 							////console.log(self.svg);

@@ -216,11 +216,18 @@
 							self.grid = new Muuri('.grid', {
 							                dragEnabled: true,
 							                dragStartPredicate: function (item, event) {
-							                	//////console.log(event.target); 
+							             
 							                    if (event.target.matches('[data-toggle="popover"]') 
-							                    	|| (event.target.matches('[class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se"]')) ) {
+							                    	|| (event.target.matches('[class="ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se"]'))
+							                    	|| (event.target.matches('[class="draw-area"]'))
+							                    	|| (event.target.matches('[class="vis-element"]')) ) {
 							                      return false;
 							                      }
+							                      if($(event.target).is("svg") || $(event.target).is("rect") || $(event.target).is("text") 
+							                      	  || $(event.target).is("path"))
+							                      	return false; 
+
+							                      console.log(event.target); 
 							                    return Muuri.ItemDrag.defaultStartPredicate(item, event);
 							                    }
 							                });

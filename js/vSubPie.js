@@ -3,11 +3,43 @@
 	$Q.SubPieChart = $Q.defineClass(
 					null, 
 					function SubPieChart(viewId, data, parent, svgw, svgh){
-						var self = this;									
+						var self = this;	
+						self.parent = parent; 
+						var parentData = parent.parent.dataViews[viewId]['data'];
+
+						var cats = Object.keys(data);
+						self.dataLinks = {};
+
+						cats.forEach(function(cat){
+							var dataLinks = {};
+							for(var key in parentData){
+								dataLinks[key] = {};
+								for(var kk in parentData[key]){
+									dataLinks[key][kk] = {};
+									dataLinks[key][kk]['data'] = []; 
+									dataLinks[key][kk]['value'] = 0; 
+									for(var i=0; i < parentData[key][kk]['data'].length; i++){
+										if(self.foundMatch(parentData[key][kk]['data'][i], cat, data)){
+											dataLinks[key][kk]['data'].push(parentData[key][kk]['data'][i]);
+											dataLinks[key][kk]['value']++; 
+										}
+									}
+								}
+							}
+							self.dataLinks[cat] = dataLinks;
+						});
+						console.log(self.dataLinks);
 						self.draw(viewId, data, parent, svgw, svgh);
 							
 					},
 					{
+						foundMatch: function(datum, cat, piedata){
+							var self = this; 
+							for(var i=0; i < piedata[cat].length; i++)
+								if(piedata[cat][i] === datum)
+									return true; 
+							return false; 
+						},
 						draw: function(viewId, data, parent, svgw, svgh){
 							var self = this;
 							//////////console.log(data);
@@ -58,13 +90,26 @@
 									.attr("cx", 0)
 									.attr("cy", 0)
 									.attr("r", 30);*/
+							  var origColor;
 
 							  g.selectAll("path")
 							    .data(arcs)
 							    .enter().append("path")
+							      .attr("class", "vis-element")
 							      .attr("fill", d => 
-							      	 color(d.data.date))
+							      	 color(d.data.date))							      
 							      .attr("stroke", "white")
+							      .on("mouseover", function(d){		
+							      	self.parent.highlight(self.dataLinks[d.data.date], viewId);
+							      	//console.log(self.dataLinks[d.data.date]);			
+							      	origColor = d3.select(this).style("fill");
+							      	d3.select(this).style("fill", "brown");
+							      })
+							      .on("mouseout", function(d){
+							      	d3.select(this).style("fill", origColor);
+							      })
+							      //.on("click", function(d){							      	
+							      //})
 							      .attr("d", arc)
 							    .append("title")
 							      .text(d => `${d.data.date}: ${d.data.number.toLocaleString()}`);

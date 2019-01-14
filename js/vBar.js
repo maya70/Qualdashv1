@@ -10,10 +10,10 @@
 						self.data = self.audit=== "picanet"? self.fixDataFormat(dataView['data']) : dataView['data'];						
 						self.iter = 0; 												
 						self.toggle = "grouped";
-						
-						
+						self.dataView = dataView; 
+							
 						if(dataView.ylength > 1){
-							(dataView['yscale'][0] === dataView['yscale'][0])?
+							(dataView['yscale'][0] === dataView['yscale'][1])?
 							 self.drawCatBar2(dataView,0)
 							 : self.drawDualBar();
 						}
@@ -26,6 +26,140 @@
 						getData: function(){
 							return this;
 						},
+						highlight: function(hdata, viewId){
+							var self = this; 
+							if(self.dataView.ylength > 1){
+								self.shadeCatBar(hdata, viewId);
+							}	
+						},
+						shadeCatBar: function(dict, viewId){
+							var self = this; 
+							//drawCatBar: function(viewId, dict, cat, levels, iter, trellis){							
+								//self.dict = dict;
+								//self.cat = {}; 	
+								//self.cat[viewId] = cat;
+								//self.levels = levels; 
+								var undef;
+                                var ordered = [];
+                                
+                                //////////console.log(temp); 
+                                var orderedKeys = Object.keys(dict);
+                                //////////console.log(orderedKeys);
+                                var xz = orderedKeys,
+                                    yz = d3.range(self.levels.length).map(function(d){
+                                        return Array.apply(null, Array(xz.length)).map(Number.prototype.valueOf,0);
+                                    });
+                                    for(var kx=0; kx < xz.length; kx++ ){
+                                        for(var ky=0; ky < self.levels.length; ky++){  
+                                         if(self.audit === "picanet")
+                                         	yz[ky][kx] += dict[xz[kx]][self.levels[ky]]['value'];
+                                         else                                      	
+                                            yz[ky][kx] += dict[xz[kx]][self.levels[ky]];
+                                        }
+                                    }
+                                    
+                                   var y01z = d3.stack().keys(d3.range(self.levels.length))(d3.transpose(yz)),
+                                        yMax = d3.max(yz, function(y) { return d3.max(y); }),
+                                        y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
+    
+                               	                            
+							var drawArea = d3.select("#draw-area"+viewId);							
+							var parentArea = drawArea.select(function(){
+								return this.parentNode; 
+							});
+							//console.log(parentArea.node().getBoundingClientRect());
+							//var viewshare = self.dicts? Object.keys(self.dicts).length : 1; 
+							
+							//////console.log(viewshare); 
+							//if(viewshare > 2) viewshare = 2; 
+							var scale =  0.6; 
+							var svgw = scale * parentArea.node().getBoundingClientRect().width;
+							var svgh = scale * parentArea.node().getBoundingClientRect().height; 
+							var shift = ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width); 
+							
+							var margin = {top: 0, right: 10, bottom: 50, left: 30};							
+							var width = svgw - margin.left - margin.right; 
+							var height = svgh - margin.top - margin.bottom;
+							
+
+							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
+
+							
+							var x = d3.scaleBand()
+									    .domain(xz)
+									    .rangeRound([0, width])
+									    .padding(0.08);
+
+							var y = d3.scaleLinear()
+							    .domain([0, y1Max])
+							    .range([height, 0]);
+
+							
+							var series = g.selectAll(".shades")
+							  .data(y01z)
+							  .enter().append("g")
+							  	.attr("class", "shades")
+							    .attr("fill", function(d, i) { 
+							    	return "brown"; });
+							 
+							 var rect = series.selectAll("rect.shade")
+							  .data(function(d) { return d; })
+							  .enter().append("rect")
+							  	.attr("class", "shade")
+							    .attr("x", function(d, i) { return x(i); })
+							    .attr("y", height)
+							    .attr("width", x.bandwidth())
+							    .attr("height", 0);
+
+							    rect.transition()
+								    .delay(function(d, i) { return i * 10; })
+								    .attr("y", function(d) { return y(d[1]); })
+								    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+
+								
+							
+							function changed() {
+							  timeout.stop();
+							  if (self.toggle === "grouped") 
+							  	transitionGrouped();
+							  else 
+							    transitionStacked();
+							}
+						
+						function transitionGrouped() {
+							
+							y.domain([0, yMax]);
+						  //console.log(xz);
+						  rect.transition()
+						      .duration(1000)
+						      //.delay(function(d, i) { return i * 10; })
+						      .attr("x", function(d, i) {							         
+						      	 return x(xz[i]) + x.bandwidth() / levels.length * this.parentNode.__data__.key; })
+						      .attr("width", x.bandwidth() / levels.length)
+						    .transition()
+						      .attr("y", function(d) { 
+						      	return y(d[1] - d[0]); })
+						      .attr("height", function(d) { 
+						      	return y(0) - y(d[1] - d[0]); });
+						}
+						function transitionStacked() {
+							 y.domain([0, y1Max]);
+						  
+						  rect.transition()
+						      .duration(200)
+						      .delay(function(d, i) { return i * 10; })
+						      .attr("y", function(d) { return y(d[1]); })
+						      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+						    .transition()
+						      .attr("x", function(d, i) { return x(xz[i]); })
+						      .attr("width", x.bandwidth());
+						}
+
+						 
+						
+						},
+
+
 						drawBaseBar: function(){
 							var self = this; 
 							var drawArea = d3.select("#draw-area"+self.id);
@@ -119,7 +253,7 @@
 						drawCatBar2: function(dataView, trellis){
 							var self = this; 
 							console.log("I AM HERE");
-							
+							console.log(dataView['data']);
 							self.drawCatBar(dataView['viewId'], dataView['data'], dataView['cats'], dataView['levels'], self.iter);
 							//self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
 							//drawCatBar(displayId, data, cat, levels,0);
@@ -461,7 +595,6 @@
 							      .attr("width", x.bandwidth())
 							      .attr("height", function(d) { return height  - y(d.number); });
 							}		
-
 
 						},
 						getMainSVG: function(id){
