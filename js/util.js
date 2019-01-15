@@ -100,7 +100,7 @@ $Q.Picanet = {
                         "x": "admonth",
                         "y": ["eventidscr", "der_death"], 
                         "granP": ["patient", "patient"],   
-                        "granT": [{"weekly": "der_death"},{"monthly": "der_death"},{"annual":"der_death"}],                                              
+                        "granT": ["monthly", "weekly-quarterly", "monthly-annual" ],  // the first element holds the master view's granT                                            
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "yaggregates": ["count", "sum"], 

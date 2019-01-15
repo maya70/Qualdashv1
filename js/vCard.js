@@ -261,6 +261,202 @@
 							self.subVis2 = new $Q.SubBarChart(self.id, qdata , self, ssvgW-10, ssvgH-10);
 
 						},
+						createSlave3: function(cats, ssvgW, ssvgH, xoffset){
+							var self = this;
+							var cat1 = cats['cats'][0];
+							var catdata = cats['data'][cat1];
+							console.log(catdata);
+
+							var tabW = ssvgW/ cats['cats'].length;
+							
+							self.ssvg1 = d3.select("#draw-area"+self.id).append("svg")
+											.attr("id", "ssvg1"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", ssvgW)
+											.attr("height", ssvgH)	
+											.style("position", "absolute")
+											.style("top", 11)
+											.style("left", xoffset);										
+											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
+							
+							var tabs = self.ssvg1.selectAll(".stabs"+self.id)
+										.data(cats['cats'])
+										.enter().append("g")
+										.attr("class", "stabs"+self.id)
+										.attr("transform", function(d, i){
+											return "translate("+ (i*tabW) + ",0)"; 
+										})
+										.on("click", function(d){
+											// deselect all tabs
+											var all = d3.selectAll(".rtabs"+self.id);
+											all.attr("active", 0);
+											all.style("fill", "lightgrey");
+											all.style("stroke", "white");
+
+											// select only current tab
+											var r = d3.select(this).select("rect");
+												r.attr("active", 1);
+												r.style("fill", "white");
+												r.style("stroke", "black");			
+											
+											catdata = cats['data'][d];
+											self.subVis1.draw(self.id, catdata , self, ssvgW-10, ssvgH-10);
+
+										})
+										.on("mouseover", function(d){
+											d3.select(this).select("rect").style("fill", "white");
+											//d3.select(this).style("fill", "white");
+										     
+										})
+										.on("mouseout", function(d){
+											d3.select(this).select("rect").style("fill", function(d){
+												var a = d3.select(this).attr("active");
+												return a === "1"? "white" : "lightgrey"; 
+											});												
+										});
+
+
+									tabs.append("rect")
+										.attr("class", "rtabs"+self.id)
+										.attr("x", 0)
+										.attr("y", 0)
+										.attr("width", tabW )
+										.attr("active", function(d,i){
+											return i===0? 1 : 0; 
+										})
+										.attr("height", 15 )
+										.style("fill", function(d){
+											var a = d3.select(this).attr("active");
+											return a === "1"? "white" : "lightgrey"; 
+										})
+										.style("rx", 5)
+										.style("stroke", function(d){
+											var a = d3.select(this).attr("active");
+											return a === "1"? "black" : "white"; 
+										});
+
+							tabs.append("text")
+								.attr("dy", "1.2em")
+								.attr("dx", ".3em")
+							    .text(function(d) { return $Q.Picanet["variableDict"][d]; })
+							    .style("font", "8px sans-serif")
+							     .style("text-anchor", "bottom")
+							     ;
+							
+							self.ssvg1.append("rect")
+									.attr("id","draw-rect-1-"+self.id)											
+									.attr("x", 5)
+									.attr("y", 15)
+									.attr("width", ssvgW-10)
+									.attr("height", ssvgH - 30)
+									.style("stroke", "black")
+									.style("fill", "none"); 
+
+							
+							self.subVis1 = new $Q.SubPieChart(self.id, catdata , self, ssvgW-10, ssvgH-10);
+
+						},
+						createSlaveT: function(slaves, mainsvgW, ssvgH, xoffset){
+							var self = this;
+							var tdata = self.parent.control.getHistoryData(); 
+							var tspan = self.parent.control.audit === "picanet"? $Q.Picanet['displayVariables'][self.id]['granT']
+																				: $Q.Minap['displayVariables'][self.id]['granT'];
+							// filter tspan to remove the first time granularity, which is already displayed in the main view
+							//var index = tspan.indexOf("monthly");
+							tspan.splice(0, 1);
+							self.parent.control.prepTimeData(tspan[0], self.id );
+
+							self.ssvg4 = d3.select("#draw-area"+self.id).append("svg")
+											.attr("id", "ssvg4"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", mainsvgW)
+											.attr("height", ssvgH)	
+											.style("position", "absolute")
+											.style("top", (ssvgH * 2))
+											.style("left", 30);										
+											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
+								self.ssvg4.append("rect")
+											.attr("id","draw-rect-t-"+self.id)	
+											.attr("x", 5)
+											.attr("y", 5)
+											.attr("width", mainsvgW-10)
+											.attr("height", ssvgH - 10)
+											.style("stroke", "black")
+											.style("fill", "none"); 
+							
+							var tabW = mainsvgW/ tspan.length;
+							
+							var tabs = self.ssvg4.selectAll(".sttabs"+self.id)
+										.data(tspan)
+										.enter().append("g")
+										.attr("class", "sttabs"+self.id)
+										.attr("transform", function(d, i){
+											return "translate("+ (i*tabW) + ",0)"; 
+										})
+										.on("click", function(d){
+											// deselect all tabs
+											var all = d3.selectAll(".rttabs"+self.id);
+											all.attr("active", 0);
+											all.style("fill", "lightgrey");
+											all.style("stroke", "white");
+
+											// select only current tab
+											var r = d3.select(this).select("rect");
+												r.attr("active", 1);
+												r.style("fill", "white");
+												r.style("stroke", "black");			
+											
+											//catdata = cats['data'][d];
+											//self.subVis1.draw(self.id, catdata , self, ssvgW-10, ssvgH-10);
+
+										})
+										.on("mouseover", function(d){
+											d3.select(this).select("rect").style("fill", "white");
+											//d3.select(this).style("fill", "white");
+										     
+										})
+										.on("mouseout", function(d){
+											d3.select(this).select("rect").style("fill", function(d){
+												var a = d3.select(this).attr("active");
+												return a === "1"? "white" : "lightgrey"; 
+											});												
+										});
+
+									tabs.append("rect")
+										.attr("class", "rttabs"+self.id)
+										.attr("x", 0)
+										.attr("y", 0)
+										.attr("width", tabW )
+										.attr("active", function(d,i){
+											return i===0? 1 : 0; 
+										})
+										.attr("height", 15 )
+										.style("fill", function(d){
+											var a = d3.select(this).attr("active");
+											return a === "1"? "white" : "lightgrey"; 
+										})
+										.style("rx", 5)
+										.style("stroke", function(d){
+											var a = d3.select(this).attr("active");
+											return a === "1"? "black" : "white"; 
+										});
+
+							tabs.append("text")
+								.attr("dy", "1.2em")
+								.attr("dx", "1.3em")
+							    .text(function(d) { 
+							    	console.log(d);
+							    	 return d; })
+							    .style("font", "8px sans-serif")
+							     .style("text-anchor", "bottom");
+											
+							//self.subVis1 = new $Q.SubPieChart(self.id, catdata , self, ssvgW-10, ssvgH-10);
+
+							self.subVisT = new $Q.SubTimeChart(self.id, tdata , self, mainsvgW-10, ssvgH-10);
+							
+						},
 						nohighlight: function(){
 							var self = this;
 							self.vis.removeShade(); 
@@ -294,6 +490,7 @@
 								
 								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
 								self.createSlave2(slaves, ssvgW, ssvgH, xoffset);
+								self.createSlaveT(slaves, mainsvgW, ssvgH, xoffset);
 
 								self.ssvg3 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg3"+self.id)
@@ -313,23 +510,7 @@
 											.style("stroke", "black")
 											.style("fill", "none"); 
 
-								self.ssvg4 = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "ssvg4"+self.id)
-											.attr("class", "ssvg"+self.id)
-											.style("display", "inline-block")
-											.attr("width", mainsvgW)
-											.attr("height", ssvgH)	
-											.style("position", "absolute")
-											.style("top", (ssvgH * 2))
-											.style("left", 30);										
-											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-								self.ssvg4.append("rect")
-											.attr("x", 5)
-											.attr("y", 5)
-											.attr("width", mainsvgW-10)
-											.attr("height", ssvgH - 10)
-											.style("stroke", "black")
-											.style("fill", "none"); 
+								
 								
 							}
 							else if(!refresh || ((xoffset + ssvgW) > drawAreaW)){

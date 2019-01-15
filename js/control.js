@@ -27,7 +27,15 @@
 							self.allVars =  Object.keys(rawData[0]); 
 							self.mainView.createQualCards(dataViews);
 						},
-						
+						getHistoryData: function(){
+							var self = this;
+							return self.dataModel.getHistoryData(); 
+						},
+						prepTimeData: function(tspan, viewId ){
+							var self = this;
+							self.dataModel.prepTimeData(tspan, viewId);
+
+						},
 						buildMetaHier: function(){
 							return this.dataModel.buildMetaHierarchy(); 
 						},

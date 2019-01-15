@@ -123,20 +123,12 @@
 							    .attr("height", 0)
 							     .on("mouseover", function(d){
 							  
-							      	div.transition()
-							      		.duration(200)
-							      		.style("opacity", 0.9);
-							      	div .html((d[1] - d[0]+ ""))
-							      		.style("left", (d3.event.pageX) + "px")
-							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	origColor = d3.select(this).style("fill");
 							      	d3.select(this).style("fill", "brown");
 
 							      })
 							      .on("mouseout", function(d){
-							      	div.transition()
-							      		.duration(500)
-							      		.style("opacity", 0);
+							      
 							      	d3.select(this).style("fill", origColor);
 							      });
 

@@ -129,7 +129,7 @@
                                 for(var i=1; i < tspan; i++){
                                     var year = parseInt(self.year)-i; 
                                     d3.csv(fpath+year+".csv", function(data){                                        
-                                        console.log(data);
+                                        //console.log(data);
                                         self.history.push({"year": year, "data": data});
                                     });
                                 } 
@@ -272,6 +272,30 @@
                             return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z");
 
                         },
+                        getHistoryData:function(){
+                            var self= this;
+                            return self.history; 
+                        },
+                        prepTimeData: function(tspan, viewId){
+                            var self = this;
+                            if(tspan.indexOf("-")>=0){ // this is a composite time span 
+                                var str = tspan.split("-");
+                                var containsHistory = false;
+                                str.forEach(function(span){
+                                    if(span==="annual")
+                                        containsHistory = true;
+                                });
+                                if(containsHistory){
+
+                                }
+                                else{
+                                    // the data for this time view is same time period shown in the main view
+                                    // apply aggregation granularities:
+                                    self.applyAggregateRuleTimeSub(str, viewId); 
+                                }
+
+                            }
+                        },
                         buildMetaHierarchy: function(){
                             var self = this; 
                             var n=0, q=1, t=2, o=3; 
@@ -344,6 +368,10 @@
                                 console.log(i);
                             return vval; 
 
+                        },
+                        applyAggregateRuleTimeSub: function(spans, viewId){
+                            var self = this;
+                            console.log(spans);
                         },
                         applyAggregateRule2: function(displayObj, displayId, data, redraw){
                             var self = this; 
