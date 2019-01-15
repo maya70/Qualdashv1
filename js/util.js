@@ -99,15 +99,16 @@ $Q.Picanet = {
                         "mark": "bar",
                         "x": "admonth",
                         "y": ["eventidscr", "der_death"], 
-                        "yscale": ["patient", "patient"],                         
+                        "granP": ["patient", "patient"],   
+                        "granT": [{"weekly": "der_death"},{"monthly": "der_death"},{"annual":"der_death"}],                                              
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "yaggregates": ["count", "sum"], 
                         "xspan": "year",    
                         "yspan": "unit",  
+                        "tspan": 3,
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"], 
-                        "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }], // from tasks with a single quantitative variable  
-                        "times": [],                        
+                        "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                          
                         "combinations": {"siteidscr": "smr", "ext_year":"der_death"}
                      }, 
                      {  "metric": "48h Readmission",

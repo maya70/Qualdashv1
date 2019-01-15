@@ -10,6 +10,7 @@
                         self.unitID = "194281";
                         self.slaveCats = {};
                         self.slaves = {};
+                        self.year = "2014"; 
                         /** availMetrics keeps a list of metrics that are made available 
                          *  in a drop-down menu for users to select from in each QualCard
                          *  Defaults for each audit are set here
@@ -102,7 +103,7 @@
                                 }
                                 //self.meta = meta; 
                                 //console.log(meta); 
-                                d3.csv("./data/picanet_admission/2014.csv", function(data){
+                                d3.csv("./data/picanet_admission/"+self.year+".csv", function(data){
                                         //console.log(data); 
                                         self.data = data;                                     
                                         //////console.log(displayVar);
@@ -112,11 +113,31 @@
                                                                     display, data);
                                         }
                                         //console.log(self.dataViews);
+                                        self.loadHistory();
                                         self.control.dataReady(self.dataViews, self.data); 
 
                                     });
                                 });
                             },
+                        loadHistory: function(){
+                            var self = this;
+                            var tspan, fpath; 
+                            self.history = [];                             
+                            if(self.control.audit === "picanet"){
+                                tspan = $Q.Picanet['displayVariables'][0]['tspan']; 
+                                fpath = "./data/picanet_admission/";
+                                for(var i=1; i < tspan; i++){
+                                    var year = parseInt(self.year)-i; 
+                                    d3.csv(fpath+year+".csv", function(data){                                        
+                                        console.log(data);
+                                        self.history.push({"year": year, "data": data});
+                                    });
+                                } 
+                                //https://bl.ocks.org/carlvlewis/8a5b1cc987217607a47bd7d4e0fffacb
+                            }
+                            
+
+                        },
                         addCategorical: function(viewId, varName){
                             var self = this;
                             //var viewId = id[id.length-1];
@@ -514,7 +535,7 @@
                                                     "data": dict, 
                                                     "metric": self.availMetrics[displayId]['value'], 
                                                     "mark": displayObj["mark"],
-                                                    "yscale": displayObj["yscale"],
+                                                    "yscale": displayObj["granP"],
                                                     "cats": categoricals,
                                                     "levels": levels,
                                                     "slaves": slaves, 
