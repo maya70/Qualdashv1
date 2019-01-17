@@ -96,19 +96,19 @@ $Q.Picanet = {
                   "der_smr": "SMR",
                   "ethnic": "Ethnic"},
 "displayVariables": [{  "metric": "Mortality",
-                        "mark": "bar",
+                        "mark": "bar", // should remove this 
                         "x": "admonth",
                         "y": ["eventidscr", "der_death"], 
-                        "granP": ["patient", "patient"],   
-                        "granT": ["monthly", "weekly-quarterly", "monthly-annual" ],  // the first element holds the master view's granT                                            
                         "xType": "t",
                         "yType": ["q", "q"],  
-                        "yaggregates": ["count", "sum"], 
                         "xspan": "year",    
-                        "yspan": "unit",  
-                        "tspan": 3,
-                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"], 
-                        "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                          
+                        "yspan": "unit",    
+                        "yaggregates": ["count", "sum"], 
+                        "granP": ["unit", "unit"], 
+                        /** Slave Tasks spec begin here **/ 
+                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
+                        "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                                                                   
+                        "granT": [{"monthly": "y"}, {"weekly-quarterly": "der_smr"}, {"monthly-annual": "der_smr"} ],  // the first element holds the master view's granT                                             
                         "combinations": {"siteidscr": "smr", "ext_year":"der_death"}
                      }, 
                      {  "metric": "48h Readmission",

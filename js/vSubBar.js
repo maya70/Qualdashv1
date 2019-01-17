@@ -31,7 +31,7 @@
 								}
 								self.dataLinks[cat] = dataLinks;
 							});
-							console.log(self.dataLinks);
+							//console.log(self.dataLinks);
 						},
 						foundMatch: function(datum, cat, piedata){
 							var self = this; 
@@ -48,7 +48,7 @@
 
                                 var ordered = [];
                                 var orderedKeys = Object.keys(dict);
-                                //////////console.log(orderedKeys);
+                                ////////////console.log(orderedKeys);
                                 var xz = orderedKeys,
                                     yz = d3.range(levels.length).map(function(d){
                                         return Array.apply(null, Array(xz.length)).map(Number.prototype.valueOf,0);
@@ -71,25 +71,25 @@
 
 							if(self.parent.g2){
 								var undef;
-								d3.selectAll(".slave-draw-area-1"+self.id).remove(); 
+								d3.selectAll(".slave-draw-area-2"+self.id).remove(); 
 								//self.parent.g1 = undef; 
 							}
 							
 							self.parent.g2 = self.parent.ssvg2.append("g").attr("class", "slave-draw-area-2"+self.id);
 
-							var margin = {top: 10, right: 20, bottom: 20, left:20};
+							var margin = {top: 20, right: 20, bottom: 30, left:30};
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							
 							var scale = 0.9; 
 							
-							self.parent.g2.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
+							
 
 							var timeout = d3.timeout(function() {
 											  changed(); 
 											}, 4000);
 
-							var g = self.parent.g2; 
+							var g = self.parent.g2.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
 
 							var x = d3.scaleBand()
 									    .domain(xz)
@@ -148,8 +148,8 @@
 								        .attr("transform", "rotate(-65)")
 								        .call(changed);
 
-								////console.log(y.domain());
-								////console.log(y.range());
+								//////console.log(y.domain());
+								//////console.log(y.range());
 								g.append("g")
 							      .attr("class", "y axis")
 							      .call(d3.axisLeft(y).ticks(5, "s"))
@@ -169,7 +169,7 @@
 						function transitionGrouped() {
 							
 						  y.domain([0, yMax]);
-						  //console.log(xz);
+						  ////console.log(xz);
 						  rect.transition()
 						      .duration(1000)
 						      //.delay(function(d, i) { return i * 10; })
@@ -199,7 +199,7 @@
 						draw: function(viewId, data, parent, svgw, svgh){
 							var self = this;
 							//self.updateDataLinks(viewId, data, parent);
-							console.log(data); 
+							//console.log(data); 
 							self.drawCatBar(viewId, data, parent, svgw, svgh); 
 							
 						}

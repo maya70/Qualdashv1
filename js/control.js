@@ -31,9 +31,9 @@
 							var self = this;
 							return self.dataModel.getHistoryData(); 
 						},
-						prepTimeData: function(tspan, viewId ){
+						prepTimeData: function(tspan, viewId, vname ){
 							var self = this;
-							self.dataModel.prepTimeData(tspan, viewId);
+							return self.dataModel.prepTimeData(tspan, viewId, vname);
 
 						},
 						buildMetaHier: function(){

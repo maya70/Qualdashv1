@@ -11,20 +11,20 @@
 											.attr("class", "item")
 											.attr("id", "cardcontainer"+viewId)
 											.on("dblclick", function(){
-												////console.log(this);	
+												//////console.log(this);	
 												var curh = parseInt($(this).css("height")),
 													curw = parseInt($(this).css("width"));
 												
 												if(self.expanded === false)
 												{  // grow
-													////console.log("growing from "+ curh);
+													//////console.log("growing from "+ curh);
 													curh *= 2;
 													curw *= 2;	
 													self.expanded = true; 
 												}
 												else
 												{   // shrink
-													////console.log("shrinking from "+ curh);
+													//////console.log("shrinking from "+ curh);
 													curh /= 2;
 													curw /= 2; 
 													self.expanded = false; 
@@ -73,7 +73,7 @@
 							var self = this;
 							var cat1 = cats['cats'][0];
 							var catdata = cats['data'][cat1];
-							console.log(catdata);
+							////console.log(catdata);
 
 							var tabW = ssvgW/ cats['cats'].length;
 							
@@ -169,7 +169,7 @@
 							var self = this;
 							var quant1 = slaves['quants'][0]['q'];
 							var qdata = slaves['data'][quant1];
-							console.log(qdata);
+							////console.log(qdata);
 						
 							var tabW = ssvgW/ slaves['quants'].length;
 							
@@ -205,7 +205,7 @@
 												r.style("stroke", "black");			
 											
 											qdata = slaves['data'][d['q']];
-											console.log(qdata);
+											//console.log(qdata);
 											//self.subVis2.draw(self.id, qdata , self, ssvgW-10, ssvgH-10);
 
 										})
@@ -265,7 +265,7 @@
 							var self = this;
 							var cat1 = cats['cats'][0];
 							var catdata = cats['data'][cat1];
-							console.log(catdata);
+							////console.log(catdata);
 
 							var tabW = ssvgW/ cats['cats'].length;
 							
@@ -359,16 +359,19 @@
 						},
 						createSlaveT: function(slaves, mainsvgW, ssvgH, xoffset){
 							var self = this;
-							var tdata = self.parent.control.getHistoryData(); 
+							//var tdata = self.parent.control.getHistoryData(); 
 							var tspan = self.parent.control.audit === "picanet"? $Q.Picanet['displayVariables'][self.id]['granT']
 																				: $Q.Minap['displayVariables'][self.id]['granT'];
+							var yvar =  self.parent.control.audit === "picanet"? $Q.Picanet['displayVariables'][self.id]['y'][1]
+																				: $Q.Minap['displayVariables'][self.id]['y'][1];
 							// filter tspan to remove the first time granularity, which is already displayed in the main view
 							//var index = tspan.indexOf("monthly");
 							tspan.splice(0, 1);
-							self.parent.control.prepTimeData(tspan[0], self.id );
+							//var tdata = self.parent.control.prepTimeData(tspan[0], self.id, yvar );
+							var tdata = []; 
 
-							self.ssvg4 = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "ssvg4"+self.id)
+							self.ssvgt = d3.select("#draw-area"+self.id).append("svg")
+											.attr("id", "ssvgt"+self.id)
 											.attr("class", "ssvg"+self.id)
 											.style("display", "inline-block")
 											.attr("width", mainsvgW)
@@ -377,18 +380,18 @@
 											.style("top", (ssvgH * 2))
 											.style("left", 30);										
 											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-								self.ssvg4.append("rect")
+								self.ssvgt.append("rect")
 											.attr("id","draw-rect-t-"+self.id)	
 											.attr("x", 5)
 											.attr("y", 5)
 											.attr("width", mainsvgW-10)
-											.attr("height", ssvgH - 10)
+											.attr("height", ssvgH -10)
 											.style("stroke", "black")
 											.style("fill", "none"); 
 							
 							var tabW = mainsvgW/ tspan.length;
 							
-							var tabs = self.ssvg4.selectAll(".sttabs"+self.id)
+							var tabs = self.ssvgt.selectAll(".sttabs"+self.id)
 										.data(tspan)
 										.enter().append("g")
 										.attr("class", "sttabs"+self.id)
@@ -447,15 +450,12 @@
 								.attr("dy", "1.2em")
 								.attr("dx", "1.3em")
 							    .text(function(d) { 
-							    	console.log(d);
+							    	//console.log(d);
 							    	 return d; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 											
-							//self.subVis1 = new $Q.SubPieChart(self.id, catdata , self, ssvgW-10, ssvgH-10);
-
-							self.subVisT = new $Q.SubTimeChart(self.id, tdata , self, mainsvgW-10, ssvgH-10);
-							
+							self.subVisT = new $Q.SubTimeChart(self.id, tspan[0], tdata , self, mainsvgW-10, ssvgH-10);						
 						},
 						nohighlight: function(){
 							var self = this;
@@ -467,7 +467,6 @@
 						},
 						resizeVis: function(refresh){
 							var self = this;
-							////console.log(self.svg);
 							
 							self.vis.resize(); 
 							var mainsvgW = parseInt(self.vis.getMainSVG(self.id).style("width"));
@@ -484,7 +483,7 @@
 								
 								// populate the first slave
 								var slaves = self.getSlaves(); 
-								console.log(slaves);
+								//console.log(slaves);
 
 								// handle the first visualization: a categorical
 								
@@ -519,7 +518,7 @@
 								self.ssvg1 = undef;
 								self.ssvg2 = undef;
 								self.ssvg3 = undef;
-								self.ssvg4 = undef;
+								self.ssvgt = undef;
 								self.expanded = false; 
 								self.vis.resize();  
 							}
@@ -556,10 +555,10 @@
 												.style("min-width", "45%")
 												.style("margin-left",0)
 												.on("change", function(d){													
-													////console.log(this.value);													
+													//////console.log(this.value);													
 													self.parent.control.updateMetrics(viewId, this.value); 											
 													var dv = self.parent.getMetricDataView(this.value);
-													////console.log(dv); 
+													//////console.log(dv); 
 													//TODO: reset here the grouping variables and dicts of this view
 													self.parent.control.resetCategoricals(viewId); 
 													self.drawBarChart(viewId, dv['data']);
@@ -574,7 +573,7 @@
 							}
 							
 							var curMetric = self.parent.availMetrics[(viewId%self.parent.availMetrics.length)]['value'];
-							////////console.log(curMetric);
+							//////////console.log(curMetric);
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
@@ -589,7 +588,7 @@
 												.style("min-width", "43%")
 												.on("change", function(){
 													var dataViews = self.parent.control.getDataViews(); 
-													////console.log(dataViews[viewId]); 
+													//////console.log(dataViews[viewId]); 
 													self.populateCard(dataViews[viewId]); 
 												});
 							
@@ -665,14 +664,14 @@
 						},
 						getChartType: function(dataView){
 							var self = this; 
-							////console.log(dataView); 
+							//////console.log(dataView); 
 							var viewType; 
 							if(dataView.mark){
 								viewType = dataView.mark; 
 							}
 							else 
 								viewType = $("#vsel"+self.id +' option:selected').val(); 
-							////console.log("TYPE = "+ viewType);
+							//////console.log("TYPE = "+ viewType);
 							return viewType; 
 
 						},
@@ -695,7 +694,7 @@
 						},
 						drawPieChart: function(dataView){
 							var self = this; 
-							//console.log(dataView);
+							////console.log(dataView);
 							var viewId = dataView['viewId'];
 							var data = dataView['data'];
 							
@@ -703,7 +702,7 @@
 						},
 						drawScatter: function(dataView){
 							var self = this; 
-							////console.log(dataView);
+							//////console.log(dataView);
 							//scale function
 							/*
 							var xScale = d3.scaleLinear()

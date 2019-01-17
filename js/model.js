@@ -276,8 +276,62 @@
                             var self= this;
                             return self.history; 
                         },
-                        prepTimeData: function(tspan, viewId){
+                        listTimeVar: function(t){
                             var self = this;
+                            if(t === "weekly")
+                                return self.audit === "picanet"? "adweek": "";
+                            if(t === "monthly")
+                                return self.audit === "picanet"? "admonth": "";
+                            if(t === "quarterly")
+                                return self.audit === "picanet"? "adquarter": "";
+                            if(t === "annual")
+                                return self.audit === "picanet"? "adyear": "";
+                              
+                        },
+                        buildTimeHierarchy: function(data, viewId, vname){
+                            var self = this;                             
+                            var result = [];
+                            for(var key in data){
+                                var tempres = [];
+                                var year = self.year;
+                                var k = parseInt(key);
+                                var quarter =  k < 4 ? 1: (k < 7? 2: (k < 10? 3 : 4)) ;
+                                
+                                for(var i=0; i < 4; i++){
+                                    var temp = {};
+                                    temp['year'] = year;
+                                    temp['quarter'] = quarter;
+                                    temp['month'] = key;
+                                    temp['week'] = i+1;
+                                    temp['number'] = 0;
+                                    tempres.push(temp);                                     
+                                }
+
+                                    data[key][vname]['data'].forEach(function(recId){
+                                        var weeksToThisMonth = 4.348125 * (parseInt(self.data[recId][self.listTimeVar('monthly')])-1);                                        
+                                        var wid = parseInt(self.data[recId][self.listTimeVar('weekly')]) - parseInt(weeksToThisMonth);
+                                        if((wid>4) && (tempres.length < 5)){
+                                             
+                                            tempres.push({'year': year, 
+                                                            'quarter': quarter,
+                                                            'month': key, 
+                                                            'week': 5,
+                                                            'number': 0 });
+                                        }
+                                        tempres[(wid-1)]['number']++;
+                                    });
+                                   tempres.forEach(function(tr){
+                                    result.push(tr); 
+                                   });
+                                
+                            }
+                            //console.log(data);
+                            //console.log(result);
+                            return result; 
+                        },
+                        prepTimeData: function(span, viewId, vname){
+                            var self = this;
+                            var tspan = Object.keys(span);
                             if(tspan.indexOf("-")>=0){ // this is a composite time span 
                                 var str = tspan.split("-");
                                 var containsHistory = false;
@@ -286,12 +340,12 @@
                                         containsHistory = true;
                                 });
                                 if(containsHistory){
-
+                                    return self.history; 
                                 }
                                 else{
                                     // the data for this time view is same time period shown in the main view
                                     // apply aggregation granularities:
-                                    self.applyAggregateRuleTimeSub(str, viewId); 
+                                    return self.buildTimeHierarchy(self.dataViews[viewId]['data'], viewId, vname); 
                                 }
 
                             }
@@ -369,13 +423,10 @@
                             return vval; 
 
                         },
-                        applyAggregateRuleTimeSub: function(spans, viewId){
-                            var self = this;
-                            console.log(spans);
-                        },
                         applyAggregateRule2: function(displayObj, displayId, data, redraw){
                             var self = this; 
                             var dict = {};
+                            var tHier = {}; 
                             var metric = displayObj["metric"],
                                 rule = displayObj["aggregate"],
                                 scale = displayObj["scale"],
@@ -401,7 +452,6 @@
                                 slaves['cats'] = self.list2QCats(displayId); 
                                 slaves['quants'] = self.list2QComp(displayId);
                                 slaves['data'] = {}; 
-
                                 
                                 }
                             // one big for loop fits all
@@ -475,7 +525,11 @@
                                                     slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i]["siteidscr"] === self.unitID )? parseFloat(self.computeVar(quant['q'], quant, i, sid)) : 0;                                               
                                                 else
                                                     slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i]["siteidscr"] === self.unitID )? parseFloat(self.computeVar(quant['q'], quant, i, sid)) : 0;
+                                                
+                                                // check if we need nultiple time granularities for this
+                                                if(self.checkGranT(slaves['data'][quant['q']])){
 
+                                                } 
                                             }
 
                                         }); 
@@ -569,6 +623,13 @@
                                                     "slaves": slaves, 
                                                     "ylength": displayObj["y"].length, 
                                                     "metricLabel": self.availMetrics[displayId]['text']});                                 
+                        },
+                        checkGranT: function(varname){
+                            var self = this; 
+                            var granT = self.audit === "picanet"? $Q.Picanet['displayVariables']['granT']
+                                                                : $Q.Minap['displayVariables']['granT'];
+                                                                
+
                         },
                         applyAggregateRule: function(displayObj, displayId, data, redraw){
                             var self = this; 
