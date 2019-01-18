@@ -102,13 +102,14 @@ $Q.Picanet = {
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "xspan": "year",    
-                        "yspan": "unit",    
+                        "yspan": "unit",  
+                        "tspan": 3,   
                         "yaggregates": ["count", "sum"], 
                         "granP": ["unit", "unit"], 
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
                         "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                                                                   
-                        "granT": [{"monthly": "y"}, {"weekly-quarterly": "der_smr"}, {"monthly-annual": "der_smr"} ],  // the first element holds the master view's granT                                             
+                        "granT": {"monthly": "y", "weekly": "der_smr" , "quarterly": "der_smr", "monthly-annual": "der_smr"} ,  // the first element holds the master view's granT                                             
                         "combinations": {"siteidscr": "smr", "ext_year":"der_death"}
                      }, 
                      {  "metric": "48h Readmission",
@@ -227,3 +228,9 @@ $Q.Minap = {
                                                     "scale": "monthly"
                                                 }]
 };
+
+$Q.DataDefs = {"picanet": {"monthVar": "admonth", 
+                          "weekVar": "adweek",
+                          "yearVar": "adyear"
+                          }, 
+            "minap": {} };

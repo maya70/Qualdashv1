@@ -114,7 +114,7 @@
 												
 							function changed() {
 							  
-							  console.log(self.toggle);
+							  //console.log(self.toggle);
 							  if (self.toggle === "grouped")
 							  	transitionGrouped();
 							  else 

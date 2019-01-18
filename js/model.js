@@ -119,6 +119,16 @@
                                     });
                                 });
                             },
+                        getTimeQs: function(viewId){
+                            var self = this; 
+                            var Qs = []; 
+                            var auditVars = self.audit === "picanet"? $Q.Picanet['displayVariables'][viewId]: $Q.Minap['displayVariables'][viewId];
+                            for(var key in auditVars['granT']){
+                                if(Qs.indexOf(auditVars['granT'][key]) < 0 && auditVars['granT'][key] !== "y")
+                                    Qs.push(auditVars['granT'][key]);
+                            }
+                            return Qs; 
+                        },
                         loadHistory: function(){
                             var self = this;
                             var tspan, fpath; 
@@ -126,17 +136,39 @@
                             if(self.control.audit === "picanet"){
                                 tspan = $Q.Picanet['displayVariables'][0]['tspan']; 
                                 fpath = "./data/picanet_admission/";
-                                for(var i=1; i < tspan; i++){
-                                    var year = parseInt(self.year)-i; 
+                                for(var i=1; i < tspan; i++){                                    
+                                    var year = parseInt(self.year)-i;                                 
                                     d3.csv(fpath+year+".csv", function(data){                                        
-                                        //console.log(data);
-                                        self.history.push({"year": year, "data": data});
+                                        //console.log("Loading History");
+                                        var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]]; 
+                                        //console.log(yearupdated);
+                                        //self.history.push({"year": year, "data": data});
+                                        for(var d = 0; d < data.length; d++){
+                                            for(var v = 0; v < self.dataViews.length; v++){
+                                                var Qs = self.getTimeQs(v); 
+                                                Qs.forEach(function(qname){ 
+                                                    var qobj = self.getQObject(qname, v); 
+                                                    var qval = parseFloat(self.computeVar(qname, qobj, data[d], 0)) ; 
+                                                    self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
+                                                });
+                                            }
+                                        }
                                     });
                                 } 
                                 //https://bl.ocks.org/carlvlewis/8a5b1cc987217607a47bd7d4e0fffacb
                             }
                             
-
+                        },
+                        getQObject: function(qname, viewId){
+                            var self = this;
+                            var qres;  
+                            var auditVars = self.audit === "picanet"? $Q.Picanet['displayVariables'][viewId] : $Q.Minap['displayVariables'][viewId];
+                            auditVars['quantities'].forEach(function(qobj){
+                                if(qobj['q'] === qname){
+                                            qres = qobj;
+                                        }
+                            });
+                            return qres; 
                         },
                         addCategorical: function(viewId, varName){
                             var self = this;
@@ -156,16 +188,16 @@
                         getSlaves: function(viewId){
                             return this.slaves[viewId]; 
                         },
-                        getDerivedValue: function(vname, recId){
+                        getDerivedValue: function(vname, rec){
                             var self = this;
                             if(vname === "death" && self.audit === "picanet"){
-                                if(self.data[recId]["unitdisstatus"] === "2")
+                                if(rec["unitdisstatus"] === "2")
                                     return 1;
                                 else
                                     return 0; 
                             }
                             else if(vname === "smr" && self.audit === "picanet"){
-                                return self.data[recId]["pim3_s"]; 
+                                return rec["pim3_s"]; 
                             }
                         },
                         calculateDerivedVar: function(metric, yvar){
@@ -272,9 +304,9 @@
                             return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z");
 
                         },
-                        getHistoryData:function(){
+                        getTimeHier:function(){
                             var self= this;
-                            return self.history; 
+                            return self.tHier; 
                         },
                         listTimeVar: function(t){
                             var self = this;
@@ -400,28 +432,51 @@
                             var comps = auditVars['displayVariables'][viewId]['quantities'];
                             return comps;
                         },
-                        computeVar: function(yvar, displayObj, i, sid){
+                        computeVar: function(yvar, displayObj, rec, sid){
                             var self = this;
                             var vname;
                             var vval; 
                             if(yvar.indexOf("_") < 0 ){
                                 // this is a database variable
                                 vname = yvar; 
-                                vval = (displayObj["yaggregates"][sid] === "count")? 1 : self.data[i][vname];  
+                                vval = (displayObj["yaggregates"][sid] === "count")? 1 : rec[vname];  
                             }
                             else{
                                 // this is a derived variable
                                 var strs = yvar.split("_");
                                 var rule = strs[0]; 
                                 vname = strs[1];
-                                var derval = self.getDerivedValue(vname, i);
+                                var derval = self.getDerivedValue(vname, rec);
                                 vval = (displayObj["yaggregates"][sid] === "count")? ((derval>0)? 1: 0) 
                                             : derval;  
                             }
-                            if(!vval && yvar === "der_smr")
-                                console.log(i);
+                            //if(!vval && yvar === "der_smr")
+                             //   console.log(rec);
                             return vval; 
 
+                        },
+                        updateTimeHierarchy: function(year, varname, displayId, rec, qval){
+                            var self = this;                             
+                            if(self.checkGranT(varname , displayId)){
+                                if(!self.tHier)
+                                    self.tHier= {}; 
+                                if(!self.tHier[year])
+                                    self.tHier[year] = {}; 
+                                var quar = self.getRecordQuarter(rec); 
+                                if(!self.tHier[year][quar])
+                                    self.tHier[year][quar] = {};
+                                var mon = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]);
+                                if(!self.tHier[year][quar][mon])
+                                    self.tHier[year][quar][mon] = {};
+                                var week = parseInt(rec[$Q.DataDefs[self.audit]["weekVar"]]);
+                                if(!self.tHier[year][quar][mon][week])
+                                    self.tHier[year][quar][mon][week] = {};
+                                if(!self.tHier[year][quar][mon][week][varname])
+                                    self.tHier[year][quar][mon][week][varname] = qval; 
+                                else
+                                    self.tHier[year][quar][mon][week][varname] += qval;
+
+                            }                            
                         },
                         applyAggregateRule2: function(displayObj, displayId, data, redraw){
                             var self = this; 
@@ -434,7 +489,7 @@
                                 displayVar = displayObj["y"],
                                 categoricals = displayObj["categories"],
                                 levels = [],
-                                slaves = {}; 
+                                slaves = {};
                             
                             // prepare the dict
                             if(displayVar.constructor == Array){                                
@@ -465,12 +520,12 @@
                                     // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                     displayVar.forEach(function(yvar, id){
                                             //var vname;
-                                            var vval = self.computeVar(yvar, displayObj, i, id);
+                                            var vval = self.computeVar(yvar, displayObj, self.data[i], id);
                                             if(yvar === "der_death"){
                                                 if(!observedDeathsNational[self.data[i][dateVar]])
                                                     observedDeathsNational[self.data[i][dateVar]] = vval; 
                                                 else
-                                                    observedDeathsNational[self.data[i][dateVar]] += vval; 
+                                                    observedDeathsNational[self.data[i][dateVar]] += vval;                                                 
                                             }
                                             // select yspan items
                                             if(displayObj["yspan"] === "unit" && self.data[i]["siteidscr"] === self.unitID )
@@ -485,6 +540,8 @@
                                                     dict[self.data[i][dateVar]][yvar]["data"] = [];
                                                 if(vval > 0) dict[self.data[i][dateVar]][yvar]["data"].push(i); 
                                             }
+                                            // check to see if multiple time granularities are needed for y-axis variables                                            
+                                            self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval); 
                                         });
 
                                         // setup fake categories and levels for main bar chart (or other vis)
@@ -508,28 +565,28 @@
                                             // if we need national data
                                             if(quant['granP'].constructor == Array || quant['granP'] === "national"){
                                                 subYlength = 2; 
+                                                var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid)) ; 
+
                                                 if(!slaves['data'][quant['q']])
                                                     slaves['data'][quant['q']] = {}; 
                                                 if(!slaves['data'][quant['q']][self.data[i][dateVar]])
                                                     slaves['data'][quant['q']][self.data[i][dateVar]] =  {};
                                                 if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = parseFloat(self.computeVar(quant['q'], quant, i, sid));
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = qval;
                                                     
                                                 else{
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += parseFloat(self.computeVar(quant['q'], quant, i, sid));
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
                                                     //console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                                 }
                                                 if(!slaves['data'][quant['q']][self.data[i][dateVar]])
                                                     slaves['data'][quant['q']][self.data[i][dateVar]] = {};
                                                 if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i]["siteidscr"] === self.unitID )? parseFloat(self.computeVar(quant['q'], quant, i, sid)) : 0;                                               
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i]["siteidscr"] === self.unitID )? qval : 0;                                               
                                                 else
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i]["siteidscr"] === self.unitID )? parseFloat(self.computeVar(quant['q'], quant, i, sid)) : 0;
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i]["siteidscr"] === self.unitID )? qval : 0;
                                                 
                                                 // check if we need nultiple time granularities for this
-                                                if(self.checkGranT(slaves['data'][quant['q']])){
-
-                                                } 
+                                                self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
                                             }
 
                                         }); 
@@ -579,7 +636,8 @@
                                         }
                                     });
                                  }
-                                 console.log(slaves['data']); 
+                                 //console.log(slaves['data']); 
+                                 //console.log(self.tHier);
                                /**
                                 * In all cases sort dict by date (assuming x-axis is temporal)
                                 * TODO: handle the case where x-axis is not actually temporal
@@ -624,12 +682,20 @@
                                                     "ylength": displayObj["y"].length, 
                                                     "metricLabel": self.availMetrics[displayId]['text']});                                 
                         },
-                        checkGranT: function(varname){
+                        getRecordQuarter: function(rec){
                             var self = this; 
-                            var granT = self.audit === "picanet"? $Q.Picanet['displayVariables']['granT']
-                                                                : $Q.Minap['displayVariables']['granT'];
-                                                                
-
+                            var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]);
+                            return recMonth < 4 ? 1: (recMonth < 7? 2: (recMonth < 10? 3 : 4))
+                        },
+                        checkGranT: function(varname, displayId){
+                            var self = this; 
+                            var granT = self.audit === "picanet"? $Q.Picanet['displayVariables'][displayId]['granT']
+                                                                : $Q.Minap['displayVariables'][displayId]['granT'];
+                            for(var key in granT){
+                                if(granT[key] === varname)
+                                    return true;
+                            }
+                            return false; 
                         },
                         applyAggregateRule: function(displayObj, displayId, data, redraw){
                             var self = this; 

@@ -4,12 +4,42 @@
 					null, 
 					function SubTimeChart(viewId, span, data, parent, svgw, svgh){
 						var self = this;	
+						self.monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
+												"Sep", "Oct", "Nov", "Dec" ];
 						self.parent = parent; 
-						
-						self.draw(viewId, data, parent, svgw, svgh);
+						self.data = self.prepData(data, "der_smr"); 
+						self.draw(viewId, self.data, parent, svgw, svgh);
 							
 					},
 					{
+						prepData:function(data, yvar){
+							var self = this;
+							console.log(data); 
+							// monthly-annual
+							var result = []; 
+
+							for(var year in data){
+								var thisYearInMonths = []; 
+								for(var quar in data[year]){
+									for(var mon in data[year][quar]){
+										//thisYearInMonths.push(data[year][quar][mon]);
+										var sum = 0; 
+										for(var week in data[year][quar][mon]){
+											sum += data[year][quar][mon][week][yvar]; 
+										}
+									var temp = {};
+									temp['Year'] = year;
+									temp['Month'] = self.monthLabels[parseInt(mon)-1];
+									temp['Number'] = sum; 
+									result.push(temp);
+
+									}
+								}
+																
+							}
+							console.log(result); 
+							return result; 
+						},
 						updateDataLinks: function(viewId, data, parent){
 							var self = this; 
 							var parentData = parent.parent.dataViews[viewId]['data'];
@@ -42,36 +72,39 @@
 									return true; 
 							return false; 
 						},
-						draw: function(viewId, tdata, parent, svgw, svgh){
+						draw: function(viewId, newdata, parent, svgw, svgh){
 							var self = this; 
 							var scale = 0.95;
-							var monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
-												"Sep", "Oct", "Nov", "Dec" ];
-		var jsonData = [{"Year":2011,"Month":"Jan","Number":320},
-			{"Year":2011,"Month":"Feb","Number":10},
-			{"Year":2011,"Month":"Mar","Number":365},
-			{"Year":2011,"Month":"Apr","Number":385},
-			{"Year":2011,"Month":"May","Number":10},
-			{"Year":2012,"Month":"Jan","Number":380},
-			{"Year":2012,"Month":"Feb","Number":180},
-			{"Year":2012,"Month":"Mar","Number":275},
-			{"Year":2012,"Month":"Apr","Number":10},
-			{"Year":2012,"Month":"May","Number":410},
-			{"Year":2013,"Month":"Jan","Number":320},
-			{"Year":2013,"Month":"Feb","Number":170},
-			{"Year":2013,"Month":"Mar","Number":10},
-			{"Year":2013,"Month":"Apr","Number":10},
-			{"Year":2013,"Month":"May","Number":390},
-			{"Year":2014,"Month":"Jan","Number":420},
-			{"Year":2014,"Month":"Feb","Number":125},
-			{"Year":2014,"Month":"Mar","Number":310},
-			{"Year":2014,"Month":"Apr","Number":450},
-			{"Year":2014,"Month":"May","Number":410},
-			{"Year":2015,"Month":"Jan","Number":460},
-			{"Year":2015,"Month":"Feb","Number":195},
-			{"Year":2015,"Month":"Mar","Number":360},
-			{"Year":2015,"Month":"Apr","Number":410},
-			{"Year":2015,"Month":"May","Number":385}];
+
+							
+		var jsonData = [{"Year":2011,"Month":"Jan","Number":0.320},
+			{"Year":2011,"Month":"Feb","Number":0.10},
+			{"Year":2011,"Month":"Mar","Number":0.365},
+			{"Year":2011,"Month":"Apr","Number":0.385},
+			{"Year":2011,"Month":"May","Number":0.10},
+			{"Year":2011,"Month":"Jun","Number":0.10},
+			{"Year":2011,"Month":"Jul","Number":0.10},
+			{"Year":2012,"Month":"Jan","Number":0.380},
+			{"Year":2012,"Month":"Feb","Number":0.180},
+			{"Year":2012,"Month":"Mar","Number":0.275},
+			{"Year":2012,"Month":"Apr","Number":0.10},
+			{"Year":2012,"Month":"May","Number":0.410},
+			{"Year":2012,"Month":"Jun","Number":0.410},
+			{"Year":2012,"Month":"Jul","Number":0.410},
+			{"Year":2013,"Month":"Jan","Number":0.320},
+			{"Year":2013,"Month":"Feb","Number":0.170},
+			{"Year":2013,"Month":"Mar","Number":0.10},
+			{"Year":2013,"Month":"Apr","Number":0.10},
+			{"Year":2013,"Month":"May","Number":0.390},
+			{"Year":2013,"Month":"Jun","Number":0.390},
+			{"Year":2013,"Month":"Jul","Number":0.390},
+			{"Year":2014,"Month":"Jan","Number":0.420},
+			{"Year":2014,"Month":"Feb","Number":0.125},
+			{"Year":2014,"Month":"Mar","Number":0.310},
+			{"Year":2014,"Month":"Apr","Number":0.450},
+			{"Year":2014,"Month":"May","Number":0.410},
+			{"Year":2014,"Month":"Jun","Number":0.410},
+			{"Year":2014,"Month":"Jul","Number":0.410}];
 			
 		// Positioning and sizing our chart based upon window size and setting margins of 50px on all four sides, 
 		// including axes, area fill and setting domain/range for data  
@@ -85,6 +118,7 @@
 			console.log("MAX Y: "+ self.yMax); 
 
 			var data = getData(jsonData);
+			console.log(data);
 		// PSA: What was previously called 'd3.scale.linear()' in V3 is now just 'd3.scaleLinear()' in V4; still used to create new linear scale.
 			var x = d3.scaleLinear()
 			    .range([0, width]);
@@ -120,12 +154,12 @@
 			    .attr("d", area);
 // appending svg g, then apppending text element to that, then assigning the month labels to the text element to insert them essentially as annotated text into the d3 chart
 // Wouldn't this have been oh-so-much easier to use d3.annnotations? If only I'd been so clever as Susie Lu.
-			for(var i=0; i < 5; i++){
+			for(var i=0; i < self.numMonthsInData; i++){
 				svg.append("g")
 					.attr("class", "g-time-group-"+viewId)
-					.attr("transform", "translate("+(width/12 + width*i/5)+",0)")
+					.attr("transform", "translate("+(width/12 + width*i/self.numMonthsInData)+",0)")
 					.append("text")
-					.text(monthLabels[i]);
+					.text(self.monthLabels[i]);
 			}
 			
 			var xAxis = svg.append("g")
@@ -175,10 +209,10 @@
 			    	.ticks(5));
 //dynamically calculated mean/average per each month added as a line on y-axis - using svg g to append the lines to all five chart sections whose x-axis positioning is calculated by x1 and x2 based on width of chart overall; then dynamically calculating averages of data to define the position on y-axis
 			
-			for(var i=0; i < 5; i++){
+			for(var i=0; i < self.numMonthsInData; i++){
 		        d3.select(".g-time-container"+viewId).append("line")
-		            .attr("x1", width*i/5)
-		            .attr("x2", width*(i+1)/5)
+		            .attr("x1", width*i/self.numMonthsInData)
+		            .attr("x2", width*(i+1)/self.numMonthsInData)
 		            .attr("y1", averages[i])
 		            .attr("y2", averages[i])
 		            .attr("stroke", "#979797")
@@ -209,7 +243,7 @@
 			            div.transition()		
 			                .duration(200)		
 			                .style("opacity", .9);		
-			            div	.html(parseInt(d.y * self.yMax))	
+			            div	.html(parseFloat(d.y * self.yMax))	
 			                .style("left", (d3.event.pageX) + "px")		
 			                .style("top", (d3.event.pageY - 28) + "px");	
 			            })					
@@ -222,30 +256,30 @@
 			        //this allows us both to center the labels at the start and end points of the data rather than on the tickmarks, 
 			        //as well as to adjust the '15' label positioning slightly to the left when the size of the viewport 
 			        // is less than 768 so as to prevent overlap.    	        
-for(var i = 0 ; i < 5 ; i ++){
+		for(var i = 0 ; i < self.numMonthsInData ; i ++){
 		        d3.select(".g-time-container"+viewId).append("text")
 		        	.text("Q1")
-		        	.attr("x", width*i/5 + width/50)
+		        	.attr("x", width*i/self.numMonthsInData + width/50)
 		        	.attr("y", height + 25);				
 			}
-			for(var i = 0 ; i < 5 ; i ++){
+			for(var i = 0 ; i < self.numMonthsInData ; i ++){
 				if (width < 768) {
 					d3.select(".g-time-container"+viewId).append("text")
 			        	.text("Q4")
-			        	.attr("x", width*i/5 + width*7/50)
+			        	.attr("x", width*i/self.numMonthsInData + width*7/50)
 			        	.attr("y", height + 25);						
 				}else{
 					d3.select(".g-time-container"+viewId).append("text")
 			        	.text("'15")
-			        	.attr("x", width*i/5 + width*8/50)
+			        	.attr("x", width*i/self.numMonthsInData + width*8/50)
 			        	.attr("y", height + 25);
 				}				
 			}
 // we use svg g to append the axis tickmarks, setting a different x-axis coordinate 
-		for(var i=1; i <=5; i++ ){
+		for(var i=1; i <=self.numMonthsInData; i++ ){
 			d3.select(".g-time-container"+viewId).append("line")
-	            .attr("x1", width*i/5)
-	            .attr("x2", width*i/5)
+	            .attr("x1", width*i/self.numMonthsInData)
+	            .attr("x2", width*i/self.numMonthsInData)
 	            .attr("y1", 0)
 	            .attr("y2", height)
 	            .attr("stroke", "#ccc")
@@ -255,36 +289,30 @@ for(var i = 0 ; i < 5 ; i ++){
 
 			function getData(jsonData){
 				var data = [];
-				var twoData = [[], [], [], [], []];
+				self.numMonthsInData = 7; 
+				self.numYearsInData = 5; 
+				var twoData = [];
+				var yScale = d3.scaleLinear()
+			        .domain([0, self.yMax])
+					.range([height, 0]);
+				
+				for(var m = 0; m < self.numMonthsInData; m++)
+					twoData.push([]);
+
 				for(var i = 0 ; i < jsonData.length ; i ++){
-					switch(jsonData[i].Month){
-						case "Jan":
-							twoData[0].push(jsonData[i].Number);
-							break;
-						case "Feb":
-							twoData[1].push(jsonData[i].Number);
-							break;
-						case "Mar":
-							twoData[2].push(jsonData[i].Number);
-							break;
-						case "Apr":
-							twoData[3].push(jsonData[i].Number);
-							break;
-						case "May":
-							twoData[4].push(jsonData[i].Number);
-							break;
-					}
+					var monId = self.monthLabels.indexOf(jsonData[i].Month);
+					twoData[monId].push(jsonData[i].Number); 					
 				}
-				for(var i = 0 ; i < 5 ; i ++){
+				for(var i = 0 ; i < self.numMonthsInData ; i ++){
 					twoData[i].push(null);
 				}
 				data.push(null);
 				var val = 1/((jsonData.length-1) * 2);
-				for(var i = 0 ; i < 5 ; i ++)
+				
+				for(var i = 0 ; i < self.numMonthsInData ; i ++)
 				{
-					for(var j = 0 ; j < 6 ; j ++)
-					{
-						
+					for(var j = 0 ; j < self.numYearsInData ; j ++)
+					{		
 						if (twoData[i][j]) {
 							data.push({x: val, y: twoData[i][j] / self.yMax});
 							val += 1/(jsonData.length + 0.5);
@@ -295,9 +323,9 @@ for(var i = 0 ; i < 5 ; i ++){
 						
 					}
 				}
-				for(var i = 0 ; i < 5 ; i ++)
+				for(var i = 0 ; i < self.numMonthsInData ; i ++)
 				{
-					averages[i] = height - twoData[i].reduce(sum, 0)*height / 3000;
+					averages[i] =  yScale(twoData[i].reduce(sum,0)/self.numYearsInData) ; //height - twoData[i].reduce(sum, 0)*height / 3000;
 				} 
 				return data;
 			}

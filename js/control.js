@@ -27,9 +27,9 @@
 							self.allVars =  Object.keys(rawData[0]); 
 							self.mainView.createQualCards(dataViews);
 						},
-						getHistoryData: function(){
+						getTimeHier: function(){
 							var self = this;
-							return self.dataModel.getHistoryData(); 
+							return self.dataModel.getTimeHier(); 
 						},
 						prepTimeData: function(tspan, viewId, vname ){
 							var self = this;

@@ -227,7 +227,7 @@
 							                      	  || $(event.target).is("path"))
 							                      	return false; 
 
-							                      console.log(event.target); 
+							                      //console.log(event.target); 
 							                    return Muuri.ItemDrag.defaultStartPredicate(item, event);
 							                    }
 							                });
@@ -241,7 +241,7 @@
 							  //$(item.getElement()).css('background-color', 'yellow');
 							  $(item.getElement()).css('opacity', 1.0);
 							  //$(item.getElement()).css('z-index', 1);
-							  console.log($(item.getElement()).css('z-index')); 
+							  //console.log($(item.getElement()).css('z-index')); 
 							  //////console.log(item.getElement());
 							  
 							});
