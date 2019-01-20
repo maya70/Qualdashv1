@@ -76,8 +76,24 @@
 							//////console.log(catdata);
 
 							var tabW = ssvgW/ cats['cats'].length;
+
+							self.ssvg1div =d3.select("#draw-area"+self.id).append("div")																						
+											.style("max-width", ssvgW+"px")
+											.style("max-height", ssvgH+"px")	
+											.style("position", "absolute")
+											.style("top", "11px")
+											.style("left", xoffset+"px")
+											.style("border", "1px solid black");											
+
+							self.ssvg1 = self.ssvg1div.append("svg")
+											.attr("id", "ssvg1"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", ssvgW)
+											.attr("height", ssvgH);	
 							
-							self.ssvg1 = d3.select("#draw-area"+self.id).append("svg")
+							
+							/*self.ssvg1 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg1"+self.id)
 											.attr("class", "ssvg"+self.id)
 											.style("display", "inline-block")
@@ -87,7 +103,7 @@
 											.style("top", 11)
 											.style("left", xoffset);										
 											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-							
+							*/
 							var tabs = self.ssvg1.selectAll(".stabs"+self.id)
 										.data(cats['cats'])
 										.enter().append("g")
@@ -152,14 +168,14 @@
 							     .style("text-anchor", "bottom")
 							     ;
 							
-							self.ssvg1.append("rect")
+							/*self.ssvg1.append("rect")
 									.attr("id","draw-rect-1-"+self.id)											
 									.attr("x", 5)
 									.attr("y", 15)
 									.attr("width", ssvgW-10)
 									.attr("height", ssvgH - 30)
 									.style("stroke", "black")
-									.style("fill", "none"); 
+									.style("fill", "none"); */
 
 							
 							self.subVis1 = new $Q.SubPieChart(self.id, catdata , self, ssvgW-10, ssvgH-10);
@@ -172,8 +188,25 @@
 							//////console.log(qdata);
 						
 							var tabW = ssvgW/ slaves['quants'].length;
+
+							self.ssvg2div =d3.select("#draw-area"+self.id).append("div")																						
+											.style("max-width", ssvgW+"px")
+											.style("max-height", ssvgH+"px")	
+											.style("position", "absolute")
+											.style("top", (ssvgH + 3)+"px")
+											.style("left", xoffset+"px")
+											.style("border", "1px solid black");											
+
+							self.ssvg2 = self.ssvg2div.append("svg")
+											.attr("id", "ssvg2"+self.id)
+											.attr("class", "ssvg"+self.id)
+											.style("display", "inline-block")
+											.attr("width", ssvgW)
+											.attr("height", ssvgH);													
+						
 							
-							self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
+							
+							/*self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
 											.attr("id", "ssvg2"+self.id)
 											.attr("class", "ssvg"+self.id)
 											.style("display", "inline-block")
@@ -183,6 +216,7 @@
 											.style("top", ssvgH + 3)
 											.style("left", xoffset);										
 											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
+											*/
 							
 							var tabs = self.ssvg2.selectAll(".qtabs"+self.id)
 										.data(slaves['quants'])
@@ -243,53 +277,55 @@
 
 							tabs.append("text")
 								.attr("dy", "1.2em")
-								.attr("dx", "8.3em")
+								.attr("dx", "1.3em")
 							    .text(function(d) { 
 							    	return $Q.Picanet["variableDict"][d['q']]; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 							
-							self.ssvg2.append("rect")
+							/*self.ssvg2.append("rect")
 									.attr("id","draw-rect-2-"+self.id)											
 									.attr("x", 5)
 									.attr("y", 15)
 									.attr("width", ssvgW-10)
 									.attr("height", ssvgH - 30)
 									.style("stroke", "black")
-									.style("fill", "none"); 
+									.style("fill", "none"); */
 							
 							self.subVis2 = new $Q.SubBarChart(self.id, qdata , self, ssvgW-10, ssvgH-10);
 
 						},
-						createSlave3: function(cats, ssvgW, ssvgH, xoffset){
+						createSlave3: function(slaves, ssvgW, ssvgH, xoffset){
 							var self = this;
-							var cat1 = cats['cats'][0];
-							var catdata = cats['data'][cat1];
-							//////console.log(catdata);
+							console.log(slaves['combo']); 
 
-							var tabW = ssvgW/ cats['cats'].length;
-							
-							self.ssvg1 = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "ssvg1"+self.id)
+							var tabW = ssvgW/ slaves['combo'].length;
+							self.ssvg3div =d3.select("#draw-area"+self.id).append("div")																						
+											.style("max-width", ssvgW+"px")
+											.style("max-height", ssvgH+"px")	
+											.style("position", "absolute")
+											.style("top", (ssvgH*2 + 3)+"px")
+											.style("left", xoffset+"px")
+											.style("border", "1px solid black");											
+
+							self.ssvg3 = self.ssvg3div.append("svg")
+											.attr("id", "ssvg3"+self.id)
 											.attr("class", "ssvg"+self.id)
 											.style("display", "inline-block")
 											.attr("width", ssvgW)
-											.attr("height", ssvgH)	
-											.style("position", "absolute")
-											.style("top", 11)
-											.style("left", xoffset);										
-											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-							
-							var tabs = self.ssvg1.selectAll(".stabs"+self.id)
-										.data(cats['cats'])
+											.attr("height", ssvgH);													
+						
+																		
+							var tabs = self.ssvg3.selectAll(".combstabs"+self.id)
+										.data(slaves['combo'])
 										.enter().append("g")
-										.attr("class", "stabs"+self.id)
+										.attr("class", "combstabs"+self.id)
 										.attr("transform", function(d, i){
 											return "translate("+ (i*tabW) + ",0)"; 
 										})
 										.on("click", function(d){
 											// deselect all tabs
-											var all = d3.selectAll(".rtabs"+self.id);
+											var all = d3.selectAll(".combstabs"+self.id);
 											all.attr("active", 0);
 											all.style("fill", "lightgrey");
 											all.style("stroke", "white");
@@ -300,8 +336,8 @@
 												r.style("fill", "white");
 												r.style("stroke", "black");			
 											
-											catdata = cats['data'][d];
-											self.subVis1.draw(self.id, catdata , self, ssvgW-10, ssvgH-10);
+											//catdata = cats['data'][d];
+											//self.subVis1.draw(self.id, catdata , self, ssvgW-10, ssvgH-10);
 
 										})
 										.on("mouseover", function(d){
@@ -339,22 +375,13 @@
 							tabs.append("text")
 								.attr("dy", "1.2em")
 								.attr("dx", ".3em")
-							    .text(function(d) { return $Q.Picanet["variableDict"][d]; })
+							    .text(function(d) { return d; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom")
 							     ;
 							
-							self.ssvg1.append("rect")
-									.attr("id","draw-rect-1-"+self.id)											
-									.attr("x", 5)
-									.attr("y", 15)
-									.attr("width", ssvgW-10)
-									.attr("height", ssvgH - 30)
-									.style("stroke", "black")
-									.style("fill", "none"); 
-
-							
-							self.subVis1 = new $Q.SubPieChart(self.id, catdata , self, ssvgW-10, ssvgH-10);
+							var combodata = slaves['data'][slaves['combo'][0]];
+							self.subVis3 = new $Q.SubScatterChart(self.id, combodata , self, ssvgW-10, ssvgH-10);
 
 						},
 						createSlaveT: function(slaves, mainsvgW, ssvgH, xoffset){
@@ -371,25 +398,23 @@
 							var tspan = Object.keys(span);
 							tspan.splice(0, 1);
 							//var tdata = self.parent.control.prepTimeData(tspan[0], self.id, yvar );
-							
-							self.ssvgt = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "ssvgt"+self.id)
-											.attr("class", "ssvg"+self.id)
-											.style("display", "inline-block")
-											.attr("width", mainsvgW)
-											.attr("height", ssvgH)	
+							self.ssvgtdiv =d3.select("#draw-area"+self.id).append("div")																						
+											.style("max-width", mainsvgW+"px")
+											.style("max-height", ssvgH+"px")	
 											.style("position", "absolute")
-											.style("top", (ssvgH * 2))
-											.style("left", 30);										
-											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-								self.ssvgt.append("rect")
-											.attr("id","draw-rect-t-"+self.id)	
-											.attr("x", 5)
-											.attr("y", 5)
-											.attr("width", mainsvgW-10)
-											.attr("height", ssvgH -10)
-											.style("stroke", "black")
-											.style("fill", "none"); 
+											.style("bottom", "10px")
+											.style("left", "10px")
+											.style("overflow-x", "scroll")
+											.style("overflow-y", "hidden")
+											.style("border", "1px solid black");											
+
+							self.ssvgt = self.ssvgtdiv.append("svg")
+											.style("display", "inline-block")
+											.attr("id", "ssvgt"+self.id)
+											.attr("class", "ssvgt")
+											.attr("width", mainsvgW*2)
+											.attr("height", ssvgH);	
+																			
 							
 							var tabW = mainsvgW/ tspan.length;
 							
@@ -457,7 +482,7 @@
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 											
-							self.subVisT = new $Q.SubTimeChart(self.id, tspan[0], tdata , self, mainsvgW-10, ssvgH-10);						
+							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10);						
 						},
 						nohighlight: function(){
 							var self = this;
@@ -491,25 +516,10 @@
 								
 								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
 								self.createSlave2(slaves, ssvgW, ssvgH, xoffset);
+								self.createSlave3(slaves, ssvgW, ssvgH, xoffset);
 								self.createSlaveT(slaves, mainsvgW, ssvgH, xoffset);
 
-								self.ssvg3 = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "ssvg3"+self.id)
-											.attr("class", "ssvg"+self.id)
-											.style("display", "inline-block")
-											.attr("width", ssvgW)
-											.attr("height", ssvgH)	
-											.style("position", "absolute")
-											.style("top", (ssvgH * 2))
-											.style("left", xoffset);										
-											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-								self.ssvg3.append("rect")
-											.attr("x", 5)
-											.attr("y", 5)
-											.attr("width", ssvgW-10)
-											.attr("height", ssvgH - 10)
-											.style("stroke", "black")
-											.style("fill", "none"); 
+								
 
 								
 								

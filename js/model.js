@@ -90,6 +90,7 @@
                         readPicanetData: function(){
                             var self = this; 
                             self.meta = [];
+                            self.metaDict = {}; 
                             d3.csv("./data/picanet_meta.csv", function(meta){
                                 for(var k=0; k < meta.length; k++){
                                     if(meta[k]['COLUMN_NAME'] !== ""){
@@ -99,6 +100,9 @@
                                                                     (( meta[k]['DATA_TYPE'] === "smallint" )?"o" : 
                                                                         ((meta[k]['DATA_TYPE'] === "nvarchar" || meta[k]['DATA_TYPE'] === "varchar" || meta[k]['DATA_TYPE'] === "bit")? "n" : "q"));
                                         self.meta.push(metaEntry); 
+                                        
+                                        self.metaDict[metaEntry['fieldName']] = metaEntry['fieldType'];
+                                        
                                     }
                                 }
                                 //self.meta = meta; 
@@ -432,6 +436,12 @@
                             var comps = auditVars['displayVariables'][viewId]['quantities'];
                             return comps;
                         },
+                        list2QCombo: function(viewId){
+                            var self = this;
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
+                            var comps = auditVars['displayVariables'][viewId]['combinations'];
+                            return comps;
+                        },
                         computeVar: function(yvar, displayObj, rec, sid){
                             var self = this;
                             var vname;
@@ -489,7 +499,7 @@
                                 displayVar = displayObj["y"],
                                 categoricals = displayObj["categories"],
                                 levels = [],
-                                slaves = {};
+                                slaves = {};                                
                             
                             // prepare the dict
                             if(displayVar.constructor == Array){                                
@@ -506,7 +516,25 @@
                                 // any categoricals will be tossed for slave views + popover
                                 slaves['cats'] = self.list2QCats(displayId); 
                                 slaves['quants'] = self.list2QComp(displayId);
+                                slaves['combo'] = self.list2QCombo(displayId);
                                 slaves['data'] = {}; 
+
+                                slaves['combo'].forEach(function(combo){
+                                    if(!slaves['data'][combo])
+                                        slaves['data'][combo] = {}; 
+                                    if(!slaves['data'][combo]['xs'])
+                                        slaves['data'][combo]['xs'] = [];
+                                    if(!slaves['data'][combo]['ys'])
+                                        slaves['data'][combo]['ys'] = []; 
+
+                                    var str = combo.split("_");
+                                    if(!slaves['data'][combo]['xType'])
+                                        slaves['data'][combo]['xType'] = self.metaDict[str[0]];
+                                    if(!slaves['data'][combo]['yType'])
+                                        slaves['data'][combo]['yType'] = self.metaDict[str[1]];
+                                    
+
+                                }); 
                                 
                                 }
                             // one big for loop fits all
@@ -539,6 +567,24 @@
                                                 if(!dict[self.data[i][dateVar]][yvar]["data"])
                                                     dict[self.data[i][dateVar]][yvar]["data"] = [];
                                                 if(vval > 0) dict[self.data[i][dateVar]][yvar]["data"].push(i); 
+
+                                                // setup combo slaves
+                                                slaves['combo'].forEach(function(combo, sid){
+                                                    var str = combo.split("_");
+                                                    if(slaves['data'][combo]['xs'].indexOf(self.data[i][str[0]]) < 0)
+                                                        slaves['data'][combo]['xs'].push(self.data[i][str[0]]);
+                                                    if(slaves['data'][combo]['ys'].indexOf(self.data[i][str[1]]) < 0)
+                                                        slaves['data'][combo]['ys'].push(self.data[i][str[1]]);
+                                                    if(!slaves['data'][combo][self.data[i][str[0]]])
+                                                        slaves['data'][combo][self.data[i][str[0]]] = {};
+                                                    if(!slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]])
+                                                        slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]] = {};
+                                                    if(!slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar])
+                                                        slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar] = vval;
+                                                    
+                                                    slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar] += vval; 
+                                                });
+                                            
                                             }
                                             // check to see if multiple time granularities are needed for y-axis variables                                            
                                             self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval); 
@@ -590,34 +636,11 @@
                                             }
 
                                         }); 
-                                        // setup comparators from other units if needed
-                                        /*slaves['compareTo'].forEach(function(comp){
-                                            if(comp === "siteidscr"){
-                                                var lev = self.data[i][comp];
-                                                if(!slaves['data'][comp])
-                                                    slaves['data'][comp] = {};
-                                                if(!slaves['data'][comp][lev])
-                                                    slaves['data'][comp][lev] = 1;
-                                                else
-                                                    slaves['data'][comp][lev]++; 
-                                            }
-                                        }); */                                       
+
+                                        
+                                                                              
                                      }
-                                
-                                /**
-                                 * handle categories
-                                **/
-                                else if(categoricals.length >=1 ){
-                                    // only one variable is assigned to y-axis
-                                    // use the first categorical to group the y-axis
-
-                                    // any remaining categoricals are tossed for slave view + popover
-                                }
-
-                                /**
-                                 * handle comparators
-                                 **/
-
+                                                                
                             } // end for data records
 
                              if(displayObj["quantities"]){
@@ -636,41 +659,8 @@
                                         }
                                     });
                                  }
-                                 //console.log(slaves['data']); 
-                                 //console.log(self.tHier);
-                               /**
-                                * In all cases sort dict by date (assuming x-axis is temporal)
-                                * TODO: handle the case where x-axis is not actually temporal
-                                *
-                                    function custom_sort(a,b){
-                                        return parseInt(a) - parseInt(b); 
-                                    }
-        
-                                    var ordered = [];
-                                    var temp = Object.keys(dict);
-                                    //////console.log(temp); 
-                                    var orderedKeys = Object.keys(dict).sort(custom_sort);
-                                    //////console.log(orderedKeys);
-        
-                                    for(var k= 0; k < orderedKeys.length; k++){
-                                        var obj = {};
-                                        obj[orderedKeys[k]] = dict[orderedKeys[k]];
-                                        ordered.push(obj); 
-                                    }
-                                **/
                                 
-                                // filter comparators to only units with similar no. of admissions
-                                /*var filtered = {}; 
-                                filtered['data'] = {};
-                                filtered['data'][slaves['compareTo'][0]] = {};
-
-                                for(var key in slaves['data'][slaves['compareTo'][0]]){
-                                    if(Math.abs(slaves['data'][slaves['compareTo'][0]][key] - ownrecords) <=100 )
-                                        filtered['data'][slaves['compareTo'][0]][key] = slaves['data'][slaves['compareTo'][0]][key]; 
-                                }
-                                /*slaves['data'][slaves['compareTo'][0]] = filtered['data'][slaves['compareTo'][0]]; 
-                                console.log(slaves['data'][slaves['compareTo'][0]]);
-                                console.log("OWN "+ ownrecords); */
+                                console.log(slaves); 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
                                                     "metric": self.availMetrics[displayId]['value'], 

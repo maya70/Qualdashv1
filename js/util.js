@@ -108,9 +108,10 @@ $Q.Picanet = {
                         "granP": ["unit", "unit"], 
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly": "y", "weekly": "der_smr" , "quarterly": "der_smr", "monthly-annual": "der_smr"} ,  // the first element holds the master view's granT                                             
-                        "combinations": {"siteidscr": "smr", "ext_year":"der_death"}
+                        "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }, 
+                                        {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly": "y", "weekly": "der_death" , "quarterly": "der_death", "monthly-annual": "der_death"} ,  // the first element holds the master view's granT                                             
+                        "combinations": ["ethnic_sex"]
                      }, 
                      {  "metric": "48h Readmission",
                         "x": "",
@@ -120,7 +121,9 @@ $Q.Picanet = {
                         "xType": "t",
                         "yType": "q",
                         "aggregate": "count",
-                        "scale": "monthly"
+                        "scale": "monthly",
+                        "granT": {}, 
+                        "combinations": []
                      },
                      {  "metric": "Bed Days and Extubation",
                         "x": "" ,
@@ -130,7 +133,9 @@ $Q.Picanet = {
                         "xType": "t",
                         "yType": "q", 
                         "aggregate": "count",
-                        "scale": "monthly"
+                        "scale": "monthly",
+                        "granT": {}, 
+                        "combinations": []
                      }, 
                      {  "metric": "Retrievals and Refusals",
                         "x": "",
@@ -140,7 +145,9 @@ $Q.Picanet = {
                         "xType": "t",
                         "yType": "q",
                         "aggregate": "count",
-                        "scale": "monthly"
+                        "scale": "monthly",
+                        "granT": {}, 
+                        "combinations": []
                      },
                      {  "metric": "Specialty Case Mix",
                         "x": "",
@@ -150,7 +157,9 @@ $Q.Picanet = {
                         "xType": "t",
                         "yType": "q",
                         "aggregate": "count",
-                        "scale": "monthly"
+                        "scale": "monthly",
+                        "granT": {}, 
+                        "combinations": []
                      },
                      {  "metric": "Dependency",
                         "x": "" ,
@@ -160,7 +169,9 @@ $Q.Picanet = {
                         "xType": "t",
                         "yType": "q", 
                         "aggregate": "count",
-                        "scale": "monthly"
+                        "scale": "monthly",
+                        "granT": {}, 
+                        "combinations": []
                     }]
 
 };
