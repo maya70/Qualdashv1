@@ -380,8 +380,9 @@
 							     .style("text-anchor", "bottom")
 							     ;
 							
-							var combodata = slaves['data'][slaves['combo'][0]];
-							self.subVis3 = new $Q.SubScatterChart(self.id, combodata , self, ssvgW-10, ssvgH-10);
+							var comb = slaves['combo'][0]; 
+							var combodata = slaves['data'][comb];
+							self.subVis3 = new $Q.SubScatterChart(self.id, comb , combodata , self, ssvgW-10, ssvgH-10);
 
 						},
 						createSlaveT: function(slaves, mainsvgW, ssvgH, xoffset){
@@ -411,7 +412,7 @@
 							self.ssvgt = self.ssvgtdiv.append("svg")
 											.style("display", "inline-block")
 											.attr("id", "ssvgt"+self.id)
-											.attr("class", "ssvgt")
+											.attr("class", "ssvg"+self.id)
 											.attr("width", mainsvgW*2)
 											.attr("height", ssvgH);	
 																			
@@ -576,6 +577,7 @@
 													self.drawBarChart(viewId, dv['data']);
 												});
 
+							document.getElementById("sel"+viewId).disabled = true;
 							
 							for(var m = 0; m < self.parent.availMetrics.length; m++){
 								metricSelect.append("option")

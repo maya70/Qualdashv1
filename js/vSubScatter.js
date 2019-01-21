@@ -5,11 +5,11 @@
 					/**
 					*  scatter plot inspired from: https://bl.ocks.org/mthh/e9ebf74e8c8098e67ca0a582b30b0bf0
 					**/
-					function SubScatterChart(viewId, data, parent, svgw, svgh){
+					function SubScatterChart(viewId, comboname ,data, parent, svgw, svgh){
 						var self = this;	
 						self.parent = parent; 
 						self.id = viewId; 			
-						self.draw(viewId, data, parent, svgw, svgh);
+						self.draw(viewId, comboname, data, parent, svgw, svgh);
 					},
 					{
 						updateDataLinks: function(viewId, data, parent){
@@ -54,10 +54,12 @@
 							}
 							return res; 
 						},
-						draw: function(viewId, cdata, parent, svgw, svgh){
+						draw: function(viewId, comboname, cdata, parent, svgw, svgh){
 							var self = this;
 							//self.updateDataLinks(viewId, data, parent);
 							console.log(cdata); 
+							var xlabel = comboname.split("_")[0];
+							var ylabel = comboname.split("_")[1];
 
 							const color = d3.schemeCategory10;
 							var margin = { top: 20, right: 20, bottom: 30, left: 30 },
@@ -67,14 +69,20 @@
 							var x = (cdata['xType']==="q")? d3.scaleLinear().range([0, width]).nice()
 														  : d3.scaleBand().rangeRound([0, width]).padding(0.1);
 
-							var y = (cdata['xType']==="q")? d3.scaleLinear().range([height, 0])
+							var y = (cdata['yType']==="q")? d3.scaleLinear().range([height, 0])
 														  : d3.scaleBand().rangeRound([height, 0]).padding(0.1);
+
+							var maxRadius = 10,
+								minRadius = 1; 
+							var maxArea = Math.PI * Math.pow(maxRadius, 2);
+							var size = d3.scaleLinear().range([0, maxArea]); 
+							var shade = d3.scaleLinear().range([0.3,1]);
 
 							var xAxis = d3.axisBottom(x).ticks(cdata['xs'].length),
 							  yAxis = d3.axisLeft(y).ticks(cdata['ys'].length);
 
-const xAxis2 = d3.axisBottom(x).ticks(12),
-  yAxis2 = d3.axisLeft(y).ticks(12 * height / width);
+const xAxis2 = d3.axisBottom(x).ticks(cdata['xs'].length),
+  yAxis2 = d3.axisLeft(y).ticks(cdata['ys'].length);
 
 const brush = d3.brush()
   .extent([[0, 0], [width, height]])
@@ -98,21 +106,36 @@ let idleTimeout,
 							  .attr("x", 0)
 							  .attr("y", 0);
 							console.log(data); 
-							x.domain(d3.extent(data, d => d.x)).nice();
-							y.domain(d3.extent(data, d => d.y)).nice();
+							if(cdata['xType']==="q")
+									x.domain(d3.extent(data, d => d.x)).nice();
+							else 
+								x.domain(data.map(function(d){
+									return d.x; 
+									}));
+							if(cdata['yType']==="q")
+									y.domain(d3.extent(data, d => d.y)).nice();
+							else
+									y.domain(data.map(function(d){
+									return d.y; 
+									}));
+
+							size.domain(d3.extent(data, d => d.size)); 
+							shade.domain(d3.extent(data, d => d.shade));
+
 
 const scatter = svg.append("g")
      .attr("id", "scatterplot")
      .attr("clip-path", "url(#clip)");
+     //.attr("transform", "translate("+ +",22)");
 
 scatter.selectAll(".dot")
     .data(data)
   .enter().append("circle")
     .attr("class", "dot")
-    .attr("r", 5)
-    .attr("cx", d => x(d.x))
-    .attr("cy", d => y(d.y))
-    .attr("opacity", 0.6)
+    .attr("r", d => (Math.sqrt(size(d.size))/Math.PI))
+    .attr("cx", d => (x(d.x)+x(data[0]['x'])*0.82))
+    .attr("cy", d => (y(d.y)+y(data[0]['y'])*0.42))
+    .attr("opacity", d => shade(d.shade))
     .style("fill", (_, i) => color[i % 9]);;
 
 makeGrid();
@@ -124,24 +147,24 @@ makeGrid();
 							   .attr("transform", "translate(0," + height + ")")
 							   .call(xAxis);
 
-svg.append("text")
-  .style("text-anchor", "end")
-  .attr("x", width - 4)
-  .attr("y", height - 8)
-  .text("X axis");
+								svg.append("text")
+								  .style("text-anchor", "end")
+								  .attr("x", width - 4)
+								  .attr("y", height - 8)
+								  .text(xlabel);
 
 							svg.append("g")
 							    .attr("class", "sub-y axis")
 							    .attr('id', "axis--y--sub"+self.id)
 							    .call(yAxis);
 
-svg.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("x", -5)
-    .attr("y", 4)
-    .attr("dy", "1em")
-    .style("text-anchor", "end")
-    .text("Y axis");
+							svg.append("text")
+	    						.attr("transform", "rotate(-90)")
+	    						.attr("x", -5)
+	    						.attr("y", 4)
+	    						.attr("dy", "1em")
+	    						.style("text-anchor", "end")
+	    						.text(ylabel);
 
 scatter.append("g")
     .attr("class", "brush")
