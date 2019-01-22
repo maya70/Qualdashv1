@@ -111,19 +111,22 @@ $Q.Picanet = {
                         "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }, 
                                         {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly": "y", "weekly": "der_death" , "quarterly": "der_death", "monthly-annual": "der_death"} ,  // the first element holds the master view's granT                                             
-                        "combinations": ["ethnic_sex"]
+                        "combinations": ["ethnic&sex"]
                      }, 
                      {  "metric": "48h Readmission",
-                        "x": "",
-                        "y": [""],
-                        "categories": [], 
-                        "quantities": [],
+                        "x": "admonth",
+                        "y": ["der_discharge", "der_readmit"],
+                        "categories": ["sourcead", "careareaad", "unitdisdest", "diagnosis"], 
+                        "quantities": [{"q":"der_readmit", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],
                         "xType": "t",
-                        "yType": "q",
-                        "aggregate": "count",
-                        "scale": "monthly",
-                        "granT": {}, 
-                        "combinations": []
+                        "yType": ["q", "q"],
+                        "xspan": "year",    
+                        "yspan": "unit", 
+                        "tspan": 3,
+                        "yaggregates": ["count", "count"],
+                        "granP": ["unit", "unit"], 
+                        "granT": {"monthly": "y", "weekly": "der_death" , "quarterly": "der_death", "monthly-annual": "der_death"}, 
+                        "combinations": ["adtype&der_readmit"]
                      },
                      {  "metric": "Bed Days and Extubation",
                         "x": "" ,
@@ -242,7 +245,12 @@ $Q.Minap = {
 
 $Q.DataDefs = {"picanet": {"monthVar": "admonth", 
                           "weekVar": "adweek",
-                          "yearVar": "adyear"
+                          "yearVar": "adyear",
+                          "patientIdVar": "pidscr", 
+                          "unitIdVar": "siteidscr",
+                          "admissionDateVar": "addate",
+                          "dischargeDateVar": "unitdisdate",
+                          "dischargeStatusVar": "unitdisstatus"
                           }, 
             "minap": {} };
 

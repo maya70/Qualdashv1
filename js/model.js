@@ -111,9 +111,9 @@
                                         //console.log(data); 
                                         self.data = data;                                     
                                         //////console.log(displayVar);
-                                        for(var display = 0; display < self.displayVariables.length; display++)
+                                        for(var display = 0; display < self.displayVariables.length -4; display++)
                                         {
-                                            self.applyAggregateRule2(self.displayVariables[0],                                                                     
+                                            self.applyAggregateRule2(self.displayVariables[display],                                                                     
                                                                     display, data);
                                         }
                                         //console.log(self.dataViews);
@@ -195,7 +195,7 @@
                         getDerivedValue: function(vname, rec){
                             var self = this;
                             if(vname === "death" && self.audit === "picanet"){
-                                if(rec["unitdisstatus"] === "2")
+                                if(rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "2")
                                     return 1;
                                 else
                                     return 0; 
@@ -203,6 +203,17 @@
                             else if(vname === "smr" && self.audit === "picanet"){
                                 return rec["pim3_s"]; 
                             }
+                            else if(vname === "discharge" && self.audit === "picanet"){
+                                if(rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "1")
+                                    return 1;
+                                else
+                                    return 0; 
+                            }
+                            else if(vname === "readmit" && self.audit === "picanet"){
+                                    return 0; 
+                                }
+
+
                         },
                         calculateDerivedVar: function(metric, yvar){
                             //console.log("Calculating "+ metric); 
@@ -292,20 +303,24 @@
                         */
                         stringToDate: function(str){
                             var self = this;
-                            
+                            var time, timeParts, hour, minute, second;
+
                             var strings = str.split(" ");
-                            var date = strings[0],
+                            var date = strings[0];
                                 time = strings[1];
                             var dateParts = date.split("-");
-                            var timeParts = time.split(":");
-                            var day = dateParts[0],
+                            if(time) timeParts = time.split(":");
+                            var day = (self.audit === "picanet")?dateParts[2] :dateParts[0],
                                 month = dateParts[1],
-                                year = "20"+dateParts[2];
-                            var hour = timeParts[0],
+                                year = (self.audit === "picanet")?dateParts[0] :"20"+dateParts[2];
+                            if(timeParts){
+                                hour = timeParts[0],
                                 minute = timeParts[1],
-                                second = timeParts[1];
-
-                            return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z");
+                                second = timeParts[1];   
+                            }
+                             
+                            return (time)? new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z")
+                                        : new Date(year, (month-1), day, 0); 
 
                         },
                         getTimeHier:function(){
@@ -493,8 +508,6 @@
                             var dict = {};
                             var tHier = {}; 
                             var metric = displayObj["metric"],
-                                rule = displayObj["aggregate"],
-                                scale = displayObj["scale"],
                                 dateVar = displayObj["x"],
                                 displayVar = displayObj["y"],
                                 categoricals = displayObj["categories"],
@@ -527,7 +540,7 @@
                                     if(!slaves['data'][combo]['ys'])
                                         slaves['data'][combo]['ys'] = []; 
 
-                                    var str = combo.split("_");
+                                    var str = combo.split("&");
                                     if(!slaves['data'][combo]['xType'])
                                         slaves['data'][combo]['xType'] = self.metaDict[str[0]];
                                     if(!slaves['data'][combo]['yType'])
@@ -540,10 +553,12 @@
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             var observedDeathsNational = {}; 
+                            console.log(self.ehr);
                             for(var i=0; i < self.data.length; i++){
                                 /**
                                  * handle multiple quantitative variables
                                 **/
+                                self.recordEHR(self.data[i], i, metric);
                                 if(displayVar.constructor == Array){
                                     // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                     displayVar.forEach(function(yvar, id){
@@ -556,7 +571,7 @@
                                                     observedDeathsNational[self.data[i][dateVar]] += vval;                                                 
                                             }
                                             // select yspan items
-                                            if(displayObj["yspan"] === "unit" && self.data[i]["siteidscr"] === self.unitID )
+                                            if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                             {
                                                 ownrecords++; 
                                                 // update x-bin   
@@ -570,7 +585,7 @@
 
                                                 // setup combo slaves
                                                 slaves['combo'].forEach(function(combo, sid){
-                                                    var str = combo.split("_");
+                                                    var str = combo.split("&");
                                                     if(slaves['data'][combo]['xs'].indexOf(self.data[i][str[0]]) < 0)
                                                         slaves['data'][combo]['xs'].push(self.data[i][str[0]]);
                                                     if(slaves['data'][combo]['ys'].indexOf(self.data[i][str[1]]) < 0)
@@ -595,7 +610,7 @@
                                         levels = displayVar; 
 
                                         // setup data aggregates for slave categories (this unit only)
-                                        if(displayObj["yspan"] === "unit" && self.data[i]["siteidscr"] === self.unitID ){
+                                        if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
                                             slaves['cats'].forEach(function(cat){
                                                 // get the current rec's level of this categorical
                                                 var lev = self.data[i][cat];
@@ -627,32 +642,34 @@
                                                 if(!slaves['data'][quant['q']][self.data[i][dateVar]])
                                                     slaves['data'][quant['q']][self.data[i][dateVar]] = {};
                                                 if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i]["siteidscr"] === self.unitID )? qval : 0;                                               
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
                                                 else
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i]["siteidscr"] === self.unitID )? qval : 0;
+                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                                 
                                                 // check if we need nultiple time granularities for this
                                                 self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
                                             }
 
-                                        }); 
-
-                                        
+                                        });                                         
                                                                               
                                      }
                                                                 
                             } // end for data records
 
+                            /// For variables that require a post-process:
+                             // 1. Update the master data structure:                              
+                            var postData = self.postProcess(dict, slaves);
+                            dict = postData['dict'];
+                            slaves = postData['slaves'];
+
+                            console.log(dict);
+                             // 2. Update the slaves: 
                              if(displayObj["quantities"]){
                                     displayObj["quantities"].forEach(function(quant){
                                         if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
-                                            //var national = slaves['data'][quant['q']]['national'];
-                                            //var unit = slaves['data'][quant['q']]['unit'];
                                             for(var key in slaves['data'][quant['q']]){
                                                 slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
                                                 slaves['data'][quant['q']][key]['unit'] = dict[key]["der_death"]['value'] / slaves['data'][quant['q']][key]['unit']; 
-                                                //national = observedDeathsNational[key] / national;
-                                                //unit = dict[key]["der_death"]['value'] / unit; 
                                             }
                                             //slaves['data'][quant['q']]['national'] = national;
                                             //slaves['data'][quant['q']]['unit'] = unit; 
@@ -671,6 +688,77 @@
                                                     "slaves": slaves, 
                                                     "ylength": displayObj["y"].length, 
                                                     "metricLabel": self.availMetrics[displayId]['text']});                                 
+                        },
+                        recordEHR: function(rec, i , metric){
+                            var self = this;
+                            if(metric === "48h Readmission"){
+                                                            var pidVar = $Q.DataDefs[self.audit]["patientIdVar"];
+                                                            if(!self.ehr[rec[pidVar]]){                                        
+                                                                    self.ehr[rec[pidVar]] = {}; 
+                                                                    self.ehr[rec[pidVar]]["admissionsT"] = [];
+                                                                    self.ehr[rec[pidVar]]["dischargesT"] = [];
+                                                                    self.ehr[rec[pidVar]]["data"] = [];
+                                                                    self.ehr[rec[pidVar]]["ids"] = [];
+                                                                }
+                                                                
+                                                                self.ehr[rec[pidVar]]["admissionsT"].push(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                                                self.ehr[rec[pidVar]]["dischargesT"].push(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]);
+                                                                self.ehr[rec[pidVar]]["data"].push(rec);
+                                                                self.ehr[rec[pidVar]]["ids"].push(i);
+                                                        }
+                        },
+                        postProcess: function(dict, slaves){
+                            var self = this;
+                            var result = {};
+                            result['dict'] = dict;
+                            result['slaves'] = slaves; 
+                            // calculate 48-hour readmissions:
+                            for(var key in self.ehr ){
+                                var patientEHR = self.ehr[key];
+                                var adm = patientEHR["admissionsT"];
+                                var disc = patientEHR["dischargesT"];
+                                var one_hour=1000*60*60;  // in ms
+                               
+                                //var index_a = adm.indexOf(self.data[i]["3.06 Date/time arrival at hospital"]);
+                                if(adm.length <= 1)  // this patient was only admitted once
+                                    continue;
+
+                                else{
+                                    disc.forEach(function(discharge, did){
+                                        var d_date = self.stringToDate(discharge);
+                                        adm.forEach(function(admission, aid){
+                                            var a_date = self.stringToDate(admission);
+                                            var adt = a_date.getTime(),
+                                                ddt = d_date.getTime(); 
+                                            var diff = Math.round((adt-ddt)/one_hour);
+                                            if(diff >=0 && diff < 48 && (aid !== did)){
+                                                var adrec = patientEHR['data'][aid];
+                                                // find corresponding entry in dict
+                                                // assuming dict is organized by months
+                                                // find the months of this readmission event
+                                                var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
+                                                var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
+                                                
+                                                if(unit === self.unitID){
+                                                    // update this view's master dict
+                                                    result['dict'][month]["der_readmit"]["value"]++;
+                                                    result['dict'][month]["der_readmit"]["data"].push(patientEHR['ids'][aid]);
+                                                    result['slaves']['data']['der_readmit'][month]['unit']++; 
+                                                }
+                                                // either way update the slave that will show national average
+                                                result['slaves']['data']['der_readmit'][month]['national']++; 
+                                               
+
+                                            }
+
+
+                                        });
+                                    });
+                                    
+                                   
+                                 }
+                            }
+                            return result; 
                         },
                         getRecordQuarter: function(rec){
                             var self = this; 

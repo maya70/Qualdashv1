@@ -58,8 +58,8 @@
 							var self = this;
 							//self.updateDataLinks(viewId, data, parent);
 							console.log(cdata); 
-							var xlabel = comboname.split("_")[0];
-							var ylabel = comboname.split("_")[1];
+							var xlabel = comboname.split("&")[0];
+							var ylabel = comboname.split("&")[1];
 
 							const color = d3.schemeCategory10;
 							var margin = { top: 20, right: 20, bottom: 30, left: 30 },
