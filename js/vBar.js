@@ -11,7 +11,8 @@
 						self.iter = 0; 												
 						self.toggle = "grouped";
 						self.dataView = dataView; 
-							
+						self.palette = {};
+
 						if(dataView.ylength > 1){
 							(dataView['yscale'][0] === dataView['yscale'][1])?
 							 self.drawCatBar2(dataView,0)
@@ -157,88 +158,7 @@
 
 
 						drawBaseBar: function(){
-							var self = this; 
-							var drawArea = d3.select("#draw-area"+self.id);
-							var parentArea = drawArea.select(function(){
-								//d3.select(this.parentNode).on("resize", resize);
-								return this.parentNode; 
-							});
-							////////console.log(parentArea.node().getBoundingClientRect());
-							var svgw =  0.9* parentArea.node().getBoundingClientRect().width;
-							var svgh =  0.9* parentArea.node().getBoundingClientRect().height; 
-
-							if(self.parent.svg)
-								d3.select(".mainsvg"+self.id).remove(); 
-
-							self.parent.svg = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "mainsvg"+self.id)
-											.attr("class", "mainsvg"+self.id)
-											.attr("width", svgw)
-											.attr("height", svgh)											
-											.attr("transform", "translate(0,10)");
-							
-							
-							var div = d3.select("body").append("div")	
-									    .attr("class", "tooltip")				
-									    .style("opacity", 0);
-
-							var margin = {top: 10, right: 10, bottom: 65, left:30};
-							var width = svgw - margin.left - margin.right; 
-							var height = svgh - margin.top - margin.bottom;
-							/*var yAxis = g => g
-									    .attr("transform", `translate(${margin.left},0)`)
-									    .call(d3.axisLeft(y))
-									    .call(g => g.select(".domain").remove());*/
-
-							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
-								y = d3.scaleLinear().range([height, 0]).nice(); 
-
-							var g = self.parent.svg.append("g")
-									.attr("transform", "translate(" + margin.left + ", "+ 0 +")");
-
-							x.domain(self.data.map(function(d){
-									return d.date; 
-							}));
-							y.domain([0, d3.max(self.data, function(d){ return d.number; })]);
-							g.append("g")
-							      .attr("class", "x axis")
-							      .attr("transform", "translate("+ 0+"," + (height+margin.top) + ")")
-							      .call(d3.axisBottom(x))
-									.selectAll("text")	
-								        .style("text-anchor", "end")
-								        .attr("dx", "-.8em")
-								        .attr("dy", ".15em")
-								        .attr("transform", "rotate(-65)");
-
-							g.append("g")
-							      .attr("class", "y axis")
-							      .call(d3.axisLeft(y).ticks(5,"s"))
-							      .attr("transform", "translate("+0+","+ margin.top+")");
-							
-							g.selectAll(".bar")
-							    .data(self.data)
-							    .enter().append("rect")
-							      .attr("class", "bar")
-							      .attr("x", function(d) { return x(d.date); })
-							      .attr("y", function(d) { return y(d.number)+margin.top; })
-							      .attr("width", x.bandwidth())
-							      .attr("height", function(d) { return height  - y(d.number); })
-							      .style("fill", "steelblue")
-							      .on("mouseover", function(d){
-							      	div.transition()
-							      		.duration(200)
-							      		.style("opacity", 0.9);
-							      	div .html((d.date) + "<br/>" + (d.number+ ""))
-							      		.style("left", (d3.event.pageX) + "px")
-							      		.style("top", (d3.event.pageY - 28) + "px");
-							      	d3.select(this).style("fill", "brown");
-							      })
-							      .on("mouseout", function(d){
-							      	div.transition()
-							      		.duration(500)
-							      		.style("opacity", 0);
-							      	d3.select(this).style("fill", "steelblue");
-							      });
+						
 						
 						},
 						drawDualBar: function(){
@@ -302,8 +222,7 @@
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
                                	self.yMax = y1Max; 
-                            self.palette = [];
-
+                           
 							if(self.parent.svg && iter === 0){
 							//	d3.selectAll("svg").remove(); 
 								var undef; 
@@ -363,14 +282,19 @@
 
 							var color = d3.scaleOrdinal()
 							    .domain(d3.range(levels.length))
-							    .range(d3.schemeCategory10);
+							    .range($Q.colors);
+							    //.range(d3.schemeCategory10);
+
+							 //for(var l=0; l < levels.length; l++){
+							 //	self.palette[levels[l]] = color(levels[l]);
+							// }
 
 							var series = g.selectAll(".series")
 							  .data(y01z)
 							  .enter().append("g")
 							  	.attr("class", "series"+viewId)
 							    .attr("fill", function(d, i) { 
-							    	self.palette[i] = color(i);
+							    	//if(!self.palette[d]) self.palette[d] = color(i);
 							    	return color(i); });
 
 							 
@@ -387,15 +311,18 @@
 							      .attr("x", svgw- 10)
 							      .attr("width", 10)
 							      .attr("height", 10)
-							      .style("fill", color);
+							      .style("fill", function(d){
+							      	self.palette[levels[d]] = color(d);
+							      	return color(d);});
 
 							  // draw legend text
 							  self.legend.append("text")
 							      .attr("x", svgw- 14)
-							      .attr("y", 3)
+							      .attr("y", 6)
 							      .attr("dy", ".35em")
 							      .style("text-anchor", "end")							      
-							      .text(function(d) { return levels[d];})
+							      .text(function(d) {
+							      	return self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]] ;})
 							      	.style("font-size", "7pt");
 							     }
 							
@@ -437,6 +364,9 @@
 								    .attr("transform", "translate(0," + height + ")")
 								    .call(d3.axisBottom(x))
 									.selectAll("text")	
+										.text(function(d){
+											return $Q.months[d-1]; 
+										})
 								        .style("text-anchor", "end")
 								        .attr("dx", "-.8em")
 								        .attr("dy", ".15em")
@@ -570,6 +500,9 @@
 							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
 							      .call(d3.axisBottom(x))
 									.selectAll("text")	
+									.text(function(d){
+											return $Q.months[d-1]; 
+										})
 								        .style("text-anchor", "end")
 								        .attr("dx", "-.8em")
 								        .attr("dy", ".15em")
@@ -590,6 +523,9 @@
 							      .attr("height", function(d) { return height  - y(d.number); });
 							}		
 
+						},
+						getPalette: function(){
+							return this.palette; 
 						},
 						getMainSVG: function(id){
 							var self = this; 

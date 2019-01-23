@@ -92,8 +92,11 @@ $Q.Picanet = {
 "variableDict": {"primarydiagnosisgroup": "Diagnosis",
                   "adtype": "Ad. type",
                   "sex": "Gender",
-                  "der_death": "Death in unit",
+                  "eventidscr": "Admissions",
+                  "der_death": "Deaths in unit",
                   "der_smr": "SMR",
+                  "der_discharge": "Discharges",
+                  "der_readmit": "Readmissions",
                   "ethnic": "Ethnic"},
 "displayVariables": [{  "metric": "Mortality",
                         "mark": "bar", // should remove this 
@@ -125,7 +128,7 @@ $Q.Picanet = {
                         "tspan": 3,
                         "yaggregates": ["count", "count"],
                         "granP": ["unit", "unit"], 
-                        "granT": {"monthly": "y", "weekly": "der_death" , "quarterly": "der_death", "monthly-annual": "der_death"}, 
+                        "granT": {"monthly": "y", "weekly": "der_readmit" , "quarterly": "der_readmit", "monthly-annual": "der_readmit"}, 
                         "combinations": ["adtype&der_readmit"]
                      },
                      {  "metric": "Bed Days and Extubation",
@@ -255,3 +258,4 @@ $Q.DataDefs = {"picanet": {"monthVar": "admonth",
             "minap": {} };
 
 $Q.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+$Q.colors = ["#93969b", "#0f0f0f", "#c18f2a"];

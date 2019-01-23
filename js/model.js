@@ -7,6 +7,7 @@
                         self.control = control; 
                         self.dataViews = []; 
                         self.ehr = {};  // keeps a dictionary by patient NHS number for patient pathway calculations (including 48h readmission)
+                        self.ehrHist = {};
                         self.unitID = "194281";
                         self.slaveCats = {};
                         self.slaves = {};
@@ -140,6 +141,7 @@
                             if(self.control.audit === "picanet"){
                                 tspan = $Q.Picanet['displayVariables'][0]['tspan']; 
                                 fpath = "./data/picanet_admission/";
+
                                 for(var i=1; i < tspan; i++){                                    
                                     var year = parseInt(self.year)-i;                                 
                                     d3.csv(fpath+year+".csv", function(data){                                        
@@ -148,17 +150,29 @@
                                         //console.log(yearupdated);
                                         //self.history.push({"year": year, "data": data});
                                         for(var d = 0; d < data.length; d++){
-                                            for(var v = 0; v < self.dataViews.length; v++){
-                                                var Qs = self.getTimeQs(v); 
-                                                Qs.forEach(function(qname){ 
-                                                    var qobj = self.getQObject(qname, v); 
-                                                    var qval = parseFloat(self.computeVar(qname, qobj, data[d], 0)) ; 
-                                                    self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
-                                                });
+                                            // load historical data for this unit only unless required otherwise
+                                            if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                                for(var v = 0; v < self.dataViews.length; v++){
+                                                    var Qs = self.getTimeQs(v); 
+                                                    var metric = self.dataViews[v]['metric'];
+                                                    Qs.forEach(function(qname){ 
+                                                        self.recordEHR(data[d], d , metric, yearupdated);
+                                                        var qobj = self.getQObject(qname, v); 
+                                                        var qval = parseFloat(self.computeVar(qname, qobj, data[d], 0)) ; 
+                                                        self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
+                                                    });
+                                                }
                                             }
                                         }
+                                        //console.log(self.ehr);
+                                        //console.log(self.ehrHist);
+                                        // console.log(self.tHier); 
+                                        self.postProcessHistory(yearupdated, "der_readmit" ); 
+                                        console.log(self.tHier); 
+
                                     });
                                 } 
+
                                 //https://bl.ocks.org/carlvlewis/8a5b1cc987217607a47bd7d4e0fffacb
                             }
                             
@@ -599,10 +613,10 @@
                                                     
                                                     slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar] += vval; 
                                                 });
-                                            
-                                            }
-                                            // check to see if multiple time granularities are needed for y-axis variables                                            
+                                             // check to see if multiple time granularities are needed for y-axis variables                                            
                                             self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval); 
+                                            }
+                                           
                                         });
 
                                         // setup fake categories and levels for main bar chart (or other vis)
@@ -647,7 +661,7 @@
                                                     slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                                 
                                                 // check if we need nultiple time granularities for this
-                                                self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
+                                                //self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
                                             }
 
                                         });                                         
@@ -655,6 +669,7 @@
                                      }
                                                                 
                             } // end for data records
+                             console.log(self.tHier); 
 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
@@ -676,11 +691,11 @@
                                         }
                                     });
                                  }
-                                
+                               
                                 console.log(slaves); 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
-                                                    "metric": self.availMetrics[displayId]['value'], 
+                                                    "metric": self.availMetrics[displayId]['text'], //self.availMetrics[displayId]['value'], 
                                                     "mark": displayObj["mark"],
                                                     "yscale": displayObj["granP"],
                                                     "cats": categoricals,
@@ -689,23 +704,85 @@
                                                     "ylength": displayObj["y"].length, 
                                                     "metricLabel": self.availMetrics[displayId]['text']});                                 
                         },
-                        recordEHR: function(rec, i , metric){
+                        recordEHR: function(rec, i , metric, year){
                             var self = this;
+                            var ehr;
+                           
+                            if(year){
+                                if(!self.ehrHist[year]) 
+                                    self.ehrHist[year] = {};
+                                ehr = self.ehrHist[year];
+                            }
+                            else
+                                ehr = self.ehr; 
+
                             if(metric === "48h Readmission"){
                                                             var pidVar = $Q.DataDefs[self.audit]["patientIdVar"];
-                                                            if(!self.ehr[rec[pidVar]]){                                        
-                                                                    self.ehr[rec[pidVar]] = {}; 
-                                                                    self.ehr[rec[pidVar]]["admissionsT"] = [];
-                                                                    self.ehr[rec[pidVar]]["dischargesT"] = [];
-                                                                    self.ehr[rec[pidVar]]["data"] = [];
-                                                                    self.ehr[rec[pidVar]]["ids"] = [];
+                                                            if(!ehr[rec[pidVar]]){                                        
+                                                                    ehr[rec[pidVar]] = {}; 
+                                                                    ehr[rec[pidVar]]["admissionsT"] = [];
+                                                                    ehr[rec[pidVar]]["dischargesT"] = [];
+                                                                    ehr[rec[pidVar]]["data"] = [];
+                                                                    ehr[rec[pidVar]]["ids"] = [];
                                                                 }
                                                                 
-                                                                self.ehr[rec[pidVar]]["admissionsT"].push(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
-                                                                self.ehr[rec[pidVar]]["dischargesT"].push(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]);
-                                                                self.ehr[rec[pidVar]]["data"].push(rec);
-                                                                self.ehr[rec[pidVar]]["ids"].push(i);
+                                                                ehr[rec[pidVar]]["admissionsT"].push(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                                                ehr[rec[pidVar]]["dischargesT"].push(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]);
+                                                                ehr[rec[pidVar]]["data"].push(rec);
+                                                                ehr[rec[pidVar]]["ids"].push(i);
                                                         }
+                            
+                        },
+                        postProcessHistory: function(year, varname){
+                            var self = this;
+                            for(var key in self.ehrHist[year]){
+                                var patientEHR = self.ehrHist[year][key];
+                                var adm = patientEHR["admissionsT"];
+                                var disc = patientEHR["dischargesT"];
+                                var one_hour=1000*60*60;  // in ms
+                                //var index_a = adm.indexOf(self.data[i]["3.06 Date/time arrival at hospital"]);
+                                if(adm.length <= 1)  // this patient was only admitted once
+                                    continue;
+
+                                else{
+                                    disc.forEach(function(discharge, did){
+                                        var d_date = self.stringToDate(discharge);
+                                        adm.forEach(function(admission, aid){
+                                            var a_date = self.stringToDate(admission);
+                                            var adt = a_date.getTime(),
+                                                ddt = d_date.getTime(); 
+                                            var diff = Math.round((adt-ddt)/one_hour);
+                                            if(diff >=0 && diff < 48 && (aid !== did)){
+
+                                                var adrec = patientEHR['data'][aid];
+                                                // find corresponding entry in dict
+                                                // assuming dict is organized by months
+                                                // find the months of this readmission event
+                                                //var year = adrec[$Q.DataDefs[self.audit]["yearVar"]];
+                                                var quar = self.getRecordQuarter(adrec);
+                                                //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
+                                                var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
+                                                var week = parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
+                                                var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
+                                                
+                                                if(unit === self.unitID){
+                                                    // update this view's time hierarchy
+                                                    // console.log("FOUND "+ year + " " + a_date + " " + d_date); 
+                                                    self.tHier[year][quar][mon][week][varname]++; 
+                                                }
+                                                // either way update the slave that will show national average
+                                                //result['slaves']['data']['der_readmit'][month]['national']++; 
+                                               
+
+                                            }
+
+
+                                        });
+                                    });
+                                    
+                                   
+                                 }
+                            }
                         },
                         postProcess: function(dict, slaves){
                             var self = this;
@@ -738,12 +815,18 @@
                                                 // find the months of this readmission event
                                                 var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
                                                 var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
-                                                
+                                                var quar = self.getRecordQuarter(adrec);
+                                                //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
+                                                var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
+                                                var week = parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
+
                                                 if(unit === self.unitID){
                                                     // update this view's master dict
                                                     result['dict'][month]["der_readmit"]["value"]++;
                                                     result['dict'][month]["der_readmit"]["data"].push(patientEHR['ids'][aid]);
                                                     result['slaves']['data']['der_readmit'][month]['unit']++; 
+                                                    // update the time hierarchy
+                                                    self.tHier[self.year][quar][mon][week]["der_readmit"]++; 
                                                 }
                                                 // either way update the slave that will show national average
                                                 result['slaves']['data']['der_readmit'][month]['national']++; 

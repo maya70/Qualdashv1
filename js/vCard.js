@@ -77,7 +77,8 @@
 
 							var tabW = ssvgW/ cats['cats'].length;
 
-							self.ssvg1div =d3.select("#draw-area"+self.id).append("div")																						
+							self.ssvg1div =d3.select("#draw-area"+self.id).append("div")
+											.attr("class", "ssvgdiv"+self.id)																						
 											.style("max-width", ssvgW+"px")
 											.style("max-height", ssvgH+"px")	
 											.style("position", "absolute")
@@ -189,7 +190,8 @@
 						
 							var tabW = ssvgW/ slaves['quants'].length;
 
-							self.ssvg2div =d3.select("#draw-area"+self.id).append("div")																						
+							self.ssvg2div =d3.select("#draw-area"+self.id).append("div")	
+											.attr("class", "ssvgdiv"+self.id)																																												
 											.style("max-width", ssvgW+"px")
 											.style("max-height", ssvgH+"px")	
 											.style("position", "absolute")
@@ -300,7 +302,8 @@
 							console.log(slaves['combo']); 
 
 							var tabW = ssvgW/ slaves['combo'].length;
-							self.ssvg3div =d3.select("#draw-area"+self.id).append("div")																						
+							self.ssvg3div =d3.select("#draw-area"+self.id).append("div")	
+											.attr("class", "ssvgdiv"+self.id)																					
 											.style("max-width", ssvgW+"px")
 											.style("max-height", ssvgH+"px")	
 											.style("position", "absolute")
@@ -399,7 +402,8 @@
 							var tspan = Object.keys(span);
 							tspan.splice(0, 1);
 							//var tdata = self.parent.control.prepTimeData(tspan[0], self.id, yvar );
-							self.ssvgtdiv =d3.select("#draw-area"+self.id).append("div")																						
+							self.ssvgtdiv =d3.select("#draw-area"+self.id).append("div")	
+											.attr("id", "ssvgtdiv"+self.id)																					
 											.style("max-width", mainsvgW+"px")
 											.style("max-height", ssvgH+"px")	
 											.style("position", "absolute")
@@ -528,6 +532,8 @@
 							else if(!refresh || ((xoffset + ssvgW) > drawAreaW)){
 								var undef;								
 								d3.selectAll(".ssvg"+self.id).remove(); 
+								d3.selectAll("#ssvgtdiv"+self.id).remove();
+								d3.selectAll(".ssvgdiv"+self.id).remove();
 								self.ssvg1 = undef;
 								self.ssvg2 = undef;
 								self.ssvg3 = undef;
