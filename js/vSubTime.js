@@ -105,7 +105,7 @@
 						},
 						drawSimple: function(viewId, vname, jsonData, parent, svgw, svgh){
 							var self = this; 
-							var scale = 0.8;
+							var scale = 1.0;
 							var margin = {top: 10, right: 20, bottom: 30, left: 20},
 							    width = 2*svgw - margin.left - margin.right,
 							    height = svgh * scale - margin.top - margin.bottom;

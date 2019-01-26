@@ -179,6 +179,7 @@
 								self.cat[viewId] = cat;
 								self.levels = levels; 
 								var undef;
+								console.log(dict);
 
 								if(trellis)
 									console.log("this is a trellis view");
@@ -216,7 +217,9 @@
                                             yz[ky][kx] += dict[xz[kx]][levels[ky]];
                                         }
                                     }
-                                    
+                                   
+                                   console.log(yz);
+
                                    var y01z = d3.stack().keys(d3.range(levels.length))(d3.transpose(yz)),
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
@@ -335,7 +338,7 @@
 							    .attr("y", height)
 							    .attr("width", x.bandwidth())
 							    .attr("height", 0)
-							     .on("mouseover", function(d){
+							     .on("mouseover", function(d, i){
 							  
 							      	div.transition()
 							      		.duration(200)
@@ -345,6 +348,16 @@
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	origColor = d3.select(this).style("fill");
 							      	d3.select(this).style("fill", "brown");
+							      	//console.log(this);
+							      	//console.log(d); 
+							      	//console.log(dict[i+1]);
+
+							      	// find the key for the corresponding data entry
+							      	for(var key in dict[i+1]){
+							      		if(dict[i+1][key]['value'] === (d[1] - d[0]))
+							      			self.parent.highlightSubs(dict[i+1][key]['data']);
+							      			//console.log(dict[i+1][key]['data']); 
+							      	}
 
 							      })
 							      .on("mouseout", function(d){
@@ -352,6 +365,7 @@
 							      		.duration(500)
 							      		.style("opacity", 0);
 							      	d3.select(this).style("fill", origColor);
+							      	self.parent.nohighlightSubs(); 
 							      });
 
 							    rect.transition()

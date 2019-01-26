@@ -33,7 +33,138 @@
 								}
 								self.dataLinks[cat] = dataLinks;
 							});
-							console.log(self.dataLinks);
+							//console.log(self.dataLinks);
+						},
+						nohighlight: function(){
+							var self = this;
+							self.update(self.data); 
+
+						},
+						highlight: function(recIds){
+							var self = this;	
+							var highlighted = [];	
+							var temp = [];	
+							for(var key in self.data){								
+								var sum = 0;
+								var arr = [];
+								self.data[key]['data'].forEach(function(rec){
+									if(recIds.indexOf(rec) >= 0){
+										sum++;
+										arr.push(rec);
+									}
+								});			
+								temp.push({"date": self.data[key]['date'], "number": sum, "data": arr});					
+							}	
+
+							self.arcs.selectAll("path")
+										.style("opacity", function(d){											
+											var found = false; 
+											if(d.data['data']){
+												d.data['data'].forEach(function(rec){
+													if(recIds.indexOf(rec) >=0 ){
+														found = true;  		
+													}
+												});
+											}
+											if(found){
+												highlighted.push(d.data.date);
+												self.text.transition().duration(100)
+													.style("opacity", function(t){
+														//console.log(d);
+														////console.log(t);
+														if(highlighted.indexOf(t.data.date) >=0)
+															return 1;
+														else
+															return 0; 
+													});
+												self.polys.transition().duration(100)
+													.style("opacity", function(p){
+														return (highlighted.indexOf(p.data.date) >=0)? 1: 0;															
+													});											    											    
+											}
+											return 1.0; 
+										});		
+								
+
+							self.update(temp); 												
+
+						},
+
+						update: function(data) {
+							var self = this;
+						    var duration = 500;
+						    var pie = d3.pie()
+									  .sort(null)
+									  .value(function(d) {
+									    return d.number;
+									  });
+							var key = function(d) { return d.data.date; };
+							
+						    var oldData = self.arcs.selectAll("path")
+									      .selectAll("path")
+									      .data().map(function(d) { return d.data });
+
+						
+						    if (oldData.length == 0) oldData = data;
+
+						    var was = mergeWithFirstEqualZero(data, oldData);
+						    var is = mergeWithFirstEqualZero(oldData, data);
+						    //console.log(was);
+						    var arc = d3.arc()
+								  .outerRadius(self.radius * 1.0)
+								  .innerRadius(self.radius * 0.0);
+						    
+						    var slice = self.arcs.selectAll("path")
+						      			.data(pie(was), key);
+
+						    slice.enter()
+						      .insert("path")
+						      .attr("class", "slice")
+						      .style("fill", function(d) { return self.color(d.data.date); })
+						      .each(function(d) {
+						          this._current = d;
+						        });
+
+						    slice = self.arcs.selectAll("path")
+						      			.data(pie(is), key);
+
+						    slice.transition()
+						      .duration(duration)
+						      .attrTween("d", function(d) {
+						          var interpolate = d3.interpolate(this._current, d);
+						          var _this = this;
+						          return function(t) {
+						              _this._current = interpolate(t);
+						              return arc(_this._current);
+						            };
+						        });
+
+						    slice = self.arcs.selectAll("path")
+						      .data(pie(data), key);
+
+						    slice.exit()
+						      .transition()
+						      .delay(duration)
+						      .duration(0)
+						      .remove();
+
+						    function mergeWithFirstEqualZero(first, second){
+
+									  var secondSet = d3.set();
+
+									  second.forEach(function(d) { secondSet.add(d.date); });
+
+									  var onlyFirst = first
+									    .filter(function(d){ return !secondSet.has(d.date) })
+									    .map(function(d) { return {date: d.date, number: 0}; });
+
+									  var sortedMerge = d3.merge([ second, onlyFirst ])
+									    .sort(function(a, b) {
+									        return d3.ascending(a.date, b.date);
+									      });
+
+									  return sortedMerge;
+									}
 						},
 						foundMatch: function(datum, cat, piedata){
 							var self = this; 
@@ -44,7 +175,7 @@
 						},
 						draw: function(viewId, data, parent, svgw, svgh){
 							var self = this;
-							//////////console.log(data);
+							////////////console.log(data);
 							self.updateDataLinks(viewId, data, parent);
 							self.parent = parent; 
 							self.id = viewId;
@@ -52,7 +183,7 @@
 							self.totalNumRecs = 0; 
 							for(var key in data){
 								self.totalNumRecs += data[key].length;
-								self.data.push({'date': key, 'number': data[key].length});
+								self.data.push({'date': key, 'number': data[key].length, 'data': data[key]});
 							}
 							if(self.parent.g1){
 								var undef;
@@ -76,6 +207,7 @@
   											return d3.arc().innerRadius(radius).outerRadius(radius);
 											};
 							var radius = Math.min(width, height) / 2 - 1; 
+							self.radius = radius; 
 							var arc = d3.arc()
 									    .innerRadius(0)
 									    .outerRadius(radius);
@@ -83,6 +215,7 @@
 										  .domain(self.data.map(d => d.date))
 										  .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), self.data.length).reverse());
 										  //.range(d3.quantize(t => d3.interpolateRgb("steelblue", "brown"), data.length).reverse());
+	 					    self.color = color; 
 	 					    const arcs = pie(self.data);
 
 							const g = self.parent.g1.append("g")
@@ -101,7 +234,7 @@
 							      .attr("stroke", "white")
 							      .on("mouseover", function(d){		
 							      	self.parent.highlight(self.dataLinks[d.data.date], viewId);
-							      	//console.log(self.dataLinks[d.data.date]);			
+							      	////console.log(self.dataLinks[d.data.date]);			
 							      	origColor = d3.select(this).style("fill");
 							      	d3.select(this).style("fill", "brown");
 							      })
@@ -130,10 +263,10 @@
 								.append("text")
 										.attr("dy", ".35em")
 										.text(function(d) {
-											//console.log(d); 
-											if(d.data.number < (self.totalNumRecs/20))
-												return '';
-											else 
+											////console.log(d); 
+											//if(d.data.number < (self.totalNumRecs/20))
+											//	return '';
+											//else 
 												return d.data.date;
 										});
 									
@@ -177,6 +310,9 @@
 									};
 								});
 
+							self.arcs = g;
+							self.text = text; 
+							
 							text.exit()
 							  .remove();
 
@@ -184,10 +320,10 @@
 								.data(arcs).enter()
 								.append("polyline")
 								.style("opacity", function(d){
-									//console.log(d);
-									if(d.data.number < (self.totalNumRecs/20))
-										return 0.0; 
-									else
+									////console.log(d);
+									//if(d.data.number < (self.totalNumRecs/20))
+									//	return 0.0; 
+									//else
 										return 1.0; 
 								});
 
@@ -204,7 +340,7 @@
 										return [arc.centroid(d2), arc.centroid(d2), pos];
 									};			
 								});
-							
+							self.polys = polyline; 
 							polyline.exit()
 								.remove();
 							

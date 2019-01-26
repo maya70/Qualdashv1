@@ -497,6 +497,14 @@
 							var self = this ;
 							self.vis.highlight(hdata, viewId);
 						},
+						highlightSubs: function(recIds){
+							var self = this; 
+							if(self.subVis1) self.subVis1.highlight(recIds);
+						},
+						nohighlightSubs: function(){
+							var self = this;
+							if(self.subVis1) self.subVis1.nohighlight();	
+						},
 						resizeVis: function(refresh){
 							var self = this;
 							
