@@ -112,7 +112,7 @@
                                         //console.log(data); 
                                         self.data = data;                                     
                                         //////console.log(displayVar);
-                                        for(var display = 0; display < self.displayVariables.length -4; display++)
+                                        for(var display = 0; display < self.displayVariables.length; display++)
                                         {
                                             self.applyAggregateRule2(self.displayVariables[display],                                                                     
                                                                     display, data);
@@ -158,8 +158,10 @@
                                                     Qs.forEach(function(qname){ 
                                                         self.recordEHR(data[d], d , metric, yearupdated);
                                                         var qobj = self.getQObject(qname, v); 
-                                                        var qval = parseFloat(self.computeVar(qname, qobj, data[d], 0)) ; 
-                                                        self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
+                                                        if(qobj){
+                                                                var qval = parseFloat(self.computeVar(qname, qobj, data[d], 0)) ; 
+                                                                self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
+                                                            }
                                                     });
                                                 }
                                             }
@@ -226,7 +228,16 @@
                             else if(vname === "readmit" && self.audit === "picanet"){
                                     return 0; 
                                 }
-
+                            else if(vname === "bedDays" && self.audit === "picanet"){
+                                var one_day = 1000*60*60*24;                                    
+                                return (self.stringToDate(rec["unitdisdate"]).getTime() - self.stringToDate(rec["addate"]).getTime())/one_day;
+                            }
+                            else if(vname === "invVentDays" && self.audit === "picanet"){                                
+                                return  parseInt(rec["invventday"]) || 0; 
+                            }
+                            else if(vname === "noninvVentDays" && self.audit === "picanet"){
+                                return parseInt(rec["noninvventday"]) || 0; 
+                            }
 
                         },
                         calculateDerivedVar: function(metric, yvar){
@@ -324,9 +335,9 @@
                                 time = strings[1];
                             var dateParts = date.split("-");
                             if(time) timeParts = time.split(":");
-                            var day = (self.audit === "picanet")?dateParts[2] :dateParts[0],
+                            var day = dateParts[0],
                                 month = dateParts[1],
-                                year = (self.audit === "picanet")?dateParts[0] :"20"+dateParts[2];
+                                year = "20"+dateParts[2];
                             if(timeParts){
                                 hour = timeParts[0],
                                 minute = timeParts[1],
@@ -471,6 +482,25 @@
                             var comps = auditVars['displayVariables'][viewId]['combinations'];
                             return comps;
                         },
+                        list1QCats: function(viewId){
+                            var self = this;
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
+                            var cats = auditVars['displayVariables'][viewId]['categories'];
+                            var res = cats.splice(0,1);
+                            return res; 
+                        },
+                        list1QComp: function(viewId){
+                            var self = this;
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
+                            var comps = auditVars['displayVariables'][viewId]['quantities'];
+                            return comps;
+                        },
+                        list1QCombo: function(viewId){
+                            var self = this;
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
+                            var comps = auditVars['displayVariables'][viewId]['combinations'];
+                            return comps;
+                        },
                         computeVar: function(yvar, displayObj, rec, sid){
                             var self = this;
                             var vname;
@@ -486,7 +516,45 @@
                                 var rule = strs[0]; 
                                 vname = strs[1];
                                 var derval = self.getDerivedValue(vname, rec);
+                                if(!displayObj)
+                                   {console.log(yvar);
+                                    console.log(rec);
+                                    console.log(sid);
+                                   } 
+
                                 vval = (displayObj["yaggregates"][sid] === "count")? ((derval>0)? 1: 0) 
+                                            : derval;  
+                            }
+                            //if(!vval && yvar === "der_smr")
+                             //   console.log(rec);
+                            return vval; 
+
+                        },
+                        computeVarSingle: function(group, cat, yvar, displayObj, rec){
+                            var self = this;
+                            var vname;
+                            var vval; 
+                            if(yvar.indexOf("_") < 0 ){
+                                // this is a database variable
+                                vname = yvar; 
+                                if(rec[cat] === group)
+                                    vval = (displayObj["yaggregates"][0] === "count")? 1 : rec[vname];  
+                                else
+                                    vval = 0; 
+                            }
+                            else{
+                                // this is a derived variable
+                                var strs = yvar.split("_");
+                                var rule = strs[0]; 
+                                vname = strs[1];
+                                var derval = self.getDerivedValue(vname, rec);
+                                if(!displayObj)
+                                   {console.log(yvar);
+                                    console.log(rec);
+                                    console.log(sid);
+                                   } 
+
+                                vval = (displayObj["yaggregates"][0] === "count")? ((derval>0)? 1: 0) 
                                             : derval;  
                             }
                             //if(!vval && yvar === "der_smr")
@@ -517,167 +585,154 @@
 
                             }                            
                         },
-                        applyAggregateRule2: function(displayObj, displayId, data, redraw){
-                            var self = this; 
+                        applySingleQ: function(displayObj, displayId, data, redraw){
+                            var self = this;
                             var dict = {};
                             var tHier = {}; 
                             var metric = displayObj["metric"],
                                 dateVar = displayObj["x"],
                                 displayVar = displayObj["y"],
                                 categoricals = displayObj["categories"],
+                                yType = displayObj["yType"],
                                 levels = [],
-                                slaves = {};                                
-                            
-                            // prepare the dict
-                            if(displayVar.constructor == Array){                                
-                                var xlevels = d3.map(self.data, function(item){
+                                slaves = {};  
+
+                            // define levels of the x-axis
+                            var xlevels = d3.map(self.data, function(item){
                                                 return item[dateVar];
                                                 }).keys();
-                                
-                                xlevels.forEach(function(level){
-                                    dict[level] = {};
-                                    dict[level][displayVar[0]] = {};
-                                    dict[level][displayVar[1]] = {};
-                                    });
-                                //console.log(dict);
-                                // any categoricals will be tossed for slave views + popover
-                                slaves['cats'] = self.list2QCats(displayId); 
-                                slaves['quants'] = self.list2QComp(displayId);
-                                slaves['combo'] = self.list2QCombo(displayId);
-                                slaves['data'] = {}; 
+                            // define record groups using the first categorical
+                            var cat = categoricals[0];
+                            var groups = d3.map(self.data, function(item){
+                                                return item[cat];
+                                                }).keys();
+                            xlevels.forEach(function(xl){
+                                dict[xl] = {};
+                                groups.forEach(function(cl){
+                                    dict[xl][cl] = {};                                        
+                                    });                                    
+                                });
+                            
+                            // Remaining categoricals will be tossed for slave views + popover
+                            slaves['cats'] = self.list1QCats(displayId); 
+                            slaves['quants'] = self.list1QComp(displayId);
+                            slaves['combo'] = self.list1QCombo(displayId);
+                            slaves['data'] = {}; 
+  
+                             slaves['combo'].forEach(function(combo){
+                                if(!slaves['data'][combo])
+                                    slaves['data'][combo] = {}; 
+                                if(!slaves['data'][combo]['xs'])
+                                    slaves['data'][combo]['xs'] = [];
+                                if(!slaves['data'][combo]['ys'])
+                                    slaves['data'][combo]['ys'] = []; 
 
-                                slaves['combo'].forEach(function(combo){
-                                    if(!slaves['data'][combo])
-                                        slaves['data'][combo] = {}; 
-                                    if(!slaves['data'][combo]['xs'])
-                                        slaves['data'][combo]['xs'] = [];
-                                    if(!slaves['data'][combo]['ys'])
-                                        slaves['data'][combo]['ys'] = []; 
-
-                                    var str = combo.split("&");
-                                    if(!slaves['data'][combo]['xType'])
-                                        slaves['data'][combo]['xType'] = self.metaDict[str[0]];
-                                    if(!slaves['data'][combo]['yType'])
-                                        slaves['data'][combo]['yType'] = self.metaDict[str[1]];
-                                    
-
-                                }); 
-                                
-                                }
+                                var str = combo.split("&");
+                                if(!slaves['data'][combo]['xType'])
+                                    slaves['data'][combo]['xType'] = self.metaDict[str[0]];
+                                if(!slaves['data'][combo]['yType'])
+                                    slaves['data'][combo]['yType'] = self.metaDict[str[1]];                                    
+                            }); 
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
-                            var observedDeathsNational = {}; 
-                            console.log(self.ehr);
                             for(var i=0; i < self.data.length; i++){
-                                /**
-                                 * handle multiple quantitative variables
-                                **/
-                                self.recordEHR(self.data[i], i, metric);
-                                if(displayVar.constructor == Array){
-                                    // the main dict will hold aggregates for all variables assigned to y-axis                                    
-                                    displayVar.forEach(function(yvar, id){
-                                            //var vname;
-                                            var vval = self.computeVar(yvar, displayObj, self.data[i], id);
-                                            if(yvar === "der_death"){
-                                                if(!observedDeathsNational[self.data[i][dateVar]])
-                                                    observedDeathsNational[self.data[i][dateVar]] = vval; 
-                                                else
-                                                    observedDeathsNational[self.data[i][dateVar]] += vval;                                                 
-                                            }
-                                            // select yspan items
-                                            if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                self.recordEHR(self.data[i], i, metric);                                
+                                // the main dict will hold aggregates for all groups                                    
+                                groups.forEach(function(group, id){
+                                        //var vname;
+                                        var vval = self.computeVarSingle(group, cat, displayVar, displayObj, self.data[i], id);
+                                        // select yspan items
+                                        if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                             {
-                                                ownrecords++; 
-                                                // update x-bin   
-                                                if(!dict[self.data[i][dateVar]][yvar]["value"])
-                                                    dict[self.data[i][dateVar]][yvar]["value"] = 0;                                             
-                                                dict[self.data[i][dateVar]][yvar]["value"] += vval;
+                                            ownrecords++; 
+                                            // update x-bin                                                       
+                                            if(!dict[self.data[i][dateVar]][group]["value"])
+                                                dict[self.data[i][dateVar]][group]["value"] = 0;                                             
+                                            dict[self.data[i][dateVar]][group]["value"] += vval;
 
-                                                if(!dict[self.data[i][dateVar]][yvar]["data"])
-                                                    dict[self.data[i][dateVar]][yvar]["data"] = [];
-                                                if(vval > 0) dict[self.data[i][dateVar]][yvar]["data"].push(i); 
+                                            if(!dict[self.data[i][dateVar]][group]["data"])
+                                                dict[self.data[i][dateVar]][group]["data"] = [];
+                                            if(vval > 0) dict[self.data[i][dateVar]][group]["data"].push(i); 
 
-                                                // setup combo slaves
-                                                slaves['combo'].forEach(function(combo, sid){
-                                                    var str = combo.split("&");
-                                                    if(slaves['data'][combo]['xs'].indexOf(self.data[i][str[0]]) < 0)
-                                                        slaves['data'][combo]['xs'].push(self.data[i][str[0]]);
-                                                    if(slaves['data'][combo]['ys'].indexOf(self.data[i][str[1]]) < 0)
-                                                        slaves['data'][combo]['ys'].push(self.data[i][str[1]]);
-                                                    if(!slaves['data'][combo][self.data[i][str[0]]])
-                                                        slaves['data'][combo][self.data[i][str[0]]] = {};
-                                                    if(!slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]])
-                                                        slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]] = {};
-                                                    if(!slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar])
-                                                        slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar] = vval;
-                                                    
-                                                    slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar] += vval; 
-                                                });
+                                            // setup combo slaves
+                                            slaves['combo'].forEach(function(combo, sid){
+                                                var str = combo.split("&");
+                                                if(slaves['data'][combo]['xs'].indexOf(self.data[i][str[0]]) < 0)
+                                                    slaves['data'][combo]['xs'].push(self.data[i][str[0]]);
+                                                if(slaves['data'][combo]['ys'].indexOf(self.data[i][str[1]]) < 0)
+                                                    slaves['data'][combo]['ys'].push(self.data[i][str[1]]);
+                                                if(!slaves['data'][combo][self.data[i][str[0]]])
+                                                    slaves['data'][combo][self.data[i][str[0]]] = {};
+                                                if(!slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]])
+                                                    slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]] = {};
+                                                if(!slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][group])
+                                                    slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][group] = vval;
+                                                
+                                                slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][group] += vval; 
+                                            });
                                              // check to see if multiple time granularities are needed for y-axis variables                                            
-                                            self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval); 
-                                            }
-                                           
+                                            self.updateTimeHierarchy(self.year, displayVar, displayId, self.data[i], vval); 
+                                            }    
                                         });
 
-                                        // setup fake categories and levels for main bar chart (or other vis)
-                                        categoricals = displayObj["yaggregates"][0];                                         
-                                        levels = displayVar; 
+                                // setup categories and levels for main bar chart (or other vis)
+                                //categoricals = displayObj["yaggregates"][0];                                         
+                                levels = groups; 
 
-                                        // setup data aggregates for slave categories (this unit only)
-                                        if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
-                                            slaves['cats'].forEach(function(cat){
-                                                // get the current rec's level of this categorical
-                                                var lev = self.data[i][cat];
-                                                if(!slaves['data'][cat])
-                                                    slaves['data'][cat] = {};
-                                                if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
-                                                else slaves['data'][cat][lev].push(i);  
-                                            });
-                                        }
-                                        // setup quantitative slaves
-                                        slaves['quants'].forEach(function(quant, sid){
-                                            var subYlength = 1; 
-                                            // if we need national data
-                                            if(quant['granP'].constructor == Array || quant['granP'] === "national"){
-                                                subYlength = 2; 
-                                                var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid)) ; 
+                                // setup data aggregates for slave categories (this unit only)
+                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                        slaves['cats'].forEach(function(cat){
+                                            // get the current rec's level of this categorical
+                                            var lev = self.data[i][cat];
+                                            if(!slaves['data'][cat])
+                                                slaves['data'][cat] = {};
+                                            if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
+                                            else slaves['data'][cat][lev].push(i);  
+                                         });
+                                    }
+                                    // setup quantitative slaves
+                                    slaves['quants'].forEach(function(quant, sid){
+                                        var subYlength = 1; 
+                                        // if we need national data
+                                        if(quant['granP'].constructor == Array || quant['granP'] === "national"){
+                                            subYlength = 2; 
+                                            var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid)) ; 
 
-                                                if(!slaves['data'][quant['q']])
-                                                    slaves['data'][quant['q']] = {}; 
-                                                if(!slaves['data'][quant['q']][self.data[i][dateVar]])
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]] =  {};
-                                                if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = qval;
-                                                    
-                                                else{
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
-                                                    //console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
-                                                }
-                                                if(!slaves['data'][quant['q']][self.data[i][dateVar]])
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]] = {};
-                                                if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
-                                                else
-                                                    slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                            if(!slaves['data'][quant['q']])
+                                                slaves['data'][quant['q']] = {}; 
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]] =  {};
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = qval;
                                                 
-                                                // check if we need nultiple time granularities for this
-                                                //self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
+                                            else{
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
+                                                //console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                             }
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]] = {};
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                            else
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                            
+                                            // check if we need nultiple time granularities for this
+                                            //self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
+                                        }
 
-                                        });                                         
-                                                                              
-                                     }
-                                                                
+                                    });                                                   
+                                                             
                             } // end for data records
-                             console.log(self.tHier); 
+                            //console.log(self.tHier); 
 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
-                            var postData = self.postProcess(dict, slaves);
-                            dict = postData['dict'];
-                            slaves = postData['slaves'];
-
-                            console.log(dict);
+                            if(metric === "48h Readmission"){
+                                var postData = self.postProcess(dict, slaves);
+                                dict = postData['dict'];
+                                slaves = postData['slaves'];
+                            }
+                            //console.log(dict);
                              // 2. Update the slaves: 
                              if(displayObj["quantities"]){
                                     displayObj["quantities"].forEach(function(quant){
@@ -698,11 +753,206 @@
                                                     "metric": self.availMetrics[displayId]['text'], //self.availMetrics[displayId]['value'], 
                                                     "mark": displayObj["mark"],
                                                     "yscale": displayObj["granP"],
-                                                    "cats": categoricals,
+                                                    //"cats": categoricals,
                                                     "levels": levels,
                                                     "slaves": slaves, 
                                                     "ylength": displayObj["y"].length, 
                                                     "metricLabel": self.availMetrics[displayId]['text']});                                 
+                           
+                                                          
+                            
+                        },
+                        applyMultiQ: function(displayObj, displayId, data, redraw){
+                            var self = this;
+                            var dict = {};
+                            var tHier = {}; 
+                            var metric = displayObj["metric"],
+                                dateVar = displayObj["x"],
+                                displayVar = displayObj["y"],
+                                categoricals = displayObj["categories"],
+                                yType = displayObj["yType"],
+                                levels = [],
+                                slaves = {};                                
+                            
+                            // define levels of the x-axis
+                            var xlevels = d3.map(self.data, function(item){
+                                                return item[dateVar];
+                                                }).keys();
+                            
+                            // define record groups for different y variables
+                            xlevels.forEach(function(level){
+                                dict[level] = {};
+                                displayVar.forEach(function(dv, iv){
+                                    dict[level][displayVar[iv]] = {};                                        
+                                    });                                    
+                                });
+                            //console.log(dict);
+                            // any categoricals will be tossed for slave views + popover
+                            slaves['cats'] = self.list2QCats(displayId); 
+                            slaves['quants'] = self.list2QComp(displayId);
+                            slaves['combo'] = self.list2QCombo(displayId);
+                            slaves['data'] = {}; 
+
+                            slaves['combo'].forEach(function(combo){
+                                if(!slaves['data'][combo])
+                                    slaves['data'][combo] = {}; 
+                                if(!slaves['data'][combo]['xs'])
+                                    slaves['data'][combo]['xs'] = [];
+                                if(!slaves['data'][combo]['ys'])
+                                    slaves['data'][combo]['ys'] = []; 
+
+                                var str = combo.split("&");
+                                if(!slaves['data'][combo]['xType'])
+                                    slaves['data'][combo]['xType'] = self.metaDict[str[0]];
+                                if(!slaves['data'][combo]['yType'])
+                                    slaves['data'][combo]['yType'] = self.metaDict[str[1]];                                    
+                            }); 
+                            // one big for loop fits all
+                            var ownrecords = 0;  // keep a count of this unit's records
+                            var observedDeathsNational = {}; 
+                            //console.log(self.ehr);
+                            for(var i=0; i < self.data.length; i++){
+                                /**
+                                 * handle multiple quantitative variables
+                                **/
+                                self.recordEHR(self.data[i], i, metric);                                
+                                // the main dict will hold aggregates for all variables assigned to y-axis                                    
+                                displayVar.forEach(function(yvar, id){
+                                        //var vname;
+                                        var vval = self.computeVar(yvar, displayObj, self.data[i], id);
+                                        if(yvar === "der_death"){
+                                            if(!observedDeathsNational[self.data[i][dateVar]])
+                                                observedDeathsNational[self.data[i][dateVar]] = vval; 
+                                            else
+                                                observedDeathsNational[self.data[i][dateVar]] += vval;                                                 
+                                            }
+                                        // select yspan items
+                                        if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                            {
+                                            ownrecords++; 
+                                            // update x-bin                                                       
+                                            if(!dict[self.data[i][dateVar]][yvar]["value"])
+                                                dict[self.data[i][dateVar]][yvar]["value"] = 0;                                             
+                                            dict[self.data[i][dateVar]][yvar]["value"] += vval;
+
+                                            if(!dict[self.data[i][dateVar]][yvar]["data"])
+                                                dict[self.data[i][dateVar]][yvar]["data"] = [];
+                                            if(vval > 0) dict[self.data[i][dateVar]][yvar]["data"].push(i); 
+
+                                            // setup combo slaves
+                                            slaves['combo'].forEach(function(combo, sid){
+                                                var str = combo.split("&");
+                                                if(slaves['data'][combo]['xs'].indexOf(self.data[i][str[0]]) < 0)
+                                                    slaves['data'][combo]['xs'].push(self.data[i][str[0]]);
+                                                if(slaves['data'][combo]['ys'].indexOf(self.data[i][str[1]]) < 0)
+                                                    slaves['data'][combo]['ys'].push(self.data[i][str[1]]);
+                                                if(!slaves['data'][combo][self.data[i][str[0]]])
+                                                    slaves['data'][combo][self.data[i][str[0]]] = {};
+                                                if(!slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]])
+                                                    slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]] = {};
+                                                if(!slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar])
+                                                    slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar] = vval;
+                                                
+                                                slaves['data'][combo][self.data[i][str[0]]][self.data[i][str[1]]][yvar] += vval; 
+                                            });
+                                             // check to see if multiple time granularities are needed for y-axis variables                                            
+                                            self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval); 
+                                            }    
+                                        });
+
+                                // setup fake categories and levels for main bar chart (or other vis)                                
+                                levels = displayVar; 
+
+                                // setup data aggregates for slave categories (this unit only)
+                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                        slaves['cats'].forEach(function(cat){
+                                            // get the current rec's level of this categorical
+                                            var lev = self.data[i][cat];
+                                            if(!slaves['data'][cat])
+                                                slaves['data'][cat] = {};
+                                            if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
+                                            else slaves['data'][cat][lev].push(i);  
+                                         });
+                                    }
+                                    // setup quantitative slaves
+                                    slaves['quants'].forEach(function(quant, sid){
+                                        var subYlength = 1; 
+                                        // if we need national data
+                                        if(quant['granP'].constructor == Array || quant['granP'] === "national"){
+                                            subYlength = 2; 
+                                            var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid)) ; 
+
+                                            if(!slaves['data'][quant['q']])
+                                                slaves['data'][quant['q']] = {}; 
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]] =  {};
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = qval;
+                                                
+                                            else{
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
+                                                //console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
+                                            }
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]] = {};
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                            else
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                            
+                                            // check if we need nultiple time granularities for this
+                                            //self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
+                                        }
+
+                                    });                                                   
+                                                             
+                            } // end for data records
+                            //console.log(self.tHier); 
+
+                            /// For variables that require a post-process:
+                             // 1. Update the master data structure:                              
+                            if(metric === "48h Readmission"){
+                                var postData = self.postProcess(dict, slaves);
+                                dict = postData['dict'];
+                                slaves = postData['slaves'];
+                            }
+                            //console.log(dict);
+                             // 2. Update the slaves: 
+                             if(displayObj["quantities"]){
+                                    displayObj["quantities"].forEach(function(quant){
+                                        if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
+                                            for(var key in slaves['data'][quant['q']]){
+                                                slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
+                                                slaves['data'][quant['q']][key]['unit'] = dict[key]["der_death"]['value'] / slaves['data'][quant['q']][key]['unit']; 
+                                            }                                            
+                                        }
+                                    });
+                                 }
+                               
+                                //console.log(slaves); 
+                                self.dataViews.push({"viewId": displayId,   
+                                                    "data": dict, 
+                                                    "metric": self.availMetrics[displayId]['text'], //self.availMetrics[displayId]['value'], 
+                                                    "mark": displayObj["mark"],
+                                                    "yscale": displayObj["granP"],
+                                                    //"cats": categoricals,
+                                                    "levels": levels,
+                                                    "slaves": slaves, 
+                                                    "ylength": displayObj["y"].length, 
+                                                    "metricLabel": self.availMetrics[displayId]['text']});                                 
+                                
+                        },
+                        applyAggregateRule2: function(displayObj, displayId, data, redraw){
+                            var self = this; 
+                            var displayVar = displayObj["y"];
+                            
+                            // prepare the dict
+                            if(displayVar.constructor == Array){                                
+                                    self.applyMultiQ(displayObj, displayId, data, redraw);
+                                }
+                            else
+                                self.applySingleQ(displayObj, displayId, data, redraw);
+                            
                         },
                         recordEHR: function(rec, i , metric, year){
                             var self = this;

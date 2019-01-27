@@ -14,14 +14,12 @@
 						self.palette = {};
 
 						if(dataView.ylength > 1){
-							(dataView['yscale'][0] === dataView['yscale'][1])?
-							 self.drawCatBar2(dataView,0)
-							 : self.drawDualBar();
+							//(dataView['yscale'][0] === dataView['yscale'][1])?
+							 self.drawCatBar2(dataView,0);
+							 //: self.drawDualBar();
 						}
-						else {
-							//if()
-								self.drawBaseBar(); 
-							}
+
+						
 					},
 					{
 						getData: function(){
@@ -168,6 +166,9 @@
 						},
 						drawCatBar2: function(dataView, trellis){
 							var self = this; 
+							console.log(dataView['data']);
+							console.log(dataView['cats']);
+							console.log(dataView['levels']);
 							self.drawCatBar(dataView['viewId'], dataView['data'], dataView['cats'], dataView['levels'], self.iter);
 							//self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
 							//drawCatBar(displayId, data, cat, levels,0);
@@ -325,7 +326,8 @@
 							      .attr("dy", ".35em")
 							      .style("text-anchor", "end")							      
 							      .text(function(d) {
-							      	return self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]] ;})
+							      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
+							      	return  tex || levels[d] ;})
 							      	.style("font-size", "7pt");
 							     }
 							
