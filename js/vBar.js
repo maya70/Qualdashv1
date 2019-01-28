@@ -13,10 +13,13 @@
 						self.dataView = dataView; 
 						self.palette = {};
 
-						if(dataView.ylength > 1){
+						if(dataView.ylength < 4 ){
 							//(dataView['yscale'][0] === dataView['yscale'][1])?
 							 self.drawCatBar2(dataView,0);
 							 //: self.drawDualBar();
+						}
+						else{ // create a trellis
+							self.drawCatBar2(dataView,1);
 						}
 
 						
@@ -27,13 +30,19 @@
 						},
 						highlight: function(hdata, viewId){
 							var self = this; 
-							if(self.dataView.ylength > 1){
+							if(self.dataView.ylength > 1 && self.cat){
 								self.shadeCatBar(hdata, viewId);
 							}	
+							else{
+								self.shadeTrellis(hdata, viewId);
+							}
 						},
 						removeShade: function(){
 							var self = this;
 							self.parent.svg.selectAll(".shades").remove(); 
+						},
+						shadeTrellis: function(dict, viewId){
+							var self = this; 
 						},
 						shadeCatBar: function(dict, viewId){
 							var self = this; 
@@ -155,9 +164,107 @@
 						},
 
 
-						drawBaseBar: function(){
+						drawBaseBarTrellis: function(viewId, dict, cat, iter){
+							var self = this; 
+							var viewshare = 2; 							
+							var drawArea = d3.select("#draw-area"+viewId);
+								//drawArea.style("overflow-y", "hidden");
+										
+					
+							var parentArea = drawArea.select(function(){
+								return this.parentNode; 
+							});
+							
+							var scale = self.parent.expanded? 0.6 : 0.9; 
+							var svgw = scale * parentArea.node().getBoundingClientRect().width / viewshare ;
+							var svgh = 0.8 * parentArea.node().getBoundingClientRect().height / viewshare; 
+						 	//var svgh = 100; 
+							var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
+							var margin = {top: 20, right: 10, bottom: 20, left: 10};							
+							var width = svgw - margin.left - margin.right; 
+							var height = svgh - margin.top - margin.bottom;
+
+							var svgsub = self.parent.svg.append("svg")
+											.attr("id", "trellissvg"+viewId+"_"+iter)
+											.attr("class", "trellissvg"+viewId)
+											.attr("width", svgw).attr("height", svgh)										
+											.attr("x", ((iter%viewshare)*svgw) + margin.left  )
+											.attr("y", parseInt(iter/viewshare)*svgh+ margin.top); 
+											
+							
+							var div = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
+
+							
+							var g = svgsub.append("g"); //.attr("transform","translate(" + margin.left + "," + margin.top + ")" );
+
+							g.append("text")
+								.attr("x", 20)
+								.attr("y", 10)
+								.attr("dy", ".35em")							      
+							      .text(function(d) {
+							      	return cat ;})
+							        .style("font-size", "7pt");
+							     
+							
+							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
+								y = d3.scaleLinear().range([height, 0]).nice(); 
+
+							x.domain(self.data.map(function(d){
+									return d.date; 
+							}));
+							y.domain([0, d3.max(self.data, function(d){ return d.number; })]);
+							g.append("g")
+							      .attr("class", "x axis")
+							      .attr("transform", "translate("+ 0+"," + (height) + ")")
+							      .call(d3.axisBottom(x))									
+									.selectAll("text")	
+										.text(function(d){
+											return $Q.months[d-1]; 
+										})	
+								        .style("text-anchor", "end")
+								        .attr("dx", "-.8em")
+								        .attr("dy", ".15em")
+								        .attr("transform", "rotate(-65)");
+
+							g.append("g")
+							      .attr("class", "y axis")
+							      .call(d3.axisLeft(y).ticks(5,"s"))
+							      .attr("transform", "translate("+0+","+ 0+")");
+							
+							g.selectAll(".bar")
+							    .data(dict)
+							    .enter().append("rect")
+							      .attr("class", "bar")
+							      .attr("x", function(d) { return x(d.date); })
+							      .attr("y", function(d) { return y(d.number); })
+							      .attr("width", x.bandwidth())
+							      .attr("height", function(d) { return height  - y(d.number); })
+							      .style("fill", function(d){
+							      	return "black";
+							      })
+							      .on("mouseover", function(d){
+							      	div.transition()
+							      		.duration(200)
+							      		.style("opacity", 0.9);
+							      	div .html((d.date) + "<br/>" + (d.number+ ""))
+							      		.style("left", (d3.event.pageX) + "px")
+							      		.style("top", (d3.event.pageY - 28) + "px");
+							      	d3.select(this).style("fill", "brown");
+							      	self.parent.highlightSubs(d['data']);
+							      	
+							      	
+							      })
+							      .on("mouseout", function(d){
+							      	div.transition()
+							      		.duration(500)
+							      		.style("opacity", 0);
+							      	d3.select(this).style("fill", "black");
+							      	self.parent.nohighlightSubs(); 
+							      });
 						
-						
+									
 						},
 						drawDualBar: function(){
 							var self = this;
@@ -169,7 +276,11 @@
 							console.log(dataView['data']);
 							console.log(dataView['cats']);
 							console.log(dataView['levels']);
-							self.drawCatBar(dataView['viewId'], dataView['data'], dataView['cats'], dataView['levels'], self.iter);
+							if(trellis){
+								self.drawBarTrellis(dataView['viewId'], dataView['data'], dataView['cats'], dataView['levels']);
+							}
+							else 
+								self.drawCatBar(dataView['viewId'], dataView['data'], dataView['cats'], dataView['levels'], self.iter);
 							//self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
 							//drawCatBar(displayId, data, cat, levels,0);
 						},
@@ -480,6 +591,17 @@
 						},
 						resize: function(){
 							var self = this;
+							if(self.trellis){
+								self.resizeTrellis();
+							}
+							else
+								self.resizeCatBar();
+						},
+						resizeTrellis: function(){
+							var self = this; 
+						},
+						resizeCatBar: function(){
+							var self = this;
 							var margin = self.cat? {top: 0, right: 10, bottom: 50, left:30} : {top: 10, right: 10, bottom: 65, left:30}; //TODO: modify this according to different views
 							var scale = self.parent.expanded? 0.6 : 0.9; 
 							var parentW = parseInt(d3.select("#card"+self.id).style("width")),
@@ -545,7 +667,7 @@
 						},
 						getMainSVG: function(id){
 							var self = this; 
-							return (self.cat)? d3.select("#mainsvg"+id+"_"+self.iter) :d3.select("#mainsvg"+id); 
+							return (self.cat)? d3.select("#mainsvg"+id+"_"+self.iter) :d3.select(".mainsvg"+id); 
 						},
 						toggleBarView: function(viewId){
 							var self = this;
@@ -565,22 +687,51 @@
 							}
 
 						},
-						drawBarTrellis: function(viewId, dicts, cat, levels){
+						drawBarTrellis: function(viewId, dict, cat, levels){
 							var self = this;						
-							self.dicts = dicts; 
-							var c =0; 
-                            ////////console.log(dicts);
-                            ////////console.log(cat);
-                            ////////console.log(levels);
-                            for(var key in dicts){
-                         	   self.drawCatBar(viewId, dicts[key], cat[1], levels[1], c, 1);
-                         	   c++;	
-                         	   self.iter = c; 
-                            }
-                            
-							//document.getElementById('mainCard').setAttribute("style","height:600px");
-							//document.getElementById('mainCardPanel').setAttribute("style","height:500px");
-							//document.getElementById('mainsvg').setAttribute("style","height:700px");
+							//self.dicts = dicts; 
+							self.trellis = true; 
+							var c =0;                            
+                            var cats = Object.keys(dict["1"]);
+                            //(self.cat)? d3.select("#mainsvg"+id+"_"+self.iter) :d3.select("#mainsvg"+id); 
+                            //self.cat[viewId] = cats;
+                            var viewshare = 2; 
+                            var parentArea = d3.select("#draw-area"+viewId);
+                            var numRows = Math.ceil(cats.length/2); 
+                            var rowHeight =  parentArea.node().getBoundingClientRect().height / viewshare; 
+                            var scale = self.parent.expanded? 0.6 : 0.9; 
+							
+                            self.parent.svg = d3.select("#draw-area"+viewId).append("div")
+											.attr("class", "trellisdiv"+self.id)																						
+											.style("max-width", (parentArea.node().getBoundingClientRect().width* scale)+"px")
+											.style("max-height", (parentArea.node().getBoundingClientRect().height* scale)+"px")	
+											.style("position", "relative")
+											.style("overflow-y", "scroll")	
+											.style("overflow-x", "hidden")												                            					
+											//.style("border", "1px solid black")
+											.append("svg")
+													.style("display", "inline-block")
+													.attr("id", "mainsvg"+viewId+"_"+0)
+													.attr("class", "mainsvg"+viewId)
+													.attr("x", 0)
+													.attr("y", 0)
+													.attr("width", (parentArea.node().getBoundingClientRect().width* scale)+"px" )
+													.attr("height", (rowHeight*numRows)+"px" );
+
+									
+                            cats.forEach(function(cat){		                            	
+                            		var arr = [];
+		                            for(var key in dict){
+		                            	var newdict = {};
+		                            	newdict["date"] = key;
+		                            	newdict["number"] = dict[key][cat]["value"];
+		                            	newdict["data"] = dict[key][cat]["data"];
+		                            	arr.push(newdict);
+		                            }			          
+		                            
+		                            self.drawBaseBarTrellis(viewId, arr, cat, c);
+		                            c++;
+		                        });
                                
 						}
 
