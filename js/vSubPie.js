@@ -55,7 +55,18 @@
 								});			
 								temp.push({"date": self.data[key]['date'], "number": sum, "data": arr});					
 							}	
+							var updated = self.update(temp); 	
+							var sliceIndex = {};
 
+							for(key in updated){
+								sliceIndex[updated[key]['data']['date']] = updated[key];
+								//newslices[updated[key]['data']['date']]['startAngle'] = updated[key]['startAngle'];
+								//newslices[updated[key]['data']['date']]['endAngle'] = updated[key]['endAngle'];
+							}
+
+							var arc = d3.arc()
+									    .innerRadius(0)
+									    .outerRadius(self.radius);	
 							self.arcs.selectAll("path")
 										.style("opacity", function(d){											
 											var found = false; 
@@ -69,15 +80,40 @@
 											if(found){
 												highlighted.push(d.data.date);
 												self.text.transition().duration(100)
+													.attrTween("transform", function(d){
+														this._current = sliceIndex[d.data.date];
+														var interpolate = d3.interpolate(this._current, d);
+														this._current = interpolate(0);
+														var cur = this._current; 
+														
+														return function(t) {
+															var d2 = cur; 
+															var pos = arc.centroid(d2);
+															pos[1] *= 2.0; 
+															pos[0] = self.radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+															return "translate("+pos+")";														
+														};
+													})
 													.style("opacity", function(t){
-														//console.log(d);
-														////console.log(t);
 														if(highlighted.indexOf(t.data.date) >=0)
 															return 1;
 														else
 															return 0; 
 													});
 												self.polys.transition().duration(100)
+												.attrTween("points", function(d){
+															this._current = sliceIndex[d.data.date];
+															var interpolate = d3.interpolate(this._current, d);
+															this._current = interpolate(0);
+															var cur = this._current; 
+															return function(t) {
+																var d2 = cur; 
+																var pos = arc.centroid(d2);
+																pos[1] *= 2; 
+																pos[0] = self.radius * 0.92 * (midAngle(d2) < Math.PI ? 1 : -1);
+																return [arc.centroid(d2), arc.centroid(d2), pos];
+															};			
+														})
 													.style("opacity", function(p){
 														return (highlighted.indexOf(p.data.date) >=0)? 1: 0;															
 													});											    											    
@@ -85,11 +121,44 @@
 											return 1.0; 
 										});		
 								
-
-							self.update(temp); 												
+										function midAngle(d){
+												return d.startAngle + (d.endAngle - d.startAngle)/2;
+											}
+																
 
 						},
-
+/*text.transition().duration(1000)
+								.attrTween("transform", function(d) {
+									this._current = this._current || d;
+									var interpolate = d3.interpolate(this._current, d);
+									this._current = interpolate(0);
+									
+									return function(t) {
+										var d2 = interpolate(t);
+										var pos = arc.centroid(d2);
+										pos[1] *= 2.0; 
+										//pos[0] =  Math.atan(midAngle(d2));
+										pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+										//var midAngle = d.endAngle < Math.PI ? d.startAngle/2 + d.endAngle/2 : d.startAngle/2  + d.endAngle/2 + Math.PI; 
+										return "translate("+pos+")";
+										//return (Math.abs(d.endAngle - d.startAngle) >= (Math.PI/8) )? 
+										//		"translate("+ newarc.centroid(d) +") rotate(-90) rotate("+ (midAngle* 180/Math.PI) + ")"
+										//		: "translate(0,0)";
+									};
+								})
+								.style("opacity", function(d){
+									//return (Math.abs(d.endAngle - d.startAngle) >= (Math.PI/8) )? 1: 0 ;
+									return 1; 
+								})
+								.styleTween("text-anchor", function(d){
+									this._current = this._current || d;
+									var interpolate = d3.interpolate(this._current, d);
+									this._current = interpolate(0);
+									return function(t) {
+										var d2 = interpolate(t);
+										return midAngle(d2) < Math.PI ? "start":"end";
+									};
+								}); */
 						update: function(data) {
 							var self = this;
 						    var duration = 500;
@@ -165,6 +234,7 @@
 
 									  return sortedMerge;
 									}
+							return pie(data); 
 						},
 						foundMatch: function(datum, cat, piedata){
 							var self = this; 
