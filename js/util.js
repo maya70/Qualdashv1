@@ -118,7 +118,7 @@ $Q.Picanet = {
                         "mark": "bar",
                         "x": "admonth",
                         "y": ["der_discharge", "der_readmit"],
-                        "categories": ["sourcead", "careareaad", "unitdisdest", "diagnosis"], 
+                        "categories": ["sourcead", "careareaad", "unitdisdest", "primarydiagnosisgroup"], 
                         "quantities": [{"q":"der_readmit", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],
                         "xType": "t",
                         "yType": ["q", "q"],
@@ -157,7 +157,7 @@ $Q.Picanet = {
                         "tspan": 3,                        
                         "yaggregates": ["count"], 
                         "granP": ["unit"], 
-                        "categories": ["primarydiagnosisgroup","der_success", "intubation", "surgicalprocedure"], 
+                        "categories": ["primarydiagnosisgroup","intubation", "surgicalprocedure"], 
                         "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                                                                        
                         "granT": {"quarterly": "y", "weekly": "primarydiagnosisgroup"}, 
                         "combinations": ["adtype&der_readmit"]

@@ -195,10 +195,6 @@
                             //var viewId = id[id.length-1];
                             //////console.log("VIEW ID = "+ viewId); 
                             self.categoricals[viewId].push(varName);
-                            //console.log(self.categoricals);
-                            //console.log(self.displayVariables[viewId]["metric"]); 
-                            //console.log(self.displayVariables[viewId]["x"]); 
-                            //console.log(self.displayVariables[viewId]["y"]); 
                             self.applyAggregateRule(self.displayVariables[viewId], viewId, self.data, 1 );
                         },
                         resetCategoricals: function(viewId){
@@ -333,11 +329,13 @@
                             var strings = str.split(" ");
                             var date = strings[0];
                                 time = strings[1];
-                            var dateParts = date.split("-");
+                            var dateSeparator = date.indexOf("/")? "/": "-";
+
+                            var dateParts = date.split(dateSeparator);
                             if(time) timeParts = time.split(":");
                             var day = dateParts[0],
                                 month = dateParts[1],
-                                year = "20"+dateParts[2];
+                                year = (dateParts[2] && dateParts[2].length<=2)? "20"+dateParts[2]: dateParts[2];
                             if(timeParts){
                                 hour = timeParts[0],
                                 minute = timeParts[1],
@@ -486,8 +484,8 @@
                             var self = this;
                             var auditVars = (self.audit === "picanet")? $Q.Picanet : $Q.Minap;                             
                             var cats = auditVars['displayVariables'][viewId]['categories'];
-                            var res = cats.splice(0,1);
-                            return res; 
+                            cats.splice(0,1);
+                            return cats; 
                         },
                         list1QComp: function(viewId){
                             var self = this;
@@ -929,7 +927,7 @@
                                     });
                                  }
                                
-                                //console.log(slaves); 
+                                console.log(slaves); 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
                                                     "metric": self.availMetrics[displayId]['text'], //self.availMetrics[displayId]['value'], 

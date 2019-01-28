@@ -43,6 +43,62 @@
 						},
 						shadeTrellis: function(dict, viewId){
 							var self = this; 
+							
+							
+							var c =0; 
+							self.cats.forEach(function(cat){		                            	
+                            		var arr = [];
+		                            for(var key in dict){
+		                            	var newdict = {};
+		                            	newdict["date"] = key;
+		                            	newdict["number"] = dict[key][cat]["value"];
+		                            	newdict["data"] = dict[key][cat]["data"];
+		                            	arr.push(newdict);
+		                            }			          
+		                            
+		                            self.shadeBaseBarTrellis(viewId, arr, cat, c);
+		                            c++;
+		                        });
+
+						},
+						shadeBaseBarTrellis: function(viewId, dict, cat, iter){
+							var self = this;
+							var viewshare = 2; 							
+							
+							var scale = 0.6; 
+
+							var svgw = d3.select("#trellissvg"+viewId+"_"+iter).attr("width");
+							var svgh = d3.select("#trellissvg"+viewId+"_"+iter).attr("height");
+
+							// calculate new svg width and height based on the new card size
+							//var svgw = parentW * scale / viewshare,
+							//	svgh = parentH * scale / viewshare;
+						
+             				//var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
+							var margin = {top: 20, right: 10, bottom: 20, left: 20};							
+							var width = svgw - margin.left - margin.right; 
+							var height = svgh - margin.top - margin.bottom;
+							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
+								y = d3.scaleLinear().range([height, 0]).nice(); 
+
+							x.domain(dict.map(function(d){
+								return d.date; 
+							}));
+							y.domain([0, d3.max(self.data, function(d){ return d.number; })]);	
+
+							var svgsub = d3.select("#trellissvg"+viewId+"_"+iter);	
+							var g = svgsub.append("g"); 
+							g.selectAll(".shades")
+								.data(dict).enter()
+								.append("rect")
+									.attr("class", "shades")
+									.attr("x", function(d) { return x(d.date); })
+									.attr("y", function(d) { return y(d.number); })
+									.attr("width", x.bandwidth())
+							      	.attr("height", function(d) { return height  - y(d.number); })
+									.style("fill", "brown"); 
+							
+							      
 						},
 						shadeCatBar: function(dict, viewId){
 							var self = this; 
@@ -273,9 +329,6 @@
 						},
 						drawCatBar2: function(dataView, trellis){
 							var self = this; 
-							console.log(dataView['data']);
-							console.log(dataView['cats']);
-							console.log(dataView['levels']);
 							if(trellis){
 								self.drawBarTrellis(dataView['viewId'], dataView['data'], dataView['cats'], dataView['levels']);
 							}
@@ -291,8 +344,7 @@
 								self.cat[viewId] = cat;
 								self.levels = levels; 
 								var undef;
-								console.log(dict);
-
+								
 								if(trellis)
 									console.log("this is a trellis view");
 								// sort dict by date
@@ -572,12 +624,6 @@
 						}
 
 						 
-						/*$("#card"+viewId).resize(function(e){
-							 resize(); 
-						});*/
-
-						//self.event = new Event('resize');
-						//document.getElementById("#card"+viewId).addEventListener("resize", resize);
 						
 						},
 						fixDataFormat: function(sdata){
@@ -599,35 +645,61 @@
 						},
 						resizeTrellis: function(){
 							var self = this; 
-							/*
-							var scale = self.parent.expanded? 0.6 : 0.9; 
 							var viewshare = 2; 
-							var margin = {top: 0, right: 10, bottom: 30, left:10}; 
+							var scale = self.parent.expanded? 0.6 : 0.9; 
+							// update the div container
+							d3.select(".trellisdiv"+self.id)
+											.style("height", function() {
+												if(self.parent.expanded)
+													return "60%";
+												else
+													return "90%";})
+											.style("width", function() {
+												if(self.parent.expanded)
+													return "60%";
+												else
+													return "100%";});
+													
+							// get the new card size
 							var parentW = parseInt(d3.select("#card"+self.id).style("width")),
 								parentH = parseInt(d3.select("#card"+self.id).style("height"));
 
-							var parentArea = d3.select("#draw-area"+self.id);
-                            var numRows = Math.ceil(self.cats.length/2); 
-                            var rowHeight =  parentArea.node().getBoundingClientRect().height / viewshare; 
-                           
+							// calculate new svg width and height based on the new card size
 							var svgw = parentW * scale,
 								svgh = parentH * scale;
+							var numRows = Math.ceil(self.cats.length/viewshare); 
+                            var rowHeight =  svgh / viewshare; 
+							// update the main svg size
+							self.svg = d3.select("#mainsvg"+self.id+"_"+self.iter)
+												.attr("width", svgw)
+												//.attr("height", svgh);
+											//.attr("width", (parentArea.node().getBoundingClientRect().width* scale)+"px" )
+											   .attr("height", (rowHeight*numRows)+"px" );
+
+							//TODO: update size and position of the trellis' sub-svgs:
+
+
+							// TODO: update the axes and bars 
+
+
+
+
+							/*
+							
+							var margin = {top: 0, right: 10, bottom: 30, left:10}; 
+							
+
+                            
+                           
+						
 							// update the range of the scale with new width/ height
 							var width = svgw - margin.right - margin.left, 
 								height = svgh - margin.top - margin.bottom; 
 
-							// update the div container
-							d3.select("#trellisdiv"+self.id)
-											.style("resize", "both")
-											.style("max-width", (parentArea.node().getBoundingClientRect().width* scale)+"px")
-											.style("max-height", (parentArea.node().getBoundingClientRect().height* scale)+"px")	
+							
 		
 							console.log("resized div");
-							// update the main svg size
-							self.svg = d3.select("#mainsvg"+self.id+"_"+0)
-											.attr("width", (parentArea.node().getBoundingClientRect().width* scale)+"px" )
-											.attr("height", (rowHeight*numRows)+"px" );
-
+							
 							// update subsvgs of trellis
 							var svgsubs = d3.selectAll(".trellissvg"+self.id)
 												.each(function(d, iter){
@@ -754,7 +826,8 @@
 							var self = this;						
 							//self.dicts = dicts; 
 							self.trellis = true; 
-							var c =0;                            
+							var c =0;    
+							self.iter = c;                         
                             var cats = Object.keys(dict["1"]);
                             self.cats = cats; 
                             //(self.cat)? d3.select("#mainsvg"+id+"_"+self.iter) :d3.select("#mainsvg"+id); 
@@ -766,21 +839,30 @@
                             var scale = self.parent.expanded? 0.6 : 0.9; 
 							
                             self.parent.svg = d3.select("#draw-area"+viewId).append("div")
-											.attr("class", "trellisdiv"+self.id)																						
-											.style("max-width", (parentArea.node().getBoundingClientRect().width* scale)+"px")
-											.style("max-height", (parentArea.node().getBoundingClientRect().height* scale)+"px")	
-											.style("position", "relative")
-											.style("overflow-y", "scroll")	
-											.style("overflow-x", "hidden")												                            					
-											//.style("border", "1px solid black")
-											.append("svg")
-													.style("display", "inline-block")
-													.attr("id", "mainsvg"+viewId+"_"+0)
-													.attr("class", "mainsvg"+viewId)
-													.attr("x", 0)
-													.attr("y", 0)
-													.attr("width", (parentArea.node().getBoundingClientRect().width* scale)+"px" )
-													.attr("height", (rowHeight*numRows)+"px" );
+												.attr("class", "trellisdiv"+self.id)																						
+												//.style("width", (parentArea.node().getBoundingClientRect().width* scale)+"px")
+												//.style("height", (parentArea.node().getBoundingClientRect().height* scale)+"px")	
+												.style("height", function() {
+													if(self.parent.expanded)
+														return "60%";
+													else
+														return "90%";})
+												.style("width", function() {
+													if(self.parent.expanded)
+														return "60%";
+													else
+														return "100%";})
+												.style("position", "relative")
+												.style("overflow-y", "scroll")	
+												.style("overflow-x", "hidden")												                            					
+												.append("svg")
+														.style("display", "inline-block")
+														.attr("id", "mainsvg"+viewId+"_"+self.iter)
+														.attr("class", "mainsvg"+viewId)
+														.attr("x", 0)
+														.attr("y", 0)
+														.attr("width", (parentArea.node().getBoundingClientRect().width* scale)+"px" )
+														.attr("height", (rowHeight*numRows)+"px" );
 
 									
                             cats.forEach(function(cat){		                            	

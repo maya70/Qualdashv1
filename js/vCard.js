@@ -164,7 +164,7 @@
 							tabs.append("text")
 								.attr("dy", "1.2em")
 								.attr("dx", ".3em")
-							    .text(function(d) { return $Q.Picanet["variableDict"][d]; })
+							    .text(function(d) { return $Q.Picanet["variableDict"][d] || d; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom")
 							     ;
