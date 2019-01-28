@@ -106,8 +106,8 @@
 						drawSimple: function(viewId, vname, jsonData, parent, svgw, svgh){
 							var self = this; 
 							var scale = 1.0;
-							var margin = {top: 10, right: 20, bottom: 30, left: 20},
-							    width = 2*svgw - margin.left - margin.right,
+							var margin = {top: 30, right: 20, bottom: 40, left: 40},
+							    width = svgw - margin.left - margin.right,
 							    height = svgh * scale - margin.top - margin.bottom;
 							
 							var div = d3.select("body").append("div")	
@@ -169,7 +169,7 @@
 							      	div.transition()
 							      		.duration(500)
 							      		.style("opacity", 0);
-							      	d3.select(this).style("fill", "steelblue");
+							      	d3.select(this).style("fill", self.palette[vname]);
 							      });
 						},
 						drawMultiLevel: function(viewId, jsonData, parent, svgw, svgh){

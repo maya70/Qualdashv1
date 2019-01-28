@@ -111,7 +111,7 @@ $Q.Picanet = {
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
                         "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }, 
                                         {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly": "y", "weekly": "der_death" , "quarterly": "der_death", "monthly-annual": "der_death"} ,  // the first element holds the master view's granT                                             
+                        "granT": {"monthly": "y", "monthly-annual": "der_death","quarterly-annual": "der_death", "weekly-annual": "der_death" } ,  // the first element holds the master view's granT                                             
                         "combinations": ["ethnic&sex"]
                      }, 
                      {  "metric": "48h Readmission",
@@ -127,7 +127,7 @@ $Q.Picanet = {
                         "tspan": 3,
                         "yaggregates": ["count", "count"],
                         "granP": ["unit", "unit"], 
-                        "granT": {"monthly": "y", "weekly": "der_readmit" , "quarterly": "der_readmit", "monthly-annual": "der_readmit"}, 
+                        "granT": {"monthly": "y", "monthly-annual": "der_readmit" , "quarterly-annual": "der_readmit", "weekly-annual": "der_readmit"}, 
                         "combinations": ["adtype&der_readmit"]
                      },
                      {  "metric": "Bed Days and Extubation",
@@ -143,7 +143,7 @@ $Q.Picanet = {
                         "granP": ["unit", "unit", "unit"], 
                         "categories": ["UnplannedExtubation"], 
                         "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
-                        "granT": {"monthly": "y", "weekly": "der_bedDays" , "quarterly": "der_bedDays", "monthly-annual": "der_bedDays"}, 
+                        "granT": {"monthly": "y", "monthly-annual": "der_bedDays" , "quarterly-annual": "der_bedDays", "weekly-annual": "der_bedDays"}, 
                         "combinations": ["adtype&der_readmit"]
                      }, 
                      {  "metric": "Specialty Case Mix",
@@ -159,7 +159,7 @@ $Q.Picanet = {
                         "granP": ["unit"], 
                         "categories": ["primarydiagnosisgroup","intubation", "surgicalprocedure"], 
                         "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                                                                        
-                        "granT": {"quarterly": "y", "weekly": "primarydiagnosisgroup"}, 
+                        "granT": {"quarterly": "y", "weekly-annual": "primarydiagnosisgroup"}, 
                         "combinations": ["adtype&der_readmit"]
                      }]
 
