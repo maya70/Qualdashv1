@@ -180,7 +180,7 @@
 							var svgh = 0.8 * parentArea.node().getBoundingClientRect().height / viewshare; 
 						 	//var svgh = 100; 
 							var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
-							var margin = {top: 20, right: 10, bottom: 20, left: 10};							
+							var margin = {top: 20, right: 10, bottom: 20, left: 20};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 
@@ -599,6 +599,69 @@
 						},
 						resizeTrellis: function(){
 							var self = this; 
+							/*
+							var scale = self.parent.expanded? 0.6 : 0.9; 
+							var viewshare = 2; 
+							var margin = {top: 0, right: 10, bottom: 30, left:10}; 
+							var parentW = parseInt(d3.select("#card"+self.id).style("width")),
+								parentH = parseInt(d3.select("#card"+self.id).style("height"));
+
+							var parentArea = d3.select("#draw-area"+self.id);
+                            var numRows = Math.ceil(self.cats.length/2); 
+                            var rowHeight =  parentArea.node().getBoundingClientRect().height / viewshare; 
+                           
+							var svgw = parentW * scale,
+								svgh = parentH * scale;
+							// update the range of the scale with new width/ height
+							var width = svgw - margin.right - margin.left, 
+								height = svgh - margin.top - margin.bottom; 
+
+							// update the div container
+							d3.select("#trellisdiv"+self.id)
+											.style("resize", "both")
+											.style("max-width", (parentArea.node().getBoundingClientRect().width* scale)+"px")
+											.style("max-height", (parentArea.node().getBoundingClientRect().height* scale)+"px")	
+		
+							console.log("resized div");
+							// update the main svg size
+							self.svg = d3.select("#mainsvg"+self.id+"_"+0)
+											.attr("width", (parentArea.node().getBoundingClientRect().width* scale)+"px" )
+											.attr("height", (rowHeight*numRows)+"px" );
+
+							// update subsvgs of trellis
+							var svgsubs = d3.selectAll(".trellissvg"+self.id)
+												.each(function(d, iter){
+													d3.select(this).attr("width", svgw).attr("height", svgh)										
+														.attr("x", ((iter%viewshare)*svgw) + margin.left  )
+														.attr("y", parseInt(iter/viewshare)*svgh+ margin.top);
+												var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
+													y = d3.scaleLinear().range([height, 0]).nice(); 
+
+												x.domain(self.data.map(function(d){
+														return d.date; 
+												}));
+												y.domain([0, d3.max(self.data, function(d){ return d.number; })]);
+												self.svg.select(".x.axis")
+													   .attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
+												      .call(d3.axisBottom(x))
+														.selectAll("text")	
+														.text(function(d){
+																return $Q.months[d-1]; 
+															})
+													        .style("text-anchor", "end")
+													        .attr("dx", "-.8em")
+													        .attr("dy", ".15em")
+													        .attr("transform", "rotate(-65)");	
+
+												self.svg.select(".y.axis")
+														.call(d3.axisLeft(y).ticks(5, "s"))
+												      	.attr("transform", "translate(0,"+ margin.top+")");
+
+
+												});
+											
+
+							*/
 						},
 						resizeCatBar: function(){
 							var self = this;
@@ -693,6 +756,7 @@
 							self.trellis = true; 
 							var c =0;                            
                             var cats = Object.keys(dict["1"]);
+                            self.cats = cats; 
                             //(self.cat)? d3.select("#mainsvg"+id+"_"+self.iter) :d3.select("#mainsvg"+id); 
                             //self.cat[viewId] = cats;
                             var viewshare = 2; 
