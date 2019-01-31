@@ -107,12 +107,13 @@ $Q.Picanet = {
                         "tspan": 3,   
                         "yaggregates": ["count", "sum"], 
                         "granP": ["unit", "unit"], 
+                        "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }, 
+                        "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }, 
                                         {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly": "y", "monthly-annual": "der_death","quarterly-annual": "der_death", "weekly-annual": "der_death" } ,  // the first element holds the master view's granT                                             
-                        "combinations": ["ethnic&sex"]
+                        "combinations": ["ethnic&sex"] // TODO: remove this
                      }, 
                      {  "metric": "48h Readmission",
                         "mark": "bar",
@@ -126,6 +127,7 @@ $Q.Picanet = {
                         "yspan": "unit", 
                         "tspan": 3,
                         "yaggregates": ["count", "count"],
+                        "ehr": "Admissions",
                         "granP": ["unit", "unit"], 
                         "granT": {"monthly": "y", "monthly-annual": "der_readmit" , "quarterly-annual": "der_readmit", "weekly-annual": "der_readmit"}, 
                         "combinations": ["adtype&der_readmit"]
@@ -139,7 +141,8 @@ $Q.Picanet = {
                         "xspan": "year",    
                         "yspan": "unit", 
                         "tspan": 3,                        
-                        "yaggregates": ["sum", "sum", "sum"], 
+                        "yaggregates": ["sum", "sum", "sum"],
+                        "ehr": "Admissions", 
                         "granP": ["unit", "unit", "unit"], 
                         "categories": ["UnplannedExtubation"], 
                         "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
@@ -155,7 +158,8 @@ $Q.Picanet = {
                         "xspan": "year",    
                         "yspan": "unit", 
                         "tspan": 3,                        
-                        "yaggregates": ["count"], 
+                        "yaggregates": ["count"],
+                        "ehr": "Admissions", 
                         "granP": ["unit"], 
                         "categories": ["primarydiagnosisgroup","intubation", "surgicalprocedure"], 
                         "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                                                                        

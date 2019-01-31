@@ -187,8 +187,25 @@
 							var quant1 = slaves['quants'][0]['q'];
 							var qdata = slaves['data'][quant1];
 							//////console.log(qdata);
-						
-							var tabW = ssvgW/ slaves['quants'].length;
+							var quantityNames = slaves['quants']; 
+
+							//exclude quantities that are already included in the main view 
+							var mainQs = self.parent.control.audit === "picanet"? ($Q.Picanet["displayVariables"][self.id]["y"]):
+																				 ($Q.Minap["displayVariables"][self.id]["y"]);
+
+							mainQs.forEach(function(q){
+								var index = quantityNames.indexOf(q);
+								if(index >=0)
+									quantityNames.splice(index,1); 
+							});
+							quantityNames.forEach(function(q, i){
+								var index = mainQs.indexOf(q['q']);
+								if(index >=0)
+									quantityNames.splice(i,1); 
+							});
+						    console.log(quantityNames);
+
+							var tabW = ssvgW/ quantityNames.length;
 
 							self.ssvg2div =d3.select("#draw-area"+self.id).append("div")	
 											.attr("class", "ssvgdiv"+self.id)																																												
@@ -206,22 +223,9 @@
 											.attr("width", ssvgW)
 											.attr("height", ssvgH);													
 						
-							
-							
-							/*self.ssvg2 = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "ssvg2"+self.id)
-											.attr("class", "ssvg"+self.id)
-											.style("display", "inline-block")
-											.attr("width", ssvgW)
-											.attr("height", ssvgH)	
-											.style("position", "absolute")
-											.style("top", ssvgH + 3)
-											.style("left", xoffset);										
-											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-											*/
-							
+																			
 							var tabs = self.ssvg2.selectAll(".qtabs"+self.id)
-										.data(slaves['quants'])
+										.data(quantityNames)
 										.enter().append("g")
 										.attr("class", "qstabs"+self.id)
 										.attr("transform", function(d, i){
@@ -294,13 +298,12 @@
 									.style("stroke", "black")
 									.style("fill", "none"); */
 							
-							self.subVis2 = new $Q.SubBarChart(self.id, qdata , self, ssvgW-10, ssvgH-10);
+							self.subVis2 = new $Q.SubBarChart(self.id, quant1, qdata , self, ssvgW-10, ssvgH-10);
 
 						},
 						createSlave3: function(slaves, ssvgW, ssvgH, xoffset){
 							var self = this;
-							console.log(slaves['combo']); 
-
+							
 							var tabW = ssvgW/ slaves['combo'].length;
 							self.ssvg3div =d3.select("#draw-area"+self.id).append("div")	
 											.attr("class", "ssvgdiv"+self.id)																					
@@ -318,9 +321,11 @@
 											.attr("width", ssvgW)
 											.attr("height", ssvgH);													
 						
-																		
+
+							var ehrVar = self.parent.control.audit === "picanet"? $Q.Picanet["displayVariables"][self.id]["ehr"] 
+																		:$Q.Minap["displayVariables"][self.id]["ehr"] ; 											
 							var tabs = self.ssvg3.selectAll(".combstabs"+self.id)
-										.data(slaves['combo'])
+										.data(ehrVar)
 										.enter().append("g")
 										.attr("class", "combstabs"+self.id)
 										.attr("transform", function(d, i){
@@ -383,9 +388,12 @@
 							     .style("text-anchor", "bottom")
 							     ;
 							
-							var comb = slaves['combo'][0]; 
-							var combodata = slaves['data'][comb];
-							self.subVis3 = new $Q.SubScatterChart(self.id, comb , combodata , self, ssvgW-10, ssvgH-10);
+							//var comb = slaves['combo'][0]; 
+							//var combodata = slaves['data'][comb];
+							var ehr = self.parent.control.getEHR(); 
+							//self.subVis3 = new $Q.SubScatterChart(self.id, comb , combodata , self, ssvgW-10, ssvgH-10);
+							self.subVis3 = new $Q.SubScatterChart(self.id, ehr , self, ssvgW-10, ssvgH-10);
+
 
 						},
 						createSlaveT: function(slaves, mainsvgW, ssvgH, xoffset){

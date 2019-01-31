@@ -2,10 +2,10 @@
 	'use strict'
 	$Q.SubBarChart = $Q.defineClass(
 					null, 
-					function SubBarChart(viewId, data, parent, svgw, svgh){
+					function SubBarChart(viewId, dataname ,data, parent, svgw, svgh){
 						var self = this;	
-						self.parent = parent; 			
-						self.draw(viewId, data, parent, svgw, svgh);
+						self.parent = parent; 									
+						self.draw(viewId, dataname, data, parent, svgw, svgh);
 					},
 					{
 						updateDataLinks: function(viewId, data, parent){
@@ -39,6 +39,74 @@
 								if(piedata[cat][i] === datum)
 									return true; 
 							return false; 
+						},
+						drawSimple: function(viewId, vname, data, parent, svgw, svgh){
+							var self = this; 
+							var scale = 1.0;
+							var margin = {top: 30, right: 20, bottom: 40, left: 40},
+							    width = svgw - margin.left - margin.right,
+							    height = svgh * scale - margin.top - margin.bottom;
+							
+							var div = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
+							console.log(data);
+							console.log(parent); 
+							
+							self.parent.g2 = self.parent.ssvg2.append("g").attr("class", "slave-draw-area-2"+self.id);
+							var g = self.parent.g2.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
+							    
+
+							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
+								y = d3.scaleLinear().range([height, 0]).nice(); 
+
+							x.domain(data.map(function(d){
+									return d.date; 
+							}));
+							y.domain([0, d3.max(data, function(d){ return d.number; })]);
+							g.append("g")
+							      .attr("class", "x axis")
+							      .attr("transform", "translate("+ 0+"," + (height) + ")")
+							      .call(d3.axisBottom(x))
+									.selectAll("text")	
+								        .style("text-anchor", "end")
+								        .attr("dx", "-.8em")
+								        .attr("dy", ".15em")
+								        .attr("transform", "rotate(-65)");
+
+							g.append("g")
+							      .attr("class", "y axis")
+							      .call(d3.axisLeft(y).ticks(5,"s"))
+							      .attr("transform", "translate("+0+","+ 0+")");
+							
+							g.selectAll(".bar")
+							    .data(data)
+							    .enter().append("rect")
+							      .attr("class", "bar")
+							      .attr("x", function(d) { return x(d.date); })
+							      .attr("y", function(d) { return y(d.number); })
+							      .attr("width", x.bandwidth())
+							      .attr("height", function(d) { return height  - y(d.number); })
+							      .style("fill", function(d){
+							      	//return self.palette[vname];
+							      	return "black";
+							      })
+							      .on("mouseover", function(d){
+							      	div.transition()
+							      		.duration(200)
+							      		.style("opacity", 0.9);
+							      	div .html((d.date) + "<br/>" + (d.number+ ""))
+							      		.style("left", (d3.event.pageX) + "px")
+							      		.style("top", (d3.event.pageY - 28) + "px");
+							      	d3.select(this).style("fill", "brown");
+							      })
+							      .on("mouseout", function(d){
+							      	div.transition()
+							      		.duration(500)
+							      		.style("opacity", 0);
+							      	//d3.select(this).style("fill", self.palette[vname]);
+							      	d3.select(this).style("fill", "black");
+							      });
 						},
 						drawCatBar: function(viewId, dict, parent, svgw, svgh){
 							var self = this; 
@@ -196,11 +264,24 @@
 							}
 
 						},
-						draw: function(viewId, data, parent, svgw, svgh){
+						prepData: function(data){
+							var self = this;
+							var res = [];
+							for (var key in data){
+								res.push({'date': key, 'number': data[key]['unit']});
+							}
+							return res; 
+						},
+						draw: function(viewId, dataname ,data, parent, svgw, svgh){
 							var self = this;
 							//self.updateDataLinks(viewId, data, parent);
 							//console.log(data); 
-							self.drawCatBar(viewId, data, parent, svgw, svgh); 
+							if(dataname.indexOf("-") < 0){
+								data = self.prepData(data); 
+								self.drawSimple(viewId, dataname, data, parent, svgw, svgh);
+							}
+							else 
+								self.drawCatBar(viewId, data, parent, svgw, svgh); 
 							
 						}
 					});

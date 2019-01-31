@@ -411,21 +411,21 @@
 							//if(viewshare > 2) viewshare = 2; 
 							var scale = self.parent.expanded? 0.6 : 0.9; 
 							var svgw = scale * parentArea.node().getBoundingClientRect().width;
-							var svgh = scale * parentArea.node().getBoundingClientRect().height / viewshare; 
+							var svgh = parentArea.node().getBoundingClientRect().height / viewshare; 
 							var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
 							self.parent.svg = d3.select("#draw-area"+viewId).append("svg")
 										.attr("id", "mainsvg"+viewId+"_"+iter)
 										.attr("class", "mainsvg"+viewId)
 										.attr("width", svgw).attr("height", svgh)
 										.style("vertical-align", "top")
-										.attr("transform", "translate("+shift+","+ (-svgh*iter) +")");
+										.attr("transform", "translate("+shift+","+ 0 +")");
 							
 							
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 0, right: 10, bottom: 50, left: 30};							
+							var margin = {top: 15, right: 10, bottom: 50, left: 30};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							
@@ -471,11 +471,16 @@
 							 				.data(color.domain())
 							 				.enter().append("g")
 							 					 .attr("class", "legend")
-     											 .attr("transform", function(d, i) { return "translate(0," + i * 15 + ")"; });
+     											 .attr("transform", function(d, i) { return "translate("+ margin.left +"," + (-10) + ")"; });
      						 
+     						 var numValues = color.domain().length;
+     						 var legWidth = svgw/numValues; 
      						 // draw legend colored rectangles
 							  self.legend.append("rect")
-							      .attr("x", svgw- 10)
+							      .attr("x", function(d,i){
+							      	return i*legWidth; 
+							      })
+							      .attr("y", 10)
 							      .attr("width", 10)
 							      .attr("height", 10)
 							      .style("fill", function(d){
@@ -484,14 +489,16 @@
 
 							  // draw legend text
 							  self.legend.append("text")
-							      .attr("x", svgw- 14)
-							      .attr("y", 6)
+							      .attr("x", function(d,i){
+							      	return i*legWidth+10; 
+							      })
+							      .attr("y", 20)
 							      .attr("dy", ".35em")
-							      .style("text-anchor", "end")							      
+							      .style("text-anchor", "start")							      
 							      .text(function(d) {
 							      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 							      	return  tex || levels[d] ;})
-							      	.style("font-size", "7pt");
+							      	.style("font-size", "11pt");
 							     }
 							
 							var origColor; 

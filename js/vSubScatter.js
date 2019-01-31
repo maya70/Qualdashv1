@@ -9,7 +9,7 @@
 						var self = this;	
 						self.parent = parent; 
 						self.id = viewId; 			
-						self.draw(viewId, comboname, data, parent, svgw, svgh);
+						self.drawSeq(viewId, comboname, data, parent, svgw, svgh);
 					},
 					{
 						updateDataLinks: function(viewId, data, parent){
@@ -53,6 +53,63 @@
 								}
 							}
 							return res; 
+						},
+						drawSeq: function(viewId, data, parent, svgw, svgh){
+							var self = this;
+							console.log(data);
+							var unitPatients = Object.keys(data);
+							var margin = { top: 20, right: 20, bottom: 30, left: 30 },
+								width = svgw - margin.left - margin.right,
+								height = svgh - margin.top - margin.bottom;
+
+							var x = d3.scaleLinear().range([0, width]);
+							var y = d3.scaleBand()
+							          .range([height, 0])
+							          .padding(0.1);
+							 
+							y.domain(unitPatients.map(function(d) { return d; }));
+							
+							//var xAxis = d3.axisBottom(x),
+							//    yAxis = d3.axisLeft(y).ticks(unitPatients.length);
+
+							var svg = parent.ssvg3.append("svg")
+										  .attr("width", width + margin.left + margin.right)
+										  .attr("height", height + margin.top + margin.bottom)
+										  .append("g")
+										  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+							x.domain(d3.extent(0,365)).nice(); // days in a year
+							
+							var xlabel = "time", 
+								ylabel = "patients"; 
+
+							svg.append("g")
+							   .attr("class", "sub-x axis")
+							   .attr('id', "axis--x--sub"+self.id)
+							   .attr("transform", "translate(0," + height + ")")
+							   .call(d3.axisBottom(x));
+
+								svg.append("text")
+								  .style("text-anchor", "end")
+								  .attr("x", width - 4)
+								  .attr("y", height - 8)
+								  .text(xlabel);
+
+							svg.append("g")
+							    .attr("class", "sub-y axis")
+							    .attr('id', "axis--y--sub"+self.id)
+							    .call(d3.axisLeft(y));
+
+							svg.append("text")
+	    						.attr("transform", "rotate(-90)")
+	    						.attr("x", -5)
+	    						.attr("y", 4)
+	    						.attr("dy", "1em")
+	    						.style("text-anchor", "end")
+	    						.text(ylabel);
+
+
+
 						},
 						draw: function(viewId, comboname, cdata, parent, svgw, svgh){
 							var self = this;

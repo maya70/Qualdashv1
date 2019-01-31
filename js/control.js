@@ -78,6 +78,9 @@
 							console.log(value); 
 							self.dataModel.updateMetrics(viewId, value); 
 						},
+						getEHR: function(){
+							return this.dataModel.getEHR(); 
+						},
 						refreshGrid: function(){
 							var self = this;
 							self.mainView.refreshGrid(); 

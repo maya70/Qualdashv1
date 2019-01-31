@@ -634,7 +634,8 @@
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             for(var i=0; i < self.data.length; i++){
-                                self.recordEHR(self.data[i], i, metric);                                
+                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                    self.recordEHR(self.data[i], i, metric);                                
                                 // the main dict will hold aggregates for all groups                                    
                                 groups.forEach(function(group, id){
                                         //var vname;
@@ -813,7 +814,8 @@
                                 /**
                                  * handle multiple quantitative variables
                                 **/
-                                self.recordEHR(self.data[i], i, metric);                                
+                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                    self.recordEHR(self.data[i], i, metric);                                
                                 // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                 displayVar.forEach(function(yvar, id){
                                         //var vname;
@@ -951,6 +953,9 @@
                             else
                                 self.applySingleQ(displayObj, displayId, data, redraw);
                             
+                        },
+                        getEHR: function(){
+                            return this.ehr;
                         },
                         recordEHR: function(rec, i , metric, year){
                             var self = this;
