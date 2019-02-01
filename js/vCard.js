@@ -575,6 +575,7 @@
 						createHeader: function(container, viewId){
 							var self = this; 
 							var header = container.append("div")
+									.attr("id", "header"+viewId)
 									.attr("class", "form-inline")
 									.style("text-align", "left")
 									.style("max-height", 35)
@@ -595,9 +596,10 @@
 												.style("vertical-align", "top")
 												.attr("id", "sel"+viewId)
 												.style("font-size", "9pt")
+												.style("width", "45%")																								
 												.style("horizontal-align", "left")
-												.style("width", "45%")
-												.style("margin-left",0)
+												.style("position", "absolute")												
+												.style("left", "-5px")
 												.on("change", function(d){													
 													////////console.log(this.value);													
 													self.parent.control.updateMetrics(viewId, this.value); 											
@@ -622,7 +624,21 @@
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
-							/*var viewSelect = header.append("select")
+							/*var mainViewBtn = header.append("button")
+												.attr("type", "button")
+												.attr("class", "form-control")
+												.attr("id", "toggle-btn"+viewId)
+												.style("font-size", "9pt")
+												.style("vertical-align", "top")
+												.style("horizontal-align", "right")												
+												.style("min-width", "40px")
+												.style("position", "relative")
+												.style("left", "46%")
+												.style("background-color", "lightgrey")
+												.style("color", "black")
+												.text("Toggle View"); 
+
+							var viewSelect = header.append("select")
 												.attr("name", "viewselector")
 												.attr("class", "form-control")
 												.attr("id", "vsel"+viewId)
@@ -650,16 +666,18 @@
 
 							var pbody = panel;
 							var undef; 
-							self.btn_data = [{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-share-alt", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 
-											{"id": "toggle-btn"+viewId, "class": "ctrl-btn fa fa-adjust", "data-toggle": "none", "hidden": true}, 
-											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-arrows", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId}]; 
+							self.btn_data = [{"id": "toggle-btn"+viewId, "class": "ctrl-btn fa fa-bar-chart", "data-toggle": "none", "hidden": true}, 
+											{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-pie-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 											
+											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-plus-square-o", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId}]; 
 
+							
 							//pbody.style("background-color", "red");
 							var divs = pbody.selectAll(".ctrl-btn")
 											.data(self.btn_data)
 											.enter().append("div")
 											.style("background-color", "darkgrey")
-											.style("max-height", "12%"); 
+											.style("max-height", "12%")
+											.style("margin-left", "20px"); 
 
 							divs.append("button")
 								.attr("type", "button")
@@ -693,15 +711,16 @@
 
 							var split_ttip = $("#split-btn"+viewId).tooltip({    
 							    placement : 'bottom',  
-							    title : "Groups"         
+							    title : "Add Category"         
 							  });
 
 
 							 $("#axes-btn"+viewId).tooltip({    
 							    placement : 'bottom',  
-							    title : "Axes"         
+							    title : "Add Quantity"         
 							  });    
 							  
+
 
 						},
 						getAuditInfo: function(){

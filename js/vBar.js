@@ -353,7 +353,7 @@
                                 }
     							
     							d3.select("#toggle-btn"+viewId)
-    								.attr("hidden", undef)
+    								.attr("hidden", undef)    								
     								.on("click", function(){
 										self.toggleBarView(viewId); 
 									});
@@ -361,7 +361,7 @@
                   
 								$("#toggle-btn"+viewId).tooltip({    
 								    placement : 'bottom',  
-								    title : "Toggle Groups"         
+								    title : "Toggle Main View"         
 								  });     
 
                                 var ordered = [];

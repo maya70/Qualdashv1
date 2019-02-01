@@ -220,3 +220,6 @@ AcuteNec,bit
 BoneMarrowTransplantRecipient,bit
 BaseExcessSource,smallint
 LactateSource,smallint
+primarydiagnosisgroup,nvarchar
+adtype,nvarchar
+sex,nvarchar

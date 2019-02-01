@@ -46,12 +46,12 @@
 											.attr("class", "hidden");
 							self.pop.append("div")
 											.attr("class","popover-heading" )
-											.text("Add/Remove Grouping Variables");
+											.text("Add/Remove Categorical Variables");
 							var pbody = self.pop.append("div")
 											.attr("class", "popover-body")
 											.attr("id", "cat-popover"); 
 
-							var tabvar = pbody.append("ul")
+							/*var tabvar = pbody.append("ul")
 												.attr("class", "nav nav-tabs");
 							var qvar = tabvar.append("li")
 										.attr("class", "active")
@@ -65,6 +65,7 @@
 											.attr("data-toggle", "tab")
 											.attr("href", "#nvar"+viewId)
 											.text("Categorical");
+							
 							var tabs = pbody.append("div")
 								.attr("class", "tab-content");
 
@@ -102,36 +103,115 @@
 									.attr("class", "btn_vg_parse hide-vl")
 									.text( "Add")
 									.attr("id", "quantity-but"+viewId);
-							
-							var nvarselect=	ntab.append("select")
-												.attr("name", "varselector")
-												.attr("class", "form-control")
-												.style("vertical-align", "top")
-												.attr("id", "nvarsel"+viewId)
+							*/
+							var row = pbody.append("div")
+											.attr("class", "row");
+
+							var nvarselectdiv=	row.append("div")
+												.attr("class", "col-xs-5");
+
+							var nvarselect = nvarselectdiv.append("select")
+												.attr("multiple", "multiple")
+												.attr("name", "dbvars")
+												.attr("id", "nvar-in"+viewId)												
+												.style("vertical-align", "top")												
 												.style("font-size", "9pt")
 												.style("horizontal-align", "left")
-												.style("min-width", "65%")
-												.style("margin-left",0)
-												.on("change", function(d){
-													//////console.log(this.value);
-												});
-								//var allVars = self.control.getAvailVars(); 
-								
-								for(var m = 0; m < self.meta.length; m++){
-								if(self.meta[m]['fieldType'] === "n")
-								{
-									nvarselect.append("option")
-												.attr("value", self.meta[m]['fieldName'])
-												.text(self.meta[m]['fieldName'])
-												.style("font-size", "9pt");
-									}	
-								}
+												.style("max-width", "120px")
+												.style("min-height", "230px")
+												.style("margin-left",0);
+												
 
-								ntab.append("button")
-									.attr("type", "submit")						
-									.attr("class", "btn_vg_parse hide-vl")
-									.text( "Split")
-									.attr("id", "group-but"+viewId);
+							var butcol = row.append("div")
+											.attr("class", "col-xs-2");
+							var butRight = butcol.append("button")
+									.attr("type", "button")
+									.attr("class", "btn btn-block")
+									.attr("id", "right-btn"+viewId)
+									.style("min-width", "30px")
+									.on("click", function(){
+										
+									});		
+
+
+								butRight.append("i")
+										.attr("class", "glyphicon glyphicon-chevron-right")
+										.attr("max-width", "20px");
+							var butLeft = butcol.append("button")
+									.attr("type", "button")
+									.attr("class", "btn btn-block")
+									.attr("id", "left-btn"+viewId)
+									.style("min-width", "30px")
+									.on("click", function(){
+
+									});										
+								butLeft.append("i")
+										.attr("class", "glyphicon glyphicon-chevron-left")
+										.attr("max-width", "20px");
+							var nvarselectOutDiv = row.append("div")
+														.attr("class", "col-xs-5");
+							var nvarselectOut = nvarselectOutDiv.append("select")
+													.attr("multiple", "multiple")
+													.attr("name", "selvars")														
+													.attr("id", "nvar-out"+viewId)
+													.style("vertical-align", "top")														
+													.style("font-size", "9pt")
+													.style("horizontal-align", "left")
+													.style("max-width", "120px")
+													.style("min-height", "230px")
+													.style("margin-left",0);
+													
+							
+							var cardCats = self.control.getCardCats(viewId);
+							console.log(cardCats);
+							console.log(self.meta);
+							for(var m = 0; m < self.meta.length; m++){
+							if(self.meta[m]['fieldType'] === "n")
+								{
+									var newvar = self.meta[m]['fieldName'];
+									if(cardCats.indexOf(newvar) < 0){
+										nvarselect.append("option")
+											.attr("class", "dbvar-options")
+											.attr("value", newvar)
+											.text(newvar)
+											.style("font-size", "9pt");	
+										}
+									else {
+										nvarselectOut.append("option")
+											.attr("value", newvar)
+											.attr("class","selvar-options")
+											.text(newvar)
+											.style("font-size", "9pt");
+							
+									}
+
+									
+								}	
+							}
+
+
+							$(document).on('click', '#right-btn'+viewId, function(){	
+								moveItems("#nvar-in"+viewId, "#nvar-out"+viewId);
+							});
+							
+							$(document).on('click', '#left-btn'+viewId, function(){	
+								moveItems("#nvar-out"+viewId, "#nvar-in"+viewId);
+							});
+						
+
+							pbody.append("button")
+								.attr("type", "submit")						
+								.attr("class", "btn_vg_parse hide-vl")
+								.text( "Save")
+								.attr("id", "group-but"+viewId)
+								.style("horizontal-align", "center")
+								.style("min-width", "300px")
+								.style("margin-top", "20px");
+
+							function moveItems(origin, dest) {
+							    $(origin).find(':selected').appendTo(dest);
+							}
+
 							
 							$(document).on('click', '#group-but'+viewId, function(){
 								//////console.log($('#varsel'+viewId +' option:selected').val());
@@ -275,7 +355,8 @@
 						          var title = $(this).attr("data-popover-content");
 						          return $(title).children(".popover-heading").html();
 								   }
-						    });							
+						    });
+						    							
 						},
 						populateCards: function(dataViews){
 							var self = this;

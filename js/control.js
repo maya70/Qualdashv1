@@ -73,6 +73,11 @@
 						resetCategoricals: function(viewId){
 							this.dataModel.resetCategoricals(viewId); 
 						},
+						getCardCats: function(viewId){
+							var self = this;
+							return (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]["categories"] 
+																	: $Q.Minap["displayVariables"][viewId]["categories"];
+						},
 						updateMetrics: function(viewId, value){
 							var self = this;
 							console.log(value); 
