@@ -122,7 +122,7 @@ div.tooltip {
   line-height: 200px;
   margin: 3px;
   z-index: 1;
-  text-align: center;
+  text-align: left;
   border: 1px solid #d3d3d3;
   border-radius: 10px;
   padding-bottom: 5px; 
@@ -132,9 +132,9 @@ div.tooltip {
   overflow: visible;
   display: grid;
     grid-template-columns: 20% 78%;
-    grid-template-rows: 2% 98%;
+    grid-template-rows: 98% 2% ;
     grid-template-areas: "header header"
-                         "control draw";
+                         "draw control";
 }
 .item.muuri-item-hidden {
   z-index: 0;
@@ -148,7 +148,6 @@ div.tooltip {
 .item-content {
   position: relative;
   display: inline-block;
-  text-align: center;
   font-size: 50px;
   color: white;
   cursor: pointer;
@@ -157,8 +156,8 @@ div.tooltip {
   height: 100%;
   padding-bottom: 3px; 
   width: 90%;
-  margin-left: 10%;
-  margin-right: 5%;
+  left: 0px;
+  right: 10%;
   margin-top: 0px;   
 }
  .draw-area{

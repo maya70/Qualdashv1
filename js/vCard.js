@@ -48,23 +48,29 @@
 								.style("vertical-align", "top"); 
 								 
 						
-						var panel = cbody.append("div")
-										.attr("class", "w3-sidebar")
-										.attr("id", "panel"+viewId)
-										.style("background-color", "darkgrey")
-										.style("max-width", "10%")
-										.style("height", "82%").style("padding-bottom", "3px")
-								.style("margin-right", "1%")
-								.style("margin-left", "0%")
-								.style("overflow", "visible"); 
 						
-						self.createButtons(panel, viewId); 					
+						
 						var card = cbody.append("div")
 										.attr("class", "item-content")
 										.attr("id", "card"+viewId);
 						card.append("div")
 							.attr("class", "draw-area")
 							.attr("id", "draw-area"+viewId);
+
+						var panel = cbody.append("div")
+										.attr("class", "w3-sidebar")
+										.attr("id", "panel"+viewId)
+										.style("background-color", "darkgrey")
+										.style("max-width", "9%")
+										.style("height", "82%").style("padding-bottom", "3px")
+										.style("display", "inline-block")
+										.style("visibility", "hidden")
+								.style("margin-right", "0%")
+								.style("margin-left", "0%")
+								.style("overflow", "visible"); 
+						
+
+						self.createButtons(panel, viewId); 					
 						
 					},
 					{
@@ -396,7 +402,7 @@
 
 
 						},
-						createSlaveT: function(slaves, mainsvgW, ssvgH, xoffset){
+						createSlaveT: function(slaves, mainsvgW, drawAreaW, ssvgH, xoffset){
 							var self = this;
 							//var tdata = self.parent.control.getHistoryData(); 							
 							var tdata = self.parent.control.getTimeHier(); 
@@ -412,7 +418,7 @@
 							//var tdata = self.parent.control.prepTimeData(tspan[0], self.id, yvar );
 							self.ssvgtdiv =d3.select("#draw-area"+self.id).append("div")	
 											.attr("id", "ssvgtdiv"+self.id)																					
-											.style("max-width", mainsvgW+"px")
+											.style("max-width", (drawAreaW-20)+"px")
 											.style("max-height", ssvgH+"px")	
 											.style("position", "absolute")
 											.style("bottom", "10px")
@@ -516,6 +522,9 @@
 						resizeVis: function(refresh){
 							var self = this;
 							
+							d3.select("#panel"+self.id)
+								.style("visibility", "visible");
+
 							self.vis.resize(); 
 							var mainsvgW = parseInt(self.vis.getMainSVG(self.id).style("width"));
 							var drawAreaW = parseInt(d3.select("#draw-area"+self.id).style("width"));
@@ -537,8 +546,8 @@
 								
 								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
 								self.createSlave2(slaves, ssvgW, ssvgH, xoffset);
-								self.createSlave3(slaves, ssvgW, ssvgH, xoffset);
-								self.createSlaveT(slaves, mainsvgW, ssvgH, xoffset);
+								//self.createSlave3(slaves, ssvgW, ssvgH, xoffset);
+								self.createSlaveT(slaves, mainsvgW, drawAreaW, ssvgH, xoffset);
 
 								
 
@@ -587,7 +596,7 @@
 												.attr("id", "sel"+viewId)
 												.style("font-size", "9pt")
 												.style("horizontal-align", "left")
-												.style("min-width", "45%")
+												.style("width", "45%")
 												.style("margin-left",0)
 												.on("change", function(d){													
 													////////console.log(this.value);													
@@ -613,7 +622,7 @@
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
-							var viewSelect = header.append("select")
+							/*var viewSelect = header.append("select")
 												.attr("name", "viewselector")
 												.attr("class", "form-control")
 												.attr("id", "vsel"+viewId)
@@ -633,7 +642,7 @@
 											.attr("value", self.parent.availViews[m]['value'])
 											.text(self.parent.availViews[m]['text'])
 											.style("font-size", "9pt");
-								}
+								}*/
 							
 						},
 						createButtons: function(panel, viewId){

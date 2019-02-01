@@ -136,12 +136,12 @@
 							var svgh = scale * parentArea.node().getBoundingClientRect().height; 
 							var shift = ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width); 
 							
-							var margin = {top: 0, right: 10, bottom: 50, left: 30};							
+							var margin = {top: self.marginTop, right: 10, bottom: 50, left: 30};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							
 
-							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
+							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + (margin.top) + ")" );
 							
 							var x = d3.scaleBand()
 									    .domain(xz)
@@ -411,14 +411,15 @@
 							//if(viewshare > 2) viewshare = 2; 
 							var scale = self.parent.expanded? 0.6 : 0.9; 
 							var svgw = scale * parentArea.node().getBoundingClientRect().width;
-							var svgh = parentArea.node().getBoundingClientRect().height / viewshare; 
-							var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
+							var svgh = scale * parentArea.node().getBoundingClientRect().height / viewshare; 
+							//var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
+							var shift = self.parent.expanded? 100 : 0; 
 							self.parent.svg = d3.select("#draw-area"+viewId).append("svg")
 										.attr("id", "mainsvg"+viewId+"_"+iter)
 										.attr("class", "mainsvg"+viewId)
 										.attr("width", svgw).attr("height", svgh)
 										.style("vertical-align", "top")
-										.attr("transform", "translate("+shift+","+ 0 +")");
+										.attr("transform", "translate("+0+","+ 0 +")");
 							
 							
 							var div = d3.select("body").append("div")	
@@ -428,8 +429,57 @@
 							var margin = {top: 15, right: 10, bottom: 50, left: 30};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
+							var color = d3.scaleOrdinal()
+							    .domain(d3.range(levels.length))
+							    .range($Q.colors);
 							
 
+							 
+							 if(!self.legend)
+							 {	
+							 self.legend = self.parent.svg.selectAll(".legend")
+							 				.data(color.domain())
+							 				.enter().append("g")
+							 					 .attr("class", "legend")
+     											 .attr("transform", function(d, i) { return "translate("+ 10 +"," + (-15) + ")"; });
+     						 
+     						 var numValues = color.domain().length;
+     						 var legWidth = svgw/2; 
+     						 // draw legend colored rectangles
+							  self.legend.append("rect")
+							      .attr("x", function(d,i){
+							      	return (i%2)*legWidth; 
+							      })
+							      .attr("y", function(d,i){
+							      	return parseInt(i/2)*10+15;
+							      })
+							      .attr("width", 10)
+							      .attr("height", 10)
+							      .style("fill", function(d){
+							      	self.palette[levels[d]] = color(d);
+							      	return color(d);});
+
+							  // draw legend text
+							  self.legend.append("text")
+							      .attr("x", function(d,i){
+							      	return (i%2)*legWidth+13; 
+							      })
+							      .attr("y", function(d,i){
+							      	return parseInt(i/2)*10+20;
+							      })
+							      .attr("dy", ".35em")
+							      .style("text-anchor", "start")							      
+							      .text(function(d) {
+							      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
+							      	return  tex || levels[d] ;})
+							      	.style("font-size", "9pt");
+
+							    if(numValues > 2){
+							    	margin.top = 15 * Math.ceil(numValues/2);
+							    	height = svgh - margin.top - margin.bottom;
+							     }
+							    }
+							self.marginTop = margin.top; 
 							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
 
 							var timeout = d3.timeout(function() {
@@ -447,9 +497,6 @@
 							    .domain([0, y1Max])
 							    .range([height, 0]);
 
-							var color = d3.scaleOrdinal()
-							    .domain(d3.range(levels.length))
-							    .range($Q.colors);
 							    //.range(d3.schemeCategory10);
 
 							 //for(var l=0; l < levels.length; l++){
@@ -464,42 +511,6 @@
 							    	//if(!self.palette[d]) self.palette[d] = color(i);
 							    	return color(i); });
 
-							 
-							 if(!self.legend)
-							 {	
-							 self.legend = self.parent.svg.selectAll(".legend")
-							 				.data(color.domain())
-							 				.enter().append("g")
-							 					 .attr("class", "legend")
-     											 .attr("transform", function(d, i) { return "translate("+ margin.left +"," + (-10) + ")"; });
-     						 
-     						 var numValues = color.domain().length;
-     						 var legWidth = svgw/numValues; 
-     						 // draw legend colored rectangles
-							  self.legend.append("rect")
-							      .attr("x", function(d,i){
-							      	return i*legWidth; 
-							      })
-							      .attr("y", 10)
-							      .attr("width", 10)
-							      .attr("height", 10)
-							      .style("fill", function(d){
-							      	self.palette[levels[d]] = color(d);
-							      	return color(d);});
-
-							  // draw legend text
-							  self.legend.append("text")
-							      .attr("x", function(d,i){
-							      	return i*legWidth+10; 
-							      })
-							      .attr("y", 20)
-							      .attr("dy", ".35em")
-							      .style("text-anchor", "start")							      
-							      .text(function(d) {
-							      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
-							      	return  tex || levels[d] ;})
-							      	.style("font-size", "11pt");
-							     }
 							
 							var origColor; 
 							var rect = series.selectAll("rect")
@@ -744,12 +755,20 @@
 						},
 						resizeCatBar: function(){
 							var self = this;
-							var margin = self.cat? {top: 0, right: 10, bottom: 50, left:30} : {top: 10, right: 10, bottom: 65, left:30}; //TODO: modify this according to different views
+							var margin = self.cat? {top: self.marginTop, right: 10, bottom: 50, left:30} : {top: 10, right: 10, bottom: 65, left:30}; //TODO: modify this according to different views
 							var scale = self.parent.expanded? 0.6 : 0.9; 
-							var parentW = parseInt(d3.select("#card"+self.id).style("width")),
+							var drawArea = d3.select("#draw-area"+self.id);							
+							var parentArea = drawArea.select(function(){
+								return this.parentNode; 
+							});
+														
+							var svgw = scale * parentArea.node().getBoundingClientRect().width;
+							var svgh = scale * parentArea.node().getBoundingClientRect().height; 
+
+							/*var parentW = parseInt(d3.select("#card"+self.id).style("width")),
 								parentH = parseInt(d3.select("#card"+self.id).style("height"));
 							var svgw = parentW * scale,
-								svgh = parentH * scale;
+								svgh = parentH * scale;*/
 								// update the range of the scale with new width/ height
 							var width = svgw - margin.right - margin.left, 
 								height = svgh - margin.top - margin.bottom; 
@@ -767,7 +786,8 @@
 							// update svg width and height
 							var iter = self.iter; 
 							self.svg = self.getMainSVG(self.id); 
-							var xoffset = self.parent.expanded? (scale - 0.9) * width : 0; 
+							//var xoffset = self.parent.expanded? (scale - 0.9) * width : 0; 
+							var xoffset = 0; 
 							self.svg.attr("width", svgw)
 									.attr("height", svgh)
 									.attr("transform", "translate("+ xoffset +",0)" );
@@ -777,7 +797,7 @@
 
 							////console.log(self.svg.selectAll("*"));
 							self.svg.select(".x.axis")
-							.attr("transform", "translate("+ 0+"," + (height + margin.top ) + ")")
+							.attr("transform", "translate("+ 0+"," + (height ) + ")")
 							      .call(d3.axisBottom(x))
 									.selectAll("text")	
 									.text(function(d){
@@ -790,7 +810,7 @@
 
 							self.svg.select(".y.axis")
 									.call(d3.axisLeft(y).ticks(5, "s"))
-							      	.attr("transform", "translate(0,"+ margin.top+")");
+							      	.attr("transform", "translate(0,"+ 0 +")");
 							
 							if(self.cat) self.changed(x, y, self.id); 
 							else{
@@ -820,6 +840,7 @@
 
 							if(self.iter < 1)
 								self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
+
 							else{
 								 var c = 0;
 								 for(var key in self.dicts){
