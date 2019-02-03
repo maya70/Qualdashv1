@@ -37,12 +37,12 @@
 						},
 						nohighlight: function(){
 							var self = this;
-							self.update(self.data); 
+							var updated = self.update(self.data); 
+							self.updatePieLabels(updated); 
 
 						},
 						highlight: function(recIds){
 							var self = this;	
-							var highlighted = [];	
 							var temp = [];	
 							for(var key in self.data){								
 								var sum = 0;
@@ -56,14 +56,24 @@
 								temp.push({"date": self.data[key]['date'], "number": sum, "data": arr});					
 							}	
 							var updated = self.update(temp); 	
-							var sliceIndex = {};
+							self.updatePieLabels(updated, recIds);									
 
-							for(key in updated){
+						},
+						updatePieLabels: function(updated, recIds){
+							var self = this;
+							var sliceIndex = {};
+							var highlighted = [];	
+							
+							for(var key in updated){
 								sliceIndex[updated[key]['data']['date']] = updated[key];
 								//newslices[updated[key]['data']['date']]['startAngle'] = updated[key]['startAngle'];
 								//newslices[updated[key]['data']['date']]['endAngle'] = updated[key]['endAngle'];
 							}
+							var keys;
+							if(self.parent.selection)
+								keys = self.parent.selection; 
 
+							var recIds = recIds || keys || []; 
 							var arc = d3.arc()
 									    .innerRadius(0)
 									    .outerRadius(self.radius);	
@@ -77,7 +87,7 @@
 													}
 												});
 											}
-											if(found){
+											if(found || recIds.length === 0){
 												highlighted.push(d.data.date);
 												self.text.transition().duration(100)
 													.attrTween("transform", function(d){
@@ -118,14 +128,14 @@
 														return (highlighted.indexOf(p.data.date) >=0)? 1: 0;															
 													});											    											    
 											}
-											return 1.0; 
+										
+										return 1.0; 
 										});		
 								
 										function midAngle(d){
 												return d.startAngle + (d.endAngle - d.startAngle)/2;
 											}
-																
-
+							
 						},
 /*text.transition().duration(1000)
 								.attrTween("transform", function(d) {

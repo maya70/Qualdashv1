@@ -581,6 +581,24 @@
 							
 
 						},
+						updateSelection: function(newIds){
+							var self = this;
+							if(!self.selection){
+								self.selection = {};
+								newIds.forEach(function(d){
+									self.selection[d] = self.parent.control.getRecordById(d);
+								});
+							}
+							else{
+								var tempIntersect = {};
+								newIds.forEach(function(d){
+									if(self.selection[d])
+										tempIntersect[d] = self.selection[d]; 									
+								});
+								self.selection = tempIntersect; 
+							}
+							console.log(self.selection); 
+						},						
 						getSlaves: function(){
 								var self = this;
 								return self.parent.getSlaves(self.id);

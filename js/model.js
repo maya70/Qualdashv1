@@ -241,6 +241,10 @@
                         getSlaves: function(viewId){
                             return this.slaves[viewId]; 
                         },
+                        getRecordById: function(recId){
+                            var self = this;
+                            return self.data[recId]; 
+                        },
                         getDerivedValue: function(vname, rec){
                             var self = this;
                             if(vname === "death" && self.audit === "picanet"){

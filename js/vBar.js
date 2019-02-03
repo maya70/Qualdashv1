@@ -316,8 +316,18 @@
 							      	div.transition()
 							      		.duration(500)
 							      		.style("opacity", 0);
-							      	d3.select(this).style("fill", "black");
+							      	var sel = d3.select(this);
+							      	if(!sel.attr("selected"))
+							      		sel.style("fill", "black");
 							      	self.parent.nohighlightSubs(); 
+							      })
+							      .on("click", function(d,i){
+							      	for(var key in dict[i+1]){
+							      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
+							      				self.parent.updateSelection(dict[i+1][key]['data']); 
+							      			} 
+							      	}							      	
+							      	d3.select(this).attr("selected", true); 
 							      });
 						
 									
@@ -547,8 +557,18 @@
 							      	div.transition()
 							      		.duration(500)
 							      		.style("opacity", 0);
-							      	d3.select(this).style("fill", origColor);
+							      	var sel = d3.select(this);
+							      	if(!sel.attr("selected"))
+							      		sel.style("fill", origColor);
 							      	self.parent.nohighlightSubs(); 
+							      })
+							      .on("click", function(d,i){
+							      	for(var key in dict[i+1]){
+							      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
+							      				self.parent.updateSelection(dict[i+1][key]['data']); 
+							      			} 
+							      	}							      	
+							      	d3.select(this).attr("selected", true); 
 							      });
 
 							    rect.transition()

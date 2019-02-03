@@ -89,6 +89,9 @@
 							console.log(value); 
 							self.dataModel.updateMetrics(viewId, value); 
 						},
+						getRecordById: function(recId){
+							return this.dataModel.getRecordById(recId); 
+						},
 						getEHR: function(){
 							return this.dataModel.getEHR(); 
 						},
