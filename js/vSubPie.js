@@ -70,8 +70,10 @@
 								//newslices[updated[key]['data']['date']]['endAngle'] = updated[key]['endAngle'];
 							}
 							var keys;
-							if(self.parent.selection)
-								keys = self.parent.selection; 
+							if(self.parent.selection){								
+								keys = Object.keys(self.parent.selection); 
+								console.log(keys); 
+							}
 
 							var recIds = recIds || keys || []; 
 							var arc = d3.arc()

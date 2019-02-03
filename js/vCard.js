@@ -581,21 +581,33 @@
 							
 
 						},
-						updateSelection: function(newIds){
+						updateSelection: function(key, newIds, union, intersect, subtract){
 							var self = this;
 							if(!self.selection){
 								self.selection = {};
-								newIds.forEach(function(d){
-									self.selection[d] = self.parent.control.getRecordById(d);
-								});
 							}
-							else{
+							if(!self.selection[key])
+								self.selection[key] = {};
+
+							if(union)
+								newIds.forEach(function(d){
+									self.selection[key][d] = self.parent.control.getRecordById(d);
+								});
+							
+							else if(intersect){
 								var tempIntersect = {};
 								newIds.forEach(function(d){
-									if(self.selection[d])
-										tempIntersect[d] = self.selection[d]; 									
+									if(self.selection[key][d])
+										tempIntersect[key][d] = self.selection[key][d]; 									
+										
 								});
 								self.selection = tempIntersect; 
+							}
+							else if(subtract){
+								newIds.forEach(function(id){
+									delete self.selection[key][id];
+								});							
+
 							}
 							console.log(self.selection); 
 						},						

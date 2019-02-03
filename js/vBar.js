@@ -324,7 +324,7 @@
 							      .on("click", function(d,i){
 							      	for(var key in dict[i+1]){
 							      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
-							      				self.parent.updateSelection(dict[i+1][key]['data']); 
+							      				self.parent.updateSelection(key, dict[i+1][key]['data'], 1); 
 							      			} 
 							      	}							      	
 							      	d3.select(this).attr("selected", true); 
@@ -539,7 +539,7 @@
 							      	div .html((d[1] - d[0]+ ""))
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
-							      	origColor = d3.select(this).style("fill");
+							      	//origColor = d3.select(this).style("fill");
 							      	d3.select(this).style("fill", "brown");
 							      	//console.log(this);
 							      	//console.log(d); 
@@ -558,17 +558,31 @@
 							      		.duration(500)
 							      		.style("opacity", 0);
 							      	var sel = d3.select(this);
-							      	if(!sel.attr("selected"))
-							      		sel.style("fill", origColor);
+							      	var as = sel.attr("selected");
+							      	if(!as || as=== "false" )
+							      		sel.style("fill", self.palette[d[0]]);
 							      	self.parent.nohighlightSubs(); 
 							      })
 							      .on("click", function(d,i){
-							      	for(var key in dict[i+1]){
-							      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
-							      				self.parent.updateSelection(dict[i+1][key]['data']); 
-							      			} 
-							      	}							      	
-							      	d3.select(this).attr("selected", true); 
+							      	var selStatus = d3.select(this).attr("selected");
+							      	if(!selStatus || selStatus === "false"){
+							      		// set selection
+								      	for(var key in dict[i+1]){
+								      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
+								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 1); 
+								      			} 
+								      	}							      	
+								      	d3.select(this).attr("selected", true); 
+								      }
+								     else{
+								     	// reset selection
+								     	for(var key in dict[i+1]){
+								      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
+								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 0, 0, 1); 
+								      			} 
+								      	}							      	
+								      	d3.select(this).attr("selected", false); 
+								     }
 							      });
 
 							    rect.transition()
