@@ -568,6 +568,19 @@
 							}
 							
 						},
+						updateCats: function(newcats){
+							var self = this; 
+							var mainsvgW = parseInt(self.vis.getMainSVG(self.id).style("width"));
+							var drawAreaW = parseInt(d3.select("#draw-area"+self.id).style("width"));
+							var ssvgW = drawAreaW - mainsvgW - 40; 
+							var xoffset = mainsvgW + 30 ;
+							var drawAreaH = parseInt(d3.select("#draw-area"+self.id).style("height"));
+							var ssvgH = drawAreaH / 3; 
+							var slaves = self.getSlaves();
+							self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
+							
+
+						},
 						getSlaves: function(){
 								var self = this;
 								return self.parent.getSlaves(self.id);

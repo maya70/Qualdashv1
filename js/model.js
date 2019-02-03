@@ -8,10 +8,10 @@
                         self.dataViews = []; 
                         self.ehr = {};  // keeps a dictionary by patient NHS number for patient pathway calculations (including 48h readmission)
                         self.ehrHist = {};
-                        self.unitID = "194281";
-                        self.slaveCats = {};
+                        self.unitID = "194281";                        
                         self.slaves = {};
                         self.year = "2014"; 
+                        self.cardCats = []; 
                         /** availMetrics keeps a list of metrics that are made available 
                          *  in a drop-down menu for users to select from in each QualCard
                          *  Defaults for each audit are set here
@@ -26,9 +26,13 @@
                           
                         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
                         //self.dateVar = self.;
-                        self.categoricals = [];
+                        //self.categoricals = [];
                         for(var i=0; i < self.displayVariables.length; i++){
-                            self.categoricals[i] = []; 
+                            //self.categoricals[i] = []; 
+                            var cats = (self.audit === "picanet")? $Q.Picanet["displayVariables"][i]["categories"] 
+                                                                    : $Q.Minap["displayVariables"][i]["categories"];
+                            self.cardCats.push(cats);
+
                         }
                     },
                     {
@@ -200,6 +204,39 @@
                         resetCategoricals: function(viewId){
                             var self = this;
                             self.categoricals[viewId] = []; 
+                        },
+                        setCategoricals: function(viewId, newcats){
+                            var self = this;
+                            self.cardCats[viewId] = newcats; 
+                            // update the slaves data structure
+                            var slaves = {};
+                            slaves['cats'] = newcats; 
+                            slaves['data'] = {};
+
+                            for(var i=0; i < self.data.length; i++){
+                                // setup data aggregates for slave categories (this unit only)
+                                if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                        slaves['cats'].forEach(function(cat){
+                                            // get the current rec's level of this categorical
+                                            var lev = self.data[i][cat];
+                                            if(!slaves['data'][cat])
+                                                slaves['data'][cat] = {};
+                                            if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
+                                            else slaves['data'][cat][lev].push(i);  
+                                         });
+                                    }
+                                }
+                            // update the model's cats for this view
+                            self.slaves[viewId]['cats'] = newcats;
+                            // merge into the model's slaves' data
+                            for(var key in slaves['data']){
+                                if(!self.slaves[viewId]['data'][key])
+                                    self.slaves[viewId]['data'][key] = slaves['data'][key];
+                            }                              
+                            self.control.updateDataViews(viewId, self.slaves);
+                        },
+                        getCategoricals: function(viewId){
+                            return this.cardCats[viewId];
                         },
                         getSlaves: function(viewId){
                             return this.slaves[viewId]; 
@@ -747,6 +784,7 @@
                                  }
                                
                                 console.log(slaves); 
+                                self.slaves[displayId] = slaves; 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
                                                     "metric": self.availMetrics[displayId]['text'], //self.availMetrics[displayId]['value'], 
@@ -930,6 +968,7 @@
                                  }
                                
                                 console.log(slaves); 
+                                self.slaves[displayId] = slaves; 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
                                                     "metric": self.availMetrics[displayId]['text'], //self.availMetrics[displayId]['value'], 

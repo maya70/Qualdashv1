@@ -5,7 +5,7 @@
 					function Control(config){
 						var self = this;
 						self.dataModel = new $Q.Model(self); 
-						self.mainView = new $Q.MainView(self); 
+						self.mainView = new $Q.MainView(self); 						
 					
 					},
 					{
@@ -73,10 +73,16 @@
 						resetCategoricals: function(viewId){
 							this.dataModel.resetCategoricals(viewId); 
 						},
-						getCardCats: function(viewId){
+						getCardCats: function(viewId){							
+							return this.dataModel.getCategoricals(viewId); 
+						},
+						updateDataViews: function(viewId, slaves){
 							var self = this;
-							return (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]["categories"] 
-																	: $Q.Minap["displayVariables"][viewId]["categories"];
+							self.mainView.updateDataViews(viewId, slaves);
+						},
+						setCardCats: function(viewId, newcats){
+							var self = this;
+							self.dataModel.setCategoricals(viewId, newcats);
 						},
 						updateMetrics: function(viewId, value){
 							var self = this;

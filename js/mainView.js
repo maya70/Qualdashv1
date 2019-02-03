@@ -25,7 +25,7 @@
 								self.expanded[i] = false; 
 								self.setupPopover(i);
 								self.createQualCard(i);
-								self.setupControls(); 
+								self.setupControls(i); 
 							}
 							self.initGrid(); 
 							self.populateCards(dataViews);
@@ -34,6 +34,11 @@
 						createQualCard: function(viewId){
 							var self = this;
 							self.cards.push(new $Q.QualCard(self, viewId));
+						},
+						updateDataViews: function(viewId, slaves){
+							var self = this; 
+							self.dataViews[viewId]['slaves']['cats'] = slaves[viewId]['cats'];
+							self.dataViews[viewId]['slaves']['data'] = slaves[viewId]['data'];
 						},
 						getSlaves: function(viewId){
 							var self = this;
@@ -162,33 +167,7 @@
 													.style("margin-left",0);
 													
 							
-							var cardCats = self.control.getCardCats(viewId);
-							console.log(cardCats);
-							console.log(self.meta);
-							for(var m = 0; m < self.meta.length; m++){
-							if(self.meta[m]['fieldType'] === "n")
-								{
-									var newvar = self.meta[m]['fieldName'];
-									if(cardCats.indexOf(newvar) < 0){
-										nvarselect.append("option")
-											.attr("class", "dbvar-options")
-											.attr("value", newvar)
-											.text(newvar)
-											.style("font-size", "9pt");	
-										}
-									else {
-										nvarselectOut.append("option")
-											.attr("value", newvar)
-											.attr("class","selvar-options")
-											.text(newvar)
-											.style("font-size", "9pt");
-							
-									}
-
-									
-								}	
-							}
-
+							self.updateMultiSelects(viewId);
 
 							$(document).on('click', '#right-btn'+viewId, function(){	
 								moveItems("#nvar-in"+viewId, "#nvar-out"+viewId);
@@ -202,7 +181,7 @@
 							pbody.append("button")
 								.attr("type", "submit")						
 								.attr("class", "btn_vg_parse hide-vl")
-								.text( "Save")
+								.text( "Update")
 								.attr("id", "group-but"+viewId)
 								.style("horizontal-align", "center")
 								.style("min-width", "300px")
@@ -215,7 +194,20 @@
 							
 							$(document).on('click', '#group-but'+viewId, function(){
 								//////console.log($('#varsel'+viewId +' option:selected').val());
-								self.addGroup(viewId, $('#nvarsel'+viewId +' option:selected').val()); 
+								//self.addGroup(viewId, $('#nvarsel'+viewId +' option:selected').val()); 
+								var outcats = [];
+								var outcatsel = $("#nvar-out"+viewId+" option").each(function(opt){
+									var vv = $(this).val();
+									outcats.push(vv);
+								});								
+								var cardCats = self.control.getCardCats(viewId);
+								for(var iter = 0; iter < cardCats.length; iter++){
+									var index = outcats.length-1;
+									outcats.splice(index, 1);
+								}
+								self.control.setCardCats(viewId, outcats);
+								self.updateMultiSelects(viewId);
+								self.cards[viewId].updateCats(outcats);
 								self.popSettings.each(function () {
 							        //if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
 							            $(this).popover('hide');
@@ -255,6 +247,38 @@
 							    });
 							});
 														
+						},
+						updateMultiSelects: function(viewId){
+							var self = this;
+							var cardCats = self.control.getCardCats(viewId);
+							var nvarselect = d3.select("#nvar-in"+viewId);
+							var nvarselectOut = d3.select("#nvar-out"+viewId);
+							//console.log(self.meta);
+							nvarselect.selectAll("option").remove();
+							nvarselectOut.selectAll("option").remove(); 
+
+							for(var m = 0; m < self.meta.length; m++){
+								if(self.meta[m]['fieldType'] === "n")
+								{
+									var newvar = self.meta[m]['fieldName'];
+									if(cardCats.indexOf(newvar) < 0){
+										nvarselect.append("option")
+											.attr("class", "dbvar-options")
+											.attr("value", newvar)
+											.text(newvar)
+											.style("font-size", "9pt");	
+										}
+									else {
+										nvarselectOut.append("option")
+											.attr("value", newvar)
+											.attr("class","selvar-options")
+											.text(newvar)
+											.style("font-size", "9pt");
+							
+									}
+								}	
+							}
+
 						},
 						drawCircles: function(pbody){
 							var self = this;
@@ -342,7 +366,7 @@
 							self.cards[displayId].drawCatBar(displayId, data, cat, levels, trellis);
 
 						},
-						setupControls: function(){
+						setupControls: function(viewId){
 							var self = this;
 							self.popSettings= jQuery("[data-toggle=popover]").popover({
 						        html : true,
@@ -355,6 +379,9 @@
 						          var title = $(this).attr("data-popover-content");
 						          return $(title).children(".popover-heading").html();
 								   }
+						    }).on("click", function(){
+						    	console.log("HURRAH");
+						    	self.updateMultiSelects(viewId); 
 						    });
 						    							
 						},
