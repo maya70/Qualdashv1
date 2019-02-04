@@ -112,7 +112,7 @@ $Q.Picanet = {
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
                         "quantities": [{"q":"der_smr", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }, 
                                         {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly": "y", "monthly-annual": "der_death","quarterly-annual": "der_death", "weekly-annual": "der_death" } ,  // the first element holds the master view's granT                                             
+                        "granT": {"monthly": "y", "monthly-annual": "der_death"} ,  // the first element holds the master view's granT                                             
                         "combinations": ["ethnic&sex"] // TODO: remove this
                      }, 
                      {  "metric": "48h Readmission",

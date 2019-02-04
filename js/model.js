@@ -47,7 +47,7 @@
                                     break; 
                                    }
                             }
-                            //console.log(metric); 
+                            ////console.log(metric); 
                             // get index of this metric 
                             for(var j=0; j < self.displayVariables.length; j++){
                                 if(self.displayVariables[j]['metric'] === metric){
@@ -78,11 +78,11 @@
                                     if(meta[k]['fieldName'] !== "")
                                         self.meta.push(meta[k]); 
                                 //self.meta = meta; 
-                                //console.log(meta); 
+                                ////console.log(meta); 
                                 d3.csv("./data/minap_dummy.csv", function(data){
-                                        //console.log(data); 
+                                        ////console.log(data); 
                                         self.data = data;                                     
-                                        //////console.log(displayVar);
+                                        ////////console.log(displayVar);
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
                                             self.applyAggregateRule(self.displayVariables[display], display, data);
@@ -111,17 +111,17 @@
                                     }
                                 }
                                 //self.meta = meta; 
-                                //console.log(meta); 
+                                ////console.log(meta); 
                                 d3.csv("./data/picanet_admission/"+self.year+".csv", function(data){
-                                        //console.log(data); 
+                                        ////console.log(data); 
                                         self.data = data;                                     
-                                        //////console.log(displayVar);
+                                        ////////console.log(displayVar);
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
                                             self.applyAggregateRule2(self.displayVariables[display],                                                                     
                                                                     display, data);
                                         }
-                                        //console.log(self.dataViews);
+                                        ////console.log(self.dataViews);
                                         self.loadHistory();
                                         self.control.dataReady(self.dataViews, self.data); 
 
@@ -149,9 +149,9 @@
                                 for(var i=1; i < tspan; i++){                                    
                                     var year = parseInt(self.year)-i;                                 
                                     d3.csv(fpath+year+".csv", function(data){                                        
-                                        //console.log("Loading History");
+                                        ////console.log("Loading History");
                                         var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]]; 
-                                        //console.log(yearupdated);
+                                        ////console.log(yearupdated);
                                         //self.history.push({"year": year, "data": data});
                                         for(var d = 0; d < data.length; d++){
                                             // load historical data for this unit only unless required otherwise
@@ -170,11 +170,11 @@
                                                 }
                                             }
                                         }
-                                        //console.log(self.ehr);
-                                        //console.log(self.ehrHist);
-                                        // console.log(self.tHier); 
+                                        ////console.log(self.ehr);
+                                        ////console.log(self.ehrHist);
+                                        // //console.log(self.tHier); 
                                         self.postProcessHistory(yearupdated, "der_readmit" ); 
-                                        console.log(self.tHier); 
+                                        //console.log(self.tHier); 
 
                                     });
                                 } 
@@ -197,7 +197,7 @@
                         addCategorical: function(viewId, varName){
                             var self = this;
                             //var viewId = id[id.length-1];
-                            //////console.log("VIEW ID = "+ viewId); 
+                            ////////console.log("VIEW ID = "+ viewId); 
                             self.categoricals[viewId].push(varName);
                             self.applyAggregateRule(self.displayVariables[viewId], viewId, self.data, 1 );
                         },
@@ -278,7 +278,7 @@
 
                         },
                         calculateDerivedVar: function(metric, yvar){
-                            //console.log("Calculating "+ metric); 
+                            ////console.log("Calculating "+ metric); 
                             var self = this; 
                             var derived = []; 
                             for(var i=0; i< self.data.length; i++){
@@ -308,7 +308,7 @@
                                     var readmission_date = new Date(self.data[i][vars[1]]);
                                     
                                     var diff = Math.round((readmission_date.getTime() - discharge_date.getTime())/one_day); 
-                                    //console.log(diff); 
+                                    ////console.log(diff); 
                                     self.data[i][metric] = ((diff > 0) && (diff <= 2))? 1: 0; */
                                 }
                                 else if(metric === "Length of Stay"){
@@ -319,7 +319,7 @@
                                 }
 
                             }        
-                            ////console.log(self.ehr); 
+                            //////console.log(self.ehr); 
                             if(metric === "48h Readmission"){
                                 for(var i=0; i< self.data.length; i++){
 
@@ -357,7 +357,7 @@
                                 
                             }
                             //for(var j=0; j < self.data.length; j++)
-                                //    //console.log(self.data[j][metric]);
+                                //    ////console.log(self.data[j][metric]);
                             return metric; 
                         },
                         /** Utility function that converts dates from the MINAP-specified format dd/mm/yyyy hh:mm
@@ -440,8 +440,8 @@
                                    });
                                 
                             }
-                            //console.log(data);
-                            //console.log(result);
+                            ////console.log(data);
+                            ////console.log(result);
                             return result; 
                         },
                         prepTimeData: function(span, viewId, vname){
@@ -493,9 +493,9 @@
 
 
                             }
-                            //console.log(self.meta);
-                            //console.log("METAHIER: ");
-                            //console.log(self.metaHier); 
+                            ////console.log(self.meta);
+                            ////console.log("METAHIER: ");
+                            ////console.log(self.metaHier); 
 
                         },
                         /**
@@ -556,16 +556,16 @@
                                 vname = strs[1];
                                 var derval = self.getDerivedValue(vname, rec);
                                 if(!displayObj)
-                                   {console.log(yvar);
-                                    console.log(rec);
-                                    console.log(sid);
+                                   {//console.log(yvar);
+                                    //console.log(rec);
+                                    //console.log(sid);
                                    } 
 
                                 vval = (displayObj["yaggregates"][sid] === "count")? ((derval>0)? 1: 0) 
                                             : derval;  
                             }
                             //if(!vval && yvar === "der_smr")
-                             //   console.log(rec);
+                             //   //console.log(rec);
                             return vval; 
 
                         },
@@ -588,16 +588,16 @@
                                 vname = strs[1];
                                 var derval = self.getDerivedValue(vname, rec);
                                 if(!displayObj)
-                                   {console.log(yvar);
-                                    console.log(rec);
-                                    console.log(sid);
+                                   {//console.log(yvar);
+                                    //console.log(rec);
+                                    //console.log(sid);
                                    } 
 
                                 vval = (displayObj["yaggregates"][0] === "count")? ((derval>0)? 1: 0) 
                                             : derval;  
                             }
                             //if(!vval && yvar === "der_smr")
-                             //   console.log(rec);
+                             //   //console.log(rec);
                             return vval; 
 
                         },
@@ -747,7 +747,7 @@
                                                 
                                             else{
                                                 slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
-                                                //console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
+                                                ////console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                             }
                                             if(!slaves['data'][quant['q']][self.data[i][dateVar]])
                                                 slaves['data'][quant['q']][self.data[i][dateVar]] = {};
@@ -763,7 +763,7 @@
                                     });                                                   
                                                              
                             } // end for data records
-                            //console.log(self.tHier); 
+                            ////console.log(self.tHier); 
 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
@@ -772,7 +772,7 @@
                                 dict = postData['dict'];
                                 slaves = postData['slaves'];
                             }
-                            //console.log(dict);
+                            ////console.log(dict);
                              // 2. Update the slaves: 
                              if(displayObj["quantities"]){
                                     displayObj["quantities"].forEach(function(quant){
@@ -787,7 +787,7 @@
                                     });
                                  }
                                
-                                console.log(slaves); 
+                                //console.log(slaves); 
                                 self.slaves[displayId] = slaves; 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
@@ -827,7 +827,7 @@
                                     dict[level][displayVar[iv]] = {};                                        
                                     });                                    
                                 });
-                            //console.log(dict);
+                            ////console.log(dict);
                             // any categoricals will be tossed for slave views + popover
                             slaves['cats'] = self.list2QCats(displayId); 
                             slaves['quants'] = self.list2QComp(displayId);
@@ -851,7 +851,7 @@
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             var observedDeathsNational = {}; 
-                            //console.log(self.ehr);
+                            ////console.log(self.ehr);
                             for(var i=0; i < self.data.length; i++){
                                 /**
                                  * handle multiple quantitative variables
@@ -933,7 +933,7 @@
                                                 
                                             else{
                                                 slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
-                                                //console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
+                                                ////console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                             }
                                             if(!slaves['data'][quant['q']][self.data[i][dateVar]])
                                                 slaves['data'][quant['q']][self.data[i][dateVar]] = {};
@@ -949,7 +949,7 @@
                                     });                                                   
                                                              
                             } // end for data records
-                            //console.log(self.tHier); 
+                            ////console.log(self.tHier); 
 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
@@ -958,7 +958,7 @@
                                 dict = postData['dict'];
                                 slaves = postData['slaves'];
                             }
-                            //console.log(dict);
+                            ////console.log(dict);
                              // 2. Update the slaves: 
                              if(displayObj["quantities"]){
                                     displayObj["quantities"].forEach(function(quant){
@@ -971,7 +971,7 @@
                                     });
                                  }
                                
-                                console.log(slaves); 
+                                //console.log(slaves); 
                                 self.slaves[displayId] = slaves; 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": dict, 
@@ -1063,7 +1063,7 @@
                                                 
                                                 if(unit === self.unitID){
                                                     // update this view's time hierarchy
-                                                    // console.log("FOUND "+ year + " " + a_date + " " + d_date); 
+                                                    // //console.log("FOUND "+ year + " " + a_date + " " + d_date); 
                                                     self.tHier[year][quar][mon][week][varname]++; 
                                                 }
                                                 // either way update the slave that will show national average
@@ -1166,12 +1166,12 @@
                             
                             if(redraw)
                                 categoricals = self.categoricals[displayId]; 
-                            //console.log(displayObj);
+                            ////console.log(displayObj);
                             if(displayVar === "derived")
                                 displayVar = self.calculateDerivedVar(metric, displayVar); 
                             //else if(displayVar.constructor == Array){}
                             
-                            //console.log(categoricals); 
+                            ////console.log(categoricals); 
 
                             if(!categoricals){
                                 for(var i=0; i< data.length; i++){
@@ -1180,12 +1180,12 @@
                                     var month = self.months[date.getMonth()];
                                     var year = date.getYear()+1900; 
                                     var my = month+"-"+year; 
-                                    //////console.log(my); 
+                                    ////////console.log(my); 
                                     dict[my] = dict[my]? dict[my]+parseInt(data[i][displayVar]) : parseInt(data[i][displayVar]);
     
                                 }
     
-                                ////console.log(dict); 
+                                //////console.log(dict); 
                                 var sum=0; 
                                 for(var key in dict){
                                     sum += dict[key];
@@ -1199,9 +1199,9 @@
     
                                 var ordered = [];
                                 var temp = Object.keys(dict);
-                                //////console.log(temp); 
+                                ////////console.log(temp); 
                                 var orderedKeys = Object.keys(dict).sort(custom_sort);
-                                //////console.log(orderedKeys);
+                                ////////console.log(orderedKeys);
     
                                 for(var k= 0; k < orderedKeys.length; k++){
                                     var obj = {};
@@ -1211,7 +1211,7 @@
     
                                 }
     
-                                ////console.log(ordered); 
+                                //////console.log(ordered); 
                                 //self.control.drawChart(displayId, ordered); 
                                 self.dataViews.push({"viewId": displayId,   
                                                     "data": ordered, 
@@ -1220,22 +1220,22 @@
                             }
                             else if(categoricals.length === 1){  // count within categories
                                 var cat = categoricals[0];
-                                //console.log(cat);
+                                ////console.log(cat);
 
                                 var levels = d3.map(self.data, function(item){
                                     return item[cat];
                                     }).keys();
-                                //console.log(levels);
+                                ////console.log(levels);
                                 for(var i=0; i< data.length; i++){
                                                         // get the month of this entry
                                                         var date = self.stringToDate(data[i][dateVar]);
-                                                        //////console.log(date); 
+                                                        ////////console.log(date); 
                                                         var month = self.months[date.getMonth()];
                                                         var year = date.getYear()+1900; 
-                                                        ////////console.log(month);
-                                                        ////////console.log(year);
+                                                        //////////console.log(month);
+                                                        //////////console.log(year);
                                                         var my = month+"-"+year; 
-                                                        //////console.log(my); 
+                                                        ////////console.log(my); 
                                                         if(!dict[my]){
                                                             dict[my] = {};
                                                             levels.forEach(function(level){
@@ -1246,13 +1246,13 @@
                                                         var level = data[i][cat];
                                                         dict[my][level] += parseInt(data[i][displayVar]);                                                        
                                                     }
-                                ////console.log(dict);                             
+                                //////console.log(dict);                             
                                if(redraw)    
                                     self.control.drawChart(displayId, dict, cat, levels);
 
                             }
                         else if(categoricals.length === 2){
-                            //console.log("TWO CATS"); 
+                            ////console.log("TWO CATS"); 
 
                             // new variable divides the trellis
                             var levels0 = d3.map(self.data, function(item){
@@ -1263,21 +1263,21 @@
                                     return item[categoricals[displayId][0]];
                                     }).keys();
                             
-                            ////console.log(levels0);
+                            //////console.log(levels0);
                             levels0.forEach(function(level){
                                 dict[level] = {};
                             });
-                            ////console.log(dict);
+                            //////console.log(dict);
                             for(var i=0; i< data.length; i++){
                                                         // get the month of this entry
                                                         var date = self.stringToDate(data[i][dateVar]);
-                                                        //////console.log(date); 
+                                                        ////////console.log(date); 
                                                         var month = self.months[date.getMonth()];
                                                         var year = date.getYear()+1900; 
-                                                        ////////console.log(month);
-                                                        ////////console.log(year);
+                                                        //////////console.log(month);
+                                                        //////////console.log(year);
                                                         var my = month+"-"+year; 
-                                                        //////console.log(my); 
+                                                        ////////console.log(my); 
                                                         if(!dict[levels0[0]][my]){
                                                             levels0.forEach(function(level){
                                                                 dict[level][my] = {}; 
@@ -1290,7 +1290,7 @@
                                                        dict[data[i][categoricals[displayId][1]]][my][data[i][categoricals[displayId][0]]] += parseInt(data[i][displayVar]);
 
                                                     }
-                               ////console.log(dict);
+                               //////console.log(dict);
                                var levels = [levels0, levels1]; 
                             if(redraw)
                                 self.control.drawChart(displayId, dict, categoricals[displayId], levels, 1);
