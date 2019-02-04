@@ -596,6 +596,7 @@
 							
 							else if(intersect){
 								var tempIntersect = {};
+								tempIntersect[key] = {};
 								newIds.forEach(function(d){
 									if(self.selection[key][d])
 										tempIntersect[key][d] = self.selection[key][d]; 									
@@ -646,7 +647,7 @@
 												.on("change", function(d){													
 													////////console.log(this.value);													
 													self.parent.control.updateMetrics(viewId, this.value); 											
-													var dv = self.parent.getMetricDataView(this.value);
+													var dv = self.parent.getMetricDataView(this.value);													
 													////////console.log(dv); 
 													//TODO: reset here the grouping variables and dicts of this view
 													self.parent.control.resetCategoricals(viewId); 
@@ -663,6 +664,7 @@
 							}
 							
 							var curMetric = self.parent.availMetrics[(viewId%self.parent.availMetrics.length)]['value'];
+							self.metric = curMetric; 
 							////////////console.log(curMetric);
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
@@ -711,7 +713,8 @@
 							var undef; 
 							self.btn_data = [{"id": "toggle-btn"+viewId, "class": "ctrl-btn fa fa-bar-chart", "data-toggle": "none", "hidden": true}, 
 											{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-pie-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 											
-											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-plus-square-o", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId}]; 
+											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-plus-square-o", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId},
+											{"id": "export-btn"+viewId, "class": "ctrl-btn fa fa-external-link", "data-toggle": "none", "hidden": false}]; 
 
 							
 							//pbody.style("background-color", "red");
@@ -763,7 +766,77 @@
 							    title : "Add Quantity"         
 							  });    
 							  
+							 $("#export-btn"+viewId).tooltip({    
+							    placement : 'bottom',  
+							    title : "Export as table"         
+							  });   
 
+							  d3.select("#export-btn"+viewId)							  	
+							  	.on("click", function(){
+							  		console.log(self.selection);
+							  		/*var columns = ["date", "close"];
+							  		var data = [
+  { "date" : "2013-01-01", "close" : 45 },
+  { "date" : "2013-02-01", "close" : 50 },
+	{ "date" : "2013-03-01", "close" : 55 },
+	{ "date" : "2013-04-01", "close" : 50 },
+	{ "date" : "2013-05-01", "close" : 45 },
+	{ "date" : "2013-06-01", "close" : 50 },
+	{ "date" : "2013-07-01", "close" : 50 },
+	{ "date" : "2013-08-01", "close" : 55 }
+]; */
+							  		var tabCanvas = d3.select('#tabCanvas'); 
+							  		tabCanvas.append("p")
+							  				.style("font-size", "16pt")
+							  				.text("Data exported from card: "+ self.metric);
+							  		for(var key in self.selection){
+							  			tabCanvas.append("p")
+							  					.style("font-size", "12pt")
+							  					.text("Selected variable: "+ key);
+							  			tabCanvas.append("p")
+							  					.style("font-size", "12pt")
+							  					.text("Number of selected records: "+ Object.keys(self.selection[key]).length);
+							  			var table = tabCanvas.append('table');
+										var thead = table.append('thead');
+										var	tbody = table.append('tbody');
+										var columns = Object.keys(self.selection[key][Object.keys(self.selection[key])[0]]);
+										var data = [];
+										for(var kk in self.selection[key]){
+											data.push(self.selection[key][kk]);
+										}
+										// append the header row
+										thead.append('tr')
+										  .selectAll('th')
+										  .data(columns).enter()
+										  .append('th')
+										    .text(function (column) { return column; });
+										 // create a row for each object in the data
+										var rows = tbody.selectAll('tr')
+										  .data(data)
+										  .enter()
+										  .append('tr');
+
+										// create a cell in each row for each column
+										var cells = rows.selectAll('td')
+										  .data(function (row) {
+										    return columns.map(function (column) {
+										      return {column: column, value: row[column]};
+										    });
+										  })
+										  .enter()
+										  .append('td')
+										    .text(function (d) { return d.value; });
+
+
+							  		} 
+
+							  		
+
+		/*
+		
+*/
+							  	}); 
+							 
 
 						},
 						getAuditInfo: function(){

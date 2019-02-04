@@ -226,7 +226,7 @@
 							        //}
 							    });
 							});
-
+							
 
 							self.pop2 = d3.select("body").append("div")
 											.attr("id", "aa"+viewId)

@@ -42,6 +42,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 }
 #rightMenu{
   z-index: 12;
+  display: none;
 }
 /* Style the buttons that are used to open the tab content */
 .tab button {
@@ -262,10 +263,28 @@ div.tooltip {
 #b11{
   margin-right: 20px; 
 }
-#compCanvas{
+#tabCanvas{
   min-height: 600px;
   min-width: 600px;
-  background-color: red; 
+   
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+#tabCanvas{
+  overflow: scroll;
 }
 
 .expansion-canvas{
@@ -394,7 +413,7 @@ svg{
   <header class="w3-container w3-medium" style="padding-top:6px; padding-bottom: 0px; display:inline-block; ">
     <ul id="navTabs" class="nav nav-tabs" style="width: 100%; max-height: 45px;   max-height: 45px; ">
       <li class="active nav-item px-1"><a class="nav-link" data-toggle="tab" href="#home" style="display:inline-block;">Home</a></li>
-      <li class="nav-item px-1" ><a class="nav-link" data-toggle="tab" href="#compCanvas" style="display:inline-block;">Comparators</a></li>
+      <li class="nav-item px-1" ><a class="nav-link" data-toggle="tab" href="#tabCanvas" style="display:inline-block;">Tabular View</a></li>
       <!--li class="nav-item"><a data-toggle="tab" href="#can2">Database Status</a></li-->
       <li class="nav-item px-1"><a class="nav-link" data-toggle="tab" href="#expPlaceHolder" style="display: inline-block;">>></a></li>  
       <li><p style="padding-top:10px; font-weight: bold; color: red;"> The data shown is a simulated (not real) dataset  </p> </li>
@@ -496,7 +515,7 @@ svg{
     </div>
    </div>
  </div> 
- <div id="compCanvas" class="tab-pane fade">   
+ <div id="tabCanvas" class="tab-pane fade">   
  </div> 
 
 <div id="expPlaceHolder" class="expansion-canvas tab-pane fade">   

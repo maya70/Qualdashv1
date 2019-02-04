@@ -70,11 +70,17 @@
 								//newslices[updated[key]['data']['date']]['endAngle'] = updated[key]['endAngle'];
 							}
 							var keys;
-							if(self.parent.selection){								
-								keys = Object.keys(self.parent.selection); 
-								console.log(keys); 
+							if(self.parent.selection){	
+								keys = [];	
+								for(var kk in self.parent.selection){						
+									var kkk = Object.keys(self.parent.selection[kk]);
+									kkk.forEach(function(kkkk){
+										keys.push(kkkk);
+									}); 	
+									}							
+								//console.log(keys); 
 							}
-
+							
 							var recIds = recIds || keys || []; 
 							var arc = d3.arc()
 									    .innerRadius(0)
@@ -324,8 +330,26 @@
 							      	self.parent.nohighlight(); 
 							      	d3.select(this).style("fill", origColor);
 							      })
-							      //.on("click", function(d){							      	
-							      //})
+							      .on("click", function(d){		
+							       var selStatus = d3.select(this).attr("selected");
+							      	if(!selStatus || selStatus === "false"){
+							      		// set selection
+							      		console.log(d.data.data);
+							      		if(self.parent.selection){
+							      			// filter existing selection for all keys 
+							      			for(var key in self.parent.selection){
+							      				self.parent.updateSelection(key, d.data.data, 0, 1); 
+							      			}
+							      		}
+							      		else{
+							      			// set new selection for all keys
+							      			for(var key in self.parent.selection){
+							      				self.parent.updateSelection(key, d.data.data, 1); 
+							      			}
+							      		}
+							      	}
+
+							       })
 							      .attr("d", arc)
 							    .append("title")
 							      .text(d => `${d.data.date}: ${d.data.number.toLocaleString()}`);
