@@ -83,9 +83,16 @@
 							var self = this;
 							self.mainView.updateDataViews(viewId, slaves);
 						},
+						variableInData: function(newvar){
+							return this.dataModel.variableInData(newvar); 
+						},
 						setCardCats: function(viewId, newcats){
 							var self = this;
 							self.dataModel.setCategoricals(viewId, newcats);
+						},
+						setCardQs: function(viewId, newQs){
+							var self = this;
+							self.dataModel.setQuantitatives(viewId, newQs);
 						},
 						updateMetrics: function(viewId, value){
 							var self = this;

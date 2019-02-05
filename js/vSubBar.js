@@ -50,8 +50,12 @@
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
-							console.log(data);
-							console.log(parent); 
+							//console.log(data);
+							//console.log(parent); 
+							if(self.parent.g2){								
+								d3.selectAll(".slave-draw-area-2"+self.id).remove(); 								
+							}
+
 							
 							self.parent.g2 = self.parent.ssvg2.append("g").attr("class", "slave-draw-area-2"+self.id);
 							var g = self.parent.g2.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );

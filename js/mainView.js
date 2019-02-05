@@ -38,6 +38,7 @@
 						updateDataViews: function(viewId, slaves){
 							var self = this; 
 							self.dataViews[viewId]['slaves']['cats'] = slaves[viewId]['cats'];
+							self.dataViews[viewId]['slaves']['quants'] = slaves[viewId]['quants'];
 							self.dataViews[viewId]['slaves']['data'] = slaves[viewId]['data'];
 						},
 						getSlaves: function(viewId){
@@ -188,7 +189,7 @@
 								.style("margin-top", "20px");
 
 							function moveItems(origin, dest) {
-							    $(origin).find(':selected').appendTo(dest);
+							    $(origin).find(':selected').appendTo(dest);							    
 							}
 
 							
@@ -217,8 +218,31 @@
 							});
 
 							$(document).on('click', '#quantity-but'+viewId, function(){
-								//////console.log($('#varsel'+viewId +' option:selected').val());
-								self.addGroup(viewId, $('#qvarsel'+viewId +' option:selected').val()); 
+								var outQs = [];
+								var movedItems = [];
+								if(self.justMoved && self.justMoved[viewId]){
+									self.justMoved[viewId].each(function(item){
+										movedItems.push($(this).val()); 
+									});
+									console.log(movedItems); 
+								}
+								var inQsel = $("#qvar-in"+viewId+" option");
+								var outQsel = $("#qvar-out"+viewId+" option").each(function(opt){
+									var vv = $(this).val();
+									if(outQs.indexOf(vv)<0 && movedItems.indexOf(vv)<0)
+										outQs.push(vv);
+								});								
+								var cardQs = self.control.getCardQs(viewId);
+								
+								/*for(var iter = 0; iter < cardQs.length; iter++){
+									var index = outQs.length-1;
+									outQs.splice(index, 1);
+								}*/
+								
+								
+								self.control.setCardQs(viewId, outQs);
+								self.updateQMultiSelects(viewId);
+								self.cards[viewId].updateQs(outQs);
 								self.popSettings.each(function () {
 							        //if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
 							            $(this).popover('hide');
@@ -297,7 +321,9 @@
 								moveItems("#qvar-in"+viewId, "#qvar-out"+viewId);
 							});
 							
-							$(document).on('click', '#qleft-btn'+viewId, function(){	
+							$(document).on('click', '#qleft-btn'+viewId, function(){
+							    self.justMoved = {};
+							    self.justMoved[viewId] = $("#qvar-out"+viewId).find(':selected');
 								moveItems("#qvar-out"+viewId, "#qvar-in"+viewId);
 							});
 						
@@ -325,29 +351,39 @@
 						updateQMultiSelects: function(viewId){
 							var self = this; 
 							var cardQs = self.control.getCardQs(viewId);
+							console.log(cardQs);
+
 							var qvarselect = d3.select("#qvar-in"+viewId);
 							var qvarselectOut = d3.select("#qvar-out"+viewId);
 							//console.log(self.meta);
 							qvarselect.selectAll("option").remove();
 							qvarselectOut.selectAll("option").remove(); 
+							var inobj = {},
+								outobj = {};								
 
 							for(var m = 0; m < self.meta.length; m++){
 								if(self.meta[m]['fieldType'] === "q")
 								{
 									var newvar = self.meta[m]['fieldName'];
 									if(cardQs.indexOf(newvar) < 0){
+										if(self.control.variableInData(newvar) && !inobj[newvar]){
+											inobj[newvar] = 1;
 										qvarselect.append("option")
 											.attr("class", "dbvar-options")
 											.attr("value", newvar)
 											.text(newvar)
 											.style("font-size", "9pt");	
+											}
 										}
 									else {
-										qvarselectOut.append("option")
-											.attr("value", newvar)
-											.attr("class","selvar-options")
-											.text(newvar)
-											.style("font-size", "9pt");
+										if(!outobj[newvar]){
+											outobj[newvar] = 1; 
+											qvarselectOut.append("option")
+												.attr("value", newvar)
+												.attr("class","selvar-options")
+												.text(newvar)
+												.style("font-size", "9pt");
+										}
 							
 									}
 								}	
@@ -355,20 +391,26 @@
 							// append derived quantities to the rigt or left depending on whether they are displayed in tabs
 							if(cardQs.constructor == Array){
 								cardQs.forEach(function(cq){
-									qvarselectOut.append("option")
+									if(!outobj[cq]){
+										outobj[cq] = 1;
+										qvarselectOut.append("option")
 												.attr("value", cq)
 												.attr("class","selvar-options")
 												.text(cq)
 												.style("font-size", "9pt");
+											}
 
 									});
 								}
 							else{
-								qvarselectOut.append("option")
+								if(!outobj[cardQs]){
+										outobj[cardQs] = 1; 
+										qvarselectOut.append("option")
 												.attr("value", cardQs)
 												.attr("class","selvar-options")
 												.text(cardQs)
 												.style("font-size", "9pt");
+									}
 							}
 
 
@@ -378,22 +420,29 @@
 							var cardCats = self.control.getCardCats(viewId);
 							var nvarselect = d3.select("#nvar-in"+viewId);
 							var nvarselectOut = d3.select("#nvar-out"+viewId);
+							var inobj = {},
+								outobj = {};
 							//console.log(self.meta);
 							nvarselect.selectAll("option").remove();
 							nvarselectOut.selectAll("option").remove(); 
 
 							for(var m = 0; m < self.meta.length; m++){
-								if(self.meta[m]['fieldType'] === "n")
+
+								if(self.meta[m]['fieldType'] === "n" || self.meta[m]['fieldType'] === "o")
 								{
-									var newvar = self.meta[m]['fieldName'];
+									var newvar = self.meta[m]['fieldName'];									
 									if(cardCats.indexOf(newvar) < 0){
-										nvarselect.append("option")
-											.attr("class", "dbvar-options")
-											.attr("value", newvar)
-											.text(newvar)
-											.style("font-size", "9pt");	
+										if(self.control.variableInData(newvar) && !inobj[newvar]){
+											inobj[newvar] = 1;
+											nvarselect.append("option")
+												.attr("class", "dbvar-options")
+												.attr("value", newvar)
+												.text(newvar)
+												.style("font-size", "9pt");	
 										}
-									else {
+									}
+									else if(!outobj[newvar]){
+										outobj[newvar] = 1; 
 										nvarselectOut.append("option")
 											.attr("value", newvar)
 											.attr("class","selvar-options")
@@ -521,8 +570,8 @@
 						          return $(title).children(".popover-heading").html();
 								   }
 						    }).on("click", function(){
-						    	console.log("HURRAH");
-						    	console.log($(this).attr("id")); 
+						    	//console.log("HURRAH");
+						    	//console.log($(this).attr("id")); 
 						    	var id = $(this).attr("id");
 						    	if(id === ("split-btn"+viewId))
 						    		self.updateMultiSelects(viewId); 

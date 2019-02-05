@@ -120,7 +120,8 @@ $Q.Picanet = {
                         "x": "admonth",
                         "y": ["der_discharge", "der_readmit"],
                         "categories": ["sourcead", "careareaad", "unitdisdest", "primarydiagnosisgroup"], 
-                        "quantities": [{"q":"der_readmit", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],
+                        "quantities": [{"q":"der_readmit", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
+                                      {"q":"der_unplannedAdm", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],
                         "xType": "t",
                         "yType": ["q", "q"],
                         "xspan": "year",    
@@ -243,6 +244,14 @@ $Q.DataDefs = {"picanet": {"monthVar": "admonth",
                           "dischargeStatusVar": "unitdisstatus"
                           }, 
             "minap": {} };
-
+$Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery", 
+                                       "2":"Unplanned-following surgery",
+                                       "3":"Planned-Other",
+                                       "4":"Unplanned", 
+                                       "9":"N/K"
+                                      }
+                            },
+                "minap":{}
+                      };
 $Q.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 $Q.colors = ["#93969b", "#0f0f0f", "#c18f2a"];

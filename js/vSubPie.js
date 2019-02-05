@@ -2,11 +2,11 @@
 	'use strict'
 	$Q.SubPieChart = $Q.defineClass(
 					null, 
-					function SubPieChart(viewId, data, parent, svgw, svgh){
+					function SubPieChart(viewId, dname, data, parent, svgw, svgh){
 						var self = this;	
 						self.parent = parent; 
 						
-						self.draw(viewId, data, parent, svgw, svgh);
+						self.draw(viewId, dname, data, parent, svgw, svgh);
 							
 					},
 					{
@@ -261,7 +261,7 @@
 									return true; 
 							return false; 
 						},
-						draw: function(viewId, data, parent, svgw, svgh){
+						draw: function(viewId, dname, data, parent, svgw, svgh){
 							var self = this;
 							////////////console.log(data);
 							self.updateDataLinks(viewId, data, parent);
@@ -373,7 +373,8 @@
 											//if(d.data.number < (self.totalNumRecs/20))
 											//	return '';
 											//else 
-												return d.data.date;
+												return $Q.ValueDefs[self.parent.parent.control.audit][dname]?
+												 $Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
 										});
 									
 							function midAngle(d){

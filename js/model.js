@@ -13,6 +13,7 @@
                         self.year = "2014"; 
                         self.cardCats = []; 
                         self.cardQs = []; 
+                        self.missing = {}; 
                         /** availMetrics keeps a list of metrics that are made available 
                          *  in a drop-down menu for users to select from in each QualCard
                          *  Defaults for each audit are set here
@@ -106,9 +107,9 @@
                                     if(meta[k]['COLUMN_NAME'] !== ""){
                                         var metaEntry = {}; 
                                         metaEntry['fieldName'] = meta[k]['COLUMN_NAME'].toLowerCase();
-                                        metaEntry['fieldType'] = (meta[k]['DATA_TYPE'] === "datetime")? "t" :
+                                        metaEntry['fieldType'] = (meta[k]['DATA_TYPE'] === "decimal")? "q" :
                                                                     (( meta[k]['DATA_TYPE'] === "smallint" )?"o" : 
-                                                                        ((meta[k]['DATA_TYPE'] === "nvarchar" || meta[k]['DATA_TYPE'] === "varchar" || meta[k]['DATA_TYPE'] === "bit")? "n" : "q"));
+                                                                        ((meta[k]['DATA_TYPE'] === "nvarchar" || meta[k]['DATA_TYPE'] === "varchar" || meta[k]['DATA_TYPE'] === "bit")? "n" : "t"));
                                         self.meta.push(metaEntry); 
                                         
                                         self.metaDict[metaEntry['fieldName']] = metaEntry['fieldType'];
@@ -246,6 +247,62 @@
                         getQs: function(viewId){
                             return this.cardQs[viewId]; 
                         },
+                        setQuantitatives:function(viewId, newQs){
+                            var self = this;
+                            self.cardQs[viewId] = newQs; 
+                            // update the slaves data structure
+                            var slaves = {};
+                            slaves['quants'] = []; 
+                            slaves['data'] = {};
+                            newQs.forEach(function(q){
+                                slaves['quants'].push({"q": q, "yaggregates": "sum"}); // TODO: find a way to modify this default
+                            });
+                            // same x-axis as main view
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId] ;
+                            var dateVar = auditVars['x'];
+
+                            for(var i=0; i < self.data.length; i++){
+                                // setup data aggregates for slave categories (this unit only)
+                                
+                                slaves['quants'].forEach(function(quant, sid){
+                                    if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                            var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid)) ; 
+
+                                            if(!slaves['data'][quant['q']])
+                                                slaves['data'][quant['q']] = {}; 
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]] =  {};
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]] = {};
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                            else
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+
+                                            //keeping national computations for now
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
+                                                        slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = qval;            
+                                            else
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
+                                                ////console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
+                                            
+                                            
+                                            }
+
+                                         });
+                                                                    
+                                    
+                                }
+                            // update the model's cats for this view
+                            self.slaves[viewId]['quants'] = slaves['quants'];
+                            // merge into the model's slaves' data
+                            for(var key in slaves['data']){
+                                if(!self.slaves[viewId]['data'][key])
+                                    self.slaves[viewId]['data'][key] = slaves['data'][key];
+                            }                              
+                            self.control.updateDataViews(viewId, self.slaves);
+
+                        },
                         getSlaves: function(viewId){
                             return this.slaves[viewId]; 
                         },
@@ -282,6 +339,9 @@
                             }
                             else if(vname === "noninvVentDays" && self.audit === "picanet"){
                                 return parseInt(rec["noninvventday"]) || 0; 
+                            }
+                            else if(vname === "unplannedAdm" && self.audit === "picanet"){
+                                return  (parseInt(rec["adtype"]) === 2 || parseInt(rec["adtype"]) === 4)? 1 : 0; 
                             }
 
                         },
@@ -552,10 +612,22 @@
                             var self = this;
                             var vname;
                             var vval; 
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
+                            var dateVar = auditVars['x'];
+
                             if(yvar.indexOf("_") < 0 ){
                                 // this is a database variable
                                 vname = yvar; 
                                 vval = (displayObj["yaggregates"][sid] === "count")? 1 : rec[vname];  
+                                if(isNaN(vval)){
+                                    vval = 0;
+                                    if(!self.missing[yvar])
+                                        self.missing[yvar] = {};
+                                    if(!self.missing[yvar][dateVar])
+                                        self.missing[yvar][dateVar] = 1; 
+                                    else 
+                                        self.missing[yvar][dateVar]++; 
+                                }
                             }
                             else{
                                 // this is a derived variable
@@ -631,6 +703,14 @@
                                     self.tHier[year][quar][mon][week][varname] += qval;
 
                             }                            
+                        },
+                        variableInData: function(newvar){
+                            var self = this;
+                            var vars = Object.keys(self.data[0]);
+                            if(vars.indexOf(newvar) >=0)
+                                return true;
+                            return false; 
+
                         },
                         applySingleQ: function(displayObj, displayId, data, redraw){
                             var self = this;
@@ -965,6 +1045,7 @@
                                 var postData = self.postProcess(dict, slaves);
                                 dict = postData['dict'];
                                 slaves = postData['slaves'];
+                                console.log(slaves); 
                             }
                             ////console.log(dict);
                              // 2. Update the slaves: 

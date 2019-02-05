@@ -137,7 +137,7 @@
 												r.style("stroke", "black");			
 											
 											catdata = cats['data'][d];
-											self.subVis1.draw(self.id, catdata , self, ssvgW-10, ssvgH-10);
+											self.subVis1.draw(self.id, d, catdata , self, ssvgW-10, ssvgH-10);
 
 										})
 										.on("mouseover", function(d){
@@ -190,13 +190,11 @@
 									.style("fill", "none"); */
 
 							
-							self.subVis1 = new $Q.SubPieChart(self.id, catdata , self, ssvgW-10, ssvgH-10);
+							self.subVis1 = new $Q.SubPieChart(self.id, cat1, catdata , self, ssvgW-10, ssvgH-10);
 
 						},
 						createSlave2: function(slaves, ssvgW, ssvgH, xoffset){
 							var self = this;
-							var quant1 = slaves['quants'][0]['q'];
-							var qdata = slaves['data'][quant1];
 							//////console.log(qdata);
 							var quantityNames = slaves['quants']; 
 
@@ -257,7 +255,8 @@
 											
 											qdata = slaves['data'][d['q']];
 											////console.log(qdata);
-											//self.subVis2.draw(self.id, qdata , self, ssvgW-10, ssvgH-10);
+											self.subVis2.draw(self.id, d['q'], qdata , self, ssvgW-10, ssvgH-10);
+											
 
 										})
 										.on("mouseover", function(d){
@@ -296,7 +295,7 @@
 								.attr("dy", "1.2em")
 								.attr("dx", "1.3em")
 							    .text(function(d) { 
-							    	return $Q.Picanet["variableDict"][d['q']]; })
+							    	return $Q.Picanet["variableDict"][d['q']] || d['q']; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 							
@@ -308,6 +307,8 @@
 									.attr("height", ssvgH - 30)
 									.style("stroke", "black")
 									.style("fill", "none"); */
+							var quant1 = quantityNames[0]['q'];
+							var qdata = slaves['data'][quant1];
 							
 							self.subVis2 = new $Q.SubBarChart(self.id, quant1, qdata , self, ssvgW-10, ssvgH-10);
 
@@ -580,8 +581,18 @@
 							var drawAreaH = parseInt(d3.select("#draw-area"+self.id).style("height"));
 							var ssvgH = drawAreaH / 3; 
 							var slaves = self.getSlaves();
-							self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
-							
+							self.createSlave1(slaves, ssvgW, ssvgH, xoffset);							
+						},
+						updateQs: function(newQs){
+							var self = this; 
+							var mainsvgW = parseInt(self.vis.getMainSVG(self.id).style("width"));
+							var drawAreaW = parseInt(d3.select("#draw-area"+self.id).style("width"));
+							var ssvgW = drawAreaW - mainsvgW - 40; 
+							var xoffset = mainsvgW + 30 ;
+							var drawAreaH = parseInt(d3.select("#draw-area"+self.id).style("height"));
+							var ssvgH = drawAreaH / 3; 
+							var slaves = self.getSlaves();
+							self.createSlave2(slaves, ssvgW, ssvgH, xoffset);							
 
 						},
 						updateSelection: function(key, newIds, union, intersect, subtract){
