@@ -74,7 +74,12 @@
 						
 					},
 					{
-					
+						setExpansion: function(){
+							this.expanded = true; 
+						},
+						resetExpansion: function(){
+							this.expanded = false; 
+						},
 						createSlave1: function(cats, ssvgW, ssvgH, xoffset){
 							var self = this;
 							var cat1 = cats['cats'][0];
@@ -523,7 +528,7 @@
 							var self = this;
 							
 							d3.select("#panel"+self.id)
-								.style("visibility", "visible");
+								.style("visibility", "hidden");
 
 							self.vis.resize(); 
 							var mainsvgW = parseInt(self.vis.getMainSVG(self.id).style("width"));
@@ -537,7 +542,9 @@
 								
 							if(self.expanded && !self.ssvg1){
 								
-								
+								d3.select("#panel"+self.id)
+									.style("visibility", "visible");
+
 								// populate the first slave
 								var slaves = self.getSlaves(); 
 								////console.log(slaves);
@@ -547,11 +554,7 @@
 								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
 								self.createSlave2(slaves, ssvgW, ssvgH, xoffset);
 								//self.createSlave3(slaves, ssvgW, ssvgH, xoffset);
-								self.createSlaveT(slaves, mainsvgW, drawAreaW, ssvgH, xoffset);
-
-								
-
-								
+								self.createSlaveT(slaves, mainsvgW, drawAreaW, ssvgH, xoffset);	
 								
 							}
 							else if(!refresh || ((xoffset + ssvgW) > drawAreaW)){
@@ -682,7 +685,7 @@
 												.style("background-color", "lightgrey")
 												.style("color", "black")
 												.text("Toggle View"); 
-
+							*/
 							var viewSelect = header.append("select")
 												.attr("name", "viewselector")
 												.attr("class", "form-control")
@@ -690,15 +693,30 @@
 												.style("font-size", "9pt")
 												.style("vertical-align", "top")
 												.style("horizontal-align", "right")
-												//.style("margin-right", "10px")
-												.style("min-width", "43%")
+												.style("position", "relative")
+												.style("left", "46%")
+												.style("right", "10px")
+												.style("min-width", "33%")
 												.on("change", function(){
-													var dataViews = self.parent.control.getDataViews(); 
+													//var dataViews = self.parent.control.getDataViews(); 
 													////////console.log(dataViews[viewId]); 
-													self.populateCard(dataViews[viewId]); 
+													//self.populateCard(dataViews[viewId]); 
+													self.vis.toggleView(viewId, this.value);
 												});
 							
-							for(var m = 0; m < self.parent.availViews.length; m++){
+								viewSelect.append("option")
+											.attr("value", "grouped")
+											.text("Grouped bars")
+											.style("font-size", "9pt");
+								viewSelect.append("option")
+											.attr("value", "stacked")
+											.text("Stacked bars")
+											.style("font-size", "9pt");
+								/*viewSelect.append("option")
+											.attr("value", "trellis")
+											.text("Trellis")
+											.style("font-size", "9pt");
+							/*for(var m = 0; m < self.parent.availViews.length; m++){
 								viewSelect.append("option")
 											.attr("value", self.parent.availViews[m]['value'])
 											.text(self.parent.availViews[m]['text'])
@@ -711,9 +729,10 @@
 
 							var pbody = panel;
 							var undef; 
-							self.btn_data = [{"id": "toggle-btn"+viewId, "class": "ctrl-btn fa fa-bar-chart", "data-toggle": "none", "hidden": true}, 
+							self.btn_data = [ 
 											{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-pie-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 											
-											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-plus-square-o", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId},
+											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-bar-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId},
+											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "none", "hidden": false, "data-popover-content":"#grantpp"+viewId},
 											{"id": "export-btn"+viewId, "class": "ctrl-btn fa fa-external-link", "data-toggle": "none", "hidden": false}]; 
 
 							
@@ -723,7 +742,7 @@
 											.enter().append("div")
 											.style("background-color", "darkgrey")
 											.style("max-height", "12%")
-											.style("margin-left", "20px"); 
+											.style("margin-left", "0px"); 
 
 							divs.append("button")
 								.attr("type", "button")
@@ -751,8 +770,16 @@
 										return undef; 
 								})
 								.style("max-width", "90%")
+								.style("min-height", "25px")
 								.style("vertical-align", "top")
 								.style("background-color", "lightgrey")
+								.style("position", "relative")
+								.style("top", function(d,i){
+									var drawAreaH = parseInt(d3.select("#draw-area"+self.id).style("height"));
+									var ssvgH = drawAreaH / 2; 
+							
+									return i<3?(i*ssvgH)+"px": (drawAreaH+80)+"px"; 
+								})
 								.style("color", "black"); 
 
 							var split_ttip = $("#split-btn"+viewId).tooltip({    

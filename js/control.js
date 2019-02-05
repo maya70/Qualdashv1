@@ -76,6 +76,9 @@
 						getCardCats: function(viewId){							
 							return this.dataModel.getCategoricals(viewId); 
 						},
+						getCardQs: function(viewId){							
+							return this.dataModel.getQs(viewId); 
+						},						
 						updateDataViews: function(viewId, slaves){
 							var self = this;
 							self.mainView.updateDataViews(viewId, slaves);
@@ -98,6 +101,12 @@
 						refreshGrid: function(){
 							var self = this;
 							self.mainView.refreshGrid(); 
+						},
+						refreshGrid1x1: function(){
+							this.mainView.refreshGrid1x1(); 
+						},
+						refreshGrid32x23: function(){
+							this.mainView.refreshGrid32x23(); 
 						}
 						
 					}

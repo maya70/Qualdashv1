@@ -416,7 +416,7 @@ svg{
       <li class="nav-item px-1" ><a class="nav-link" data-toggle="tab" href="#tabCanvas" style="display:inline-block;">Tabular View</a></li>
       <!--li class="nav-item"><a data-toggle="tab" href="#can2">Database Status</a></li-->
       <li class="nav-item px-1"><a class="nav-link" data-toggle="tab" href="#expPlaceHolder" style="display: inline-block;">>></a></li>  
-      <li><p style="padding-top:10px; font-weight: bold; color: red;"> The data shown is a simulated (not real) dataset  </p> </li>
+      <li><p style="padding-top:10px; font-weight: bold; color: red;"> Note: Simulated data only  </p> </li>
     </ul>
     
   </header>
@@ -607,7 +607,7 @@ function layout2x3() {
     $(this).css("width", "46%");
     $(this).css("height", "300px");
   });
- $Q.mainControl.refreshGrid(); 
+ $Q.mainControl.refreshGrid32x23(); 
 }
 
 function layout3x2() {
@@ -618,14 +618,14 @@ function layout3x2() {
     $(this).css("width", "32%");
     $(this).css("height", "300px");
   });
- $Q.mainControl.refreshGrid(); 
+ $Q.mainControl.refreshGrid32x23(); 
 }
 
 function layout1x1() {
   //console.log($("#mainCanvas").css("height"));
   var cardObjects = $Q.mainControl.getDataViews();
   //console.log(cardObjects); 
-  
+  /*
   var tabContainer = document.getElementById("navTabs"); //d3.select("#navTabs");
 
   cardObjects.forEach(function(obj, id){
@@ -645,8 +645,8 @@ function layout1x1() {
         .attr("class","nav-item").append("a")
               .attr("data-toggle", "tab")
               .attr("href", "#expPlaceHolder")
-              .text(obj['metricLabel']);*/
-  });
+              .text(obj['metricLabel']);
+  });*/
   
   var cards = d3.selectAll(".item"); 
   cards.each(function(){
@@ -654,7 +654,8 @@ function layout1x1() {
     $(this).css("width", "95%");
     $(this).css("height", "700px");
   });
- $Q.mainControl.refreshGrid(); 
+ //$Q.mainControl.refreshGrid(); 
+ $Q.mainControl.refreshGrid1x1(); 
 }
 
 function refreshLayout() {

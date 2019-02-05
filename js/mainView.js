@@ -233,10 +233,84 @@
 											.attr("class", "hidden");
 							self.pop2.append("div")
 											.attr("class","popover-heading" )
-											.text("Axis Controls");
+											.text("Add/Remove Quantiative Variables");
 							var pbody2 = self.pop2.append("div")
 											.attr("class", "popover-body")
 											.attr("id", "cat-popover"); 
+
+							var qrow = pbody2.append("div")
+											.attr("class", "row");
+
+							var qvarselectdiv=	qrow.append("div")
+												.attr("class", "col-xs-5");
+
+							var qvarselect = qvarselectdiv.append("select")
+												.attr("multiple", "multiple")
+												.attr("name", "dbvars")
+												.attr("id", "qvar-in"+viewId)												
+												.style("vertical-align", "top")												
+												.style("font-size", "9pt")
+												.style("horizontal-align", "left")
+												.style("max-width", "120px")
+												.style("min-height", "230px")
+												.style("margin-left",0);
+												
+
+							var qbutcol = qrow.append("div")
+											.attr("class", "col-xs-2");
+							var qbutRight = qbutcol.append("button")
+									.attr("type", "button")
+									.attr("class", "btn btn-block")
+									.attr("id", "qright-btn"+viewId)
+									.style("min-width", "30px");
+									
+
+								qbutRight.append("i")
+										.attr("class", "glyphicon glyphicon-chevron-right")
+										.attr("max-width", "20px");
+							var qbutLeft = qbutcol.append("button")
+									.attr("type", "button")
+									.attr("class", "btn btn-block")
+									.attr("id", "qleft-btn"+viewId)
+									.style("min-width", "30px");
+																			
+								qbutLeft.append("i")
+										.attr("class", "glyphicon glyphicon-chevron-left")
+										.attr("max-width", "20px");
+							var qvarselectOutDiv = qrow.append("div")
+														.attr("class", "col-xs-5");
+							var qvarselectOut = qvarselectOutDiv.append("select")
+													.attr("multiple", "multiple")
+													.attr("name", "selvars")														
+													.attr("id", "qvar-out"+viewId)
+													.style("vertical-align", "top")														
+													.style("font-size", "9pt")
+													.style("horizontal-align", "left")
+													.style("max-width", "120px")
+													.style("min-height", "230px")
+													.style("margin-left",0);
+													
+							
+							//self.updateMultiSelects(viewId);
+
+							$(document).on('click', '#qright-btn'+viewId, function(){	
+								moveItems("#qvar-in"+viewId, "#qvar-out"+viewId);
+							});
+							
+							$(document).on('click', '#qleft-btn'+viewId, function(){	
+								moveItems("#qvar-out"+viewId, "#qvar-in"+viewId);
+							});
+						
+
+							pbody2.append("button")
+								.attr("type", "submit")						
+								.attr("class", "btn_vg_parse hide-vl")
+								.text( "Update")
+								.attr("id", "quantity-but"+viewId)
+								.style("horizontal-align", "center")
+								.style("min-width", "300px")
+								.style("margin-top", "20px");
+
 							
 							$(':not(#anything)').on('click', function (e) {
 							    self.popSettings.each(function () {
@@ -247,6 +321,57 @@
 							    });
 							});
 														
+						},
+						updateQMultiSelects: function(viewId){
+							var self = this; 
+							var cardQs = self.control.getCardQs(viewId);
+							var qvarselect = d3.select("#qvar-in"+viewId);
+							var qvarselectOut = d3.select("#qvar-out"+viewId);
+							//console.log(self.meta);
+							qvarselect.selectAll("option").remove();
+							qvarselectOut.selectAll("option").remove(); 
+
+							for(var m = 0; m < self.meta.length; m++){
+								if(self.meta[m]['fieldType'] === "q")
+								{
+									var newvar = self.meta[m]['fieldName'];
+									if(cardQs.indexOf(newvar) < 0){
+										qvarselect.append("option")
+											.attr("class", "dbvar-options")
+											.attr("value", newvar)
+											.text(newvar)
+											.style("font-size", "9pt");	
+										}
+									else {
+										qvarselectOut.append("option")
+											.attr("value", newvar)
+											.attr("class","selvar-options")
+											.text(newvar)
+											.style("font-size", "9pt");
+							
+									}
+								}	
+							}
+							// append derived quantities to the rigt or left depending on whether they are displayed in tabs
+							if(cardQs.constructor == Array){
+								cardQs.forEach(function(cq){
+									qvarselectOut.append("option")
+												.attr("value", cq)
+												.attr("class","selvar-options")
+												.text(cq)
+												.style("font-size", "9pt");
+
+									});
+								}
+							else{
+								qvarselectOut.append("option")
+												.attr("value", cardQs)
+												.attr("class","selvar-options")
+												.text(cardQs)
+												.style("font-size", "9pt");
+							}
+
+
 						},
 						updateMultiSelects: function(viewId){
 							var self = this;
@@ -351,6 +476,22 @@
 							});
 
 						},
+						refreshGrid1x1: function(){
+							var self = this; 
+							self.grid.refreshItems().layout();	
+							self.cards.forEach(function(card){
+									card.setExpansion(); 
+									card.resizeVis(); 
+								});
+						},
+						refreshGrid32x23: function(){
+							var self = this; 
+							self.grid.refreshItems().layout();	
+							self.cards.forEach(function(card){
+									card.resetExpansion(); 
+									card.resizeVis(); 
+								});	
+						},
 						refreshGrid: function(singleCard) {
 							var self = this;
 							self.grid.refreshItems().layout();	
@@ -381,7 +522,12 @@
 								   }
 						    }).on("click", function(){
 						    	console.log("HURRAH");
-						    	self.updateMultiSelects(viewId); 
+						    	console.log($(this).attr("id")); 
+						    	var id = $(this).attr("id");
+						    	if(id === ("split-btn"+viewId))
+						    		self.updateMultiSelects(viewId); 
+						    	else if(id === ("axes-btn"+viewId))
+						    		self.updateQMultiSelects(viewId); 
 						    });
 						    							
 						},

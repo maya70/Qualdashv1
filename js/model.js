@@ -12,6 +12,7 @@
                         self.slaves = {};
                         self.year = "2014"; 
                         self.cardCats = []; 
+                        self.cardQs = []; 
                         /** availMetrics keeps a list of metrics that are made available 
                          *  in a drop-down menu for users to select from in each QualCard
                          *  Defaults for each audit are set here
@@ -29,9 +30,13 @@
                         //self.categoricals = [];
                         for(var i=0; i < self.displayVariables.length; i++){
                             //self.categoricals[i] = []; 
-                            var cats = (self.audit === "picanet")? $Q.Picanet["displayVariables"][i]["categories"] 
-                                                                    : $Q.Minap["displayVariables"][i]["categories"];
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][i]: $Q.Minap["displayVariables"][i];  
+                            var cats = auditVars["categories"]; 
+                            var qobjs = auditVars["quantities"];                                                               
                             self.cardCats.push(cats);
+                            qobjs.forEach(function(qobj){
+                                self.cardQs.push(qobj['q']); 
+                            });
 
                         }
                     },
@@ -237,6 +242,9 @@
                         },
                         getCategoricals: function(viewId){
                             return this.cardCats[viewId];
+                        },
+                        getQs: function(viewId){
+                            return this.cardQs[viewId]; 
                         },
                         getSlaves: function(viewId){
                             return this.slaves[viewId]; 

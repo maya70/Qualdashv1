@@ -899,6 +899,22 @@
 							}
 
 						},
+						toggleView: function(viewId, value){
+							var self = this;
+							self.toggle = value; 
+
+							if(self.iter < 1)
+								self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
+
+							else{
+								 var c = 0;
+								 for(var key in self.dicts){
+		                         	   self.drawCatBar(viewId, self.dicts[key], self.cat[viewId], self.levels, c, 1);
+		                         	   c++; 
+		                         	}
+							}
+
+						},
 						drawBarTrellis: function(viewId, dict, cat, levels){
 							var self = this;						
 							//self.dicts = dicts; 
