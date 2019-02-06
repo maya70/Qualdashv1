@@ -122,9 +122,8 @@
                                 }
                                 
                                var y01z = d3.stack().keys(d3.range(self.levels.length))(d3.transpose(yz));
-                                    //yMax = self.yMax, // d3.max(yz, function(y) { return d3.max(y); }),
-                                    //y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
-
+                                
+                                    
                            	                            
 							var drawArea = d3.select("#draw-area"+viewId);							
 							var parentArea = drawArea.select(function(){
@@ -172,7 +171,8 @@
 							    rect.transition()
 								    .delay(function(d, i) { return i * 10; })
 								    .attr("y", function(d) { return y(d[1]); })
-								    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+								    .attr("height", function(d) { 
+								    	return y(d[0]) - y(d[1]); })
 								    .call(changed);
 
 												
@@ -190,7 +190,7 @@
 							y.domain([0, self.yMax]);
 						  //console.log(xz);
 						  rect.transition()
-						      .duration(200)
+						      .duration(100)
 						      //.delay(function(d, i) { return i * 10; })
 						      .attr("x", function(d, i) {							         
 						      	 return x(xz[i]) + x.bandwidth() / self.levels.length * this.parentNode.__data__.key; })
@@ -199,7 +199,8 @@
 						      .attr("y", function(d) { 
 						      	return y(d[1] - d[0]); })
 						      .attr("height", function(d) { 
-						      	return y(0) - y(d[1] - d[0]); });
+						      	var y00 = y(0); 
+						      	return y00 - y(d[1] - d[0]); });
 						}
 						function transitionStacked() {
 							 y.domain([0, self.yMax]);
@@ -413,8 +414,9 @@
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
-                               	self.yMax = y1Max; 
-                           
+                               	self.yMax = yMax; 
+                           console.log(self.yMax); 
+
 							if(self.parent.svg && iter === 0){
 							//	d3.selectAll("svg").remove(); 
 								var undef; 
@@ -556,10 +558,6 @@
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	//origColor = d3.select(this).style("fill");
 							      	d3.select(this).style("fill", "brown");
-							      	//console.log(this);
-							      	//console.log(d); 
-							      	//console.log(dict[i+1]);
-
 							      	// find the key for the corresponding data entry
 							      	for(var key in dict[i+1]){
 							      		if(dict[i+1][key]['value'] === (d[1] - d[0]))
@@ -665,8 +663,9 @@
 						    .transition()
 						      .attr("y", function(d) { 
 						      	return y(d[1] - d[0]); })
-						      .attr("height", function(d) { 
-						      	return y(0) - y(d[1] - d[0]); });
+						      .attr("height", function(d) {
+						      var y00 =  y(0); 
+						      	return y00 - y(d[1] - d[0]); });
 						}
 						function transitionStacked(newx, newy, nviewId) {
 							if(newx) x = newx; 
@@ -821,6 +820,8 @@
 								// update the range of the scale with new width/ height
 							var width = svgw - margin.right - margin.left, 
 								height = svgh - margin.top - margin.bottom; 
+
+							self.height = height; 
 
 							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
 								y = d3.scaleLinear().range([height, 0]).nice(); 

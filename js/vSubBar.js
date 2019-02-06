@@ -53,11 +53,13 @@
 							//console.log(data);
 							//console.log(parent); 
 							if(self.parent.g2){								
-								d3.selectAll(".slave-draw-area-2"+self.id).remove(); 								
+								d3.select("#slave-draw-area-2"+viewId).remove(); 								
 							}
 
 							
-							self.parent.g2 = self.parent.ssvg2.append("g").attr("class", "slave-draw-area-2"+self.id);
+							self.parent.g2 = self.parent.ssvg2.append("g")
+												.attr("class", "slave-draw-area-2")
+												.attr("id", "slave-draw-area-2"+viewId);
 							var g = self.parent.g2.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
 							    
 
@@ -73,6 +75,9 @@
 							      .attr("transform", "translate("+ 0+"," + (height) + ")")
 							      .call(d3.axisBottom(x))
 									.selectAll("text")	
+										.text(function(d){
+											return $Q.months[d-1] || d; 
+										})
 								        .style("text-anchor", "end")
 								        .attr("dx", "-.8em")
 								        .attr("dy", ".15em")

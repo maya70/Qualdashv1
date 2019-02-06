@@ -14,19 +14,26 @@
 							var self = this; 
 							var parentData = parent.parent.dataViews[viewId]['data'];
 							var cats = Object.keys(data);
-							self.dataLinks = {};
+							self.dataLinks = {};							
+							var auditVars = self.parent.parent.control.audit === "picanet"? $Q.Picanet["displayVariables"][viewId] : $Q.Minap["displayVariables"][viewId]; 
+									
 							cats.forEach(function(cat){
 								var dataLinks = {};
-								for(var key in parentData){
+								for(var key in parentData){									
 									dataLinks[key] = {};
 									for(var kk in parentData[key]){
+										// get the aggregation rule for this key									
+										var keyIndex = auditVars["y"].indexOf(kk);
+										var rule = auditVars["yaggregates"][keyIndex]; 
+
 										dataLinks[key][kk] = {};
 										dataLinks[key][kk]['data'] = []; 
 										dataLinks[key][kk]['value'] = 0; 
 										for(var i=0; i < parentData[key][kk]['data'].length; i++){
 											if(self.foundMatch(parentData[key][kk]['data'][i], cat, data)){
 												dataLinks[key][kk]['data'].push(parentData[key][kk]['data'][i]);
-												dataLinks[key][kk]['value']++; 
+												dataLinks[key][kk]['value'] += (rule==="count")? 1: 
+																			parent.parent.control.getRecordById(parentData[key][kk]['data'][i])[kk]; 
 											}
 										}
 									}
