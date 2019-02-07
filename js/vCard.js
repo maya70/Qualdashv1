@@ -555,7 +555,7 @@
 								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
 								self.createSlave2(slaves, ssvgW, ssvgH, xoffset);
 								//self.createSlave3(slaves, ssvgW, ssvgH, xoffset);
-								//self.createSlaveT(slaves, mainsvgW, drawAreaW, ssvgH, xoffset);	
+								self.createSlaveT(slaves, mainsvgW, drawAreaW, ssvgH, xoffset);	
 								
 							}
 							else if(!refresh || ((xoffset + ssvgW) > drawAreaW)){

@@ -116,15 +116,34 @@
                                         
                                     }
                                 }
-                                //self.meta = meta; 
-                                ////console.log(meta); 
-                                d3.csv("./data/picanet_admission/"+self.year+".csv", function(data){
-                                        ////console.log(data); 
-                                        self.data = data;                                     
-                                        ////////console.log(displayVar);
+                                
+                                d3.csv("./data/picanet_admission/"+self.year+".csv", function(data){                                      
+                                        self.data = data;                                                                           
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
-                                            self.applyAggregateRule2(self.displayVariables[display],                                                                     
+                                            /*if(self.displayVariables[display]['datapre']){
+                                                // this metric requires a data prerequisite file
+                                                // used mostly to load activity file (e.g. for dependency)
+                                                d3.csv(self.displayVariables[display]['datapre']+self.year+".csv", function(predata){
+                                                    //Preprocess: use this audit's secondary key to link the files
+                                                    var secKey = $Q.DataDefs[self.audit]["secondaryKey"];
+                                                    for(var pi= 0; pi < predata.length; pi++){
+                                                        // find the corresponding record in self.data
+                                                        self.data.forEach(function(rec){
+                                                            if(rec[secKey] === predata[pi][secKey]){
+                                                                if(!rec[self.displayVariables[display]['metric']])
+                                                                    rec[self.displayVariables[display]['metric']] = [];
+                                                                rec[self.displayVariables[display]['metric']].push(predata[pi]);
+                                                            }
+                                                        });
+                                                    }
+                                                    console.log(self.data);
+
+
+                                                });
+                                            }
+                                            else*/
+                                                self.applyAggregateRule2(self.displayVariables[display],                                                                     
                                                                     display, data);
                                         }
                                         ////console.log(self.dataViews);
@@ -363,6 +382,23 @@
                             }
                             else if(vname === "unplannedAdm" && self.audit === "picanet"){
                                 return  (parseInt(rec["adtype"]) === 2 || parseInt(rec["adtype"]) === 4)? 1 : 0; 
+                            }
+                            else if(vname === "invalid" && self.audit === "picanet"){
+                                var count = 0; 
+                                for(var key in rec){
+                                    if(rec[key] === "INV")
+                                        count++;
+                                }
+                                return count; 
+                            }
+                            else if(vname === "missing" && self.audit === "picanet"){
+                                var count = 0;
+                                for(var key in rec){
+                                    if(rec[key] === "NA")
+                                        count++;
+                                }
+                                return count; 
+
                             }
 
                         },
@@ -864,8 +900,7 @@
                                             else
                                                 slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                             
-                                            // check if we need nultiple time granularities for this
-                                            //self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
+                                            
                                         }
 
                                     });                                                   

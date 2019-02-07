@@ -84,6 +84,8 @@ $Q.Picanet = {
                     "text": "Bed Days and Extubation"},
                     {"value": "case_mix", 
                     "text": "Specialty Case Mix"},
+                    {"value": "data_quality",
+                     "text": "Data Quality"},
                     {"value": "dependency", 
                       "text": "Dependency"
                     }], 
@@ -110,11 +112,11 @@ $Q.Picanet = {
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [{"q":"der_smr","granT": "admonth", "granP":["unit"], "yaggregates": "sum" }, 
-                                        {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                        "quantities": [{"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"der_smr","granT": "admonth", "granP":["unit"], "yaggregates": "sum" },                                         
                                         {"q":"eventidscr", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly": "y", "monthly-annual": "der_smr"}   // the first element holds the master view's granT                                             
+                        "granT": {"monthly": "y", "monthly-annual": "der_death"}   // the first element holds the master view's granT                                             
           
                      }, 
                      {  "metric": "48h Readmission",
@@ -165,15 +167,19 @@ $Q.Picanet = {
                         "ehr": "Admissions", 
                         "granP": ["unit"], 
                         "categories": ["primarydiagnosisgroup","intubation", "surgicalprocedure"], 
-                        "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                                                                        
+                        "quantities": [
+                                        {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"eventidscr", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }
+                                       ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"quarterly": "y", "weekly-annual": "primarydiagnosisgroup"}, 
                         "combinations": ["adtype&der_readmit"]
                      },
-                     {  "metric": "Dependency",
-                        "mark": "bar", // should remove this 
+                     {
+                      "metric": "Data Quality",
+                      "mark": "bar", // should remove this 
                         "x": "admonth",
-                        "y": ["eventidscr", "der_death"], 
-                        "yaggregates": ["count", "sum"], 
+                        "y": ["der_missing", "der_invalid"], 
+                        "yaggregates": ["sum", "sum"], 
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "xspan": "year",    
@@ -183,13 +189,33 @@ $Q.Picanet = {
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [{"q":"der_smr","granT": "admonth", "granP":["unit"], "yaggregates": "sum" }, 
+                        "quantities": [
                                         {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"eventidscr", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly": "y", "monthly-annual": "der_smr"}   // the first element holds the master view's granT                                             
           
                      }
+                     /*{  "metric": "dependency",
+                        "datapre": "./data/picanet_activity/",
+                        "mark": "bar", // should remove this 
+                        "x": "admonth",
+                        "y": "eventidscr", 
+                        "yaggregates": ["count"], 
+                        "xType": ["t", "n"],
+                        "yType": "q",  
+                        "xspan": "year",    
+                        "yspan": "unit",  
+                        "tspan": 3,                           
+                        "granP": ["unit"], 
+                        "ehr": "Admissions",                        
+                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
+                        "quantities": [ {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"eventidscr", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly": "y", "monthly-annual": "der_smr"}   // the first element holds the master view's granT                                             
+          
+                     }*/
                      ]
 
 };
@@ -258,7 +284,8 @@ $Q.Minap = {
                                                 }]
 };
 
-$Q.DataDefs = {"picanet": {"monthVar": "admonth", 
+$Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
+                          "monthVar": "admonth", 
                           "weekVar": "adweek",
                           "yearVar": "adyear",
                           "patientIdVar": "pidscr", 
