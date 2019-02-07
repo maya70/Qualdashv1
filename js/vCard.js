@@ -69,6 +69,9 @@
 								.style("margin-left", "0%")
 								.style("overflow", "visible"); 
 						
+						$("#draw-area"+viewId).on("dblclick", function(e){
+								e.stopPropagation(); 
+							});
 
 						self.createButtons(panel, viewId); 					
 						
@@ -413,14 +416,12 @@
 							//var tdata = self.parent.control.getHistoryData(); 							
 							var tdata = self.parent.control.getTimeHier(); 
 							console.log(tdata);
-							var span = self.parent.control.audit === "picanet"? $Q.Picanet['displayVariables'][self.id]['granT']
-																				: $Q.Minap['displayVariables'][self.id]['granT'];
-							var yvar =  self.parent.control.audit === "picanet"? $Q.Picanet['displayVariables'][self.id]['y'][1]
-																				: $Q.Minap['displayVariables'][self.id]['y'][1];
+							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
+							var span = auditVars['displayVariables'][self.id]['granT'];
 							// filter tspan to remove the first time granularity, which is already displayed in the main view
 							//var index = tspan.indexOf("monthly");
 							var tspan = Object.keys(span);
-							tspan.splice(0, 1);
+							//tspan.splice(0, 1);
 							//var tdata = self.parent.control.prepTimeData(tspan[0], self.id, yvar );
 							self.ssvgtdiv =d3.select("#draw-area"+self.id).append("div")	
 											.attr("id", "ssvgtdiv"+self.id)																					
@@ -444,7 +445,7 @@
 							var tabW = mainsvgW/ tspan.length;
 							
 							var tabs = self.ssvgt.selectAll(".sttabs"+self.id)
-										.data(tspan)
+										.data(span[tspan[0]])
 										.enter().append("g")
 										.attr("class", "sttabs"+self.id)
 										.attr("transform", function(d, i){
@@ -503,11 +504,11 @@
 								.attr("dx", "1.3em")
 							    .text(function(d) { 
 							    	////console.log(d);
-							    	 return d; })
+							    	 return auditVars["variableDict"][d] || d; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 											
-							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10);						
+							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]][0] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10);						
 						},
 						nohighlight: function(){
 							var self = this;
@@ -733,6 +734,10 @@
 											.text(self.parent.availViews[m]['text'])
 											.style("font-size", "9pt");
 								}*/
+
+							$("#vsel"+viewId).on("dblclick", function(e){
+								e.stopPropagation(); 
+							});
 							
 						},
 						createButtons: function(panel, viewId){
@@ -798,16 +803,29 @@
 							    title : "Add Category"         
 							  });
 
+							$("#split-btn"+viewId).on("dblclick", function(e){
+								e.stopPropagation();
+							});
 
 							 $("#axes-btn"+viewId).tooltip({    
 							    placement : 'bottom',  
 							    title : "Add Quantity"         
 							  });    
+							 $("#axes-btn"+viewId).on("dblclick", function(e){
+								e.stopPropagation();
+							});
 							  
 							 $("#export-btn"+viewId).tooltip({    
 							    placement : 'bottom',  
 							    title : "Export as table"         
-							  });   
+							  }); 
+							  $("#export-btn"+viewId).on("dblclick", function(e){
+								e.stopPropagation();
+								});  
+
+							  $("#time-btn"+viewId).on("dblclick", function(e){
+								e.stopPropagation();
+								});
 
 							  d3.select("#export-btn"+viewId)							  	
 							  	.on("click", function(){

@@ -158,8 +158,15 @@
                             var Qs = []; 
                             var auditVars = self.audit === "picanet"? $Q.Picanet['displayVariables'][viewId]: $Q.Minap['displayVariables'][viewId];
                             for(var key in auditVars['granT']){
-                                if(Qs.indexOf(auditVars['granT'][key]) < 0 && auditVars['granT'][key] !== "y")
-                                    Qs.push(auditVars['granT'][key]);
+                                var granT = auditVars['granT'][key]; 
+                                if(granT.constructor === Array){
+                                    granT.forEach(function(g){
+                                        if(Qs.indexOf(g) < 0 && g !== "y")
+                                            Qs.push(g);       
+                                    });
+                                }
+                                else if(Qs.indexOf(granT) < 0 && granT !== "y")
+                                    Qs.push(granT);
                             }
                             return Qs; 
                         },
@@ -176,8 +183,6 @@
                                     d3.csv(fpath+year+".csv", function(data){                                        
                                         ////console.log("Loading History");
                                         var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]]; 
-                                        ////console.log(yearupdated);
-                                        //self.history.push({"year": year, "data": data});
                                         for(var d = 0; d < data.length; d++){
                                             // load historical data for this unit only unless required otherwise
                                             if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
@@ -672,6 +677,7 @@
                             var isDerived = false; 
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
                             var dateVar = auditVars['x'];
+                            var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][sid] : displayObj["yaggregates"] ;
 
                             if(yvar.indexOf("_") >= 0 ){
                                 var strs = yvar.split("_");
@@ -682,7 +688,7 @@
                             if(!isDerived ){
                                 // this is a database variable
                                 vname = yvar; 
-                                vval = (displayObj["yaggregates"][sid] === "count")? 1 : rec[vname];  
+                                vval = (yaggregates === "count")? 1 : rec[vname];  
                                 if(isNaN(vval)){
                                     vval = 0;
                                     if(!self.missing[yvar])
@@ -699,7 +705,7 @@
                                 var rule = strs[0]; 
                                 vname = strs[1];
                                 var derval = self.getDerivedValue(vname, rec);                                
-                                vval = (displayObj["yaggregates"][sid] === "count")? ((derval>0)? 1: 0) 
+                                vval = (yaggregates === "count")? ((derval>0)? 1: 0) 
                                             : derval;  
                             }
                             return vval; 
@@ -1089,7 +1095,10 @@
                                                                                                             (quant['yaggregates']==="count"? 1: qval) : 0;
                                             
                                             // check if we need nultiple time granularities for this
-                                            //self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);                                                
+                                            // only update the time hierarchy if this variable wasn't already setup in the hierarchy by the main view
+                                            if(displayVar.indexOf(quant['q']) < 0)
+                                                self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);  
+                                            //self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval);                                               
                                         }
 
                                     });                                                   
@@ -1112,6 +1121,8 @@
                                         if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
                                             for(var key in slaves['data'][quant['q']]){
                                                 slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
+                                                if(!dict[key] || !dict[key]["der_death"])
+                                                        console.log(dict);
                                                 slaves['data'][quant['q']][key]['unit'] = dict[key]["der_death"]['value'] / slaves['data'][quant['q']][key]['unit']; 
                                             }                                            
                                         }
@@ -1296,7 +1307,10 @@
                             var granT = self.audit === "picanet"? $Q.Picanet['displayVariables'][displayId]['granT']
                                                                 : $Q.Minap['displayVariables'][displayId]['granT'];
                             for(var key in granT){
-                                if(granT[key] === varname)
+                                if(granT[key].constructor === Array){
+                                    return (granT[key].indexOf(varname) >=0)? true : false;  
+                                }
+                                else if(granT[key] === varname)
                                     return true;
                             }
                             return false; 
