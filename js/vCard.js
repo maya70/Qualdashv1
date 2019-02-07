@@ -83,6 +83,9 @@
 						resetExpansion: function(){
 							this.expanded = false; 
 						},
+						getExpansionState: function(){
+							return this.expanded; 
+						},
 						createSlave1: function(cats, ssvgW, ssvgH, xoffset){
 							var self = this;
 							var cat1 = cats['cats'][0];
@@ -465,7 +468,7 @@
 												r.style("stroke", "black");			
 											
 											//catdata = cats['data'][d];
-											//self.subVis1.draw(self.id, catdata , self, ssvgW-10, ssvgH-10);
+											self.subVisT.draw(self.id, d , tspan[0], tdata , self, mainsvgW-10, ssvgH-10);				
 
 										})
 										.on("mouseover", function(d){
@@ -542,8 +545,23 @@
 							var ssvgH = drawAreaH / 3; 
 							
 								
-							if(self.expanded && !self.ssvg1){
+							if(self.expanded){
 								
+								if(self.ssvg1){
+									// remove existing slaves if they exist
+									// this is to create them anew and position them
+									// according to the newly resized card dimensions
+								
+									var undef;								
+									d3.selectAll(".ssvg"+self.id).remove(); 
+									d3.selectAll("#ssvgtdiv"+self.id).remove();
+									d3.selectAll(".ssvgdiv"+self.id).remove();
+									self.ssvg1 = undef;
+									self.ssvg2 = undef;
+									self.ssvg3 = undef;
+									self.ssvgt = undef;
+									
+								}
 								d3.select("#panel"+self.id)
 									.style("visibility", "visible");
 
@@ -799,7 +817,8 @@
 								.style("color", "black"); 
 
 							var split_ttip = $("#split-btn"+viewId).tooltip({    
-							    placement : 'bottom',  
+							    placement : 'bottom', 
+							    trigger: 'hover', 
 							    title : "Add Category"         
 							  });
 
@@ -808,7 +827,8 @@
 							});
 
 							 $("#axes-btn"+viewId).tooltip({    
-							    placement : 'bottom',  
+							    placement : 'bottom', 
+							    trigger: 'hover', 
 							    title : "Add Quantity"         
 							  });    
 							 $("#axes-btn"+viewId).on("dblclick", function(e){
@@ -816,7 +836,8 @@
 							});
 							  
 							 $("#export-btn"+viewId).tooltip({    
-							    placement : 'bottom',  
+							    placement : 'bottom', 
+							    trigger: 'hover', 
 							    title : "Export as table"         
 							  }); 
 							  $("#export-btn"+viewId).on("dblclick", function(e){

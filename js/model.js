@@ -161,11 +161,11 @@
                                 var granT = auditVars['granT'][key]; 
                                 if(granT.constructor === Array){
                                     granT.forEach(function(g){
-                                        if(Qs.indexOf(g) < 0 && g !== "y")
+                                        if(Qs.indexOf(g) < 0)
                                             Qs.push(g);       
                                     });
                                 }
-                                else if(Qs.indexOf(granT) < 0 && granT !== "y")
+                                else if(Qs.indexOf(granT) < 0 )
                                     Qs.push(granT);
                             }
                             return Qs; 

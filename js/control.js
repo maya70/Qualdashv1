@@ -4,6 +4,7 @@
 					null, 
 					function Control(config){
 						var self = this;
+						self.highlightColor = "cyan"; 
 						self.dataModel = new $Q.Model(self); 
 						self.mainView = new $Q.MainView(self); 						
 					
@@ -26,6 +27,9 @@
 							self.dataViews = dataViews; 						
 							self.allVars =  Object.keys(rawData[0]); 
 							self.mainView.createQualCards(dataViews);
+						},
+						getYear: function(){
+							return this.dataModel.year; 
 						},
 						getTimeHier: function(){
 							var self = this;

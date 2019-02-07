@@ -529,7 +529,9 @@
 							var self = this; 
 							self.grid.refreshItems().layout();	
 							self.cards.forEach(function(card){
-									card.setExpansion(); 
+								if(!card.getExpansionState()){
+									card.setExpansion(); 									
+									}
 									card.resizeVis(); 
 								});
 						},
@@ -537,7 +539,9 @@
 							var self = this; 
 							self.grid.refreshItems().layout();	
 							self.cards.forEach(function(card){
-									card.resetExpansion(); 
+								 if(card.getExpansionState()){
+									card.resetExpansion(); 									
+									}
 									card.resizeVis(); 
 								});	
 						},

@@ -17,6 +17,11 @@
 							
 					},
 					{
+						draw: function(viewId,vname ,span, data, parent, svgw, svgh){
+							var self = this; 
+							self.data = self.prepData(data, vname, span); 						
+							self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
+						},
 						getChildStart: function(){
 							return "2012";
 						},

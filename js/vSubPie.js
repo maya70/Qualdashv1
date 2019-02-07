@@ -5,7 +5,7 @@
 					function SubPieChart(viewId, dname, data, parent, svgw, svgh){
 						var self = this;	
 						self.parent = parent; 
-						
+						self.highlightColor = parent.parent.control.highlightColor; 
 						self.draw(viewId, dname, data, parent, svgw, svgh);
 							
 					},
@@ -309,7 +309,7 @@
 							var color = d3.scaleOrdinal()
 										  .domain(self.data.map(d => d.date))
 										  .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), self.data.length).reverse());
-										  //.range(d3.quantize(t => d3.interpolateRgb("steelblue", "brown"), data.length).reverse());
+										  //.range(d3.quantize(t => d3.interpolateRgb("steelblue", self.highlightColor), data.length).reverse());
 	 					    self.color = color; 
 	 					    const arcs = pie(self.data);
 
@@ -331,7 +331,7 @@
 							      	self.parent.highlight(self.dataLinks[d.data.date], viewId);
 							      	////console.log(self.dataLinks[d.data.date]);			
 							      	origColor = d3.select(this).style("fill");
-							      	d3.select(this).style("fill", "brown");
+							      	d3.select(this).style("fill", self.highlightColor);
 							      })
 							      .on("mouseout", function(d){
 							      	self.parent.nohighlight(); 

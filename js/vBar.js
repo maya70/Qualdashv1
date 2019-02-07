@@ -12,7 +12,9 @@
 						self.toggle = "grouped";
 						self.dataView = dataView; 
 						self.palette = {};
-
+						self.leftMargin = 60; 
+						self.highlightColor = pCard.parent.control.highlightColor; 
+						self.highlightOpacity = 0.6;
 						if(dataView.ylength < 4 ){
 							//(dataView['yscale'][0] === dataView['yscale'][1])?
 							 self.drawCatBar2(dataView,0);
@@ -96,7 +98,10 @@
 									.attr("y", function(d) { return y(d.number); })
 									.attr("width", x.bandwidth())
 							      	.attr("height", function(d) { return height  - y(d.number); })
-									.style("fill", "brown"); 
+									.style("fill", self.highlightColor);
+									//.style("opacity", self.highlightOpacity)
+									//.style("stroke-width", 1.0)
+									//.style("stroke", self.highlightColor); 
 							
 							      
 						},
@@ -135,10 +140,11 @@
 							var svgh = scale * parentArea.node().getBoundingClientRect().height; 
 							var shift = ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width); 
 							
-							var margin = {top: self.marginTop, right: 10, bottom: 50, left: 30};							
+							var margin = {top: self.marginTop, right: 10, bottom: 50, left: self.leftMargin};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							
+							console.log(width);
 
 							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + (margin.top) + ")" );
 							
@@ -157,7 +163,11 @@
 							  .enter().append("g")
 							  	.attr("class", "shades")
 							    .attr("fill", function(d, i) { 
-							    	return "brown"; });
+							    	return self.highlightColor; });
+							    //.style("opacity", self.highlightOpacity)
+							    //.style("stroke-width", 1.0)
+								//.style("stroke", self.highlightColor); 
+							
 							 
 							 var rect = series.selectAll("rect.shade")
 							  .data(function(d) { return d; })
@@ -308,7 +318,11 @@
 							      	div .html((d.date) + "<br/>" + (d.number+ ""))
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
-							      	d3.select(this).style("fill", "brown");
+							      	d3.select(this).style("fill", self.highlightColor);
+								      	/*.style("stroke-width", 1.0)
+										.style("stroke", self.highlightColor)
+										.style("opacity", self.highlightOpacity);*/
+								      	
 							      	self.parent.highlightSubs(d['data']);
 							      	
 							      	
@@ -320,9 +334,11 @@
 							      	var sel = d3.select(this);
 							      	var sel = d3.select(this);
 							      	var as = sel.attr("selected");
-							      	if(!as || as=== "false" )
-							      		sel.style("fill", self.palette[d[0]]);
+							      	if(!as || as=== "false" ){
+							      		sel.style("fill", self.palette[d[0]]);							      		
+							      	}
 							      	self.parent.nohighlightSubs(); 
+							      	
 							      })
 							      .on("click", function(d,i){
 							      	var selStatus = d3.select(this).attr("selected");
@@ -370,7 +386,7 @@
 								self.cat[viewId] = cat;
 								self.levels = levels; 
 								var undef;
-								
+								var auditVars = self.audit === "picanet"? $Q.Picanet : $Q.Minap; 
 								if(trellis)
 									console.log("this is a trellis view");
 								// sort dict by date
@@ -453,14 +469,14 @@
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 15, right: 10, bottom: 50, left: 30};							
+							var margin = {top: 15, right: 10, bottom: 50, left: self.leftMargin};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							var color = d3.scaleOrdinal()
 							    .domain(d3.range(levels.length))
 							    .range($Q.colors);
 							
-
+							   console.log(width); 
 							 
 							 if(!self.legend)
 							 {	
@@ -504,7 +520,26 @@
 							    if(numValues > 2){
 							    	margin.top = 15 * Math.ceil(numValues/2);
 							    	height = svgh - margin.top - margin.bottom;
-							     }
+							     }	
+							     // y-axis labels
+							     self.parent.svg.append("text")
+								      .attr("transform", "rotate(-90)")
+								      .attr("y", margin.left/5)
+								      .attr("x",0 - (height *0.6) )
+								      .attr("dy", "1em")
+								      .style("text-anchor", "middle")
+								      .style("font-size", "9pt")
+								      .text(auditVars["displayVariables"][viewId]["ylabel"]);   
+
+								 // x-axis labels
+								 self.parent.svg.append("text")             
+								      .attr("transform",
+								            "translate(" + (svgw/2) + " ," + 
+								                           (height + margin.top + margin.bottom) + ")")
+								      .style("text-anchor", "middle")
+								      .style("font-size", "9pt")
+								      .text(self.parent.parent.control.getYear());					
+
 							    }
 							self.marginTop = margin.top; 
 							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
@@ -557,7 +592,11 @@
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	//origColor = d3.select(this).style("fill");
-							      	d3.select(this).style("fill", "brown");
+							      	d3.select(this).style("fill", self.highlightColor);
+							      					//.style("opacity",self.highlightOpacity)
+							      					//.style("stroke-width", 1.0)
+													//.style("stroke", self.highlightColor); 
+							
 							      	// find the key for the corresponding data entry
 							      	for(var key in dict[i+1]){
 							      		if(dict[i+1][key]['value'] === (d[1] - d[0]))
@@ -803,7 +842,7 @@
 						},
 						resizeCatBar: function(){
 							var self = this;
-							var margin = self.cat? {top: self.marginTop, right: 10, bottom: 50, left:30} : {top: 10, right: 10, bottom: 65, left:30}; //TODO: modify this according to different views
+							var margin = self.cat? {top: self.marginTop, right: 10, bottom: 50, left:self.leftMargin} : {top: 10, right: 10, bottom: 65, left:self.leftMargin}; //TODO: modify this according to different views
 							var scale = self.parent.expanded? 0.6 : 0.9; 
 							var drawArea = d3.select("#draw-area"+self.id);							
 							var parentArea = drawArea.select(function(){
@@ -827,7 +866,8 @@
 								y = d3.scaleLinear().range([height, 0]).nice(); 
 							//var data = self.audit === "picanet"? self.fixDataFormat() :self.data; 							
 							var data = self.data; 
-							console.log(data);
+							//console.log(data);
+							console.log(width); 
 							x.domain(data.map(function(d){
 									return d.date; 
 							}));
