@@ -114,7 +114,7 @@
 							var scale = 0.95;
 
 							var margin = {top: 30, right: 20, bottom: 30, left: 40},
-							    width = 2*svgw - margin.left - margin.right,
+							    width = 1.5*svgw - margin.left - margin.right,
 							    height = svgh * scale - margin.top - margin.bottom;
 							var averages = [];
 							self.yMax = Math.max.apply(Math, jsonData.map(function(o) { 
@@ -149,6 +149,9 @@
 							    .attr("class", "tooltip")				
 							    .style("opacity", 0);
 
+							if(self.svg){								
+								parent.ssvgt.select("svg").remove(); 								
+							}
 
 							var svg = parent.ssvgt.append("svg")			    
 							    .attr("width", width + margin.left + margin.right)
@@ -157,6 +160,8 @@
 							  .attr("class", "g-time-container"+viewId)
 							  .datum(data)
 							    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+							self.svg = svg; 
 
 							svg.append("path")
 							    .attr("class", "area")

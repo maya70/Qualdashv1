@@ -433,7 +433,7 @@
 											.style("position", "absolute")
 											.style("bottom", "10px")
 											.style("left", "10px")
-											.style("overflow-x", "scroll")
+											.style("overflow-x", "hidden")
 											.style("overflow-y", "hidden")
 											.style("border", "1px solid black");											
 
