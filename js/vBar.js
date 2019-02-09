@@ -151,7 +151,7 @@
 							var x = d3.scaleBand()
 									    .domain(xz)
 									    .rangeRound([0, width])
-									    .padding(0.08);
+									    .padding(0.1);
 
 							var y = d3.scaleLinear()
 							    .domain([0, self.yMax])
@@ -523,6 +523,7 @@
 							     }	
 							     // y-axis labels
 							     self.parent.svg.append("text")
+							     	  .attr("class", "ylabel")
 								      .attr("transform", "rotate(-90)")
 								      .attr("y", margin.left/5)
 								      .attr("x",0 - (height *0.6) )
@@ -532,7 +533,8 @@
 								      .text(auditVars["displayVariables"][viewId]["ylabel"]);   
 
 								 // x-axis labels
-								 self.parent.svg.append("text")             
+								 self.parent.svg.append("text") 
+								 	  .attr("class", "xlabel")            
 								      .attr("transform",
 								            "translate(" + (svgw/2) + " ," + 
 								                           (height + margin.top + margin.bottom) + ")")
@@ -548,23 +550,16 @@
 											  changed(); 
 											}, 4000);
 
-							//g.append("circle").attr("cx", 40).attr("cy", 50).attr("r", 100).style("fill", "red");
-
 							var x = d3.scaleBand()
 									    .domain(xz)
 									    .rangeRound([0, width])
-									    .padding(0.08);
+									    .padding(0.1);
 
 							var y = d3.scaleLinear()
 							    .domain([0, y1Max])
 							    .range([height, 0]);
 
-							    //.range(d3.schemeCategory10);
-
-							 //for(var l=0; l < levels.length; l++){
-							 //	self.palette[levels[l]] = color(levels[l]);
-							// }
-
+							   
 							var series = g.selectAll(".series")
 							  .data(y01z)
 							  .enter().append("g")
@@ -600,7 +595,7 @@
 							      	// find the key for the corresponding data entry
 							      	for(var key in dict[i+1]){
 							      		if(dict[i+1][key]['value'] === (d[1] - d[0]))
-							      			self.parent.highlightSubs(dict[i+1][key]['data']);
+							      			self.parent.highlightSubs(key, dict[i+1][key]['data'], (i+1));
 							      			//console.log(dict[i+1][key]['data']); 
 							      	}
 
@@ -911,8 +906,21 @@
 							      	return y(d.number)+ margin.top; })
 							      .attr("width", x.bandwidth())
 							      .attr("height", function(d) { return height  - y(d.number); });
-							}		
-
+							}
+							if(self.legend)
+							 {	
+							     // y-axis labels
+							     self.parent.svg.select(".ylabel")
+								      .attr("x",0 - (height *0.6) );
+								      
+								 // x-axis labels
+								 self.parent.svg.select(".xlabel")             
+								      .attr("transform",
+								            "translate(" + (svgw/2) + " ," + 
+								                           (height + margin.top + margin.bottom) + ")");
+								      
+							  }
+							
 						},
 						getPalette: function(){
 							return this.palette; 

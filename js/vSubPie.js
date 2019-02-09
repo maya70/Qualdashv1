@@ -5,6 +5,27 @@
 					function SubPieChart(viewId, dname, data, parent, svgw, svgh){
 						var self = this;	
 						self.parent = parent; 
+						self.palette = ["#8dd3c7",
+										"#ffffb3",
+										"#bebada",
+										"#fb8072",
+										"#80b1d3",
+										"#fdb462",
+										"#b3de69",
+										"#fccde5",
+										"#d9d9d9",
+										"#bc80bd",
+										"#ccebc5",
+										"#ffed6f",
+										"#e41a1c",
+										"#377eb8",
+										"#4daf4a",
+										"#984ea3",
+										"#ff7f00",
+										"#ffff33",
+										"#a65628",
+										'#f781bf',
+										"#999999"];
 						self.highlightColor = parent.parent.control.highlightColor; 
 						self.draw(viewId, dname, data, parent, svgw, svgh);
 							
@@ -45,8 +66,8 @@
 						nohighlight: function(){
 							var self = this;
 							var updated = self.update(self.data); 
-							self.updatePieLabels(updated); 
-
+							self.updatePieLabels(updated); 							
+						
 						},
 						highlight: function(recIds){
 							var self = this;	
@@ -308,7 +329,8 @@
 									    .outerRadius(radius);
 							var color = d3.scaleOrdinal()
 										  .domain(self.data.map(d => d.date))
-										  .range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), self.data.length).reverse());
+										  .range(self.palette);
+										  //.range(d3.quantize(t => d3.interpolateSpectral(t * 0.8 + 0.1), self.data.length).reverse());
 										  //.range(d3.quantize(t => d3.interpolateRgb("steelblue", self.highlightColor), data.length).reverse());
 	 					    self.color = color; 
 	 					    const arcs = pie(self.data);

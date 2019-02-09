@@ -6,7 +6,7 @@
 						var self = this; 
 						self.expanded = false; 
 						self.id = viewId; 
-						self.parent = mainView; 
+						self.parent = mainView; 						
 						var container = d3.select("#mainCanvas").append("div")
 											.attr("class", "item")
 											.attr("id", "cardcontainer"+viewId)
@@ -46,9 +46,7 @@
 								.style("margin-left", "1%")
 								.style("margin-top", "-10px")
 								.style("vertical-align", "top"); 
-								 
-						
-						
+								 					
 						
 						var card = cbody.append("div")
 										.attr("class", "item-content")
@@ -77,6 +75,22 @@
 						
 					},
 					{
+						getCardPalette: function(){
+							var self = this;
+							var allColors = [];
+							$Q.colors.forEach(function(c){
+								allColors.push(c); 
+							});
+							// remove colors that are already used by main view
+							var mainViewColors = self.vis.getPalette(); 
+							for(var key in mainViewColors){
+								var index = allColors.indexOf(mainViewColors[key]);
+								if(index >= 0) allColors.splice(index, 1);
+							}
+							if(!self.cardPalette)
+								self.cardPalette = {};
+							return allColors; 
+						},
 						setExpansion: function(){
 							this.expanded = true; 
 						},
@@ -110,18 +124,7 @@
 											.attr("width", ssvgW)
 											.attr("height", ssvgH);	
 							
-							
-							/*self.ssvg1 = d3.select("#draw-area"+self.id).append("svg")
-											.attr("id", "ssvg1"+self.id)
-											.attr("class", "ssvg"+self.id)
-											.style("display", "inline-block")
-											.attr("width", ssvgW)
-											.attr("height", ssvgH)	
-											.style("position", "absolute")
-											.style("top", 11)
-											.style("left", xoffset);										
-											//.attr("transform", "translate("+ 0 +","+ (-200) +")");
-							*/
+					 		
 							var tabs = self.ssvg1.selectAll(".stabs"+self.id)
 										.data(cats['cats'])
 										.enter().append("g")
@@ -183,18 +186,8 @@
 								.attr("dx", ".3em")
 							    .text(function(d) { return $Q.Picanet["variableDict"][d] || d; })
 							    .style("font", "8px sans-serif")
-							     .style("text-anchor", "bottom")
-							     ;
+							     .style("text-anchor", "bottom");
 							
-							/*self.ssvg1.append("rect")
-									.attr("id","draw-rect-1-"+self.id)											
-									.attr("x", 5)
-									.attr("y", 15)
-									.attr("width", ssvgW-10)
-									.attr("height", ssvgH - 30)
-									.style("stroke", "black")
-									.style("fill", "none"); */
-
 							
 							self.subVis1 = new $Q.SubPieChart(self.id, cat1, catdata , self, ssvgW-10, ssvgH-10);
 
@@ -215,10 +208,15 @@
 							});
 							quantityNames.forEach(function(q, i){
 								var index = mainQs.indexOf(q['q']);
-								if(index >=0)
-									quantityNames.splice(i,1); 
+								if(index >=0){
+									quantityNames.splice(i,1);
+									//self.cardPalette.splice(i,1); 
+								}
 							});
-						    console.log(quantityNames);
+						   	var palette = self.getCardPalette(); 
+						   	quantityNames.forEach(function(d,i){
+						   		self.cardPalette[d['q']] = palette[i];
+						   	});
 
 							var tabW = ssvgW/ quantityNames.length;
 
@@ -246,7 +244,7 @@
 										.attr("transform", function(d, i){
 											return "translate("+ (i*tabW) + ",0)"; 
 										})
-										.on("click", function(d){
+										.on("click", function(d, i){
 											// deselect all tabs
 											var all = d3.selectAll(".rqtabs"+self.id);
 												all.attr("active", 0);
@@ -261,7 +259,7 @@
 											
 											qdata = slaves['data'][d['q']];
 											////console.log(qdata);
-											self.subVis2.draw(self.id, d['q'], qdata , self, ssvgW-10, ssvgH-10);
+											self.subVis2.draw(self.id, self.cardPalette[d['q']], d['q'], qdata , self, ssvgW-10, ssvgH-10);
 											
 
 										})
@@ -305,18 +303,10 @@
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 							
-							/*self.ssvg2.append("rect")
-									.attr("id","draw-rect-2-"+self.id)											
-									.attr("x", 5)
-									.attr("y", 15)
-									.attr("width", ssvgW-10)
-									.attr("height", ssvgH - 30)
-									.style("stroke", "black")
-									.style("fill", "none"); */
 							var quant1 = quantityNames[0]['q'];
 							var qdata = slaves['data'][quant1];
 							
-							self.subVis2 = new $Q.SubBarChart(self.id, quant1, qdata , self, ssvgW-10, ssvgH-10);
+							self.subVis2 = new $Q.SubBarChart(self.id, self.cardPalette[quant1], quant1, qdata , self, ssvgW-10, ssvgH-10);
 
 						},
 						createSlave3: function(slaves, ssvgW, ssvgH, xoffset){
@@ -521,13 +511,47 @@
 							var self = this ;
 							self.vis.highlight(hdata, viewId);
 						},
-						highlightSubs: function(recIds){
+						highlightSubs: function(key, recIds, tid){
 							var self = this; 
-							if(self.subVis1) self.subVis1.highlight(recIds);
+							if(self.selectionEmpty()){
+								if(self.subVis1) self.subVis1.highlight(recIds);
+								if(self.subVis2) self.subVis2.highlight(tid);	
+							}
+							else{
+								// use recIds to expand selection temporarily then highlight subs 
+								var tempsel = [];
+								for(var sel in self.selection){
+									var existing = Object.keys(self.selection[sel]);
+									existing.forEach(function(ex){
+										tempsel.push(parseInt(ex));
+									});									
+								}
+								recIds.forEach(function(d){
+									if(tempsel.indexOf(d) < 0)
+										tempsel.push(d);									
+								});								
+								if(self.subVis1) self.subVis1.highlight(tempsel);									
+							}
+							
 						},
 						nohighlightSubs: function(){
 							var self = this;
-							if(self.subVis1) self.subVis1.nohighlight();	
+							if(self.selectionEmpty()){
+								if(self.subVis1) self.subVis1.nohighlight();		
+								if(self.subVis2) self.subVis2.nohighlight();		
+							}
+							else{
+								// only keep the selected records highlighted								
+								var tempsel = [];
+								for(var sel in self.selection){
+									var existing = Object.keys(self.selection[sel]);
+									existing.forEach(function(ex){
+										tempsel.push(parseInt(ex));
+									});									
+								}		
+								if(self.subVis1) self.subVis1.highlight(tempsel);		
+							}
+							
 						},
 						resizeVis: function(refresh){
 							var self = this;
@@ -909,6 +933,19 @@
 								    }
 								    return true;
 								}
+						},
+						selectionEmpty: function(){
+							var self = this;
+							var isEmpty = true;
+							if(!self.selection)
+								return true; 
+							for(var key in self.selection){
+								var obj = self.selection[key]; 
+								var condition = Object.keys(obj).length === 0 && obj.constructor === Object;
+								if(!condition)
+									isEmpty = false; 
+							}
+							return isEmpty; 
 						},
 						getAuditInfo: function(){
 							return this.parent.control.audit; 
