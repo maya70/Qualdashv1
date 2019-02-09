@@ -96,6 +96,7 @@
 							    .data(data)
 							    .enter().append("rect")
 							      .attr("class", "bar")
+							      .style("stroke", "darkgrey")
 							      .attr("x", function(d) { return x(d.date); })
 							      .attr("y", function(d) { 
 							      	if(d.number >=0 )

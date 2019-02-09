@@ -505,11 +505,38 @@
 						},
 						nohighlight: function(){
 							var self = this;
-							self.vis.removeShade(); 
+							if(self.selectionEmpty())
+								self.vis.removeShade(); 
+							
 						},
 						highlight: function(hdata, viewId){
 							var self = this ;
-							self.vis.highlight(hdata, viewId);
+							if(self.selectionEmpty())
+								self.vis.highlight(hdata, viewId);
+							else{
+								self.vis.nohighlight(); 
+								// intersect with existing selection								
+								var tempsel = {};
+								for(var k in hdata){
+									tempsel[k] = {};
+									for(var kk in hdata[k]){
+										tempsel[k][kk] = {};
+										tempsel[k][kk]['data'] = [];
+										tempsel[k][kk]['value'] = 0; 
+										if(self.selection[kk]){
+											var data = Object.keys(self.selection[kk]);
+											data.forEach(function(d){
+												if(hdata[k][kk]['data'].indexOf(parseInt(d))>=0){
+													tempsel[k][kk]['data'].push(parseInt(d));
+													tempsel[k][kk]['value']++;
+												}
+											});
+										}
+									}
+								}
+								self.vis.highlight(tempsel, viewId); 
+							}
+
 						},
 						highlightSubs: function(key, recIds, tid){
 							var self = this; 

@@ -369,6 +369,12 @@
 							 
 
 						},
+						nohighlight: function(){
+							var self = this;
+							self.svg.selectAll(".bar").style("fill", function(d){
+								return self.palette[d[0]];
+							})
+						},
 						drawCatBar2: function(dataView, trellis){
 							var self = this; 
 							if(trellis){
@@ -431,7 +437,7 @@
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
                                	self.yMax = yMax; 
-                           console.log(self.yMax); 
+                           //console.log(self.yMax); 
 
 							if(self.parent.svg && iter === 0){
 							//	d3.selectAll("svg").remove(); 
@@ -578,6 +584,7 @@
 							    .attr("y", height)
 							    .attr("width", x.bandwidth())
 							    .attr("height", 0)
+							    .style("stroke", "darkgrey")
 							     .on("mouseover", function(d, i){
 							  
 							      	div.transition()
@@ -862,7 +869,7 @@
 							//var data = self.audit === "picanet"? self.fixDataFormat() :self.data; 							
 							var data = self.data; 
 							//console.log(data);
-							console.log(width); 
+							//console.log(width); 
 							x.domain(data.map(function(d){
 									return d.date; 
 							}));
