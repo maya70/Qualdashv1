@@ -331,7 +331,7 @@
 							      	div.transition()
 							      		.duration(500)
 							      		.style("opacity", 0);
-							      	var sel = d3.select(this);
+							      	//var sel = d3.select(this);
 							      	var sel = d3.select(this);
 							      	var as = sel.attr("selected");
 							      	if(!as || as=== "false" ){
@@ -368,6 +368,19 @@
 							var self = this;
 							 
 
+						},
+						highlightSelected: function(){
+							var self = this;
+							self.removeShade(); 
+							self.svg.selectAll(".bar").style("fill", function(d){
+								var sel = d3.select(this);
+								var as = sel.attr("selected");
+							    if(!as || as=== "false" )
+							      	return self.palette[d[0]];
+								else
+									return self.highlightColor;								
+									
+							})
 						},
 						nohighlight: function(){
 							var self = this;

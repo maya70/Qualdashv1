@@ -507,7 +507,10 @@
 							var self = this;
 							if(self.selectionEmpty())
 								self.vis.removeShade(); 
-							
+							else{
+								self.vis.highlightSelected(); 
+
+							}
 						},
 						highlight: function(hdata, viewId){
 							var self = this ;
