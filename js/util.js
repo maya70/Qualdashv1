@@ -148,7 +148,7 @@ $Q.Picanet = {
                      {  "metric": "Bed Days and Extubation",
                         "mark": "bar",
                         "x": "admonth" ,
-                        "y":["der_bedDays", "der_invVentDays", "der_noninvVentDays", "der_extubation"],
+                        "y":["der_bedDays", "der_invVentDays", "der_extubation"],
                         "xType": "t",
                         "yType": ["q", "q"], 
                         "xspan": "year",    

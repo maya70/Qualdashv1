@@ -120,17 +120,24 @@
                                 
                                 d3.csv("./data/picanet_admission/"+self.year+".csv", function(data){                                      
                                         self.data = data;  
+                                        //console.log(self.data);
+                                        for(var i=0; i < self.data.length; i++){
+                                            self.data[i]["EVENTID"] = ""+self.data[i]["eventidscr"];                                            
+                                        }                                    
                                         d3.csv("./data/picanet_admission/shortactiv"+self.year+".csv", function(extra){                                                                         
                                             
                                             self.activityIndex = {};
                                             for(var ex=0; ex < extra.length; ex++){
-                                                if(!self.activityIndex[extra[ex]["eventidscr"]])
-                                                    self.activityIndex[extra[ex]["eventidscr"]] = [];
-                                                self.activityIndex[extra[ex]["eventidscr"]].push(extra[ex]);
+                                                if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID){
+                                                    if(!self.activityIndex[extra[ex]["eventidscr"]])
+                                                        self.activityIndex[extra[ex]["eventidscr"]] = [];
+                                                    self.activityIndex[extra[ex]["eventidscr"]].push(extra[ex]);
+                                                }
                                             }
                                             //console.log(self.activityIndex); 
+                                            
                                             for(var display = 0; display < self.displayVariables.length; display++)
-                                            {
+                                            {                                                
                                                self.applyAggregateRule2(self.displayVariables[display],display, data);
                                             }
                                             ////console.log(self.dataViews);
@@ -367,7 +374,20 @@
                                 return Math.abs(self.stringToDate(rec["unitdisdate"]).getTime() - self.stringToDate(rec["addate"]).getTime())/one_day;
                             }
                             else if(vname === "invVentDays" && self.audit === "picanet"){                                
-                                return  parseInt(rec["invventday"]) || 0; 
+                                //return  parseInt(rec["invventday"]) || 0; 
+                                var countVent = 0; 
+                                // get the corresponding activity records
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a){
+                                        if(parseInt(a["invventet"]) === 1 )
+                                            //|| a["ventilationstatus"] === "Invasive only" 
+                                            //|| a["ventilationstatus"] === "Both")
+                                            countVent++; 
+                                    });
+                                    return countVent; 
+                                }
+                                return 0; 
                             }
                             else if(vname === "noninvVentDays" && self.audit === "picanet"){
                                 return parseInt(rec["noninvventday"]) || 0; 
@@ -376,7 +396,22 @@
                                 return  (parseInt(rec["adtype"]) === 2 || parseInt(rec["adtype"]) === 4)? 1 : 0; 
                             }
                             else if(vname === "extubation" && self.audit === "picanet"){
-                                return (parseInt(rec["unplannedextubation"])===1);
+                                //return (parseInt(rec["unplannedextubation"])===1);
+                                var countVent = 0; 
+                                // get the corresponding activity records
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a, i){
+                                        active.forEach(function(b, j){
+                                            if( (i < j) && a["invventet"] === "1" && b["invventet"] === "0") 
+                                                //&& self.stringToDate(a["addate"]).getTime() < self.stringToDate(b["addate"]).getTime())
+                                                countVent++; 
+                                        });
+                                    });
+                                    return countVent; 
+                                }
+                                return 0; 
+
                             }
                             else if(vname === "invalid" && self.audit === "picanet"){
                                 var count = 0; 
@@ -398,7 +433,7 @@
 
                         },
                         calculateDerivedVar: function(metric, yvar){
-                            ////console.log("Calculating "+ metric); 
+                            //////console.log("Calculating "+ metric); 
                             var self = this; 
                             var derived = []; 
                             for(var i=0; i< self.data.length; i++){
@@ -428,7 +463,7 @@
                                     var readmission_date = new Date(self.data[i][vars[1]]);
                                     
                                     var diff = Math.round((readmission_date.getTime() - discharge_date.getTime())/one_day); 
-                                    ////console.log(diff); 
+                                    //////console.log(diff); 
                                     self.data[i][metric] = ((diff > 0) && (diff <= 2))? 1: 0; */
                                 }
                                 else if(metric === "Length of Stay"){
@@ -439,7 +474,7 @@
                                 }
 
                             }        
-                            //////console.log(self.ehr); 
+                            ////////console.log(self.ehr); 
                             if(metric === "48h Readmission"){
                                 for(var i=0; i< self.data.length; i++){
 
@@ -668,6 +703,7 @@
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
                             var dateVar = auditVars['x'];
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][sid] : displayObj["yaggregates"] ;
+                            
 
                             if(yvar.indexOf("_") >= 0 ){
                                 var strs = yvar.split("_");
@@ -946,6 +982,7 @@
                             var self = this;
                             var dict = {};
                             var tHier = {}; 
+                            
                             var metric = displayObj["metric"],
                                 dateVar = displayObj["x"],
                                 displayVar = displayObj["y"],
@@ -991,6 +1028,7 @@
                             var ownrecords = 0;  // keep a count of this unit's records
                             var observedDeathsNational = {}; 
                             ////console.log(self.ehr);
+                           
                             for(var i=0; i < self.data.length; i++){
                                 /**
                                  * handle multiple quantitative variables
@@ -1102,7 +1140,7 @@
                                 var postData = self.postProcess(dict, slaves);
                                 dict = postData['dict'];
                                 slaves = postData['slaves'];
-                                console.log(slaves);                                 
+                                //console.log(slaves);                                 
                             }
                             ////console.log(dict);
                              // 2. Update the slaves: 
@@ -1136,7 +1174,7 @@
                         applyAggregateRule2: function(displayObj, displayId, data, redraw){
                             var self = this; 
                             var displayVar = displayObj["y"];
-                            
+                            //console.log(self.data);
                             // prepare the dict
                             if(displayVar.constructor == Array){                                
                                     self.applyMultiQ(displayObj, displayId, data, redraw);
@@ -1371,22 +1409,18 @@
                             }
                             else if(categoricals.length === 1){  // count within categories
                                 var cat = categoricals[0];
-                                ////console.log(cat);
+                                
 
                                 var levels = d3.map(self.data, function(item){
                                     return item[cat];
                                     }).keys();
-                                ////console.log(levels);
+                                
                                 for(var i=0; i< data.length; i++){
                                                         // get the month of this entry
                                                         var date = self.stringToDate(data[i][dateVar]);
-                                                        ////////console.log(date); 
                                                         var month = self.months[date.getMonth()];
                                                         var year = date.getYear()+1900; 
-                                                        //////////console.log(month);
-                                                        //////////console.log(year);
                                                         var my = month+"-"+year; 
-                                                        ////////console.log(my); 
                                                         if(!dict[my]){
                                                             dict[my] = {};
                                                             levels.forEach(function(level){
@@ -1397,14 +1431,13 @@
                                                         var level = data[i][cat];
                                                         dict[my][level] += parseInt(data[i][displayVar]);                                                        
                                                     }
-                                //////console.log(dict);                             
+                                
                                if(redraw)    
                                     self.control.drawChart(displayId, dict, cat, levels);
 
                             }
                         else if(categoricals.length === 2){
-                            ////console.log("TWO CATS"); 
-
+                           
                             // new variable divides the trellis
                             var levels0 = d3.map(self.data, function(item){
                                     return item[categoricals[displayId][1]];
@@ -1414,7 +1447,6 @@
                                     return item[categoricals[displayId][0]];
                                     }).keys();
                             
-                            //////console.log(levels0);
                             levels0.forEach(function(level){
                                 dict[level] = {};
                             });
