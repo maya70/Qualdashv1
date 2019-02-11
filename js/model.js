@@ -9,6 +9,7 @@
                         self.ehr = {};  // keeps a dictionary by patient NHS number for patient pathway calculations (including 48h readmission)
                         self.ehrHist = {};
                         self.unitID = "194281";                        
+                        //self.unitID = "39579"; 
                         self.slaves = {};
                         self.year = "2014"; 
                         self.cardCats = []; 
@@ -387,6 +388,9 @@
                             }
                             else if(vname === "unplannedAdm" && self.audit === "picanet"){
                                 return  (parseInt(rec["adtype"]) === 2 || parseInt(rec["adtype"]) === 4)? 1 : 0; 
+                            }
+                            else if(vname === "extubation" && self.audit === "picanet"){
+                                return (parseInt(rec["unplannedextubation"])===1);
                             }
                             else if(vname === "invalid" && self.audit === "picanet"){
                                 var count = 0; 

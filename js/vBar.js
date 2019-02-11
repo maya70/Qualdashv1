@@ -15,7 +15,7 @@
 						self.leftMargin = 60; 
 						self.highlightColor = pCard.parent.control.highlightColor; 
 						self.highlightOpacity = 0.6;
-						if(dataView.ylength < 4 ){
+						if(dataView.ylength < 5 ){
 							//(dataView['yscale'][0] === dataView['yscale'][1])?
 							 self.drawCatBar2(dataView,0);
 							 //: self.drawDualBar();
