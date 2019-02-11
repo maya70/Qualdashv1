@@ -413,6 +413,109 @@
                                 return 0; 
 
                             }
+                            else if(self.audit === "picanet" && vname==="depLevel0"){
+                                var countDep = 0; 
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a,i){
+                                        if(a["hrggroup"] === "Unable to Group"){
+                                            countDep++;
+                                        }
+                                    });
+                                }
+                                return countDep; 
+
+                            }
+                            else if(self.audit === "picanet" && vname==="depLevelEC"){
+                                var countDep = 0; 
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a,i){
+                                        if(a["hrggroup"] === "Enhanced Care"){
+                                            countDep++;
+                                        }
+                                    });
+                                }
+                                return countDep; 
+
+                            }
+                            else if(self.audit === "picanet" && vname==="depLevel1"){
+                                var countDep = 0; 
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a,i){
+                                        if(a["hrggroup"] === "High Dependency"){
+                                            countDep++;
+                                        }
+                                    });
+                                }
+                                return countDep; 
+                            }
+                            else if(self.audit === "picanet" && vname==="depLevel2"){
+                                var countDep = 0; 
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a,i){
+                                        if(a["hrggroup"] === "High Dependency Advanced"){
+                                            countDep++;
+                                        }
+                                    });
+                                }
+                                return countDep; 
+
+                            }
+                            else if(self.audit === "picanet" && vname==="depLevel3"){
+                                var countDep = 0; 
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a,i){
+                                        if(a["hrggroup"] === "Intensive Care Basic"){
+                                            countDep++;
+                                        }
+                                    });
+                                }
+                                return countDep; 
+
+                            }
+                            else if(self.audit === "picanet" && vname==="depLevel4"){
+                                var countDep = 0; 
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a,i){
+                                        if(a["hrggroup"] === "Intensive Care Basic Enhanced"){
+                                            countDep++;
+                                        }
+                                    });
+                                }
+                                return countDep; 
+
+                            }
+                            else if(self.audit === "picanet" && vname==="depLevel5"){
+                                var countDep = 0; 
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a,i){
+                                        if(a["hrggroup"] === "Intensive Care Advanced"){
+                                            countDep++;
+                                        }
+                                    });
+                                }
+                                return countDep; 
+
+                            }
+                            else if(self.audit === "picanet" && vname==="depLevel6"){
+                                var countDep = 0; 
+                                var active = self.activityIndex[rec["EVENTID"]];
+                                if(active){
+                                    active.forEach(function(a,i){
+                                        if(a["hrggroup"] === "Intensive Care Advanced Enhanced"){
+                                            countDep++;
+                                        }
+                                    });
+                                }
+                                return countDep; 
+
+                            }
                             else if(vname === "invalid" && self.audit === "picanet"){
                                 var count = 0; 
                                 for(var key in rec){

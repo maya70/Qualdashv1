@@ -103,7 +103,15 @@ $Q.Picanet = {
                   "der_noninvVentDays": "Noninvasive Ventil.",
                   "der_missing": "Missing", 
                   "der_invalid": "Invalid",
-                  "der_extubation": "Extubation"},
+                  "der_extubation": "Extubation",
+                  "der_depLevel0": "Unable to Group",
+                  "der_depLevel1": "High Dependency", 
+                  "der_depLevel2": "High Dependency Advanced",
+                  "der_depLevel3": "Intensive Care Basic",
+                  "der_depLevel4": "Intensive Care Basic Enhanced",
+                  "der_depLevel5": "Intensive Care Advanced",
+                  "der_depLevel6": "Intensive Care Advanced Enhanced"
+                },
 "displayVariables": [{  "metric": "Mortality",
                         "mark": "bar", // should remove this 
                         "x": "admonth",
@@ -208,12 +216,11 @@ $Q.Picanet = {
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["der_missing"]}   // the first element holds the master view's granT                                             
           
-                     }
-                     /*{  "metric": "dependency",
-                        "datapre": "./data/picanet_activity/",
+                     },
+                     {  "metric": "dependency",                        
                         "mark": "bar", // should remove this 
                         "x": "admonth",
-                        "y": "eventidscr", 
+                        "y": ["der_depLevel0", "der_depLevelEC" ,"der_depLevel1", "der_depLevel2", "der_depLevel3", "der_depLevel4", "der_depLevel5", "der_depLevel6"], 
                         "yaggregates": ["count"], 
                         "xType": ["t", "n"],
                         "yType": "q",  
@@ -223,12 +230,12 @@ $Q.Picanet = {
                         "granP": ["unit"], 
                         "ehr": "Admissions",                        
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [ {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"eventidscr", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }
+                        "quantities": [ {"q":"der_depLevel2", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"der_depLevel3", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly": "y", "monthly-annual": "der_smr"}   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": ["der_depLevel2", "der_depLevel3"]}   // the first element holds the master view's granT                                             
           
-                     }*/
+                     }
                      ]
 
 };
