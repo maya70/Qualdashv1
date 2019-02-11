@@ -313,7 +313,47 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                                        "3":"Planned-Other",
                                        "4":"Unplanned", 
                                        "9":"N/K"
-                                      }
+                                      },
+                            "unitdisstatus": {"1": "alive",
+                                              "2": "deceased"},
+                            "sex": {"1":"male", "2": "female"},
+                            "ethnic": {"A": "White British", 
+                                        "B": "White Irish",
+                                        "C": "White other",
+                                        "D": "Mixed White and Black Carribean", 
+                                        "E":"Mixed White and Black African",
+                                        "F": "Mixed White and Asian",
+                                        "G": "Mixed other",
+                                        "H": "Asian Indian"
+                                    },
+                            "sourcead": {"1": "Same hospital",
+                                         "2": "Other hospital",
+                                         "3":  "Clinic",
+                                         "4":  "Home",
+                                         "9":  "N/K"
+                                        },
+                            "careareaad": {"1": "X-ray, endoscopy, CT or similar",
+                                            "2": "Recovery only",
+                                            "3": "HDU (step-up/step-down unit)",
+                                            "4": "Other intermediate care area",
+                                            "5": "ICU or PICU or NICU",
+                                            "6": "Ward",
+                                            "7": "Missing DataDef",
+                                            "8": "Missing DataDef",
+
+                                            },
+                            "unitdisdest": {"1": "PICU",
+                                            "2": "NICU",
+                                            "3": "ICU",
+                                            "4": "HDU",
+                                            "5": "Ward",
+                                            "6": "Theatre",
+                                            "7": "Other transport service",
+                                            "8": "Normal residence",
+                                            "9": "Hospice",
+                                            "99": "Unknown"
+
+                                            }
                             },
                 "minap":{}
                       };

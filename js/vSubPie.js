@@ -381,7 +381,13 @@
 							       })
 							      .attr("d", arc)
 							    .append("title")
-							      .text(d => `${d.data.date}: ${d.data.number.toLocaleString()}`);
+							    	.text(function(d){
+							    		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
+												 	$Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
+							    		var percent = Math.round(parseInt(d.data.number)/self.totalNumRecs * 100); 
+							    		return name+ ": "+ percent + "%"; 
+							    	});
+							      //.text(d => `${d.data.date}: ${d.data.number.toLocaleString()}`);
 
 						      g.append("g")
 								.attr("class", "labels");
@@ -399,9 +405,9 @@
 										.attr("dy", ".35em")
 										.text(function(d) {
 											////console.log(d); 
-											//if(d.data.number < (self.totalNumRecs/20))
-											//	return '';
-											//else 
+											if(d.data.number < (self.totalNumRecs* 0.1))
+												return '';
+											else 
 												return $Q.ValueDefs[self.parent.parent.control.audit][dname]?
 												 $Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
 										});
@@ -457,9 +463,9 @@
 								.append("polyline")
 								.style("opacity", function(d){
 									////console.log(d);
-									//if(d.data.number < (self.totalNumRecs/20))
-									//	return 0.0; 
-									//else
+									if(d.data.number < (self.totalNumRecs*0.1))
+										return 0.0; 
+									else
 										return 1.0; 
 								});
 

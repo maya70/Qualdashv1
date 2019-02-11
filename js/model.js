@@ -119,38 +119,24 @@
                                 }
                                 
                                 d3.csv("./data/picanet_admission/"+self.year+".csv", function(data){                                      
-                                        self.data = data;                                                                           
-                                        for(var display = 0; display < self.displayVariables.length; display++)
-                                        {
-                                            /*if(self.displayVariables[display]['datapre']){
-                                                // this metric requires a data prerequisite file
-                                                // used mostly to load activity file (e.g. for dependency)
-                                                d3.csv(self.displayVariables[display]['datapre']+self.year+".csv", function(predata){
-                                                    //Preprocess: use this audit's secondary key to link the files
-                                                    var secKey = $Q.DataDefs[self.audit]["secondaryKey"];
-                                                    for(var pi= 0; pi < predata.length; pi++){
-                                                        // find the corresponding record in self.data
-                                                        self.data.forEach(function(rec){
-                                                            if(rec[secKey] === predata[pi][secKey]){
-                                                                if(!rec[self.displayVariables[display]['metric']])
-                                                                    rec[self.displayVariables[display]['metric']] = [];
-                                                                rec[self.displayVariables[display]['metric']].push(predata[pi]);
-                                                            }
-                                                        });
-                                                    }
-                                                    console.log(self.data);
-
-
-                                                });
+                                        self.data = data;  
+                                        d3.csv("./data/picanet_admission/shortactiv"+self.year+".csv", function(extra){                                                                         
+                                            
+                                            self.activityIndex = {};
+                                            for(var ex=0; ex < extra.length; ex++){
+                                                if(!self.activityIndex[extra[ex]["eventidscr"]])
+                                                    self.activityIndex[extra[ex]["eventidscr"]] = [];
+                                                self.activityIndex[extra[ex]["eventidscr"]].push(extra[ex]);
                                             }
-                                            else*/
-                                                self.applyAggregateRule2(self.displayVariables[display],                                                                     
-                                                                    display, data);
-                                        }
-                                        ////console.log(self.dataViews);
-                                        self.loadHistory();
-                                        self.control.dataReady(self.dataViews, self.data); 
-
+                                            //console.log(self.activityIndex); 
+                                            for(var display = 0; display < self.displayVariables.length; display++)
+                                            {
+                                               self.applyAggregateRule2(self.displayVariables[display],display, data);
+                                            }
+                                            ////console.log(self.dataViews);
+                                            self.loadHistory();
+                                            self.control.dataReady(self.dataViews, self.data); 
+                                        });
                                     });
                                 });
                             },
@@ -378,7 +364,7 @@
                                 }
                             else if(vname === "bedDays" && self.audit === "picanet"){
                                 var one_day = 1000*60*60*24;                                    
-                                return (self.stringToDate(rec["unitdisdate"]).getTime() - self.stringToDate(rec["addate"]).getTime())/one_day;
+                                return Math.abs(self.stringToDate(rec["unitdisdate"]).getTime() - self.stringToDate(rec["addate"]).getTime())/one_day;
                             }
                             else if(vname === "invVentDays" && self.audit === "picanet"){                                
                                 return  parseInt(rec["invventday"]) || 0; 

@@ -113,7 +113,7 @@
 							var self = this; 
 							var scale = 0.95;
 
-							var margin = {top: 30, right: 20, bottom: 30, left: 40},
+							var margin = {top: 30, right: 20, bottom: 30, left: 70},
 							    width = 1.5*svgw - margin.left - margin.right,
 							    height = svgh * scale - margin.top - margin.bottom;
 							var averages = [];
