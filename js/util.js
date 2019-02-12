@@ -104,6 +104,7 @@ $Q.Picanet = {
                   "der_missing": "Missing", 
                   "der_invalid": "Invalid",
                   "der_extubation": "Extubation",
+                  "der_depLevelEC": "Enhanced Care",
                   "der_depLevel0": "Unable to Group",
                   "der_depLevel1": "High Dependency", 
                   "der_depLevel2": "High Dependency Advanced",

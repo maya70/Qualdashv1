@@ -224,7 +224,7 @@
 
 						    var was = mergeWithFirstEqualZero(data, oldData);
 						    var is = mergeWithFirstEqualZero(oldData, data);
-						    //console.log(was);
+						    
 						    var arc = d3.arc()
 								  .outerRadius(self.radius * 1.0)
 								  .innerRadius(self.radius * 0.0);
@@ -280,6 +280,11 @@
 
 									  return sortedMerge;
 									}
+							var numRecs = 0; 
+							data.forEach(function(d){
+								numRecs += d['number'];
+							});
+							self.totalNumRecs = numRecs; 
 							return pie(data); 
 						},
 						foundMatch: function(datum, cat, piedata){
@@ -351,7 +356,15 @@
 							      .attr("stroke", "white")
 							      .on("mouseover", function(d){		
 							      	self.parent.highlight(self.dataLinks[d.data.date], viewId);
-							      	////console.log(self.dataLinks[d.data.date]);			
+							      	console.log(self.totalNumRecs); 
+							      	console.log(d.data.number);	
+							      	// update title here
+							      	d3.select(this).select("title").text(function(t){
+							      		//var datasize = (self.parent.selectionEmpty())? self.totalNumRecs:  Object.keys(self.parent.selection).length;
+							    		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
+												 	$Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
+							    		var percent = Math.round(parseInt(d.data.number)/self.totalNumRecs * 100); 
+							    		return name+ ": "+ percent+ "%"; });
 							      	origColor = d3.select(this).style("fill");
 							      	d3.select(this).style("fill", self.highlightColor);
 							      })
@@ -405,9 +418,9 @@
 										.attr("dy", ".35em")
 										.text(function(d) {
 											////console.log(d); 
-											if(d.data.number < (self.totalNumRecs* 0.1))
-												return '';
-											else 
+											//if(d.data.number < (self.totalNumRecs* 0.1))
+											//	return '';
+											//else 
 												return $Q.ValueDefs[self.parent.parent.control.audit][dname]?
 												 $Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
 										});
@@ -439,8 +452,10 @@
 									};
 								})
 								.style("opacity", function(d){
-									//return (Math.abs(d.endAngle - d.startAngle) >= (Math.PI/8) )? 1: 0 ;
-									return 1; 
+									if(d.data.number < (self.totalNumRecs* 0.1))
+										return 0; 
+									else
+										return 1; 
 								})
 								.styleTween("text-anchor", function(d){
 									this._current = this._current || d;
