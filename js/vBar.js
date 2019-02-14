@@ -7,7 +7,7 @@
 						self.parent = pCard;
 						self.audit = self.parent.getAuditInfo(); 
 						self.id = dataView['viewId'];
-						self.data = self.audit=== "picanet"? self.fixDataFormat(dataView['data']) : dataView['data'];						
+										
 						self.iter = 0; 												
 						self.toggle = "grouped";
 						self.dataView = dataView; 
@@ -17,10 +17,13 @@
 						self.highlightOpacity = 0.6;
 						if(dataView.ylength < 10 ){
 							//(dataView['yscale'][0] === dataView['yscale'][1])?
+							 self.data = self.audit=== "picanet"? self.fixDataFormat(dataView['data']) : dataView['data'];		
 							 self.drawCatBar2(dataView,0);
 							 //: self.drawDualBar();
 						}
 						else{ // create a trellis
+							self.istrellis = true; 
+							self.data = self.audit=== "picanet"? self.trellisDataFormat(dataView['data']) : dataView['data'];		
 							self.drawCatBar2(dataView,1);
 						}
 
@@ -65,7 +68,15 @@
 						},
 						shadeBaseBarTrellis: function(viewId, dict, cat, iter){
 							var self = this;
-							var viewshare = 2; 							
+							var viewshare = 2; 	
+
+							var drawArea = d3.select("#draw-area"+viewId);
+								//drawArea.style("overflow-y", "hidden");
+										
+					
+							var parentArea = drawArea.select(function(){
+								return this.parentNode; 
+							});						
 							
 							var scale = 0.6; 
 
@@ -77,9 +88,9 @@
 							//	svgh = parentH * scale / viewshare;
 						
              				//var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
-							var margin = {top: 20, right: 10, bottom: 20, left: 20};							
-							var width = svgw - margin.left - margin.right; 
-							var height = svgh - margin.top - margin.bottom;
+							var margin = {top: 20, right: 10, bottom: 20, left: 23};							
+							var width = svgw - margin.left - margin.right - 23; 
+							var height = svgh - margin.top - margin.bottom - 10;
 							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
 								y = d3.scaleLinear().range([height, 0]).nice(); 
 
@@ -98,6 +109,7 @@
 									.attr("y", function(d) { return y(d.number); })
 									.attr("width", x.bandwidth())
 							      	.attr("height", function(d) { return height  - y(d.number); })
+							      	.attr("transform", function() {return "translate("+ margin.left +","+margin.top +")";})
 									.style("fill", self.highlightColor);
 									//.style("opacity", self.highlightOpacity)
 									//.style("stroke-width", 1.0)
@@ -244,36 +256,35 @@
 							
 							var scale = self.parent.expanded? 0.6 : 0.9; 
 							var svgw = scale * parentArea.node().getBoundingClientRect().width / viewshare ;
-							var svgh = 0.8 * parentArea.node().getBoundingClientRect().height / viewshare; 
+							var svgh = 0.9* parentArea.node().getBoundingClientRect().height / viewshare; 
 						 	//var svgh = 100; 
 							var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
-							var margin = {top: 20, right: 10, bottom: 20, left: 20};							
-							var width = svgw - margin.left - margin.right; 
-							var height = svgh - margin.top - margin.bottom;
+							var margin = {top: 20, right: 10, bottom: 20, left: 23};							
+							var width = svgw - margin.left - margin.right - 23; 
+							var height = svgh - margin.top - margin.bottom - 10;
 
 							var svgsub = self.parent.svg.append("svg")
 											.attr("id", "trellissvg"+viewId+"_"+iter)
 											.attr("class", "trellissvg"+viewId)
 											.attr("width", svgw).attr("height", svgh)										
-											.attr("x", ((iter%viewshare)*svgw) + margin.left  )
+											.attr("x", ((iter%viewshare)*svgw) + 10 )
 											.attr("y", parseInt(iter/viewshare)*svgh+ margin.top); 
-											
+							
+							svgsub.append("text")
+								.attr("x", 10)
+								.attr("y", 10)
+								.attr("dy", ".35em")							      
+							      .text(function(d) {
+							      	return cat ;})
+							        .style("font-size", "7pt");
 							
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
 							
-							var g = svgsub.append("g"); //.attr("transform","translate(" + margin.left + "," + margin.top + ")" );
-
-							g.append("text")
-								.attr("x", 20)
-								.attr("y", 10)
-								.attr("dy", ".35em")							      
-							      .text(function(d) {
-							      	return cat ;})
-							        .style("font-size", "7pt");
-							     
+							var g = svgsub.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
+						     
 							
 							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
 								y = d3.scaleLinear().range([height, 0]).nice(); 
@@ -282,6 +293,7 @@
 									return d.date; 
 							}));
 							y.domain([0, d3.max(self.data, function(d){ return d.number; })]);
+
 							g.append("g")
 							      .attr("class", "x axis")
 							      .attr("transform", "translate("+ 0+"," + (height) + ")")
@@ -323,7 +335,7 @@
 										.style("stroke", self.highlightColor)
 										.style("opacity", self.highlightOpacity);*/
 								      	
-							      	self.parent.highlightSubs(d['data']);
+							      	self.parent.highlightSubs(cat, d['data'], parseInt(d['date']));
 							      	
 							      	
 							      })
@@ -753,6 +765,21 @@
 							for(var key in sdata){
 								data.push({'date': key, 'number': sdata[key][Object.keys(sdata[key])[0]]['value'] });								
 							}							
+							return data; 
+						},
+						trellisDataFormat: function(sdata){
+							var self = this;
+							var data = [];
+							// self.data should hold the largest bars in the trellis
+							// to correctly setup the y scale
+							for(var key in sdata){
+								var max = 0; 
+								for(var kk in sdata[key]){
+									if(sdata[key][kk]['value'] > max)
+										max = sdata[key][kk]['value'];
+								}
+								data.push({'date': key, 'number': max});
+							}
 							return data; 
 						},
 						resize: function(){

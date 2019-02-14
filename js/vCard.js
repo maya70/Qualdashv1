@@ -100,6 +100,10 @@
 						getExpansionState: function(){
 							return this.expanded; 
 						},
+						isTrellisView: function(){
+							var self = this; 
+							return self.vis.istrellis; 
+						},
 						createSlave1: function(cats, ssvgW, ssvgH, xoffset){
 							var self = this;
 							var cat1 = cats['cats'][0];
@@ -201,18 +205,26 @@
 							var mainQs = self.parent.control.audit === "picanet"? ($Q.Picanet["displayVariables"][self.id]["y"]):
 																				 ($Q.Minap["displayVariables"][self.id]["y"]);
 
-							mainQs.forEach(function(q){
-								var index = quantityNames.indexOf(q);
-								if(index >=0)
-									quantityNames.splice(index,1); 
-							});
-							quantityNames.forEach(function(q, i){
-								var index = mainQs.indexOf(q['q']);
-								if(index >=0){
-									quantityNames.splice(i,1);
-									//self.cardPalette.splice(i,1); 
+							if(!self.isTrellisView()){
+								if(mainQs.constructor === Array){
+									mainQs.forEach(function(q){
+										var index = quantityNames.indexOf(q);
+										if(index >=0)
+											quantityNames.splice(index,1); 
+									});
 								}
-							});
+								else{
+									quantityNames.splice(quantityNames.indexOf(mainQs));
+								}
+
+								quantityNames.forEach(function(q, i){
+									var index = mainQs.indexOf(q['q']);
+									if(index >=0){
+										quantityNames.splice(i,1);
+										//self.cardPalette.splice(i,1); 
+									}
+								});
+							}
 						   	var palette = self.getCardPalette(); 
 						   	quantityNames.forEach(function(d,i){
 						   		self.cardPalette[d['q']] = palette[i];

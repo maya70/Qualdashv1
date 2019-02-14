@@ -844,14 +844,26 @@
                             var self = this;
                             var vname;
                             var vval; 
-                            if(yvar.indexOf("_") < 0 ){
+                            var isDerived = false; 
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
+                            var dateVar = auditVars['x'];
+                            var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][0] : displayObj["yaggregates"] ;
+
+                           if(yvar.indexOf("_") >= 0 ){
+                                  var strs = yvar.split("_");
+                                  if(strs[0] === "der")
+                                      isDerived = true;
+                              }
+
+                            if(!isDerived){
                                 // this is a database variable
                                 vname = yvar; 
                                 if(rec[cat] === group)
-                                    vval = (displayObj["yaggregates"][0] === "count")? 1 : rec[vname];  
+                                    vval = (yaggregates === "count")? 1 : rec[vname];  
                                 else
                                     vval = 0; 
-                            }
+                               
+                                    }
                             else{
                                 // this is a derived variable
                                 var strs = yvar.split("_");
@@ -864,11 +876,20 @@
                                     //console.log(sid);
                                    } 
 
-                                vval = (displayObj["yaggregates"][0] === "count")? ((derval>0)? 1: 0) 
+                                vval = (yaggregates === "count")? ((derval>0)? 1: 0) 
                                             : derval;  
                             }
                             //if(!vval && yvar === "der_smr")
                              //   //console.log(rec);
+                              if(isNaN(vval)){
+                                     vval = 0;
+                                     if(!self.missing[yvar])                    
+                                          self.missing[yvar] = {};
+                                     if(!self.missing[yvar][dateVar])
+                                          self.missing[yvar][dateVar] = 1; 
+                                     else 
+                                         self.missing[yvar][dateVar]++; 
+                                    }
                             return vval; 
 
                         },
@@ -937,20 +958,7 @@
                             //slaves['combo'] = self.list1QCombo(displayId);
                             slaves['data'] = {}; 
   
-                            /* slaves['combo'].forEach(function(combo){
-                                if(!slaves['data'][combo])
-                                    slaves['data'][combo] = {}; 
-                                if(!slaves['data'][combo]['xs'])
-                                    slaves['data'][combo]['xs'] = [];
-                                if(!slaves['data'][combo]['ys'])
-                                    slaves['data'][combo]['ys'] = []; 
-
-                                var str = combo.split("&");
-                                if(!slaves['data'][combo]['xType'])
-                                    slaves['data'][combo]['xType'] = self.metaDict[str[0]];
-                                if(!slaves['data'][combo]['yType'])
-                                    slaves['data'][combo]['yType'] = self.metaDict[str[1]];                                    
-                            }); */
+                            
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             for(var i=0; i < self.data.length; i++){
@@ -1113,20 +1121,7 @@
                             //slaves['combo'] = self.list2QCombo(displayId);
                             slaves['data'] = {}; 
 
-                            /*slaves['combo'].forEach(function(combo){
-                                if(!slaves['data'][combo])
-                                    slaves['data'][combo] = {}; 
-                                if(!slaves['data'][combo]['xs'])
-                                    slaves['data'][combo]['xs'] = [];
-                                if(!slaves['data'][combo]['ys'])
-                                    slaves['data'][combo]['ys'] = []; 
-
-                                var str = combo.split("&");
-                                if(!slaves['data'][combo]['xType'])
-                                    slaves['data'][combo]['xType'] = self.metaDict[str[0]];
-                                if(!slaves['data'][combo]['yType'])
-                                    slaves['data'][combo]['yType'] = self.metaDict[str[1]];                                    
-                            }); */
+                            
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             var observedDeathsNational = {}; 

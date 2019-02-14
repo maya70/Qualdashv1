@@ -44,8 +44,9 @@
 									dataLinks[key] = {};
 									for(var kk in parentData[key]){
 										// get the aggregation rule for this key									
-										var keyIndex = auditVars["y"].indexOf(kk);
+										var keyIndex = self.parent.isTrellisView()? 0: auditVars["y"].indexOf(kk);
 										var rule = auditVars["yaggregates"][keyIndex]; 
+
 
 										dataLinks[key][kk] = {};
 										dataLinks[key][kk]['data'] = []; 
