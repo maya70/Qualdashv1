@@ -256,15 +256,32 @@ $Q.Minap = {
                                               {"value": "Bleeding complications", // TODO: check how to calcul. complication rates 
                                                 "text": "Complications"
                                               }], 
-    "displayVariables": [{  "metric": "Mortality",
-                                                    "x": "3.06 Date/time arrival at hospital" ,
-                                                    "y":"4.04 Death in hospital",
-                                                    "xType": "t",
-                                                    "yType": "q", 
-                                                    "aggregate": "count",
-                                                    "scale": "monthly"
-                                                 }, 
-                                                 {  "metric": "48h Readmission",
+    "variableDict": {}, 
+    "displayVariables": [
+                         {  
+                        "metric": "Mortality",
+                        "mark": "bar", // should remove this 
+                        "x": "3.06 Date/time arrival at hospital",
+                        "y": ["1.02 Patient case record number", "4.04 Death in hospital"], 
+                        "yaggregates": ["count", "sum"], 
+                        "xType": "t",
+                        "yType": ["q", "q"],  
+                        "xspan": "year",    
+                        "yspan": "unit",  
+                        "ylabel": "No. Records",                        
+                        "tspan": 3,                           
+                        "granP": ["unit", "unit"], 
+                        "ehr": "Admissions",
+                        /** Slave Tasks spec begin here **/ 
+                        "categories": ["2.01 Initial diagnosis","2.03 ECG determining treatment", "2.02 Method of admission", "1.07 Patient gender"],      
+                        "quantities": [{"q":"2.15 Serum cholesterol", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"2.28 Serum glucose","granT": "admonth", "granP":["unit"], "yaggregates": "sum" },                                         
+                                        {"q":"2.29 Height", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": ["1.02 Patient case record number", "4.04 Death in hospital"] }   // the first element holds the master view's granT                                             
+          
+                     }
+                                                 /*{  "metric": "48h Readmission",
                                                     "x": "3.06 Date/time arrival at hospital",
                                                     "y": "derived",
                                                     "xType": "t",
@@ -303,7 +320,8 @@ $Q.Minap = {
                                                     "yType": "q", 
                                                     "aggregate": "count",
                                                     "scale": "monthly"
-                                                }]
+                                                }*/
+                                                ]
 };
 
 $Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
@@ -316,7 +334,13 @@ $Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
                           "dischargeDateVar": "unitdisdate",
                           "dischargeStatusVar": "unitdisstatus"
                           }, 
-            "minap": {} };
+               "minap": {
+                          "patientIdVar": "1.02 Patient case record number", 
+                          "unitIdVar": "1.01 Hospital identifier",
+                          "admissionDateVar": "3.06 Date/time arrival at hospital",
+                          "dischargeDateVar": "4.01 Date of discharge",
+                          "dischargeStatusVar": "4.02 Discharge diagnosis"
+                        } };
 $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery", 
                                        "2":"Unplanned-following surgery",
                                        "3":"Planned-Other",

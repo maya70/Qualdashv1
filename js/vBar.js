@@ -448,10 +448,8 @@
                                     });
                                     for(var kx=0; kx < xz.length; kx++ ){
                                         for(var ky=0; ky < levels.length; ky++){  
-                                         if(self.audit === "picanet")
-                                         	yz[ky][kx] += dict[xz[kx]][levels[ky]]['value'];
-                                         else                                      	
-                                            yz[ky][kx] += dict[xz[kx]][levels[ky]];
+                                         yz[ky][kx] += dict[xz[kx]][levels[ky]]['value'];
+                                        
                                         }
                                     }
                                    
