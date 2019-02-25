@@ -55,7 +55,7 @@
 											if(self.foundMatch(parentData[key][kk]['data'][i], cat, data)){
 												dataLinks[key][kk]['data'].push(parentData[key][kk]['data'][i]);
 												dataLinks[key][kk]['value'] += (rule==="count")? 1: 
-																			parent.parent.control.getRecordById(parentData[key][kk]['data'][i])[kk]; 
+																			parseInt(parent.parent.control.getRecordById(parentData[key][kk]['data'][i])[kk]); 
 											}
 										}
 									}

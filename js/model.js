@@ -80,20 +80,28 @@
                         readMinapData: function(){
                             var self = this; 
                             self.meta = [];
+                            self.metaDict = {}; 
                             d3.csv("./data/minap_meta.csv", function(meta){
                                 for(var k=0; k < meta.length; k++)
-                                    if(meta[k]['fieldName'] !== "")
+                                    if(meta[k]['fieldName'] !== ""){
                                         self.meta.push(meta[k]); 
+                                        self.metaDict[meta[k]['fieldName']] = meta[k]['fieldType'];
+                                    }
                                 //self.meta = meta; 
                                 ////console.log(meta); 
-                                d3.csv("./data/minap_dummy.csv", function(data){
+                                d3.csv("./data/minap_admission/"+self.year+".csv", function(data){
                                         ////console.log(data); 
                                         self.data = data;                                     
                                         ////////console.log(displayVar);
+                                         for(var i=0; i < self.data.length; i++){
+                                            self.data[i]["1.02 Patient case record number"] = ""+self.data[i]["1.02 Patient case record number"];                                            
+                                        }                                    
+                                       
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
                                             self.applyAggregateRule2(self.displayVariables[display], display, data);
                                         }
+                                        self.loadHistory();
                                         self.control.dataReady(self.dataViews, self.data); 
 
                                     });
@@ -194,12 +202,42 @@
                                                 }
                                             }
                                         }
-                                        ////console.log(self.ehr);
-                                        ////console.log(self.ehrHist);
-                                        // //console.log(self.tHier); 
                                         self.postProcessHistory(yearupdated, "der_readmit" ); 
                                         //console.log(self.tHier); 
 
+                                    });
+                                } 
+
+                            }
+                            else
+                            {
+                                tspan = $Q.Minap['displayVariables'][0]['tspan']; 
+                                fpath = "./data/minap_admission/";
+
+                                for(var i=1; i < tspan; i++){                                    
+                                    var year = parseInt(self.year)-i;                                 
+                                    d3.csv(fpath+year+".csv", function(data){                                        
+                                        ////console.log("Loading History");
+                                        var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]] || self.stringToDate(data[0][[$Q.DataDefs[self.audit]["admissionDateVar"]]]).getYear()+1900; 
+                                        for(var d = 0; d < data.length; d++){
+                                            // load historical data for this unit only unless required otherwise
+                                            if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                                for(var v = 0; v < self.dataViews.length; v++){
+                                                    var Qs = self.getTimeQs(v); 
+                                                    var metric = self.dataViews[v]['metric'];
+                                                    Qs.forEach(function(qname){ 
+                                                        self.recordEHR(data[d], d , metric, yearupdated);
+                                                        var qobj = self.getQObject(qname, v); 
+                                                        if(qobj){
+                                                                var qval = parseFloat(self.computeVar(qname, qobj, data[d], 0, 0)) ; 
+                                                                self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
+                                                            }
+                                                    });
+                                                }
+                                            }
+                                        }
+                                        self.postProcessHistory(yearupdated, "der_readmit" ); 
+                                       
                                     });
                                 } 
 
@@ -295,8 +333,15 @@
                                                 slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
                                             else
                                                 slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                            
+                                            
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['data'])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['data'] = [];
+                                            
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['data'].push(i);
 
-                                            //keeping national computations for now
+                                            //keeping national computations the same for now
                                             if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
                                                         slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = qval;            
                                             else
@@ -337,7 +382,7 @@
                         setDerivedValue: function(viewId, recId, vname, value){
                             var self = this; 
                             var auditVars = self.audit === "picanet"? $Q.Picanet["displayVariables"][viewId] : $Q.Minap["displayVariables"][viewId];  
-                            if(!self.meta[vname]){
+                            if(!self.metaDict[vname]){
                                 auditVars["quantities"].forEach(function(qobj){
                                     if(qobj['q'] === vname){
                                         // see if a metadata entry exists for this field
@@ -345,8 +390,9 @@
                                             self.meta.push({"fieldName":vname , "fieldType": "q"});                                     
                                     }
                                 });                                
-                            }
                             self.data[recId][vname] = value; 
+                            }
+                            
                         },
                         getDerivedValue: function(vname, rec){
                             var self = this;
@@ -359,18 +405,19 @@
                             else if(vname === "smr" && self.audit === "picanet"){
                                 return rec["pim3_s"]; 
                             }
-                            else if(vname === "discharge" && self.audit === "picanet"){
-                                if(rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "1")
+                            else if(vname === "discharge"){
+                                if((rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "1" && self.audit === "picanet") || 
+                                    (rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] !== "4" && self.audit === "minap") )
                                     return 1;
                                 else
                                     return 0; 
                             }
-                            else if(vname === "readmit" && self.audit === "picanet"){
+                            else if(vname === "readmit"){
                                     return 0; 
                                 }
-                            else if(vname === "bedDays" && self.audit === "picanet"){
+                            else if(vname === "bedDays"){
                                 var one_day = 1000*60*60*24;                                    
-                                return Math.abs(self.stringToDate(rec["unitdisdate"]).getTime() - self.stringToDate(rec["addate"]).getTime())/one_day;
+                                return Math.abs(self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]).getTime() - self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getTime())/one_day;
                             }
                             else if(vname === "invVentDays" && self.audit === "picanet"){                                
                                 //return  parseInt(rec["invventday"]) || 0; 
@@ -523,6 +570,9 @@
                                 }
                                 return count; 
                             }
+                            else if(vname === "stemi"){
+                                return rec["2.01 Initial diagnosis"] === "1" ? 1: 0; 
+                            }
                             else if(vname === "missing" && self.audit === "picanet"){
                                 var count = 0;
                                 for(var key in rec){
@@ -530,9 +580,7 @@
                                         count++;
                                 }
                                 return count; 
-
                             }
-
                         },
                         calculateDerivedVar: function(metric, yvar){
                             //////console.log("Calculating "+ metric); 
@@ -617,13 +665,10 @@
                                 //    ////console.log(self.data[j][metric]);
                             return metric; 
                         },
-                        /** Utility function that converts dates from the MINAP-specified format dd/mm/yyyy hh:mm
-                        *   to an ISO-friendly Date() object
-                        */
-                        stringToDate: function(str){
-                            var self = this;
-                            var time, timeParts, hour, minute, second;
-
+                        
+                        stringToMonth: function(str){
+                            var self = this; 
+                             var time, timeParts, hour, minute, second;
                             var strings = str.split(" ");
                             var date = strings[0];
                                 time = strings[1];
@@ -639,9 +684,34 @@
                                 minute = timeParts[1],
                                 second = timeParts[1];   
                             }
-                             
-                            return (time)? new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z")
-                                        : new Date(year, (month-1), day, 0); 
+                           return parseInt(month); 
+                        },
+                        /** Utility function that converts dates from the MINAP-specified format dd/mm/yyyy hh:mm
+                        *   to an ISO-friendly Date() object
+                        */
+                        stringToDate: function(str){
+                            var self = this;
+                            var time, timeParts, hour, minute, second;
+                            var strings = str.split(" ");
+                            var date = strings[0];
+                                time = strings[1];
+                            var dateSeparator = (date.indexOf("/")>0)? "/": "-";
+
+                            var dateParts = date.split(dateSeparator);
+                            if(time) timeParts = time.split(":");
+                            var day = dateParts[0],
+                                month = dateParts[1],
+                                year = (dateParts[2] && dateParts[2].length<=2)? "20"+dateParts[2]: dateParts[2];
+                            if(timeParts){
+                                hour = timeParts[0],
+                                minute = timeParts[1],
+                                second = timeParts[1];   
+                            }
+                            
+                            //if(timeParts)
+                                //return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z"); 
+                           // else
+                                return new Date(parseInt(year), (parseInt(month)), parseInt(day), 0); 
 
                         },
                         getTimeHier:function(){
@@ -902,10 +972,10 @@
                                 var quar = self.getRecordQuarter(rec); 
                                 if(!self.tHier[year][quar])
                                     self.tHier[year][quar] = {};
-                                var mon = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]);
+                                var mon = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
                                 if(!self.tHier[year][quar][mon])
                                     self.tHier[year][quar][mon] = {};
-                                var week = parseInt(rec[$Q.DataDefs[self.audit]["weekVar"]]);
+                                var week = parseInt(rec[$Q.DataDefs[self.audit]["weekVar"]]) || parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
                                 if(!self.tHier[year][quar][mon][week])
                                     self.tHier[year][quar][mon][week] = {};
                                 if(!self.tHier[year][quar][mon][week][varname])
@@ -1043,6 +1113,13 @@
                                                 slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                             
                                             
+                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['data'])
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['data'] = [];
+                                            
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                                slaves['data'][quant['q']][self.data[i][dateVar]]['data'].push(i);
+
+                                            
                                         }
 
                                     });                                                   
@@ -1052,11 +1129,11 @@
 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
-                            if(metric === "48h Readmission"){
-                                var postData = self.postProcess(dict, slaves);
-                                dict = postData['dict'];
-                                slaves = postData['slaves'];
-                            }
+                            //if(metric === "48h Readmission"){
+                                var postData = self.postProcess(dict, slaves, metric);
+                                dict = postData? postData['dict']: dict;
+                                slaves =postData? postData['slaves']: slaves;
+                            //}
                             ////console.log(dict);
                              // 2. Update the slaves: 
                              if(displayObj["quantities"]){
@@ -1104,7 +1181,7 @@
                             // define levels of the x-axis
                             var xlevels = d3.map(self.data, function(item){
                                                 var res;
-                                                res = (self.audit === "picanet")? item[dateVar] : self.stringToDate(item[dateVar]).getMonth();
+                                                res = (self.audit === "picanet")? item[dateVar] : self.stringToMonth(item[dateVar]);
                                                 return res;
                                                 }).keys();
                             
@@ -1124,13 +1201,14 @@
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             var observedDeathsNational = {}; 
-                            ////console.log(self.ehr);
                            
                             for(var i=0; i < self.data.length; i++){
                                 /**
                                  * handle multiple quantitative variables
                                 **/
-                                var mon = self.audit === "picanet"? self.data[i][dateVar] : self.stringToDate(self.data[i][dateVar]).getMonth(); 
+                                var mon = self.audit === "picanet"? self.data[i][dateVar] : self.stringToMonth(self.data[i][dateVar]); 
+                                if(isNaN(mon))
+                                    console.log(mon); 
 
                                 if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                     self.recordEHR(self.data[i], i, metric);                                
@@ -1205,6 +1283,13 @@
                                                 slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
                                                                                                             (quant['yaggregates']==="count"? 1: qval) : 0;
                                             
+
+                                            if(!slaves['data'][quant['q']][mon]['data'])
+                                                slaves['data'][quant['q']][mon]['data'] = [];
+                                            
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                                slaves['data'][quant['q']][mon]['data'].push(i);
+
                                             // check if we need nultiple time granularities for this
                                             // only update the time hierarchy if this variable wasn't already setup in the hierarchy by the main view
                                             if(displayVar.indexOf(quant['q']) < 0)
@@ -1219,12 +1304,12 @@
 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
-                            if(metric === "48h Readmission"){
-                                var postData = self.postProcess(dict, slaves);
-                                dict = postData['dict'];
-                                slaves = postData['slaves'];
+                            //if(metric === "48h Readmission"){
+                                var postData = self.postProcess(dict, slaves, metric);
+                                dict = postData? postData['dict']: dict;
+                                slaves = postData? postData['slaves']: slaves;
                                 //console.log(slaves);                                 
-                            }
+                            //}
                             ////console.log(dict);
                              // 2. Update the slaves: 
                              if(displayObj["quantities"]){
@@ -1349,68 +1434,88 @@
                                  }
                             }
                         },
-                        postProcess: function(dict, slaves){
+                        postProcess: function(dict, slaves, metric){
                             var self = this;
                             var result = {};
                             result['dict'] = dict;
-                            result['slaves'] = slaves; 
-                            // calculate 48-hour readmissions:
-                            for(var key in self.ehr ){
-                                var patientEHR = self.ehr[key];
-                                var adm = patientEHR["admissionsT"];
-                                var disc = patientEHR["dischargesT"];
-                                var one_hour=1000*60*60;  // in ms
-                               
-                                //var index_a = adm.indexOf(self.data[i]["3.06 Date/time arrival at hospital"]);
-                                if(adm.length <= 1)  // this patient was only admitted once
-                                    continue;
-
-                                else{
-                                    disc.forEach(function(discharge, did){
-                                        var d_date = self.stringToDate(discharge);
-                                        adm.forEach(function(admission, aid){
-                                            var a_date = self.stringToDate(admission);
-                                            var adt = a_date.getTime(),
-                                                ddt = d_date.getTime(); 
-                                            var diff = Math.round((adt-ddt)/one_hour);
-                                            if(diff >=0 && diff < 48 && (aid !== did)){
-                                                var adrec = patientEHR['data'][aid];
-                                                // find corresponding entry in dict
-                                                // assuming dict is organized by months
-                                                // find the months of this readmission event
-                                                var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
-                                                var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
-                                                var quar = self.getRecordQuarter(adrec);
-                                                //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
-                                                var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
-                                                var week = parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
-
-                                                if(unit === self.unitID){
-                                                    // update this view's master dict
-                                                    result['dict'][month]["der_readmit"]["value"]++;
-                                                    result['dict'][month]["der_readmit"]["data"].push(patientEHR['ids'][aid]);
-                                                    result['slaves']['data']['der_readmit'][month]['unit']++; 
-                                                    // update the time hierarchy
-                                                    self.tHier[self.year][quar][mon][week]["der_readmit"]++; 
-                                                }
-                                                // either way update the slave that will show national average
-                                                result['slaves']['data']['der_readmit'][month]['national']++; 
-                                               
-
-                                            }
-
-
-                                        });
-                                    });
-                                    
+                            result['slaves'] = slaves;
+                            if(metric === "48h Readmission"){ 
+                                // calculate 48-hour readmissions:
+                                for(var key in self.ehr ){
+                                    var patientEHR = self.ehr[key];
+                                    var adm = patientEHR["admissionsT"];
+                                    var disc = patientEHR["dischargesT"];
+                                    var one_hour=1000*60*60;  // in ms
                                    
-                                 }
-                            }
-                            return result; 
+                                    //var index_a = adm.indexOf(self.data[i]["3.06 Date/time arrival at hospital"]);
+                                    if(adm.length <= 1)  // this patient was only admitted once
+                                        continue;
+
+                                    else{
+                                        disc.forEach(function(discharge, did){
+                                            var d_date = self.stringToDate(discharge);
+                                            adm.forEach(function(admission, aid){
+                                                var a_date = self.stringToDate(admission);
+                                                var adt = a_date.getTime(),
+                                                    ddt = d_date.getTime(); 
+                                                var diff = Math.round((adt-ddt)/one_hour);
+                                                if(diff >=0 && diff < 48 && (aid !== did)){
+                                                    var adrec = patientEHR['data'][aid];
+                                                    // find corresponding entry in dict
+                                                    // assuming dict is organized by months
+                                                    // find the months of this readmission event
+                                                    var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
+                                                    var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
+                                                    var quar = self.getRecordQuarter(adrec);
+                                                    //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
+                                                    var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
+                                                    var week = parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
+
+                                                    if(unit === self.unitID){
+                                                        // update this view's master dict
+                                                        result['dict'][month]["der_readmit"]["value"]++;
+                                                        result['dict'][month]["der_readmit"]["data"].push(patientEHR['ids'][aid]);
+                                                        result['slaves']['data']['der_readmit'][month]['unit']++; 
+                                                        // update the time hierarchy
+                                                        self.tHier[self.year][quar][mon][week]["der_readmit"]++; 
+                                                    }
+                                                    // either way update the slave that will show national average
+                                                    result['slaves']['data']['der_readmit'][month]['national']++; 
+                                                }
+
+
+                                            });
+                                        });
+                                        
+                                       
+                                     }
+                                }
+                                return result;
+                            } // if(metric === "48h Readmission")
+                            else{
+                                console.log(result);
+                                // calculate averages (if any)
+                                slaves['quants'].forEach(function(q){
+                                    if(q['yaggregates'] === "average"){
+                                        var firstKey = Object.keys(dict)[0];
+                                        // update dict
+                                        if(dict[firstKey][q['q']]){
+                                            result['dict'][firstKey][q['q']]['value'] /= dict[firstKey][q['q']]['data'].length;  
+                                        }
+                                        // update slaves 
+                                        if(slaves['data'][q['q']]){
+                                            for(var key in result['slaves']['data'][q['q']])
+                                                result['slaves']['data'][q['q']][key]['unit'] /= slaves['data'][q['q']][key]['data'].length;
+                                        }
+                                    }
+                                });
+                                console.log(result);
+                                return result; 
+                            } 
                         },
                         getRecordQuarter: function(rec){
                             var self = this; 
-                            var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]);
+                            var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getMonth()+1);
                             return recMonth < 4 ? 1: (recMonth < 7? 2: (recMonth < 10? 3 : 4))
                         },
                         checkGranT: function(varname, displayId){

@@ -17,7 +17,7 @@
 						self.highlightOpacity = 0.6;
 						if(dataView.ylength < 10 ){
 							//(dataView['yscale'][0] === dataView['yscale'][1])?
-							 self.data = self.audit=== "picanet"? self.fixDataFormat(dataView['data']) : dataView['data'];		
+							 self.data = self.fixDataFormat(dataView['data']);		
 							 self.drawCatBar2(dataView,0);
 							 //: self.drawDualBar();
 						}
@@ -131,10 +131,7 @@
                                 });
                                 for(var kx=0; kx < xz.length; kx++ ){
                                     for(var ky=0; ky < self.levels.length; ky++){  
-                                     if(self.audit === "picanet")
-                                     	yz[ky][kx] += dict[xz[kx]][self.levels[ky]]['value'];
-                                     else                                      	
-                                        yz[ky][kx] += dict[xz[kx]][self.levels[ky]];
+                                     	yz[ky][kx] += dict[xz[kx]][self.levels[ky]]['value'];                                     
                                     }
                                 }
                                 

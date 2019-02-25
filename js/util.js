@@ -248,9 +248,7 @@ $Q.Minap = {
                                               {"value": "derived_readmission", 
                                                 "text": "48h Readmission"}, 
                                               {"value": "Delay from Call for Help to Reperfusion Treatment", 
-                                              "text": "Call-to-Balloon"},
-                                              {"value": "Delay from Arrival in Hospital to Reperfusion Treatment", 
-                                                "text": "Door-to-Balloon"},
+                                              "text": "Delays"},
                                               {"value": "derived_los", 
                                               "text": "Length of Stay"},
                                               {"value": "Bleeding complications", // TODO: check how to calcul. complication rates 
@@ -260,6 +258,7 @@ $Q.Minap = {
     "displayVariables": [
                          {  
                         "metric": "Mortality",
+                        "mainQ": "What is the number of inpatient mortality per month?",
                         "mark": "bar", // should remove this 
                         "x": "3.06 Date/time arrival at hospital",
                         "y": ["1.02 Patient case record number", "4.04 Death in hospital"], 
@@ -273,14 +272,61 @@ $Q.Minap = {
                         "granP": ["unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.01 Initial diagnosis","2.03 ECG determining treatment", "2.02 Method of admission", "1.07 Patient gender"],      
-                        "quantities": [{"q":"2.15 Serum cholesterol", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"2.28 Serum glucose","granT": "admonth", "granP":["unit"], "yaggregates": "sum" },                                         
-                                        {"q":"2.29 Height", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                        "categories": ["2.01 Initial diagnosis", "2.02 Method of admission"],      
+                        "quantities": [{"q":"4.04 Death in hospital", "granT": "admonth", "granP":["unit"], "yaggregates": "count" },
+                                        {"q":"1.02 Patient case record number","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "average" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["1.02 Patient case record number", "4.04 Death in hospital"] }   // the first element holds the master view's granT                                             
           
+                     },
+                       {  
+                        "metric": "48h Readmission",
+                        "mark": "bar", // should remove this 
+                        "x": "3.06 Date/time arrival at hospital",
+                        "y": ["der_discharge", "der_readmit"], 
+                        "yaggregates": ["count", "count"], 
+                        "xType": "t",
+                        "yType": ["q", "q"],  
+                        "xspan": "year",    
+                        "yspan": "unit",  
+                        "ylabel": "No. Records",                        
+                        "tspan": 3,                           
+                        "granP": ["unit", "unit"], 
+                        "ehr": "Admissions",
+                        /** Slave Tasks spec begin here **/ 
+                        "categories": ["2.01 Initial diagnosis","2.03 ECG determining treatment", "2.02 Method of admission", "1.07 Patient gender"],      
+                        "quantities": [{"q":"der_discharge", "granT": "admonth", "granP":["unit"], "yaggregates": "count" },
+                                        {"q":"der_readmit","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        {"q":"2.29 Height", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": ["der_readmit", "der_discharge"] }   // the first element holds the master view's granT                                             
+          
+                     },
+                     {  
+                        "metric": "Delays",
+                        "mark": "bar", // should remove this 
+                        "x": "3.06 Date/time arrival at hospital",
+                        "y": ["1.02 Patient case record number", "der_stemi"], 
+                        "yaggregates": ["count", "count"], 
+                        "xType": "t",
+                        "yType": ["q", "q"],  
+                        "xspan": "year",    
+                        "yspan": "unit",  
+                        "ylabel": "No. Records",                        
+                        "tspan": 3,                           
+                        "granP": ["unit", "unit"], 
+                        "ehr": "Admissions",
+                        /** Slave Tasks spec begin here **/ 
+                        "categories": ["2.01 Initial diagnosis","2.03 ECG determining treatment", "2.02 Method of admission", "1.07 Patient gender"],      
+                        "quantities": [{"q":"1.02 Patient case record number", "granT": "admonth", "granP":["unit"], "yaggregates": "count" },
+                                        {"q":"der_stemi","granT": "admonth", "granP":["unit"], "yaggregates": "sum" },                                         
+                                        {"q":"2.29 Height", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": ["1.02 Patient case record number", "der_stemi"] }   // the first element holds the master view's granT                                             
+          
                      }
+                     
                                                  /*{  "metric": "48h Readmission",
                                                     "x": "3.06 Date/time arrival at hospital",
                                                     "y": "derived",
@@ -339,7 +385,7 @@ $Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
                           "unitIdVar": "1.01 Hospital identifier",
                           "admissionDateVar": "3.06 Date/time arrival at hospital",
                           "dischargeDateVar": "4.01 Date of discharge",
-                          "dischargeStatusVar": "4.02 Discharge diagnosis"
+                          "dischargeStatusVar": "4.16 Discharge destination"
                         } };
 $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery", 
                                        "2":"Unplanned-following surgery",
