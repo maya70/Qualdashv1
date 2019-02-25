@@ -249,12 +249,17 @@ $Q.Minap = {
                                                 "text": "48h Readmission"}, 
                                               {"value": "Delay from Call for Help to Reperfusion Treatment", 
                                               "text": "Delays"},
-                                              {"value": "derived_los", 
-                                              "text": "Length of Stay"},
+                                              {"value": "der_reqEcho", 
+                                              "text": "Capacity for Echo"},
                                               {"value": "Bleeding complications", // TODO: check how to calcul. complication rates 
                                                 "text": "Complications"
                                               }], 
-    "variableDict": {}, 
+    "variableDict": {"1.02 Patient case record number": "Admissions",
+                      "der_discharge": "Discharges",
+                      "der_readmit": "Readmissions",
+                      "der_stemi": "STEMI admissions", 
+                      "der_ctbTarget": "Not meeting target"
+                      }, 
     "displayVariables": [
                          {  
                         "metric": "Mortality",
@@ -307,25 +312,48 @@ $Q.Minap = {
                         "metric": "Delays",
                         "mark": "bar", // should remove this 
                         "x": "3.06 Date/time arrival at hospital",
-                        "y": ["1.02 Patient case record number", "der_stemi"], 
-                        "yaggregates": ["count", "count"], 
+                        "y": [ "der_stemi", "der_ctbTarget"], 
+                        "yaggregates": [ "count", "count"], 
                         "xType": "t",
-                        "yType": ["q", "q"],  
+                        "yType": [ "q", "q"],  
                         "xspan": "year",    
                         "yspan": "unit",  
                         "ylabel": "No. Records",                        
                         "tspan": 3,                           
-                        "granP": ["unit", "unit"], 
+                        "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.01 Initial diagnosis","2.03 ECG determining treatment", "2.02 Method of admission", "1.07 Patient gender"],      
-                        "quantities": [{"q":"1.02 Patient case record number", "granT": "admonth", "granP":["unit"], "yaggregates": "count" },
-                                        {"q":"der_stemi","granT": "admonth", "granP":["unit"], "yaggregates": "sum" },                                         
-                                        {"q":"2.29 Height", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                        "categories": ["2.02 Method of admission", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
+                        "quantities": [
+                                        {"q":"der_stemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        {"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
+                                         {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
+                                         {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["1.02 Patient case record number", "der_stemi"] }   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": [ "der_stemi", "der_ctbTarget"] }   // the first element holds the master view's granT                                             
           
-                     }
+                     }/*,
+                     {  "metric": "Capacity for Echo",    
+                        "mark": "bar",
+                        "x": "3.06 Date/time arrival at hospital",
+                        "y": "der_reqEcho",
+                        "xType": ["t", "n"],
+                        "yType": "q",
+                        "xspan": "year",    
+                        "yspan": "unit", 
+                        "ylabel": "No. Records",                        
+                        "tspan": 3,                        
+                        "yaggregates": ["count"],
+                        "ehr": "Admissions", 
+                        "granP": ["unit"], 
+                        "categories": ["2.36 Site of infarction", "1.07 Patient gender"], 
+                        "quantities": [
+                                        {"q":"der_reqEcho", "granT": "admonth", "granP":["unit"], "yaggregates": "count" },
+                                        {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": ["der_reqEcho"]} 
+                        
+                     }*/
                      
                                                  /*{  "metric": "48h Readmission",
                                                     "x": "3.06 Date/time arrival at hospital",

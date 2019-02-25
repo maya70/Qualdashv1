@@ -573,6 +573,19 @@
                             else if(vname === "stemi"){
                                 return rec["2.01 Initial diagnosis"] === "1" ? 1: 0; 
                             }
+                            else if(vname === "ctbTarget"){
+                                return (rec["2.01 Initial diagnosis"] === "1" && rec["3.10 Delay before treatment"] !== "0")? 1: 0; 
+                            }
+                            else if(vname === "ctb"){
+                                return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
+                            }
+                            else if(vname === "dtb"){
+                                return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
+                            }
+                            else if(vname === "reqEcho"){
+                                var possible = ["1", "2", "3", "4", "5", "9"];
+                                return (rec["2.01 Initial diagnosis"] === "1"  && rec["2.03 ECG determining treatment"] === 1 && possible.indexOf(rec["2.36 Site of infarction"])>=0)? 1: 0; 
+                            }
                             else if(vname === "missing" && self.audit === "picanet"){
                                 var count = 0;
                                 for(var key in rec){
@@ -689,7 +702,7 @@
                         /** Utility function that converts dates from the MINAP-specified format dd/mm/yyyy hh:mm
                         *   to an ISO-friendly Date() object
                         */
-                        stringToDate: function(str){
+                        stringToDate: function(str, timeElement){
                             var self = this;
                             var time, timeParts, hour, minute, second;
                             var strings = str.split(" ");
@@ -708,9 +721,9 @@
                                 second = timeParts[1];   
                             }
                             
-                            //if(timeParts)
-                                //return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z"); 
-                           // else
+                            if(timeElement)
+                                return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z"); 
+                            else
                                 return new Date(parseInt(year), (parseInt(month)), parseInt(day), 0); 
 
                         },
@@ -914,7 +927,7 @@
                             var vname;
                             var vval; 
                             var isDerived = false; 
-                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][0] ;
                             var dateVar = auditVars['x'];
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][0] : displayObj["yaggregates"] ;
 
@@ -1005,10 +1018,14 @@
                                 levels = [],
                                 slaves = {};  
 
-                            // define levels of the x-axis
+                                 // define levels of the x-axis
                             var xlevels = d3.map(self.data, function(item){
-                                                return item[dateVar];
+                                                var res;
+                                                res = (self.audit === "picanet")? item[dateVar] : self.stringToMonth(item[dateVar]);
+                                                return res;
                                                 }).keys();
+
+                           
                             // define record groups using the first categorical
                             var cat = categoricals[0];
                             var groups = d3.map(self.data, function(item){
