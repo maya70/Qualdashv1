@@ -466,13 +466,15 @@
                                          var lastDay = new Date(self.year, (m+1), 0); //self.stringToDate("1/"+(m+1)+"/"+self.year).getTime();
                                          span = Math.round(Math.abs(lastDay.getTime() - firstDay.getTime())/one_day*10)/10;
                                         }
-
-                                        if(!self.excessDays[m])
+                                        if(rec[$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                            {                                           
+                                            if(!self.excessDays[m])
                                                 self.excessDays[m] = {};
                                             if(!self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]])
                                                 self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]] = [];
                                             self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]].push(span); 
-                                
+                                            }
+
                                     }                                    
                                     // record bed days from admission day to the end of admission month only
                                     var dd = new Date(self.year, (m2+1), 0);
