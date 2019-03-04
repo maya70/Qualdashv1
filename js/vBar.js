@@ -495,7 +495,7 @@
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 15, right: 10, bottom: 50, left: self.leftMargin};							
+							var margin = {top: 35, right: 10, bottom: 50, left: self.leftMargin};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							var color = d3.scaleOrdinal()
@@ -510,7 +510,7 @@
 							 				.data(color.domain())
 							 				.enter().append("g")
 							 					 .attr("class", "legend")
-     											 .attr("transform", function(d, i) { return "translate("+ 10 +"," + (-15) + ")"; });
+     											 .attr("transform", function(d, i) { return "translate("+(0.5* margin.left) +"," + (-15) + ")"; });
      						 
      						 var numValues = color.domain().length;
      						 var legWidth = svgw/2; 
@@ -540,8 +540,12 @@
 							      .style("text-anchor", "start")							      
 							      .text(function(d) {
 							      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
-							      	return  tex || levels[d] ;})
+							      	var name = tex || levels[d];
+							      	var qual = self.parent.parent.control.getQuality(levels[d]); 
+							      	name = name + " (DQ: "+qual +"%)"; 
+							      	return name;  })
 							      	.style("font-size", "9pt");
+
 
 							    if(numValues > 2){
 							    	margin.top = 15 * Math.ceil(numValues/2);

@@ -99,6 +99,7 @@
                                        
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
+
                                             self.applyAggregateRule2(self.displayVariables[display], display, data);
                                         }
                                         self.loadHistory();
@@ -145,7 +146,7 @@
                                             //console.log(self.activityIndex); 
                                             
                                             for(var display = 0; display < self.displayVariables.length; display++)
-                                            {                                                
+                                            { 
                                                self.applyAggregateRule2(self.displayVariables[display],display, data);
                                             }
                                             ////console.log(self.dataViews);
@@ -394,30 +395,91 @@
                             }
                             
                         },
-                        getDerivedValue: function(vname, rec){
+                        recordMissing: function(vname, rec){
                             var self = this;
+                            if(!self.missing[vname])
+                                self.missing[vname] = 1; 
+                            else
+                                self.missing[vname]++; 
+                        },
+                        getDerivedValue: function(vname, rec, mainview){
+                            var self = this;
+                            //TODO: use callbacks for variable rules instead of this exhaustive branching
+
                             if(vname === "death" && self.audit === "picanet"){
                                 if(rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "2")
                                     return 1;
-                                else
+                                else{
+                                    var val = rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]];
+                                    if(val !== "1" && val !== "9")
+                                        self.recordMissing("der_"+vname, rec);
                                     return 0; 
+                                }
                             }
                             else if(vname === "smr" && self.audit === "picanet"){
+                                if(isNaN(rec["pim3_s"]))
+                                    self.recordMissing("der_"+vname, rec);
                                 return rec["pim3_s"]; 
                             }
                             else if(vname === "discharge"){
                                 if((rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "1" && self.audit === "picanet") || 
                                     (rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] !== "4" && self.audit === "minap") )
                                     return 1;
-                                else
+                                else{
+                                    var val = rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]];
+                                    if(isNaN(val) || val === "NA" || val === "")
+                                        self.recordMissing("der_"+vname, rec); 
                                     return 0; 
+                                }
                             }
                             else if(vname === "readmit"){
                                     return 0; 
                                 }
                             else if(vname === "bedDays"){
-                                var one_day = 1000*60*60*24;                                    
-                                return Math.abs(self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]).getTime() - self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getTime())/one_day;
+                                if(!self.excessDays)  // record bed days for additional months if the 
+                                        self.excessDays = {};  // admission and discharge are not in the same month
+                                    
+                                var one_day = 1000*60*60*24;  
+                                var d1 = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]).getTime(),
+                                    m1 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]);
+                                var d2 = self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getTime(),
+                                    m2 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+
+                                if(isNaN(d1) || isNaN(d2))
+                                    self.recordMissing("der_"+vname, rec);   
+
+                                var dayCount = Math.round(Math.abs( d1 - d2)/one_day*10)/10;   
+
+                                if(mainview && m1 !== m2){
+                                    // toss days to the following months (after admission month)
+                                    for(var m= m2+1; m <= m1; m++){ 
+                                        var span =0; 
+
+                                        // did discharge happen in this month?                                        
+                                        if(m === m1){
+                                            var lastDayPrevMon = new Date(self.year, m, 0);
+                                            span = Math.round(Math.abs(d1 - lastDayPrevMon.getTime())/one_day*10)/10;     
+                                        }
+                                        else{
+                                            // patient was in hospital throughout this whole month
+                                         var firstDay = new Date(self.year, m, 0); //self.stringToDate("1/"+m+"/"+self.year).getTime();
+                                         var lastDay = new Date(self.year, (m+1), 0); //self.stringToDate("1/"+(m+1)+"/"+self.year).getTime();
+                                         span = Math.round(Math.abs(lastDay.getTime() - firstDay.getTime())/one_day*10)/10;
+                                        }
+
+                                        if(!self.excessDays[m])
+                                                self.excessDays[m] = {};
+                                            if(!self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]])
+                                                self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]] = [];
+                                            self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]].push(span); 
+                                
+                                    }                                    
+                                    // record bed days from admission day to the end of admission month only
+                                    var dd = new Date(self.year, (m2+1), 0);
+                                    dayCount = Math.round(Math.abs(dd.getTime() - d2)/one_day*10) / 10;
+                                }
+                                
+                                return dayCount;
                             }
                             else if(vname === "invVentDays" && self.audit === "picanet"){                                
                                 //return  parseInt(rec["invventday"]) || 0; 
@@ -573,6 +635,9 @@
                             else if(vname === "stemi"){
                                 return rec["2.01 Initial diagnosis"] === "1" ? 1: 0; 
                             }
+                            else if(vname === "nstemi"){
+                                return rec["2.01 Initial diagnosis"] === "1" ? 0: 1; 
+                            }
                             else if(vname === "ctbTarget"){
                                 return (rec["2.01 Initial diagnosis"] === "1" && rec["3.10 Delay before treatment"] !== "0")? 1: 0; 
                             }
@@ -580,7 +645,12 @@
                                 return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
                             }
                             else if(vname === "dtb"){
+                                var dtb = (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
                                 return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
+                            }
+                            else if(vname === "angioTarget"){
+                                var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
+                                return (rec["2.01 Initial diagnosis"] !== "1" &&  tta > 360)? 1: 0; 
                             }
                             else if(vname === "reqEcho"){
                                 var possible = ["1", "2", "3", "4", "5", "9"];
@@ -880,7 +950,7 @@
                             var comps = auditVars['displayVariables'][viewId]['combinations'];
                             return comps;
                         },*/
-                        computeVar: function(yvar, displayObj, rec, sid, viewId){
+                        computeVar: function(yvar, displayObj, rec, sid, viewId, mainview){
                             var self = this;
                             var vname;
                             var vval;
@@ -903,11 +973,11 @@
                                 if(isNaN(vval)){
                                     vval = 0;
                                     if(!self.missing[yvar])
-                                        self.missing[yvar] = {};
-                                    if(!self.missing[yvar][dateVar])
-                                        self.missing[yvar][dateVar] = 1; 
+                                        self.missing[yvar] = 1;
+                                    //if(!self.missing[yvar][dateVar])
+                                    //    self.missing[yvar][dateVar] = 1; 
                                     else 
-                                        self.missing[yvar][dateVar]++; 
+                                        self.missing[yvar]++; 
                                 }
                             }
                             else{
@@ -915,12 +985,23 @@
                                 var strs = yvar.split("_");
                                 var rule = strs[0]; 
                                 vname = strs[1];
-                                var derval = self.getDerivedValue(vname, rec);                                
+                                var derval = self.getDerivedValue(vname, rec, mainview);                                
                                 vval = (yaggregates === "count")? ((derval>0)? 1: 0) 
                                             : derval;  
                             }
                             return vval; 
 
+                        },
+                        getQuality: function(varname){
+                            var self = this;
+                            if(self.missing[varname])
+                                {
+                                    var qual = (self.data.length - self.missing[varname])/ self.data.length * 100; 
+                                    return Math.round(qual*10)/10; 
+                                }
+                            else 
+                                return 100; 
+                        
                         },
                         computeVarSingle: function(group, cat, yvar, displayObj, rec){
                             var self = this;
@@ -951,7 +1032,7 @@
                                 var strs = yvar.split("_");
                                 var rule = strs[0]; 
                                 vname = strs[1];
-                                var derval = self.getDerivedValue(vname, rec);
+                                var derval = self.getDerivedValue(vname, rec, mainview);
                                 if(!displayObj)
                                    {//console.log(yvar);
                                     //console.log(rec);
@@ -966,11 +1047,11 @@
                               if(isNaN(vval)){
                                      vval = 0;
                                      if(!self.missing[yvar])                    
-                                          self.missing[yvar] = {};
-                                     if(!self.missing[yvar][dateVar])
-                                          self.missing[yvar][dateVar] = 1; 
+                                          self.missing[yvar] = 1;
+                                     //if(!self.missing[yvar][dateVar])
+                                      //    self.missing[yvar][dateVar] = 1; 
                                      else 
-                                         self.missing[yvar][dateVar]++; 
+                                         self.missing[yvar]++; 
                                     }
                             return vval; 
 
@@ -1232,7 +1313,7 @@
                                 // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                 displayVar.forEach(function(yvar, id){
                                         //var vname;
-                                        var vval = parseFloat(self.computeVar(yvar, displayObj, self.data[i], id, displayId));
+                                        var vval = parseFloat(self.computeVar(yvar, displayObj, self.data[i], id, displayId, 1));
                                         self.setDerivedValue(displayId, i, yvar, vval);
                                         if(yvar === "der_death"){
                                             if(!observedDeathsNational[self.data[i][dateVar]])
@@ -1248,7 +1329,6 @@
                                             if(!dict[mon][yvar]["value"])
                                                 dict[mon][yvar]["value"] = 0;                                             
                                             dict[mon][yvar]["value"] += vval;
-
                                             if(!dict[mon][yvar]["data"])
                                                 dict[mon][yvar]["data"] = [];
                                             if(vval > 0) dict[mon][yvar]["data"].push(i); 
@@ -1487,7 +1567,8 @@
                                                     //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
                                                     var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
                                                     var week = parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
-
+                                                    if(isNaN(mon))
+                                                        self.recordMissing("der_readmit"); 
                                                     if(unit === self.unitID){
                                                         // update this view's master dict
                                                         result['dict'][month]["der_readmit"]["value"]++;
@@ -1509,6 +1590,15 @@
                                 }
                                 return result;
                             } // if(metric === "48h Readmission")
+                            else if(metric === "Bed Days and Extubation"){
+                                console.log(dict);
+                                console.log(self.excessDays);
+                                for(var key in dict){
+                                   if(self.excessDays[key])
+                                    for(var kk in self.excessDays[key])
+                                       result['dict'][key]['der_bedDays']['value'] += self.excessDays[key][kk][0];
+                                }
+                            }
                             else{
                                 console.log(result);
                                 // calculate averages (if any)

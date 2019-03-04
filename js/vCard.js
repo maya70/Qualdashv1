@@ -597,7 +597,7 @@
 						},
 						resizeVis: function(refresh){
 							var self = this;
-							
+							d3.select("#sel"+self.id).style("width", "60%"); 
 							d3.select("#panel"+self.id)
 								.style("visibility", "hidden");
 
@@ -617,7 +617,7 @@
 									// remove existing slaves if they exist
 									// this is to create them anew and position them
 									// according to the newly resized card dimensions
-								
+									d3.select("#sel"+self.id).style("width", "50%"); 
 									var undef;								
 									d3.selectAll(".ssvg"+self.id).remove(); 
 									d3.selectAll("#ssvgtdiv"+self.id).remove();
@@ -733,17 +733,21 @@
 											.style("padding-top", 0)											
 											.style("margin-top", 0); 
 
-							var metricSelect = header.append("select")
+							var metricSelect = header.append("p")
 												.attr("name", "metricselector")
 												.attr("class", "form-control")
 												.style("vertical-align", "top")
 												.attr("id", "sel"+viewId)
-												.style("font-size", "9pt")
-												.style("width", "45%")																								
-												.style("horizontal-align", "left")
+												.style("width", "50%")	
+												.style("background-color", "lightgrey")																							
+												.style("text-align", "center")
 												.style("position", "absolute")												
 												.style("left", "-5px")
-												.on("change", function(d){													
+												.style("min-height", "25px")
+												.text(self.parent.availMetrics[viewId]['text'])
+													.style("font-weight", "bold")
+													.style("font-size", "13pt");
+												/*.on("change", function(d){													
 													////////console.log(this.value);													
 													self.parent.control.updateMetrics(viewId, this.value); 											
 													var dv = self.parent.getMetricDataView(this.value);													
@@ -751,16 +755,16 @@
 													//TODO: reset here the grouping variables and dicts of this view
 													self.parent.control.resetCategoricals(viewId); 
 													self.drawBarChart(viewId, dv['data']);
-												});
+												});*/
 
 							document.getElementById("sel"+viewId).disabled = true;
 							
-							for(var m = 0; m < self.parent.availMetrics.length; m++){
+							/*for(var m = 0; m < self.parent.availMetrics.length; m++){
 								metricSelect.append("option")
 											.attr("value", self.parent.availMetrics[m]['value'])
 											.text(self.parent.availMetrics[m]['text'])
 											.style("font-size", "9pt");
-							}
+							}*/
 							
 							var curMetric = self.parent.availMetrics[(viewId%self.parent.availMetrics.length)]['value'];
 							self.metric = curMetric; 

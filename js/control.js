@@ -53,7 +53,10 @@
 						getAvailMetrics: function(){
 							var self = this; 
 							return self.dataModel.availMetrics; 
-						},						
+						},	
+						getQuality: function(varname){
+							return this.dataModel.getQuality(varname);
+						},					
 						drawChart: function(displayId, data, cat, levels, trellis){
 							var self = this;
 							// get type of chart from view
