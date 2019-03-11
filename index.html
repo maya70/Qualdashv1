@@ -263,11 +263,7 @@ div.tooltip {
 #b11{
   margin-right: 20px; 
 }
-#tabCanvas{
-  min-height: 600px;
-  min-width: 600px;
-   
-}
+
 table {
   font-family: arial, sans-serif;
   border-collapse: collapse;
@@ -284,7 +280,11 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 #tabCanvas{
-  overflow: scroll;
+   min-width: 600px;
+  overflow: hidden;
+}
+#tableTabs{
+  min-height: 50px;
 }
 
 .expansion-canvas{
@@ -515,7 +515,11 @@ svg{
     </div>
    </div>
  </div> 
- <div id="tabCanvas" class="tab-pane fade">   
+ <div id="tabCanvas" class="tab-pane fade"> 
+   <ul class="nav nav-tabs" id="tableTabs">
+
+    </ul>  
+    <div id="tableContents"> </div>
  </div> 
 
 <div id="expPlaceHolder" class="expansion-canvas tab-pane fade">   
@@ -527,12 +531,10 @@ svg{
 
  
 
-  <!-- Footer -->
+  <!-- Footer >
   <footer class="w3-container  w3-light-grey w3-center" style="width: 100%; align-content: : left;">
-    <!--h4>FOOTER</h4-->
     <span class="w3-bar-item" > QualDash &copy </span> 
-    <!--p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p-->
-  </footer>
+  </footer-->
 </div>
 
   <!-- End page content -->

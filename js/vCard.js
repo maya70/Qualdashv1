@@ -920,8 +920,12 @@
 
 							  d3.select("#export-btn"+viewId)							  	
 							  	.on("click", function(){
-							  		console.log(self.selection);							  		
-							  		var tabCanvas = d3.select('#tabCanvas'); 
+							  		//console.log(self.selection);							  		
+							  		var tabs= self.parent.setTableTabs(Object.keys(self.selection));
+							  		var tabCanvas = d3.select('#tableContents').append("div")
+							  									.style("max-height", "450px")
+							  									.style("border", "3px solid #000000")
+							  									.style("overflow", "scroll"); 
 							  		tabCanvas.append("p")
 							  				.style("font-size", "16pt")
 							  				.text("Data exported from card: "+ self.metric);

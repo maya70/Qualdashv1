@@ -35,6 +35,20 @@
 							var self = this;
 							self.cards.push(new $Q.QualCard(self, viewId));
 						},
+						setTableTabs: function(keys){
+							var self = this;
+							var tabs = d3.select("#tableTabs");
+
+							keys.forEach(function(key){
+								tabs.append("li")
+												.append("a")
+													.attr("data-toggle", "tab")
+													.attr("href", "#home")
+													.style("border", "1px solid #ccc")
+													.style("background-color", "#f1f1f1")
+													.text(key); 
+							});
+						},
 						updateDataViews: function(viewId, slaves){
 							var self = this; 
 							self.dataViews[viewId]['slaves']['cats'] = slaves[viewId]['cats'];
