@@ -7,7 +7,7 @@
 						self.parent = pCard;
 						self.audit = self.parent.getAuditInfo(); 
 						self.id = dataView['viewId'];
-										
+						self.dualAxis = true; 
 						self.iter = 0; 												
 						self.toggle = "grouped";
 						self.dataView = dataView; 
@@ -159,7 +159,7 @@
 							
 							var x = d3.scaleBand()
 									    .domain(xz)
-									    .rangeRound([0, width])
+									    .rangeRound([0, (width-15)])
 									    .padding(0.1);
 
 							var y = d3.scaleLinear()
@@ -478,7 +478,7 @@
 							var viewshare = trellis? 2 : 1; 
 							//////console.log(viewshare); 
 							//if(viewshare > 2) viewshare = 2; 
-							var scale = self.parent.expanded? 0.6 : 0.9; 
+							var scale = self.parent.expanded? 0.6 : 0.95; 
 							var svgw = scale * parentArea.node().getBoundingClientRect().width;
 							var svgh = scale * parentArea.node().getBoundingClientRect().height / viewshare; 
 							//var shift = self.parent.expanded? ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width) : 0; 
@@ -582,7 +582,7 @@
 
 							var x = d3.scaleBand()
 									    .domain(xz)
-									    .rangeRound([0, width])
+									    .rangeRound([0, (width-15)])
 									    .padding(0.1);
 
 							var y = d3.scaleLinear()
@@ -688,6 +688,65 @@
 							      .attr("class", "y axis")
 							      .call(d3.axisLeft(y).ticks(5, "s"))
 							      .attr("transform", "translate(0,"+0+")");
+
+							    if(self.dualAxis){
+
+
+							    	g.append("g")
+							    		.attr("class", "y axis")
+							    		.attr("id", "dualAxis")
+							    		.call(d3.axisRight(y).ticks(5, "s"))
+							    		.attr("transform", "translate("+(width-15)+","+0+")");
+							    	
+
+ 
+							    	// dummy data for now
+							    	var dummy = [{'date': '1' , 'number': 10},
+							    				 {'date': '2' , 'number': 11},
+							    				 {'date': '3' , 'number': 20},
+							    				 {'date': '4' , 'number': 29},
+							    				 {'date': '5' , 'number': 34},
+							    				 {'date': '6' , 'number': 38},
+							    				 {'date': '7' , 'number': 38},
+							    				 {'date': '8' , 'number': 38},
+							    				 {'date': '9' , 'number': 38},
+							    				 {'date': '10' , 'number': 45},
+							    				 {'date': '11' , 'number': 50},
+							    				 {'date': '12' , 'number': 55}
+							    				];
+							    	var xdscale = d3.scaleTime()
+									    			.domain(d3.extent(dummy, function(d){
+									    							return d.date; 
+									    			}))
+									    			.range([x("1"), x("10")]);
+
+							    	var ydscale = d3.scaleLinear()
+							    					.domain([0, d3.max(dummy, function(d){
+							    									return d.number; 
+							    								})])
+							    					.range([height, 0]);
+
+							    	var valueLine = d3.line()
+							    					.x(function(d) { 
+							    						return xdscale(d.date); })
+							      					.y(function(d) { 
+							      						console.log(ydscale(d.number)); 
+							      						return ydscale(d.number); })
+							      	g.append("path")
+							      		.data([dummy])
+							      		.attr("class", "line")
+							      		.attr("id", "vline")
+							      		.attr("d", valueLine)
+							      		.style("stroke", "brown"); 
+							      	/*g.selectAll(".line")
+							      		.data([dummy])
+							      		.enter().append("path")
+							      		.attr("class", "line")
+							      		.attr("d", valueLine)
+							      		.style("stroke", "red")
+							      		.style("fill", "none"); */
+
+							    }
 
 							d3.selectAll(".toggle-button")
 							    .on("click", changed);
@@ -903,7 +962,7 @@
 
 							self.height = height; 
 
-							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
+							var x = d3.scaleBand().rangeRound([0, (width-15)]).padding(0.1), 
 								y = d3.scaleLinear().range([height, 0]).nice(); 
 							//var data = self.audit === "picanet"? self.fixDataFormat() :self.data; 							
 							var data = self.data; 
@@ -923,7 +982,7 @@
 									.attr("height", svgh)
 									.attr("transform", "translate("+ xoffset +",0)" );
 
-							x.rangeRound([0, width]).padding(0.1);
+							x.rangeRound([0, (width-15)]).padding(0.1);
 							y.range([(height), 0]); 
 
 							////console.log(self.svg.selectAll("*"));
@@ -943,6 +1002,53 @@
 									.call(d3.axisLeft(y).ticks(5, "s"))
 							      	.attr("transform", "translate(0,"+ 0 +")");
 							
+							if(self.dualAxis){
+								self.svg.select("#dualAxis")
+									.call(d3.axisRight(y).ticks(5, "s"))
+							      	.attr("transform", "translate("+(width-15)+","+ 0 +")");
+
+							    // dummy data for now
+							    	var dummy = [{'date': '1' , 'number': 10},
+							    				 {'date': '2' , 'number': 11},
+							    				 {'date': '3' , 'number': 20},
+							    				 {'date': '4' , 'number': 29},
+							    				 {'date': '5' , 'number': 34},
+							    				 {'date': '6' , 'number': 38},
+							    				 {'date': '7' , 'number': 38},
+							    				 {'date': '8' , 'number': 38},
+							    				 {'date': '9' , 'number': 38},
+							    				 {'date': '10' , 'number': 45},
+							    				 {'date': '11' , 'number': 50},
+							    				 {'date': '12' , 'number': 55}
+							    				];
+							    	var xdscale = d3.scaleTime()
+									    			.domain(d3.extent(dummy, function(d){
+									    							return d.date; 
+									    			}))
+									    			.range([x("1"), x("10")]);
+
+							    	var ydscale = d3.scaleLinear()
+							    					.domain([0, d3.max(dummy, function(d){
+							    									return d.number; 
+							    								})])
+							    					.range([height, 0]);
+
+							    	var valueLine = d3.line()
+							    					.x(function(d) { 
+							    						return xdscale(d.date); })
+							      					.y(function(d) { 
+							      						console.log(ydscale(d.number)); 
+							      						return ydscale(d.number); })
+							      	self.svg.select("#vline").remove(); 
+							      	self.svg.append("path")
+							      		.data([dummy])
+							      		.attr("class", "line")
+							      		.attr("id", "vline")
+							      		.attr("d", valueLine)
+							      		.attr("transform", "translate("+margin.left+","+margin.top+")")
+							      		.style("stroke", "brown"); 
+
+							}
 							if(self.cat) self.changed(x, y, self.id); 
 							else{
 								self.svg.selectAll(".bar")
