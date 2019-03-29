@@ -114,18 +114,23 @@ $Q.Picanet = {
                   "der_depLevel6": "IC Advanced Enhanced"
                 },
 "displayVariables": [{  "metric": "Mortality",
-                        "mark": "bar", // should remove this 
+                        "mark": "bar", 
+                        "chart": "stack", 
                         "x": "admonth",
-                        "y": ["eventidscr", "der_death"], 
-                        "yaggregates": ["count", "sum"], 
+                        "y": ["eventidscr", "der_death", "der_smr"], 
+                        "yaggregates": ["count", "count", "runningAvg"], // rename as "targets"
+                        "yfilters": [{"where": "*"},      /* optional */
+                                     {"where": "self", "sign": "=", "value":"1"},
+                                     {"where": "unitdisstatus", "sign": "=", "value": "2"}],                                                
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "xspan": "year",    
                         "yspan": "unit",  
                         "ylabel": "No. Records",                        
                         "tspan": 3,                           
-                        "granP": ["unit", "unit"], 
+                        "granP": ["unit", "unit"],  // to allow expansion in case of cross-site data sharing agreements
                         "ehr": "Admissions",
+                        
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
                         "quantities": [{"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },

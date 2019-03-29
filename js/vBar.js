@@ -7,10 +7,38 @@
 						self.parent = pCard;
 						self.audit = self.parent.getAuditInfo(); 
 						self.id = dataView['viewId'];
-						self.dualAxis = true; 
+						//self.dualAxis = true; 
 						self.iter = 0; 												
 						self.toggle = "grouped";
 						self.dataView = dataView; 
+						self.dualData = [];
+						// do we need dual axis?
+						self.dualAxis = false;
+						var yaggregates = self.audit === "picanet"? $Q.Picanet["displayVariables"][self.id]["yaggregates"]
+																  : $Q.Minap["displayVariables"][self.id]["yaggregates"];
+						var avgIndex = yaggregates.indexOf("average");
+						var runningAvgIndex = yaggregates.indexOf("runningAvg");
+						var avgIndex = avgIndex >=0? avgIndex : runningAvgIndex; 
+
+						if(yaggregates.indexOf("count")>=0 && avgIndex >=0)
+							{
+								self.dualAxis = true; 
+								// put the average on a dual axis
+								var dualVarName = dataView['levels'][avgIndex];
+								for(var key in dataView['data']){
+									// store the dual axis values
+									var val = dataView['data'][key][dualVarName]['value'];
+									var dat = dataView['data'][key][dualVarName]['data']; 
+									self.dualData.push({'date': key , 'value': val, 'data': dat});	
+									//delete dataView['data'][key][dualVarName]; 
+								}
+								dataView['levels'].splice(dataView['levels'].indexOf(dualVarName), 1);
+								
+
+								// remove the dual axis component from the bars
+
+							}
+
 						self.palette = {};
 						self.leftMargin = 60; 
 						self.highlightColor = pCard.parent.control.highlightColor; 
@@ -691,6 +719,11 @@
 
 							    if(self.dualAxis){
 
+							    	var ydscale = d3.scaleLinear()
+							    					.domain([0, d3.max(self.dualData, function(d){
+							    									return d.value; 
+							    								})])
+							    					.range([height, 0]);
 
 							    	g.append("g")
 							    		.attr("class", "y axis")
@@ -698,10 +731,14 @@
 							    		.call(d3.axisRight(y).ticks(5, "s"))
 							    		.attr("transform", "translate("+(width-15)+","+0+")");
 							    	
-
+							    	var xdscale = d3.scaleTime()
+									    			.domain(d3.extent(self.dualData, function(d){
+									    							return d.date; 
+									    			}))
+									    			.range([x("1"), x("10")]);
  
 							    	// dummy data for now
-							    	var dummy = [{'date': '1' , 'number': 10},
+							    	/*var dummy = [{'date': '1' , 'number': 10},
 							    				 {'date': '2' , 'number': 11},
 							    				 {'date': '3' , 'number': 20},
 							    				 {'date': '4' , 'number': 29},
@@ -713,27 +750,17 @@
 							    				 {'date': '10' , 'number': 45},
 							    				 {'date': '11' , 'number': 50},
 							    				 {'date': '12' , 'number': 55}
-							    				];
-							    	var xdscale = d3.scaleTime()
-									    			.domain(d3.extent(dummy, function(d){
-									    							return d.date; 
-									    			}))
-									    			.range([x("1"), x("10")]);
-
-							    	var ydscale = d3.scaleLinear()
-							    					.domain([0, d3.max(dummy, function(d){
-							    									return d.number; 
-							    								})])
-							    					.range([height, 0]);
+							    				];*/
+							    	
 
 							    	var valueLine = d3.line()
 							    					.x(function(d) { 
 							    						return xdscale(d.date); })
 							      					.y(function(d) { 
-							      						console.log(ydscale(d.number)); 
-							      						return ydscale(d.number); })
+							      						console.log(ydscale(d.value)); 
+							      						return ydscale(d.value); })
 							      	g.append("path")
-							      		.data([dummy])
+							      		.data([self.dualData])
 							      		.attr("class", "line")
 							      		.attr("id", "vline")
 							      		.attr("d", valueLine)
@@ -1003,45 +1030,37 @@
 							      	.attr("transform", "translate(0,"+ 0 +")");
 							
 							if(self.dualAxis){
-								self.svg.select("#dualAxis")
-									.call(d3.axisRight(y).ticks(5, "s"))
-							      	.attr("transform", "translate("+(width-15)+","+ 0 +")");
-
-							    // dummy data for now
-							    	var dummy = [{'date': '1' , 'number': 10},
-							    				 {'date': '2' , 'number': 11},
-							    				 {'date': '3' , 'number': 20},
-							    				 {'date': '4' , 'number': 29},
-							    				 {'date': '5' , 'number': 34},
-							    				 {'date': '6' , 'number': 38},
-							    				 {'date': '7' , 'number': 38},
-							    				 {'date': '8' , 'number': 38},
-							    				 {'date': '9' , 'number': 38},
-							    				 {'date': '10' , 'number': 45},
-							    				 {'date': '11' , 'number': 50},
-							    				 {'date': '12' , 'number': 55}
-							    				];
-							    	var xdscale = d3.scaleTime()
-									    			.domain(d3.extent(dummy, function(d){
+								var xdscale = d3.scaleTime()
+									    			.domain(d3.extent(self.dualData, function(d){
 									    							return d.date; 
+
 									    			}))
 									    			.range([x("1"), x("10")]);
 
+
+
 							    	var ydscale = d3.scaleLinear()
-							    					.domain([0, d3.max(dummy, function(d){
-							    									return d.number; 
+							    					.domain([0, d3.max(self.dualData, function(d){
+							    									return d.value; 
 							    								})])
 							    					.range([height, 0]);
+							    	
+							    	self.svg.select("#dualAxis")
+										.call(d3.axisRight(ydscale).ticks(5, "s"))
+							      		.attr("transform", "translate("+(width-15)+","+ 0 +")");
+
 
 							    	var valueLine = d3.line()
 							    					.x(function(d) { 
 							    						return xdscale(d.date); })
 							      					.y(function(d) { 
-							      						console.log(ydscale(d.number)); 
-							      						return ydscale(d.number); })
+							      						console.log(ydscale(d.value)); 
+							      						return ydscale(d.value); });
+								
+							    	
 							      	self.svg.select("#vline").remove(); 
 							      	self.svg.append("path")
-							      		.data([dummy])
+							      		.data([self.dualData])
 							      		.attr("class", "line")
 							      		.attr("id", "vline")
 							      		.attr("d", valueLine)
