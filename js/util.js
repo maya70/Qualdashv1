@@ -446,6 +446,7 @@ $Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
                           "patientIdVar": "1.02 Patient case record number", 
                           "unitIdVar": "1.01 Hospital identifier",
                           "admissionDateVar": "3.06 Date/time arrival at hospital",
+                          "yearVar": "admYear",
                           "dischargeDateVar": "4.01 Date of discharge",
                           "dischargeStatusVar": "4.16 Discharge destination"
                         } };
