@@ -179,6 +179,7 @@
 							    .attr("class", "x axis")
 							    .attr("transform", "translate(0," + height + ")")
 							    .call(d3.axisBottom(x));
+
 				// Remove pre-populated linear data ticks on x-axis 
 							xAxis.selectAll("text").remove();
 							xAxis.selectAll("g").remove();
@@ -201,11 +202,11 @@
 					  d3.select(".g-hed").text("Time scales");
 					  //Appends chart intro text
 					  //d3.select(".g-intro").text("Chart intro text goes here. Write a short sentence describing the chart here.");
-					// Setting y-axis scale to be linear with an appropriate domain beginning, as is mandatory, with 0 set as baseline, then appending svg g onto the left yAxis with 6 tickmarks at equal intervals
+					  // Setting y-axis scale to be linear with an appropriate domain beginning, as is mandatory, with 0 set as baseline, then appending svg g onto the left yAxis with 6 tickmarks at equal intervals
 								
 								var yScale = d3.scaleLinear()
 							        .domain([0, self.yMax])
-									.range([height, 0]);
+									.range([(height), 0]);
 								var yAxis = svg.append("g")
 								    .attr("class", "y axis1")
 								    .call(d3.axisLeft(yScale).ticks(6));

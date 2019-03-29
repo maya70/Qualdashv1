@@ -255,7 +255,7 @@ $Q.Minap = {
                                               {"value": "Delay from Call for Help to Reperfusion Treatment", 
                                               "text": "Call-to-Balloon"},
                                               {"value": "Delay from Call for Help to Angiogram", 
-                                              "text": "Call-to-Angio"},
+                                              "text": "Door-to-Angio"},
                                               {"value": "der_reqEcho", 
                                               "text": "Capacity for Echo"},
                                               {"value": "Bleeding complications", // TODO: check how to calcul. complication rates 
@@ -264,10 +264,13 @@ $Q.Minap = {
     "variableDict": {"1.02 Patient case record number": "Admissions",
                       "der_discharge": "Discharges",
                       "der_readmit": "Readmissions",
-                      "der_stemi": "STEMI admissions", 
+                      "der_stemi": "PCI patients", 
                       "der_nstemi": "NSTEMI admissions", 
                       "der_ctbTarget": "CTB Not meeting target",
                       "der_angioTarget": "CTA Not meeting target",
+                      "der_ctbTargetMet": "Met target",
+                      "der_ctb": "Avgerage CTB",
+                      "der_dtb": "Door-to-Balloon"
                       }, 
     "displayVariables": [
                          {  
@@ -332,18 +335,16 @@ $Q.Minap = {
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.02 Method of admission", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
+                        "categories": ["2.02 Method of admission", "Patient District Number"],      
                         "quantities": [
                                         {"q":"der_stemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
-                                         {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
+                                        {"q":"der_ctbTargetMet", "granT": "admonth", "granP":["unit"], "yaggregates": "percent"}, 
                                          {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
-                                       ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": [ "der_stemi", "der_ctbTarget"] }   // the first element holds the master view's granT                                             
-          
+                                       ],                                                               
+                        "granT": {"monthly-annual": [ "der_stemi", "der_ctbTarget"] }             
                      },
                      {  
-                        "metric": "Call-to-Angio",
+                        "metric": "Door-to-Angio",
                         "mark": "bar", // should remove this 
                         "x": "3.06 Date/time arrival at hospital",
                         "y": [ "der_nstemi", "der_angioTarget"], 
@@ -497,7 +498,18 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
 
                                             }
                             },
-                "minap":{}
+                "minap":{ 
+                          "2.02 Method of admission": {
+                                "1": "Direct Emergency",
+                                "2": "Self-presenter",
+                                "3": "Alredy in Hospital",
+                                "4": "Transfer",
+                                "5": "Repatriation",
+                                "6": "Other",
+                                "9": "Unknown"
+                          },
+
+                        }
                       };
 $Q.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 //$Q.colors = ["#93969b", "#0f0f0f", "#c18f2a"];

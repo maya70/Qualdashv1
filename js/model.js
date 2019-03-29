@@ -643,6 +643,9 @@
                             else if(vname === "ctbTarget"){
                                 return (rec["2.01 Initial diagnosis"] === "1" && rec["3.10 Delay before treatment"] !== "0")? 1: 0; 
                             }
+                            else if(vname === "ctbTargetMet"){
+                                return (rec["2.01 Initial diagnosis"] === "1" && rec["3.10 Delay before treatment"] === "0")? 1: 0; 
+                            }
                             else if(vname === "ctb"){
                                 return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
                             }
@@ -1594,10 +1597,23 @@
                                                 result['slaves']['data'][q['q']][key]['unit'] /= slaves['data'][q['q']][key]['data'].length;
                                         }
                                     }
+                                    else if(q['yaggregates'] === "percent"){
+                                        var firstKey = Object.keys(dict)[0];
+                                        // update dict
+                                        if(dict[firstKey][q['q']]){
+                                            result['dict'][firstKey][q['q']]['value'] *= 100/dict[firstKey][q['q']]['data'].length;  
+                                        }
+                                        // update slaves 
+                                        if(slaves['data'][q['q']]){
+                                            for(var key in result['slaves']['data'][q['q']])
+                                                result['slaves']['data'][q['q']][key]['unit'] *= 100/ slaves['data'][q['q']][key]['data'].length;
+                                        }
+                                    }
                                 });
                                  // 2. Update the slaves: 
                              if(displayObj["quantities"]){
                                     displayObj["quantities"].forEach(function(quant){
+
                                         if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
                                             for(var key in slaves['data'][quant['q']]){
                                                 slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];

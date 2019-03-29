@@ -200,7 +200,7 @@
 							var self = this;
 							//////console.log(qdata);
 							var quantityNames = slaves['quants']; 
-
+							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
 							//exclude quantities that are already included in the main view 
 							var mainQs = self.parent.control.audit === "picanet"? ($Q.Picanet["displayVariables"][self.id]["y"]):
 																				 ($Q.Minap["displayVariables"][self.id]["y"]);
@@ -311,7 +311,7 @@
 								.attr("dy", "1.2em")
 								.attr("dx", "1.3em")
 							    .text(function(d) { 
-							    	return $Q.Picanet["variableDict"][d['q']] || d['q']; })
+							    	return auditVars["variableDict"][d['q']] || d['q']; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 							
@@ -860,10 +860,11 @@
 									return d["data-toggle"]; 
 								})
 								.attr("data-placement", function(d){
-										if(viewId%3 === 0)
-											return "bottom";
-										else
-											return "left"; 
+										//if(viewId%3 === 0)
+										//	return "bottom";
+										//else
+										//	return "left"; 
+										return "right";
 									})
 								.attr("data-popover-content",function(d){
 									return d["data-popover-content"];
