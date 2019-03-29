@@ -1230,24 +1230,12 @@
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
                             //if(metric === "48h Readmission"){
-                                var postData = self.postProcess(dict, slaves, metric);
+                                var postData = self.postProcess(dict, slaves, metric, self.observedDeathsNational, displayObj);
                                 dict = postData? postData['dict']: dict;
                                 slaves =postData? postData['slaves']: slaves;
                             //}
                             ////console.log(dict);
-                             // 2. Update the slaves: 
-                             if(displayObj["quantities"]){
-                                    displayObj["quantities"].forEach(function(quant){
-                                        if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
-                                            for(var key in slaves['data'][quant['q']]){
-                                                slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
-                                                slaves['data'][quant['q']][key]['unit'] = dict[key]["der_death"]['value'] / slaves['data'][quant['q']][key]['unit']; 
-                                            }
-                                            //slaves['data'][quant['q']]['national'] = national;
-                                            //slaves['data'][quant['q']]['unit'] = unit; 
-                                        }
-                                    });
-                                 }
+                            
                                
                                 //console.log(slaves); 
                                 self.slaves[displayId] = slaves; 
@@ -1404,25 +1392,14 @@
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
                             //if(metric === "48h Readmission"){
-                                var postData = self.postProcess(dict, slaves, metric);
+                                self.observedDeathsNational = observedDeathsNational; 
+                                var postData = self.postProcess(dict, slaves, metric, observedDeathsNational, displayObj);
                                 dict = postData? postData['dict']: dict;
                                 slaves = postData? postData['slaves']: slaves;
                                 //console.log(slaves);                                 
                             //}
                             ////console.log(dict);
-                             // 2. Update the slaves: 
-                             if(displayObj["quantities"]){
-                                    displayObj["quantities"].forEach(function(quant){
-                                        if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
-                                            for(var key in slaves['data'][quant['q']]){
-                                                slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
-                                                if(!dict[key] || !dict[key]["der_death"])
-                                                        console.log(dict);
-                                                slaves['data'][quant['q']][key]['unit'] = dict[key]["der_death"]['value'] / slaves['data'][quant['q']][key]['unit']; 
-                                            }                                            
-                                        }
-                                    });
-                                 }
+                           
                                
                                 //console.log(slaves); 
                                 self.slaves[displayId] = slaves; 
@@ -1533,7 +1510,7 @@
                                  }
                             }
                         },
-                        postProcess: function(dict, slaves, metric){
+                        postProcess: function(dict, slaves, metric, observedDeathsNational, displayObj){
                             var self = this;
                             var result = {};
                             result['dict'] = dict;
@@ -1618,6 +1595,60 @@
                                         }
                                     }
                                 });
+                                 // 2. Update the slaves: 
+                             if(displayObj["quantities"]){
+                                    displayObj["quantities"].forEach(function(quant){
+                                        if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
+                                            for(var key in slaves['data'][quant['q']]){
+                                                slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
+                                                slaves['data'][quant['q']][key]['unit'] = dict[key]["der_death"]['value'] / slaves['data'][quant['q']][key]['unit']; 
+                                            }
+                                        }
+                                    });
+                                 }
+                               // check for (cumulative) averages or percentages in main view
+                                var first = Object.keys(dict)[0];
+                                var mainQs = Object.keys(dict[first]); 
+
+                                mainQs.forEach(function(q, qid){
+                                    if(q === "der_smr"){
+                                        if(yaggregates === "average"){
+                                            for(var key in dict){
+                                                result['dict'][key][q]['value'] = result['dict'][key][q]['data'].length / result['dict'][key][q]['value']; 
+                                            }
+                                        }
+                                        else if (yaggregates === "runningAvg"){
+                                            var runningSum = 0;
+                                            var runningLen = 0; 
+
+                                          for(var key in dict){
+                                                runningLen += result['dict'][key][q]['data'].length;
+                                                runningSum += result['dict'][key][q]['value'];
+                                                result['dict'][key][q]['value'] =  runningLen / runningSum; 
+                                            }   
+                                        }
+                                    }
+                                    else{
+                                            var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][qid] : displayObj["yaggregates"];
+                                            if(yaggregates === "average"){
+                                                for(var key in dict){
+                                                    result['dict'][key][q]['value'] /= result['dict'][key][q]['data'].length; 
+                                                }
+                                            }
+                                            else if(yaggregates === "runningAvg"){
+                                                var runningSum = 0;
+                                                var runningLen = 0;  
+
+                                             for(var key in dict){
+                                                    
+                                                    runningSum += result['dict'][key][q]['value'];
+                                                    runningLen += result['dict'][key][q]['data'].length; 
+                                                    result['dict'][key][q]['value'] = runningSum;
+
+                                        }   
+                                    }
+                                    }
+                                });    
                                 console.log(result);
                                 return result; 
                             } 
