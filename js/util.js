@@ -294,7 +294,7 @@ $Q.Minap = {
                                         {"q":"1.02 Patient case record number","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "average" }
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["1.02 Patient case record number", "4.04 Death in hospital"] }   // the first element holds the master view's granT                                             
+                        "granT": {"annual": ["1.02 Patient case record number", "4.04 Death in hospital"] }   // the first element holds the master view's granT                                             
           
                      },
                        {  
