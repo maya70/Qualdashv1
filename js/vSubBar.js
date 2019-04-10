@@ -7,6 +7,7 @@
 						self.parent = parent; 									
 						self.highlightColor = "cyan"; 						
 						self.draw(viewId, color, dataname, data, parent, svgw, svgh);
+						self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 					},
 					{
@@ -202,7 +203,7 @@
 							      	div.transition()
 							      		.duration(200)
 							      		.style("opacity", 0.9);
-							      	div .html((d.date) + "<br/>" + (d.number+ ""))
+							      	div .html(self.months[(parseInt(d.date)-1)] + "<br/>" + (Math.round(d.number*10)/10+ ""))
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	d3.select(this).style("fill", self.highlightColor);

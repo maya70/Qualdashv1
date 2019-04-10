@@ -117,9 +117,9 @@ $Q.Picanet = {
                         "mark": "bar", 
                         "chart": "stack", 
                         "x": "admonth",
-                        "y": ["eventidscr", "der_death", "der_smr"], 
-                        "yaggregates": ["count", "count", "runningAvg"], // rename as "targets"
-                        "yfilters": [{"where": "*"},      /* optional */
+                        "y": ["eventidscr", "der_death"], 
+                        "yaggregates": ["count", "count"], 
+                        "yfilters": [{"where": "*"},      
                                      {"where": "self", "sign": "=", "value":"1"},
                                      {"where": "unitdisstatus", "sign": "=", "value": "2"}],                                                
                         "xType": "t",
@@ -128,13 +128,13 @@ $Q.Picanet = {
                         "yspan": "unit",  
                         "ylabel": "No. Records",                        
                         "tspan": 3,                           
-                        "granP": ["unit", "unit"],  // to allow expansion in case of cross-site data sharing agreements
+                        "granP": ["unit", "unit"],  
                         "ehr": "Admissions",
-                        
+              
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
+                        "categories": ["primarydiagnosisgroup","adtype", "ethnic"],      
                         "quantities": [{"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"der_smr","granT": "admonth", "granP":["unit"], "yaggregates": "sum" },                                         
+                                        {"q":"pim3_s","granT": "admonth", "granP":["unit"], "yaggregates": "sum" },                                         
                                         {"q":"eventidscr", "granT": "admonth", "granP":["unit"], "yaggregates": "count" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["der_death", "eventidscr"] }   // the first element holds the master view's granT                                             
@@ -199,7 +199,28 @@ $Q.Picanet = {
                         "granT": {"monthly-annual": ["der_death"]}, 
                         "combinations": ["adtype&der_readmit"]
                      },
-                     {
+              
+                     {  "metric": "dependency",                        
+                        "mark": "bar", // should remove this 
+                        "x": "admonth",
+                        "y": ["der_depLevel0", "der_depLevelEC" ,"der_depLevel1", "der_depLevel2", "der_depLevel3", "der_depLevel4", "der_depLevel5", "der_depLevel6"], 
+                        "yaggregates": ["count"], 
+                        "xType": ["t", "n"],
+                        "yType": "q",  
+                        "xspan": "year",    
+                        "yspan": "unit",  
+                        "tspan": 3,                           
+                        "granP": ["unit"], 
+                        "ehr": "Admissions",                        
+                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
+                        "quantities": [ {"q":"der_depLevel2", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"der_depLevel3", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": ["der_depLevel2", "der_depLevel3"]}   // the first element holds the master view's granT                                             
+          
+                     }, 
+                      {
                       "metric": "Data Quality",
                       "mark": "bar", // should remove this 
                         "x": "admonth",
@@ -221,26 +242,6 @@ $Q.Picanet = {
                                         {"q":"der_missing", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["der_missing"]}   // the first element holds the master view's granT                                             
-          
-                     },
-                     {  "metric": "dependency",                        
-                        "mark": "bar", // should remove this 
-                        "x": "admonth",
-                        "y": ["der_depLevel0", "der_depLevelEC" ,"der_depLevel1", "der_depLevel2", "der_depLevel3", "der_depLevel4", "der_depLevel5", "der_depLevel6"], 
-                        "yaggregates": ["count"], 
-                        "xType": ["t", "n"],
-                        "yType": "q",  
-                        "xspan": "year",    
-                        "yspan": "unit",  
-                        "tspan": 3,                           
-                        "granP": ["unit"], 
-                        "ehr": "Admissions",                        
-                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [ {"q":"der_depLevel2", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"der_depLevel3", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
-                                       ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["der_depLevel2", "der_depLevel3"]}   // the first element holds the master view's granT                                             
           
                      }
                      ]

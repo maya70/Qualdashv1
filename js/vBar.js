@@ -9,7 +9,7 @@
 						self.id = dataView['viewId'];
 						//self.dualAxis = true; 
 						self.iter = 0; 												
-						self.toggle = "grouped";
+						self.toggle = self.id < 4? "grouped": "stacked";
 						self.dataView = dataView; 
 						self.dualData = [];
 						// do we need dual axis?
