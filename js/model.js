@@ -1671,7 +1671,8 @@
                         },
                         getRecordQuarter: function(rec){
                             var self = this; 
-                            var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getMonth()+1);
+                            var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getMonth());
+                            if(recMonth === 12) return 4; 
                             return recMonth < 4 ? 1: (recMonth < 7? 2: (recMonth < 10? 3 : 4))
                         },
                         checkGranT: function(varname, displayId){

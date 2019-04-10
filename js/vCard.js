@@ -715,6 +715,36 @@
 								var self = this;
 								return self.parent.getSlaves(self.id);
 							},
+						saveSubSVGs: function(){
+							var self = this;
+							if(self.ssvg1){
+								self.saveSVG("#ssvg1"+self.id, self.metric+"category.svg");
+							}
+							if(self.ssvg2){
+								self.saveSVG("#ssvg2"+self.id, self.metric+"quantity.svg");	
+							}
+							if(self.ssvgt){
+								self.saveSVG("#ssvgt"+self.id, self.metric+"timeView.svg");	
+							}
+
+						},
+						saveSVG: function(svg, name){
+							var self = this;
+							var svgEl = $(svg)[0];							
+							//console.log(name); 
+							svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+						    var svgData = svgEl.outerHTML;
+						    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
+						    var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
+						    var svgUrl = URL.createObjectURL(svgBlob);
+						    var downloadLink = document.createElement("a");
+						    downloadLink.href = svgUrl;
+						    downloadLink.download = name;
+						    document.body.appendChild(downloadLink);
+						    downloadLink.click();
+						    document.body.removeChild(downloadLink);
+
+						},
 						createHeader: function(container, viewId){
 							var self = this; 
 							var header = container.append("div")
@@ -724,6 +754,7 @@
 									.style("max-height", 35)
 									.style("width", "90%")
 									.style("margin-left", "3px")
+									.style("overflow", "hidden")
 										.append("div").attr("class", "form-group")
 											//.style("height", 43)
 											.style("width", "90%")
@@ -733,17 +764,19 @@
 											.style("padding-top", 0)											
 											.style("margin-top", 0); 
 
-							var metricSelect = header.append("p")
-												.attr("name", "metricselector")
+							var metricSelect = header.append("div")
+												//.attr("name", "metricselector")
 												.attr("class", "form-control")
 												.style("vertical-align", "top")
 												.attr("id", "sel"+viewId)
 												.style("width", "50%")	
-												.style("background-color", "lightgrey")																							
+												.style("background-color", "white")																							
 												.style("text-align", "center")
 												.style("position", "absolute")												
-												.style("left", "-5px")
+												.style("left", "0px")
+												.style("margin-left", "0px")
 												.style("min-height", "25px")
+												.style("border-radius", "0px")
 												.text(self.parent.availMetrics[viewId]['text'])
 													.style("font-weight", "bold")
 													.style("font-size", "13pt");
@@ -772,20 +805,49 @@
 							$('#sel'+viewId).val(curMetric);
 							$('.selectpicker').selectpicker('refresh');
 
-							/*var mainViewBtn = header.append("button")
+							var downloadBtn = header.append("button")
 												.attr("type", "button")
-												.attr("class", "form-control")
-												.attr("id", "toggle-btn"+viewId)
+												.attr("class", "form-control ctrl-btn fa fa-download")
+												.attr("id", "download-btn"+viewId)
 												.style("font-size", "9pt")
 												.style("vertical-align", "top")
 												.style("horizontal-align", "right")												
 												.style("min-width", "40px")
 												.style("position", "relative")
-												.style("left", "46%")
+												.style("left", "43%")
 												.style("background-color", "lightgrey")
 												.style("color", "black")
-												.text("Toggle View"); 
-							*/
+												.on("click", function(){
+													self.vis.saveSVG(); 
+													self.saveSubSVGs();
+												});
+												//.text("Toggle View"); 
+							var exportTableBtn = header.append("button")
+												.attr("type", "button")
+												.attr("class", "form-control ctrl-btn fa fa-table")
+												.attr("id", "export-btn"+viewId)
+												.style("font-size", "9pt")
+												.style("vertical-align", "top")
+												.style("horizontal-align", "right")												
+												.style("min-width", "40px")
+												.style("position", "relative")
+												.style("left", "43%")
+												.style("background-color", "lightgrey")
+												.style("color", "black");
+							var expandViewBtn = header.append("button")
+												.attr("type", "button")
+												.attr("class", "form-control ctrl-btn fa fa-expand")
+												.attr("id", "expand-btn"+viewId)
+												.style("font-size", "9pt")
+												.style("vertical-align", "top")
+												.style("horizontal-align", "right")												
+												.style("min-width", "40px")
+												.style("position", "relative")
+												.style("left", "43%")
+												.style("background-color", "lightgrey")
+												.style("color", "black");
+							
+							/*
 							var viewSelect = header.append("select")
 												.attr("name", "viewselector")
 												.attr("class", "form-control")
@@ -823,9 +885,11 @@
 											.style("font-size", "9pt");
 								}*/
 
-							$("#vsel"+viewId).on("dblclick", function(e){
+							$(".ctrl-btn").on("dblclick", function(e){
 								e.stopPropagation(); 
 							});
+
+
 							
 						},
 						createButtons: function(panel, viewId){

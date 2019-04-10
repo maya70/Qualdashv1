@@ -492,7 +492,9 @@
 							var self = this; 
 							self.control.addCategorical(viewId, gvar); 
 						},
-						
+						getMetricById: function(id){
+							return this.availMetrics[id]; 
+						},
 						getMetricDataView: function(txt){
 							var self = this; 
 							var views = self.control.getDataViews();

@@ -11,7 +11,7 @@
 						self.palette = self.parent.vis.getPalette(); 
 						console.log(self.palette); 
 						if(span.indexOf("-") < 0)
-							self.drawSimple(viewId, vname, self.data, parent, svgw, svgh);
+							self.drawSimple(viewId, vname, data, parent, svgw, svgh);
 						else
 							self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
 							
@@ -108,7 +108,240 @@
 									return true; 
 							return false; 
 						},
-						
+						prepDataSimple: function(vname, jsonData){
+							var self = this;
+							
+						},
+						drawSimple: function(viewId, vname, jsonData, parent, svgw, svgh){
+							var self = this;
+							console.log(jsonData);
+							var data = [
+  {
+    name: "USA",
+    values: [
+      {date: "January", price: "100"},
+      {date: "February", price: "110"},
+      {date: "March", price: "145"},
+      {date: "April", price: "241"},
+      {date: "May", price: "101"},
+      {date: "June", price: "90"},
+      {date: "July", price: "10"},
+      {date: "August", price: "35"},
+      {date: "September", price: "21"},
+      {date: "October", price: "201"}
+    ]
+  },
+  {
+    name: "Canada",
+    values: [
+      {date: "January", price: "200"},
+      {date: "February", price: "120"},
+      {date: "March", price: "33"},
+      {date: "April", price: "21"},
+      {date: "May", price: "51"},
+      {date: "June", price: "190"},
+      {date: "July", price: "120"},
+      {date: "August", price: "85"},
+      {date: "September", price: "221"},
+      {date: "October", price: "101"}
+    ]
+  },
+  {
+    name: "Maxico",
+    values: [
+      {date: "January", price: "50"},
+      {date: "February", price: "10"},
+      {date: "March", price: "5"},
+      {date: "April", price: "71"},
+      {date: "May", price: "20"},
+      {date: "June", price: "9"},
+      {date: "July", price: "220"},
+      {date: "August", price: "235"},
+      {date: "September", price: "61"},
+      {date: "October", price: "10"}
+    ]
+  }
+];
+
+var self = this; 
+							var scale = 0.95;
+
+							//var margin = {top: 30, right: 20, bottom: 30, left: 70}
+							var margin = 20; 
+							  var  width = 1.5*svgw - margin - margin,
+							    height = svgh * scale - margin - margin;
+							
+//var width = 500;
+//var height = 300;
+//var margin = 50;
+var duration = 250;
+
+var lineOpacity = "0.25";
+var lineOpacityHover = "0.85";
+var otherLinesOpacityHover = "0.1";
+var lineStroke = "1.5px";
+var lineStrokeHover = "2.5px";
+
+var circleOpacity = '0.85';
+var circleOpacityOnLineHover = "0.25"
+var circleRadius = 3;
+var circleRadiusHover = 6;
+
+
+/* Format Data */
+var parseDate = d3.timeParse("%B");
+data.forEach(function(d) { 
+  d.values.forEach(function(d) {
+    d.date = parseDate(d.date);
+    d.price = +d.price;    
+  });
+});
+
+
+/* Scale */
+var xScale = d3.scaleTime()
+  .domain(d3.extent(data[0].values, d => d.date))
+  .range([0, width-margin]);
+
+var yScale = d3.scaleLinear()
+  .domain([0, d3.max(data[0].values, d => d.price)])
+  .range([height-margin, 0]);
+
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+/* Add SVG */
+							if(self.svg){								
+								parent.ssvgt.select("svg").remove(); 								
+							}
+
+							/*var svg = parent.ssvgt.append("svg")			    
+							    .attr("width", width + margin.left + margin.right)
+							    .attr("height", height + margin.top + margin.bottom)
+							  .append("g")
+							  .attr("class", "g-time-container"+viewId)
+							    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			*/
+
+var svg = parent.ssvgt.append("svg")			    
+  .attr("width", (width+margin*2)+"px")
+  .attr("height", (height+margin+20)+"px")
+  .append('g')
+  .attr("transform", "translate("+(margin+30)+","+(margin*2)+")");
+
+
+/* Add line into SVG */
+var line = d3.line()
+  .x(d => xScale(d.date))
+  .y(d => yScale(d.price));
+
+let lines = svg.append('g')
+  .attr('class', 'lines');
+
+lines.selectAll('.line-group')
+  .data(data).enter()
+  .append('g')
+  .attr('class', 'line-group')  
+  .on("mouseover", function(d, i) {
+      svg.append("text")
+        .attr("class", "title-text")
+        .style("fill", color(i))        
+        .text(d.name)
+        .attr("text-anchor", "middle")
+        .attr("x", (width-margin)/2)
+        .attr("y", 5);
+    })
+  .on("mouseout", function(d) {
+      svg.select(".title-text").remove();
+    })
+  .append('path')
+  .attr('class', 'line')  
+  .attr('d', d => line(d.values))
+  .style('stroke', (d, i) => color(i))
+  .style('opacity', lineOpacity)
+  .on("mouseover", function(d) {
+      d3.selectAll('.line')
+					.style('opacity', otherLinesOpacityHover);
+      d3.selectAll('.circle')
+					.style('opacity', circleOpacityOnLineHover);
+      d3.select(this)
+        .style('opacity', lineOpacityHover)
+        .style("stroke-width", lineStrokeHover)
+        .style("cursor", "pointer");
+    })
+  .on("mouseout", function(d) {
+      d3.selectAll(".line")
+					.style('opacity', lineOpacity);
+      d3.selectAll('.circle')
+					.style('opacity', circleOpacity);
+      d3.select(this)
+        .style("stroke-width", lineStroke)
+        .style("cursor", "none");
+    });
+
+
+/* Add circles in the line */
+lines.selectAll("circle-group")
+  .data(data).enter()
+  .append("g")
+  .style("fill", (d, i) => color(i))
+  .selectAll("circle")
+  .data(d => d.values).enter()
+  .append("g")
+  .attr("class", "circle")  
+  .on("mouseover", function(d) {
+      d3.select(this)     
+        .style("cursor", "pointer")
+        .append("text")
+        .attr("class", "text")
+        .text(`${d.price}`)
+        .attr("x", d => xScale(d.date) + 5)
+        .attr("y", d => yScale(d.price) - 10);
+    })
+  .on("mouseout", function(d) {
+      d3.select(this)
+        .style("cursor", "none")  
+        .transition()
+        .duration(duration)
+        .selectAll(".text").remove();
+    })
+  .append("circle")
+  .attr("cx", d => xScale(d.date))
+  .attr("cy", d => yScale(d.price))
+  .attr("r", circleRadius)
+  .style('opacity', circleOpacity)
+  .on("mouseover", function(d) {
+        d3.select(this)
+          .transition()
+          .duration(duration)
+          .attr("r", circleRadiusHover);
+      })
+    .on("mouseout", function(d) {
+        d3.select(this) 
+          .transition()
+          .duration(duration)
+          .attr("r", circleRadius);  
+      });
+
+
+/* Add Axis into SVG */
+var xAxis = d3.axisBottom(xScale).ticks(12);
+var yAxis = d3.axisLeft(yScale).ticks(5);
+
+svg.append("g")
+  .attr("class", "x axis")
+  .attr("transform", `translate(0, ${height-margin})`)
+  .call(xAxis);
+
+svg.append("g")
+  .attr("class", "y axis")
+  .call(yAxis)
+  .append('text')
+  .attr("y", 15)
+  .attr("transform", "rotate(-90)")
+  .attr("fill", "#000");
+  //.text("Total values");
+
+						},
 						drawMultiLevel: function(viewId, jsonData, parent, svgw, svgh){
 							var self = this; 
 							var scale = 0.95;
