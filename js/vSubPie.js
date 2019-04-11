@@ -51,7 +51,11 @@
 										dataLinks[key][kk] = {};
 										dataLinks[key][kk]['data'] = []; 
 										dataLinks[key][kk]['value'] = 0; 
+										dataLinks[key][kk]['parent'] = 0; 
+
 										for(var i=0; i < parentData[key][kk]['data'].length; i++){
+											dataLinks[key][kk]['parent'] += (rule==="count")? 1: 
+																			parseInt(parent.parent.control.getRecordById(parentData[key][kk]['data'][i])[kk]); 
 											if(self.foundMatch(parentData[key][kk]['data'][i], cat, data)){
 												dataLinks[key][kk]['data'].push(parentData[key][kk]['data'][i]);
 												dataLinks[key][kk]['value'] += (rule==="count")? 1: 
@@ -356,40 +360,55 @@
 							      	 color(d.data.date))							      
 							      .attr("stroke", "white")
 							      .on("mouseover", function(d){		
-							      	self.parent.highlight(self.dataLinks[d.data.date], viewId);
-							      	console.log(self.totalNumRecs); 
-							      	console.log(d.data.number);	
-							      	// update title here
-							      	d3.select(this).select("title").text(function(t){
-							      		//var datasize = (self.parent.selectionEmpty())? self.totalNumRecs:  Object.keys(self.parent.selection).length;
-							    		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
-												 	$Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
-							    		var percent = Math.round(parseInt(d.data.number)/self.totalNumRecs * 100); 
-							    		return name+ ": "+ percent+ "%"; });
-							      	origColor = d3.select(this).style("fill");
-							      	d3.select(this).style("fill", self.highlightColor);
+							      	
 							      })
 							      .on("mouseout", function(d){
-							      	self.parent.nohighlight(); 
-							      	d3.select(this).style("fill", origColor);
+							      	/* var selStatus = d3.select(this).attr("selected");
+							      	if(!selStatus || selStatus === "false"){
+								      	self.parent.nohighlight(); 
+								      	var col = d3.select(this).attr("orig-color"); 
+							      		d3.select(this).style("fill", col);
+								      }*/
 							      })
 							      .on("click", function(d){		
 							       var selStatus = d3.select(this).attr("selected");
 							      	if(!selStatus || selStatus === "false"){
 							      		// set selection
+							      		d3.select(this).attr("selected", "true");
 							      		console.log(d.data.data);
 							      		if(self.parent.selection){
 							      			// filter existing selection for all keys 
 							      			for(var key in self.parent.selection){
-							      				self.parent.updateSelection(key, d.data.data, 0, 1); 
+							      				//self.parent.updateSelection(key, d.data.data, 0, 1); 
 							      			}
 							      		}
 							      		else{
 							      			// set new selection for all keys
 							      			for(var key in self.parent.selection){
-							      				self.parent.updateSelection(key, d.data.data, 1); 
+							      				//self.parent.updateSelection(key, d.data.data, 1); 
 							      			}
 							      		}
+							      		self.parent.highlight(self.dataLinks[d.data.date], viewId);
+								      	console.log(self.totalNumRecs); 
+								      	console.log(d.data.number);	
+								      	// update title here
+								      	d3.select(this).select("title").text(function(t){
+								      		//var datasize = (self.parent.selectionEmpty())? self.totalNumRecs:  Object.keys(self.parent.selection).length;
+								    		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
+													 	$Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
+								    		var percent = Math.round(parseInt(d.data.number)/self.totalNumRecs * 100); 
+								    		return name+ ": "+ percent+ "%"; });
+								      	// update original color only if this slice isn't selected
+								      	origColor = d3.select(this).style("fill");
+								      	if(origColor !== self.highlightColor)
+									      	d3.select(this).attr("orig-color", origColor);
+								      	d3.select(this).style("fill", self.highlightColor);
+							      	}
+							      	else{
+							      		d3.select(this).attr("selected", "false");
+							      		var col = d3.select(this).attr("orig-color"); 
+							      		d3.select(this).style("fill", col);
+							      		self.parent.nohighlight(); 
 							      	}
 
 							       })

@@ -484,8 +484,8 @@
                                 return dayCount;
                             }
                             else if(vname === "invVentDays" && self.audit === "picanet"){                                
-                                //return  parseInt(rec["invventday"]) || 0; 
-                                var countVent = 0; 
+                                return  parseInt(rec["invventday"]) >0  ? 1 : 0; 
+                                /*var countVent = 0; 
                                 // get the corresponding activity records
                                 var active = self.activityIndex[rec["EVENTID"]];
                                 if(active){
@@ -497,7 +497,7 @@
                                     });
                                     return countVent; 
                                 }
-                                return 0; 
+                                return 0; */
                             }
                             else if(vname === "noninvVentDays" && self.audit === "picanet"){
                                 return parseInt(rec["noninvventday"]) || 0; 
@@ -506,8 +506,8 @@
                                 return  (parseInt(rec["adtype"]) === 2 || parseInt(rec["adtype"]) === 4)? 1 : 0; 
                             }
                             else if(vname === "extubation" && self.audit === "picanet"){
-                                //return (parseInt(rec["unplannedextubation"])===1);
-                                var countVent = 0; 
+                                return (parseInt(rec["unplannedextubation"])===1)? 1: 0;
+                                /*var countVent = 0; 
                                 // get the corresponding activity records
                                 var active = self.activityIndex[rec["EVENTID"]];
                                 if(active){
@@ -520,7 +520,7 @@
                                     });
                                     return countVent; 
                                 }
-                                return 0; 
+                                return 0; */
 
                             }
                             else if(self.audit === "picanet" && vname==="depLevel0"){

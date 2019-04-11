@@ -90,6 +90,7 @@ $Q.Picanet = {
                       "text": "Dependency"
                     }], 
 "variableDict": {"primarydiagnosisgroup": "Diagnosis",
+                 "unplannedextubation": "Unplanned Extubation", 
                   "adtype": "Ad. type",
                   "sex": "Gender",
                   "eventidscr": "Admissions",
@@ -117,13 +118,13 @@ $Q.Picanet = {
                         "mark": "bar", 
                         "chart": "stack", 
                         "x": "admonth",
-                        "y": ["eventidscr", "der_death"], 
-                        "yaggregates": ["count", "count"], 
+                        "y": ["eventidscr", "der_death", "der_smr"], 
+                        "yaggregates": ["count", "count", "runningAvg"], 
                         "yfilters": [{"where": "*"},      
                                      {"where": "self", "sign": "=", "value":"1"},
                                      {"where": "unitdisstatus", "sign": "=", "value": "2"}],                                                
                         "xType": "t",
-                        "yType": ["q", "q"],  
+                        "yType": ["q", "q", "q"],  
                         "xspan": "year",    
                         "yspan": "unit",  
                         "ylabel": "No. Records",                        
@@ -162,7 +163,7 @@ $Q.Picanet = {
                      {  "metric": "Bed Days and Extubation",
                         "mark": "bar",
                         "x": "admonth" ,
-                        "y":["der_bedDays", "der_invVentDays", "der_extubation"],
+                        "y":["der_bedDays", "der_invVentDays"],
                         "xType": "t",
                         "yType": ["q", "q"], 
                         "xspan": "year",    
@@ -172,7 +173,7 @@ $Q.Picanet = {
                         "yaggregates": ["sum", "sum", "sum"],
                         "ehr": "Admissions", 
                         "granP": ["unit", "unit", "unit"], 
-                        "categories": ["primarydiagnosisgroup"], 
+                        "categories": ["unplannedextubation"], 
                         "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
                                         {"q":"der_bedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
                         "granT": {"monthly-annual": ["der_bedDays"]}, 
@@ -497,7 +498,8 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                                             "9": "Hospice",
                                             "99": "Unknown"
 
-                                            }
+                                            }, 
+                            "unplannedextubation": {"1": "yes", "0": "no"}
                             },
                 "minap":{ 
                           "2.02 Method of admission": {

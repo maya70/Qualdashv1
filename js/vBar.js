@@ -218,10 +218,15 @@
 							  .data(y01z)
 							  .enter().append("g")
 							  	.attr("class", "shades")
+							  	.style("stroke-width", 1.0)
+								.style("stroke", function(d){
+									//console.log(self.palette[self.levels[d["index"]]]); 
+									return self.palette[self.levels[d["index"]]]; 
+								})
 							    .attr("fill", function(d, i) { 
 							    	return self.highlightColor; });
 							    //.style("opacity", self.highlightOpacity)
-							    //.style("stroke-width", 1.0)
+							    //
 								//.style("stroke", self.highlightColor); 
 							
 							 
@@ -254,10 +259,8 @@
 						function transitionGrouped() {
 							
 							y.domain([0, self.yMax]);
-						  //console.log(xz);
 						  rect.transition()
 						      .duration(100)
-						      //.delay(function(d, i) { return i * 10; })
 						      .attr("x", function(d, i) {							         
 						      	 return x(xz[i]) + x.bandwidth() / self.levels.length * this.parentNode.__data__.key; })
 						      .attr("width", x.bandwidth() / self.levels.length)
@@ -756,21 +759,6 @@
 									    			}))
 									    			.range([x("1"), x("10")]);
  
-							    	// dummy data for now
-							    	/*var dummy = [{'date': '1' , 'number': 10},
-							    				 {'date': '2' , 'number': 11},
-							    				 {'date': '3' , 'number': 20},
-							    				 {'date': '4' , 'number': 29},
-							    				 {'date': '5' , 'number': 34},
-							    				 {'date': '6' , 'number': 38},
-							    				 {'date': '7' , 'number': 38},
-							    				 {'date': '8' , 'number': 38},
-							    				 {'date': '9' , 'number': 38},
-							    				 {'date': '10' , 'number': 45},
-							    				 {'date': '11' , 'number': 50},
-							    				 {'date': '12' , 'number': 55}
-							    				];*/
-							    	
 
 							    	var valueLine = d3.line()
 							    					.x(function(d) { 
