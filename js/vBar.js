@@ -260,7 +260,7 @@
 							
 							y.domain([0, self.yMax]);
 						  rect.transition()
-						      .duration(100)
+						      .duration(400)
 						      .attr("x", function(d, i) {							         
 						      	 return x(xz[i]) + x.bandwidth() / self.levels.length * this.parentNode.__data__.key; })
 						      .attr("width", x.bandwidth() / self.levels.length)
@@ -701,6 +701,18 @@
 								      			} 
 								      	}							      	
 								      	d3.select(this).attr("selected", true); 
+								      	d3.select(this).style("fill", self.highlightColor);
+							      					//.style("opacity",self.highlightOpacity)
+							      					//.style("stroke-width", 1.0)
+													//.style("stroke", self.highlightColor); 
+							
+							      	// find the key for the corresponding data entry
+							      	for(var key in dict[i+1]){
+							      		if(dict[i+1][key]['value'] === (d[1] - d[0]))
+							      			self.parent.highlightSubs(key, dict[i+1][key]['data'], (i+1), 1);
+							      			//console.log(dict[i+1][key]['data']); 
+							      	}
+
 								      }
 								     else{
 								     	// reset selection
@@ -710,6 +722,9 @@
 								      			} 
 								      	}							      	
 								      	d3.select(this).attr("selected", false); 
+								      	d3.select(this).style("fill", self.palette[d[0]]);
+								      	self.parent.nohighlightSubs(); 
+								     
 								     }
 							      });
 

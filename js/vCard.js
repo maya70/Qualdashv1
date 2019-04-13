@@ -6,7 +6,8 @@
 						var self = this; 
 						self.expanded = false; 
 						self.id = viewId; 
-						self.parent = mainView; 						
+						self.parent = mainView; 
+						self.state = {}; 						
 						var container = d3.select("#mainCanvas").append("div")
 											.attr("class", "item")
 											.attr("id", "cardcontainer"+viewId)
@@ -150,7 +151,9 @@
 												r.style("stroke", "black");			
 											
 											catdata = cats['data'][d];
+											self.state['selectedCat'] = d; 
 											self.subVis1.draw(self.id, d, catdata , self, ssvgW-10, ssvgH-10);
+											self.keepHighlights(); 
 
 										})
 										.on("mouseover", function(d){
@@ -172,6 +175,8 @@
 										.attr("y", 0)
 										.attr("width", tabW )
 										.attr("active", function(d,i){
+											if(self.state['selectedCat'])
+												return i===(cats['cats'].indexOf(self.state['selectedCat']))? 1: 0; 											 	
 											return i===0? 1 : 0; 
 										})
 										.attr("height", 15 )
@@ -192,7 +197,10 @@
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 							
-							
+							if(self.state['selectedCat']){
+								cat1 = self.state['selectedCat'];
+								catdata = cats['data'][cat1];
+							}
 							self.subVis1 = new $Q.SubPieChart(self.id, cat1, catdata , self, ssvgW-10, ssvgH-10);
 
 						},
@@ -553,7 +561,7 @@
 							}
 
 						},
-						highlightSubs: function(key, recIds, tid){
+						highlightSubs: function(key, recIds, tid, selected){
 							var self = this; 
 							if(self.selectionEmpty()){
 								if(self.subVis1) self.subVis1.highlight(recIds);
@@ -571,10 +579,25 @@
 								recIds.forEach(function(d){
 									if(tempsel.indexOf(d) < 0)
 										tempsel.push(d);									
-								});								
+								});									
 								if(self.subVis1) self.subVis1.highlight(tempsel);									
 							}
+
 							
+						},
+						keepHighlights: function(){
+							var self = this;
+							if(self.selectionEmpty())
+								return;
+							
+							var tempsel = [];
+								for(var sel in self.selection){
+									var existing = Object.keys(self.selection[sel]);
+									existing.forEach(function(ex){
+										tempsel.push(parseInt(ex));
+									});									
+								}
+								if(self.subVis1) self.subVis1.highlight(tempsel);									
 						},
 						nohighlightSubs: function(){
 							var self = this;
@@ -681,7 +704,8 @@
 
 						},
 						updateSelection: function(key, newIds, union, intersect, subtract){
-							var self = this;
+							var self = this;							
+							document.getElementById("export-btn"+self.id).disabled = false;
 							if(!self.selection){
 								self.selection = {};
 							}
@@ -826,6 +850,7 @@
 												.attr("type", "button")
 												.attr("class", "form-control ctrl-btn fa fa-table")
 												.attr("id", "export-btn"+viewId)
+												.attr("disabled", "true")
 												.style("font-size", "9pt")
 												.style("vertical-align", "top")
 												.style("horizontal-align", "right")												
@@ -833,7 +858,60 @@
 												.style("position", "relative")
 												.style("left", "43%")
 												.style("background-color", "lightgrey")
-												.style("color", "black");
+												.style("color", "black")
+												.on("click", function(){
+												  		//console.log(self.selection);							  		
+												  		var tabs= self.parent.setTableTabs(Object.keys(self.selection));
+												  		var tabCanvas = d3.select('#tableContents').append("div")
+												  									.style("max-height", "450px")
+												  									.style("border", "3px solid #000000")
+												  									.style("overflow", "scroll"); 
+												  		tabCanvas.append("p")
+												  				.style("font-size", "16pt")
+												  				.text("Data exported from card: "+ self.metric);
+												  		for(var key in self.selection){
+												  			if(!isEmpty(self.selection[key])){
+														  			tabCanvas.append("p")
+														  					.style("font-size", "12pt")
+														  					.text("Selected variable: "+ key);
+														  			tabCanvas.append("p")
+														  					.style("font-size", "12pt")
+														  					.text("Number of selected records: "+ Object.keys(self.selection[key]).length);
+														  			var table = tabCanvas.append('table');
+																	var thead = table.append('thead');
+																	var	tbody = table.append('tbody');
+																	var columns = Object.keys(self.selection[key][Object.keys(self.selection[key])[0]]);
+																	var data = [];
+																	for(var kk in self.selection[key]){
+																		data.push(self.selection[key][kk]);
+																	}
+																	// append the header row
+																	thead.append('tr')
+																	  .selectAll('th')
+																	  .data(columns).enter()
+																	  .append('th')
+																	    .text(function (column) { return column; });
+																	 // create a row for each object in the data
+																	var rows = tbody.selectAll('tr')
+																	  .data(data)
+																	  .enter()
+																	  .append('tr');
+
+																	// create a cell in each row for each column
+																	var cells = rows.selectAll('td')
+																			  .data(function (row) {
+																			    return columns.map(function (column) {
+																			      return {column: column, value: row[column]};
+																			    });
+																			  })
+																			  .enter()
+																			  .append('td')
+																			    .text(function (d) { return d.value; });
+
+																		}
+														  			} 
+							
+												});
 							var expandViewBtn = header.append("button")
 												.attr("type", "button")
 												.attr("class", "form-control ctrl-btn fa fa-expand")
@@ -846,7 +924,13 @@
 												.style("left", "43%")
 												.style("background-color", "lightgrey")
 												.style("color", "black");
-							
+							function isEmpty(obj) {
+								    for(var key in obj) {
+								        if(obj.hasOwnProperty(key))
+								            return false;
+								    }
+								    return true;
+								}
 							/*
 							var viewSelect = header.append("select")
 												.attr("name", "viewselector")
@@ -898,10 +982,11 @@
 							var pbody = panel;
 							var undef; 
 							self.btn_data = [ 
-											{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-pie-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 											
-											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-bar-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId},
-											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "none", "hidden": false, "data-popover-content":"#grantpp"+viewId},
-											{"id": "export-btn"+viewId, "class": "ctrl-btn fa fa-external-link", "data-toggle": "none", "hidden": false}]; 
+											{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 											
+											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId},
+											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "none", "hidden": false, "data-popover-content":"#grantpp"+viewId}
+											//{"id": "export-btn"+viewId, "class": "ctrl-btn fa fa-external-link", "data-toggle": "none", "hidden": false}
+											]; 
 
 							
 							//pbody.style("background-color", "red");
@@ -947,7 +1032,7 @@
 									var drawAreaH = parseInt(d3.select("#draw-area"+self.id).style("height"));
 									var ssvgH = drawAreaH / 2; 
 							
-									return i<3?(i*ssvgH)+"px": (drawAreaH+80)+"px"; 
+									return i<2?(i*ssvgH)+"px":  (i*ssvgH-10)+"px"; //(drawAreaH+80)+"px"; 
 								})
 								.style("color", "black"); 
 
@@ -970,84 +1055,24 @@
 								e.stopPropagation();
 							});
 							  
-							 $("#export-btn"+viewId).tooltip({    
+							/* $("#export-btn"+viewId).tooltip({    
 							    placement : 'bottom', 
 							    trigger: 'hover', 
 							    title : "Export as table"         
 							  }); 
 							  $("#export-btn"+viewId).on("dblclick", function(e){
 								e.stopPropagation();
-								});  
+								}); */  
 
 							  $("#time-btn"+viewId).on("dblclick", function(e){
 								e.stopPropagation();
 								});
 
-							  d3.select("#export-btn"+viewId)							  	
+							  /*d3.select("#export-btn"+viewId)							  	
 							  	.on("click", function(){
-							  		//console.log(self.selection);							  		
-							  		var tabs= self.parent.setTableTabs(Object.keys(self.selection));
-							  		var tabCanvas = d3.select('#tableContents').append("div")
-							  									.style("max-height", "450px")
-							  									.style("border", "3px solid #000000")
-							  									.style("overflow", "scroll"); 
-							  		tabCanvas.append("p")
-							  				.style("font-size", "16pt")
-							  				.text("Data exported from card: "+ self.metric);
-							  		for(var key in self.selection){
-							  			if(!isEmpty(self.selection[key])){
-									  			tabCanvas.append("p")
-									  					.style("font-size", "12pt")
-									  					.text("Selected variable: "+ key);
-									  			tabCanvas.append("p")
-									  					.style("font-size", "12pt")
-									  					.text("Number of selected records: "+ Object.keys(self.selection[key]).length);
-									  			var table = tabCanvas.append('table');
-												var thead = table.append('thead');
-												var	tbody = table.append('tbody');
-												var columns = Object.keys(self.selection[key][Object.keys(self.selection[key])[0]]);
-												var data = [];
-												for(var kk in self.selection[key]){
-													data.push(self.selection[key][kk]);
-												}
-												// append the header row
-												thead.append('tr')
-												  .selectAll('th')
-												  .data(columns).enter()
-												  .append('th')
-												    .text(function (column) { return column; });
-												 // create a row for each object in the data
-												var rows = tbody.selectAll('tr')
-												  .data(data)
-												  .enter()
-												  .append('tr');
-
-												// create a cell in each row for each column
-												var cells = rows.selectAll('td')
-												  .data(function (row) {
-												    return columns.map(function (column) {
-												      return {column: column, value: row[column]};
-												    });
-												  })
-												  .enter()
-												  .append('td')
-												    .text(function (d) { return d.value; });
-
-											}
-							  		} 
-
-							  		
-
-		
-							  	}); 
+							  	}); */
 							 
-							  	function isEmpty(obj) {
-								    for(var key in obj) {
-								        if(obj.hasOwnProperty(key))
-								            return false;
-								    }
-								    return true;
-								}
+							  	
 						},
 						selectionEmpty: function(){
 							var self = this;

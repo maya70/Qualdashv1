@@ -185,7 +185,7 @@
 							self.updateMultiSelects(viewId);
 
 							$(document).on('click', '#right-btn'+viewId, function(){	
-								moveItems("#nvar-in"+viewId, "#nvar-out"+viewId);
+								moveItems("#nvar-in"+viewId, "#nvar-out"+viewId);								
 							});
 							
 							$(document).on('click', '#left-btn'+viewId, function(){	
@@ -198,12 +198,14 @@
 								.attr("class", "btn_vg_parse hide-vl")
 								.text( "Update")
 								.attr("id", "group-but"+viewId)
+								.attr("disabled", "true")
 								.style("horizontal-align", "center")
 								.style("min-width", "300px")
 								.style("margin-top", "20px");
 
 							function moveItems(origin, dest) {
-							    $(origin).find(':selected').appendTo(dest);							    
+							    $(origin).find(':selected').appendTo(dest);		
+							    document.getElementById("group-but"+viewId).disabled = false;					    
 							}
 
 							
@@ -214,21 +216,27 @@
 								var outcatsel = $("#nvar-out"+viewId+" option").each(function(opt){
 									var vv = $(this).val();
 									outcats.push(vv);
-								});								
+								});		
 								var cardCats = self.control.getCardCats(viewId);
-								for(var iter = 0; iter < cardCats.length; iter++){
-									var index = outcats.length-1;
-									outcats.splice(index, 1);
+									for(var iter = 0; iter < cardCats.length; iter++){
+										var index = outcats.length-1;
+										outcats.splice(index, 1);
+									}
+								var selectionSize = $('#nvar-out'+viewId).has('option').length; 
+								if( selectionSize > 0 && outcats.length < 6 ) {						
+									
+									self.control.setCardCats(viewId, outcats);
+									self.updateMultiSelects(viewId);
+									self.cards[viewId].updateCats(outcats);
+									self.popSettings.each(function () {
+								        //if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+								            $(this).popover('hide');
+								          //  return;
+								        //}
+								    });
 								}
-								self.control.setCardCats(viewId, outcats);
-								self.updateMultiSelects(viewId);
-								self.cards[viewId].updateCats(outcats);
-								self.popSettings.each(function () {
-							        //if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-							            $(this).popover('hide');
-							          //  return;
-							        //}
-							    });
+								else
+									alert("[Invalid action] Please select at least one and at most five variables.");
 							});
 
 							$(document).on('click', '#quantity-but'+viewId, function(){

@@ -27,7 +27,9 @@
 										'#f781bf',
 										"#999999"];
 						self.highlightColor = parent.parent.control.highlightColor; 
+						console.log(data);
 						self.draw(viewId, dname, data, parent, svgw, svgh);
+						self.localSelection = {}; 
 							
 					},
 					{
@@ -299,6 +301,64 @@
 									return true; 
 							return false; 
 						},
+						selectionEmpty: function(){
+							var self = this;
+							var isEmpty = true;
+							if(!self.localSelection)
+								return true; 
+							for(var key in self.localSelection){
+								var obj = self.localSelection[key]; 
+								var condition = Object.keys(obj).length === 0 && obj.constructor === Object;
+								if(!condition)
+									isEmpty = false; 
+							}
+							return isEmpty; 
+						},
+						merge: function(newLinks){
+							var self = this; 
+							console.log(newLinks); 
+							if(self.selectionEmpty()){
+								//self.localSelection = newLinks; 
+								return newLinks;
+							}
+							for(var mon in newLinks){
+								for(var key in newLinks[mon]){
+									newLinks[mon][key]['data'].forEach(function(d){
+										if(self.localSelection[mon][key]['data'].indexOf(d) < 0)
+										{
+											self.localSelection[mon][key]['data'].push(d);
+											self.localSelection[mon][key]['value']++; 
+										}
+									});
+								}
+							}
+
+							return self.localSelection; 
+
+						},
+						subtract: function(newLinks){
+							var self = this; 
+							//console.log(newLinks); 
+							if(self.selectionEmpty()){								
+								return self.localSelection;
+							}
+							for(var mon in newLinks){
+								for(var key in newLinks[mon]){
+									newLinks[mon][key]['data'].forEach(function(d){
+										var index = self.localSelection[mon][key]['data'].indexOf(d);
+										if(index >= 0)
+										{
+											self.localSelection[mon][key]['data'].splice(index, 1);
+											self.localSelection[mon][key]['value']--; 
+										}
+									});
+								}
+							}
+
+							return self.localSelection; 
+
+						},
+						
 						draw: function(viewId, dname, data, parent, svgw, svgh){
 							var self = this;
 							////////////console.log(data);
@@ -359,38 +419,11 @@
 							      .attr("fill", d => 
 							      	 color(d.data.date))							      
 							      .attr("stroke", "white")
-							      .on("mouseover", function(d){		
-							      	
-							      })
-							      .on("mouseout", function(d){
-							      	/* var selStatus = d3.select(this).attr("selected");
-							      	if(!selStatus || selStatus === "false"){
-								      	self.parent.nohighlight(); 
-								      	var col = d3.select(this).attr("orig-color"); 
-							      		d3.select(this).style("fill", col);
-								      }*/
-							      })
-							      .on("click", function(d){		
-							       var selStatus = d3.select(this).attr("selected");
-							      	if(!selStatus || selStatus === "false"){
-							      		// set selection
-							      		d3.select(this).attr("selected", "true");
-							      		console.log(d.data.data);
-							      		if(self.parent.selection){
-							      			// filter existing selection for all keys 
-							      			for(var key in self.parent.selection){
-							      				//self.parent.updateSelection(key, d.data.data, 0, 1); 
-							      			}
-							      		}
-							      		else{
-							      			// set new selection for all keys
-							      			for(var key in self.parent.selection){
-							      				//self.parent.updateSelection(key, d.data.data, 1); 
-							      			}
-							      		}
-							      		self.parent.highlight(self.dataLinks[d.data.date], viewId);
-								      	console.log(self.totalNumRecs); 
-								      	console.log(d.data.number);	
+							      .on("mouseover", function(d){
+							      	var links = self.merge(self.dataLinks[d.data.date]);							      	
+							      	self.parent.highlight(links, viewId);
+								      	//console.log(self.totalNumRecs); 
+								      	//console.log(d.data.number);	
 								      	// update title here
 								      	d3.select(this).select("title").text(function(t){
 								      		//var datasize = (self.parent.selectionEmpty())? self.totalNumRecs:  Object.keys(self.parent.selection).length;
@@ -403,14 +436,69 @@
 								      	if(origColor !== self.highlightColor)
 									      	d3.select(this).attr("orig-color", origColor);
 								      	d3.select(this).style("fill", self.highlightColor);
-							      	}
+							      })
+							      .on("mouseout", function(d){
+							      	 //if(self.parent.selectionEmpty()){	
+								      	 var selStatus = d3.select(this).attr("selected");
+								      	if(!selStatus || selStatus === "false"){
+								      		//if(self.selectionEmpty()){
+										      	self.parent.nohighlight(); 
+									      	//}
+									      	if(!self.selectionEmpty()){
+									      		var links = self.subtract(self.dataLinks[d.data.date]);
+									      		self.parent.highlight(links, viewId);
+									      	}
+									      	var col = d3.select(this).attr("orig-color"); 
+									      	d3.select(this).style("fill", col);
+									      }
+									  //}
+							      })
+							      .on("click", function(d){		
+							      	if(self.parent.selectionEmpty())
+							      		alert("Please select bars from the bar chart first.");
 							      	else{
-							      		d3.select(this).attr("selected", "false");
-							      		var col = d3.select(this).attr("orig-color"); 
-							      		d3.select(this).style("fill", col);
-							      		self.parent.nohighlight(); 
-							      	}
+								       var selStatus = d3.select(this).attr("selected");
+								      	if(!selStatus || selStatus === "false"){
+								      		// set selection
+								      		d3.select(this).attr("selected", "true");
+								      		self.parent.highlight(self.dataLinks[d.data.date], viewId);
+								      		self.localSelection = self.dataLinks[d.data.date]; 
+								      	//console.log(self.totalNumRecs); 
+								      	//console.log(d.data.number);	
+								      	// update title here
+								      	d3.select(this).select("title").text(function(t){
+								      		//var datasize = (self.parent.selectionEmpty())? self.totalNumRecs:  Object.keys(self.parent.selection).length;
+								    		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
+													 	$Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
+								    		var percent = Math.round(parseInt(d.data.number)/self.totalNumRecs * 100); 
+								    		return name+ ": "+ percent+ "%"; });
+								      	// update original color only if this slice isn't selected
+								      	origColor = d3.select(this).style("fill");
+								      	if(origColor !== self.highlightColor)
+									      	d3.select(this).attr("orig-color", origColor);
+								      	d3.select(this).style("fill", self.highlightColor);
+								      		/*console.log(d.data.data);
+								      		if(self.parent.selection){
+								      			// filter existing selection for all keys 
+								      			for(var key in self.parent.selection){
+								      				//self.parent.updateSelection(key, d.data.data, 0, 1); 
+								      			}
+								      		}
+								      		else{
+								      			// set new selection for all keys
+								      			for(var key in self.parent.selection){
+								      				//self.parent.updateSelection(key, d.data.data, 1); 
+								      			}
+								      		}*/
 
+								      	}
+								      	else{
+								      		d3.select(this).attr("selected", "false");
+								      		var col = d3.select(this).attr("orig-color"); 
+								      		d3.select(this).style("fill", col);
+								      		self.parent.nohighlight(); 
+								      	}
+							      	}
 							       })
 							      .attr("d", arc)
 							    .append("title")
@@ -421,7 +509,7 @@
 							    		return name+ ": "+ percent + "%"; 
 							    	});
 							      //.text(d => `${d.data.date}: ${d.data.number.toLocaleString()}`);
-
+							     
 						      g.append("g")
 								.attr("class", "labels");
 
@@ -521,6 +609,7 @@
 							polyline.exit()
 								.remove();
 							
+							self.parent.keepHighlights(); 
 
 							
 							
