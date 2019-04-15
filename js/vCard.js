@@ -597,6 +597,7 @@
 										tempsel.push(parseInt(ex));
 									});									
 								}
+								self.localSelection = tempsel; 
 								if(self.subVis1) self.subVis1.highlight(tempsel);									
 						},
 						nohighlightSubs: function(){
@@ -923,7 +924,30 @@
 												.style("position", "relative")
 												.style("left", "43%")
 												.style("background-color", "lightgrey")
-												.style("color", "black");
+												.style("color", "black")
+												.on("click", function(){
+													var curh = parseInt($("#cardcontainer"+self.id).css("height")),
+													curw = parseInt($("#cardcontainer"+self.id).css("width"));
+												
+													if(self.expanded === false)
+													{  // grow
+														////////console.log("growing from "+ curh);
+														curh *= 2;
+														curw *= 2;	
+														self.expanded = true; 
+													}
+													else
+													{   // shrink
+														////////console.log("shrinking from "+ curh);
+														curh /= 2;
+														curw /= 2; 
+														self.expanded = false; 
+													}
+													$("#cardcontainer"+ self.id).css("height", curh+"px"); 
+													$("#cardcontainer"+ self.id).css("width", curw+"px"); 
+													self.parent.refreshGrid(1); 
+													self.resizeVis();
+												});
 							function isEmpty(obj) {
 								    for(var key in obj) {
 								        if(obj.hasOwnProperty(key))

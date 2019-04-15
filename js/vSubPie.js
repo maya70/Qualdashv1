@@ -5,6 +5,7 @@
 					function SubPieChart(viewId, dname, data, parent, svgw, svgh){
 						var self = this;	
 						self.parent = parent; 
+						self.localSelection = {}; 
 						self.palette = ["#8dd3c7",
 										"#ffffb3",
 										"#bebada",
@@ -29,7 +30,7 @@
 						self.highlightColor = parent.parent.control.highlightColor; 
 						console.log(data);
 						self.draw(viewId, dname, data, parent, svgw, svgh);
-						self.localSelection = {}; 
+						
 							
 					},
 					{
