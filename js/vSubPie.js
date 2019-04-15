@@ -454,7 +454,7 @@
 									      }
 									  //}
 							      })
-							      .on("click", function(d){		
+							      /*.on("click", function(d){		
 							      	if(self.parent.selectionEmpty())
 							      		alert("Please select bars from the bar chart first.");
 							      	else{
@@ -490,7 +490,7 @@
 								      			for(var key in self.parent.selection){
 								      				//self.parent.updateSelection(key, d.data.data, 1); 
 								      			}
-								      		}*/
+								      		}
 
 								      	}
 								      	else{
@@ -500,7 +500,7 @@
 								      		self.parent.nohighlight(); 
 								      	}
 							      	}
-							       })
+							       })*/
 							      .attr("d", arc)
 							    .append("title")
 							    	.text(function(d){

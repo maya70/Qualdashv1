@@ -14,6 +14,7 @@
 						self.dualData = [];
 						// do we need dual axis?
 						self.dualAxis = false;
+						self.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 						var yaggregates = self.audit === "picanet"? $Q.Picanet["displayVariables"][self.id]["yaggregates"]
 																  : $Q.Minap["displayVariables"][self.id]["yaggregates"];
 						var avgIndex = yaggregates.indexOf("average");
@@ -260,7 +261,7 @@
 							
 							y.domain([0, self.yMax]);
 						  rect.transition()
-						      .duration(400)
+						      .duration(200)
 						      .attr("x", function(d, i) {							         
 						      	 return x(xz[i]) + x.bandwidth() / self.levels.length * this.parentNode.__data__.key; })
 						      .attr("width", x.bandwidth() / self.levels.length)
@@ -755,6 +756,11 @@
 							      .attr("transform", "translate(0,"+0+")");
 
 							    if(self.dualAxis){
+							    	var parseDate = d3.timeParse("%B");
+									self.dualData.forEach(function(d) { 
+									    d.date = parseDate(self.months[parseInt(d.date)-1]);
+									    d.value = +d.value;    
+									});
 
 							    	var ydscale = d3.scaleLinear()
 							    					.domain([0, d3.max(self.dualData, function(d){
@@ -765,26 +771,27 @@
 							    	g.append("g")
 							    		.attr("class", "y axis")
 							    		.attr("id", "dualAxis")
-							    		.call(d3.axisRight(y).ticks(5, "s"))
+							    		.call(d3.axisRight(ydscale).ticks(5, "s"))
 							    		.attr("transform", "translate("+(width-15)+","+0+")");
 							    	
 							    	var xdscale = d3.scaleTime()
 									    			.domain(d3.extent(self.dualData, function(d){
 									    							return d.date; 
 									    			}))
-									    			.range([x("1"), x("10")]);
+									    			.range([0, (width-15)]);
+									    			//.range([x("1"), x("10")]);
  
 
 							    	var valueLine = d3.line()
 							    					.x(function(d) { 
 							    						return xdscale(d.date); })
 							      					.y(function(d) { 
-							      						console.log(ydscale(d.value)); 
+							      						//console.log(ydscale(d.value)); 
 							      						return ydscale(d.value); })
 							      	g.append("path")
 							      		.data([self.dualData])
 							      		.attr("class", "line")
-							      		.attr("id", "vline")
+							      		.attr("id", "vline"+self.id)
 							      		.attr("d", valueLine)
 							      		.style("stroke", "brown"); 
 							      	/*g.selectAll(".line")
@@ -1052,12 +1059,14 @@
 							      	.attr("transform", "translate(0,"+ 0 +")");
 							
 							if(self.dualAxis){
+								
 								var xdscale = d3.scaleTime()
 									    			.domain(d3.extent(self.dualData, function(d){
 									    							return d.date; 
 
 									    			}))
-									    			.range([x("1"), x("10")]);
+									    			.range([0, width-15]);
+									    			//.range([x("1"), x("10")]);
 
 
 
@@ -1080,11 +1089,11 @@
 							      						return ydscale(d.value); });
 								
 							    	
-							      	self.svg.select("#vline").remove(); 
+							      	self.svg.select("#vline"+self.id).remove(); 
 							      	self.svg.append("path")
 							      		.data([self.dualData])
 							      		.attr("class", "line")
-							      		.attr("id", "vline")
+							      		.attr("id", "vline"+self.id)
 							      		.attr("d", valueLine)
 							      		.attr("transform", "translate("+margin.left+","+margin.top+")")
 							      		.style("stroke", "brown"); 

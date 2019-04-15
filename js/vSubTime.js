@@ -2,12 +2,13 @@
 	'use strict'
 	$Q.SubTimeChart = $Q.defineClass(
 					null, 
-					function SubTimeChart(viewId,vname ,span, data, parent, svgw, svgh){
+					function SubTimeChart(viewId,vname ,span, data, parent, svgw, svgh, viewType){
 						var self = this;	
 						self.monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
 												"Sep", "Oct", "Nov", "Dec" ];
+						self.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 						self.parent = parent; 
-						self.data = self.prepData(data, vname, span); 						
+						self.data = self.prepData(data, vname, span, viewType); 						
 						self.palette = self.parent.vis.getPalette(); 
 						console.log(self.palette); 
 						if(span.indexOf("-") < 0)
@@ -17,10 +18,16 @@
 							
 					},
 					{
-						draw: function(viewId,vname ,span, data, parent, svgw, svgh){
+						draw: function(viewId,vname ,span, data, parent, svgw, svgh, viewType){
 							var self = this; 
-							self.data = self.prepData(data, vname, span); 						
-							self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
+							self.data = self.prepData(data, vname, span, viewType); 	
+							if(self.svg){								
+								parent.ssvgt.select("svg").remove(); 								
+							}	
+							if(viewType === "multiples")				
+								self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
+							else if(viewType === "series")
+								self.drawSimple(viewId, vname, data, parent, svgw, svgh);
 						},
 						getChildStart: function(){
 							return "2012";
@@ -28,16 +35,37 @@
 						getChildEnd: function(){
 							return "2014";
 						},
-						prepData:function(data, yvar, span){
+						prepData:function(data, yvar, span, viewType){
 							var self = this;
-							//console.log(data); 
-							// monthly-annual
 							var result = []; 
-
-							if(span.indexOf("-") < 0){
-								// prep data for a simple bar chart given a span of a week or a quarter
+							//if(span.indexOf("-") < 0){
+							if(viewType === "series"){
+								// prep data for a simple bar chart given a span of a week or a quarter		
 								console.log(data);
-								if(span === "weekly"){
+								// get the granularity
+								// TODO: update this from GUI
+								var granT = span.split("-")[0];
+								if(granT === "monthly")  // most common case
+								{
+									for(var year in data){
+										result.push({'name': year, 'values': []});
+										for(var quarter in data[year]){
+											for(var mon in data[year][quarter]){
+												var sum = 0; 
+												for(var week in data[year][quarter][mon]){
+													sum += data[year][quarter][mon][week][yvar]; 
+												}
+												var temp = {};
+												temp['date'] = self.months[parseInt(mon)-1];
+												temp['value'] = sum; 
+												result[result.length-1]['values'].push(temp); 
+											}
+										}
+									}
+
+								}
+
+								/*if(span === "weekly"){
 									for(var year in data){
 										for(var quar in data[year]){
 											for(var mon in data[year][quar]){
@@ -50,10 +78,11 @@
 								}
 								else if(span === "quarterly"){
 
-								}
+								}*/
 							}
 							else{
-								// mixing different time granularities (MOST common case)
+								// prepare data for small multiples -- default view
+								
 								for(var year in data){
 									for(var quar in data[year]){
 										for(var mon in data[year][quar]){
@@ -114,56 +143,10 @@
 						},
 						drawSimple: function(viewId, vname, jsonData, parent, svgw, svgh){
 							var self = this;
-							console.log(jsonData);
-							var data = [
-  {
-    name: "USA",
-    values: [
-      {date: "January", price: "100"},
-      {date: "February", price: "110"},
-      {date: "March", price: "145"},
-      {date: "April", price: "241"},
-      {date: "May", price: "101"},
-      {date: "June", price: "90"},
-      {date: "July", price: "10"},
-      {date: "August", price: "35"},
-      {date: "September", price: "21"},
-      {date: "October", price: "201"}
-    ]
-  },
-  {
-    name: "Canada",
-    values: [
-      {date: "January", price: "200"},
-      {date: "February", price: "120"},
-      {date: "March", price: "33"},
-      {date: "April", price: "21"},
-      {date: "May", price: "51"},
-      {date: "June", price: "190"},
-      {date: "July", price: "120"},
-      {date: "August", price: "85"},
-      {date: "September", price: "221"},
-      {date: "October", price: "101"}
-    ]
-  },
-  {
-    name: "Maxico",
-    values: [
-      {date: "January", price: "50"},
-      {date: "February", price: "10"},
-      {date: "March", price: "5"},
-      {date: "April", price: "71"},
-      {date: "May", price: "20"},
-      {date: "June", price: "9"},
-      {date: "July", price: "220"},
-      {date: "August", price: "235"},
-      {date: "September", price: "61"},
-      {date: "October", price: "10"}
-    ]
-  }
-];
+							//console.log(jsonData);
+				
 
-var self = this; 
+							var self = this; 
 							var scale = 0.95;
 
 							//var margin = {top: 30, right: 20, bottom: 30, left: 70}
@@ -190,24 +173,25 @@ var circleRadiusHover = 6;
 
 /* Format Data */
 var parseDate = d3.timeParse("%B");
-data.forEach(function(d) { 
+self.data.forEach(function(d) { 
   d.values.forEach(function(d) {
     d.date = parseDate(d.date);
-    d.price = +d.price;    
+    d.value = +d.value;    
   });
 });
 
 
 /* Scale */
 var xScale = d3.scaleTime()
-  .domain(d3.extent(data[0].values, d => d.date))
+  .domain(d3.extent(self.data[0].values, d => d.date))
   .range([0, width-margin]);
 
 var yScale = d3.scaleLinear()
-  .domain([0, d3.max(data[0].values, d => d.price)])
-  .range([height-margin, 0]);
+  .domain([0, d3.max(self.data[0].values, d => d.value)])
+  .range([height-margin-20, 0]);
 
-var color = d3.scaleOrdinal(d3.schemeCategory10);
+var color = d3.scaleSequential(d3.interpolateViridis); //d3.scaleOrdinal(d3.schemeCategory10);
+color.domain([0,4]);
 
 /* Add SVG */
 							if(self.svg){								
@@ -222,7 +206,7 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 							    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 			*/
 
-var svg = parent.ssvgt.append("svg")			    
+self.svg = parent.ssvgt.append("svg")			    
   .attr("width", (width+margin*2)+"px")
   .attr("height", (height+margin+20)+"px")
   .append('g')
@@ -232,17 +216,17 @@ var svg = parent.ssvgt.append("svg")
 /* Add line into SVG */
 var line = d3.line()
   .x(d => xScale(d.date))
-  .y(d => yScale(d.price));
+  .y(d => yScale(d.value));
 
-let lines = svg.append('g')
+let lines = self.svg.append('g')
   .attr('class', 'lines');
 
 lines.selectAll('.line-group')
-  .data(data).enter()
+  .data(self.data).enter()
   .append('g')
   .attr('class', 'line-group')  
   .on("mouseover", function(d, i) {
-      svg.append("text")
+      self.svg.append("text")
         .attr("class", "title-text")
         .style("fill", color(i))        
         .text(d.name)
@@ -251,16 +235,22 @@ lines.selectAll('.line-group')
         .attr("y", 5);
     })
   .on("mouseout", function(d) {
-      svg.select(".title-text").remove();
+      self.svg.select(".title-text").remove();
     })
   .append('path')
   .attr('class', 'line')  
   .attr('d', d => line(d.values))
   .style('stroke', (d, i) => color(i))
   .style('opacity', lineOpacity)
+  .style("stroke-dasharray", function(d,i) {
+  	return ("3," + (i*2));})
   .on("mouseover", function(d) {
+
       d3.selectAll('.line')
-					.style('opacity', otherLinesOpacityHover);
+					.style('opacity', function(d) {
+						if(this.id !== "vline"+viewId)
+						return otherLinesOpacityHover; 
+					});
       d3.selectAll('.circle')
 					.style('opacity', circleOpacityOnLineHover);
       d3.select(this)
@@ -270,7 +260,10 @@ lines.selectAll('.line-group')
     })
   .on("mouseout", function(d) {
       d3.selectAll(".line")
-					.style('opacity', lineOpacity);
+					.style('opacity', function(d) {
+						if(this.id !== "vline"+viewId)
+						return lineOpacity; 
+					});
       d3.selectAll('.circle')
 					.style('opacity', circleOpacity);
       d3.select(this)
@@ -281,7 +274,7 @@ lines.selectAll('.line-group')
 
 /* Add circles in the line */
 lines.selectAll("circle-group")
-  .data(data).enter()
+  .data(self.data).enter()
   .append("g")
   .style("fill", (d, i) => color(i))
   .selectAll("circle")
@@ -293,9 +286,9 @@ lines.selectAll("circle-group")
         .style("cursor", "pointer")
         .append("text")
         .attr("class", "text")
-        .text(`${d.price}`)
+        .text(`${d.value}`)
         .attr("x", d => xScale(d.date) + 5)
-        .attr("y", d => yScale(d.price) - 10);
+        .attr("y", d => yScale(d.value) - 10);
     })
   .on("mouseout", function(d) {
       d3.select(this)
@@ -306,7 +299,7 @@ lines.selectAll("circle-group")
     })
   .append("circle")
   .attr("cx", d => xScale(d.date))
-  .attr("cy", d => yScale(d.price))
+  .attr("cy", d => yScale(d.value))
   .attr("r", circleRadius)
   .style('opacity', circleOpacity)
   .on("mouseover", function(d) {
@@ -323,16 +316,24 @@ lines.selectAll("circle-group")
       });
 
 
-/* Add Axis into SVG */
+/* Add Axis */
 var xAxis = d3.axisBottom(xScale).ticks(12);
 var yAxis = d3.axisLeft(yScale).ticks(5);
 
-svg.append("g")
+self.svg.append("g")
   .attr("class", "x axis")
-  .attr("transform", `translate(0, ${height-margin})`)
-  .call(xAxis);
+  .attr("transform", `translate(0, ${height-margin-20})`)
+  .call(xAxis)
+  .selectAll("text")	
+	.text(function(d, i){
+		return $Q.months[i]; 
+	})
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-65)");
 
-svg.append("g")
+self.svg.append("g")
   .attr("class", "y axis")
   .call(yAxis)
   .append('text')
@@ -342,6 +343,8 @@ svg.append("g")
   //.text("Total values");
 
 						},
+
+
 						drawMultiLevel: function(viewId, jsonData, parent, svgw, svgh){
 							var self = this; 
 							var scale = 0.95;

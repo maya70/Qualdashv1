@@ -477,8 +477,12 @@
 												r.style("fill", "white");
 												r.style("stroke", "black");			
 											
-											//catdata = cats['data'][d];
-											self.subVisT.draw(self.id, d , tspan[0], tdata , self, mainsvgW-10, ssvgH-10);				
+											self.state['selectedTime'] = d;
+											self.state['tspan'] = tspan[0];
+											self.state['timeData'] = tdata;
+											self.state['timeW'] = mainsvgW-10;
+											self.state['timeH'] = ssvgH-10;
+											self.subVisT.draw(self.id, d , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, "multiples");				
 
 										})
 										.on("mouseover", function(d){
@@ -520,8 +524,14 @@
 							    	 return auditVars["variableDict"][d] || d; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
-											
-							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]][0] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10);						
+
+							self.state['selectedTime'] = span[tspan[0]][0];
+							self.state['tspan'] = tspan[0];
+							self.state['timeData'] = tdata;
+							self.state['timeW'] = mainsvgW-10;
+							self.state['timeH'] = ssvgH-10;
+							
+							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]][0] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, "multiples");						
 						},
 						nohighlight: function(){
 							var self = this;
@@ -1008,7 +1018,7 @@
 							self.btn_data = [ 
 											{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 											
 											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId},
-											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "none", "hidden": false, "data-popover-content":"#grantpp"+viewId}
+											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#grantpp"+viewId}
 											//{"id": "export-btn"+viewId, "class": "ctrl-btn fa fa-external-link", "data-toggle": "none", "hidden": false}
 											]; 
 
@@ -1151,6 +1161,13 @@
 							var data = dataView['data'];
 							
 
+						},
+						updateTimeView: function(viewType){
+							var self = this;
+							//console.log(self.id); 
+							//console.log(viewType);  
+							self.subVisT.draw(self.id, self.state['selectedTime'] ,self.state['tspan'], self.state['timeData'] , self, 
+											 self.state['timeW'], self.state['timeH'], viewType);			
 						},
 						drawScatter: function(dataView){
 							var self = this; 

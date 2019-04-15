@@ -282,7 +282,7 @@
 											.text("Add/Remove Quantiative Variables");
 							var pbody2 = self.pop2.append("div")
 											.attr("class", "popover-body")
-											.attr("id", "cat-popover"); 
+											.attr("id", "q-popover"); 
 
 							var qrow = pbody2.append("div")
 											.attr("class", "row");
@@ -359,6 +359,35 @@
 								.style("min-width", "300px")
 								.style("margin-top", "20px");
 
+
+							self.pop3 = d3.select("body").append("div")
+											.attr("id", "grantpp"+viewId)
+											.attr("class", "hidden");
+							self.pop3.append("div")
+											.attr("class","popover-heading" )
+											.text("Change Time View");
+							var pbody3 = self.pop3.append("div")
+											.attr("class", "popover-body")
+											.attr("id", "time-popover"); 
+							var psel = pbody3.append("select")
+								//.attr("type", "submit")						
+								.attr("id", "time-sel"+viewId)
+								.style("horizontal-align", "center")
+								.style("min-width", "300px")
+								.style("margin-top", "20px");
+
+							
+							psel.append("option")
+								.attr("value", "multiples")
+								.text("Small Multiples"); 
+							psel.append("option")
+								.attr("value", "series")
+								.text("Time Series");
+
+							$(document).on('change', '#time-sel'+viewId, function(){
+									//console.log(this.value);
+									self.cards[viewId].updateTimeView(this.value); 
+							});
 							
 							$(':not(#anything)').on('click', function (e) {
 							    self.popSettings.each(function () {
