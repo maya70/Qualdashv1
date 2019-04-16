@@ -74,7 +74,7 @@
 						nohighlight: function(){
 							var self = this;
 							var updated = self.update(self.data); 
-							self.updatePieLabels(updated); 							
+							self.updatePieLabels(1, updated); 							
 						
 						},
 						highlight: function(recIds){
@@ -92,10 +92,10 @@
 								temp.push({"date": self.data[key]['date'], "number": sum, "data": arr});					
 							}	
 							var updated = self.update(temp); 	
-							self.updatePieLabels(updated, recIds);									
+							self.updatePieLabels(0, updated, recIds);									
 
 						},
-						updatePieLabels: function(updated, recIds){
+						updatePieLabels: function(nohighlight, updated, recIds){
 							var self = this;
 							var sliceIndex = {};
 							var highlighted = [];	
@@ -149,12 +149,15 @@
 														};
 													})
 													.style("opacity", function(t){
-														if(highlighted.indexOf(t.data.date) >=0)
+														 if(highlighted.indexOf(t.data.date) >=0){
+														 	if(t.data.number < (self.totalNumRecs* 0.1) && nohighlight)
+														 		return 0; 
 															return 1;
+															}
 														else
 															return 0; 
 													});
-												self.polys.transition().duration(100)
+												self.polys.transition().duration(500)
 												.attrTween("points", function(d){
 															this._current = sliceIndex[d.data.date];
 															var interpolate = d3.interpolate(this._current, d);
@@ -168,8 +171,15 @@
 																return [arc.centroid(d2), arc.centroid(d2), pos];
 															};			
 														})
-													.style("opacity", function(p){
-														return (highlighted.indexOf(p.data.date) >=0)? 1: 0;															
+													.style("opacity", function(t){
+														//return (highlighted.indexOf(p.data.date) >=0)? 1: 0;	
+														if(highlighted.indexOf(t.data.date) >=0){
+														 	if(t.data.number < (self.totalNumRecs* 0.1) && nohighlight)
+														 		return 0; 
+															return 1;
+															}
+														else
+															return 0; 														
 													});											    											    
 											}
 										

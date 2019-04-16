@@ -856,6 +856,7 @@
 													self.vis.saveSVG(); 
 													self.saveSubSVGs();
 												});
+							
 												//.text("Toggle View"); 
 							var exportTableBtn = header.append("button")
 												.attr("type", "button")
@@ -923,6 +924,7 @@
 														  			} 
 							
 												});
+									
 							var expandViewBtn = header.append("button")
 												.attr("type", "button")
 												.attr("class", "form-control ctrl-btn fa fa-expand")
@@ -1102,10 +1104,16 @@
 								e.stopPropagation();
 								});
 
+							  var time_ttip = $("#time-btn"+viewId).tooltip({    
+							    placement : 'bottom', 
+							    trigger: 'hover', 
+							    title : "Time View Settings"         
+							  });
+
 							  /*d3.select("#export-btn"+viewId)							  	
 							  	.on("click", function(){
 							  	}); */
-							 
+					
 							  	
 						},
 						selectionEmpty: function(){
