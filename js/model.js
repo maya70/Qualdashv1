@@ -997,6 +997,10 @@
                             return vval; 
 
                         },
+                        getDataLength: function(){
+                            var self = this;
+                            return self.data.length; 
+                        },
                         getQuality: function(varname){
                             var self = this;
                             if(self.missing[varname])
@@ -1007,6 +1011,16 @@
                             else 
                                 return 100; 
                         
+                        },
+                        getMissing: function(varname){
+                            var self = this; 
+                            if(self.missing[varname])
+                                {
+                                    
+                                    return self.missing[varname]; 
+                                }
+                            else 
+                                return 0; 
                         },
                         computeVarSingle: function(group, cat, yvar, displayObj, rec){
                             var self = this;

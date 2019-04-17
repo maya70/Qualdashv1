@@ -106,6 +106,13 @@
 							console.log(value); 
 							self.dataModel.updateMetrics(viewId, value); 
 						},
+						getMissing: function(varname){
+							return this.dataModel.getMissing(varname); 
+						},
+						getDataLength: function(){
+							var self = this; 
+							return self.dataModel.getDataLength(); 
+						},
 						getRecordById: function(recId){
 							return this.dataModel.getRecordById(recId); 
 						},

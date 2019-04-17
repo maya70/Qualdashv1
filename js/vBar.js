@@ -10,6 +10,7 @@
 						//self.dualAxis = true; 
 						self.iter = 0; 												
 						self.toggle = self.id < 4? "grouped": "stacked";
+						if(self.id === 1) self.toggle = "stacked"; 
 						self.dataView = dataView; 
 						self.dualData = [];
 						// do we need dual axis?
@@ -546,7 +547,7 @@
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 35, right: 10, bottom: 50, left: self.leftMargin};							
+							var margin = {top: 65, right: 10, bottom: 50, left: self.leftMargin};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							var color = d3.scaleOrdinal()
@@ -561,10 +562,36 @@
 							 				.data(color.domain())
 							 				.enter().append("g")
 							 					 .attr("class", "legend")
-     											 .attr("transform", function(d, i) { return "translate("+(0.5* margin.left) +"," + (-15) + ")"; });
+     											 .attr("transform", function(d, i) { return "translate("+(0.7* margin.left) +"," + (15) + ")"; });
      						 
      						 var numValues = color.domain().length;
      						 var legWidth = svgw/2; 
+     						 self.parent.svg.append("text")
+     						 		.attr("x", 8)
+     						 		.attr("y", 10)
+     						 		.attr("dy", ".35em")
+								      .style("text-anchor", "start")							      
+								      .text(function(d) {  	       	
+								      	return "View: "+ self.toggle + " bars";  })
+								      	.style("font-size", "9pt")
+								      	.style("font-weight", "bold");
+							self.parent.svg.append("text")
+     						 		.attr("x", 0.9 * legWidth)
+     						 		.attr("y", 10)
+     						 		.attr("dy", ".35em")
+								      .style("text-anchor", "start")							      
+								      .text(function(d) {  
+								       var numRecs = self.parent.parent.control.getDataLength();
+								       var totalMissing = 0; 
+								       levels.forEach(function(level){
+								       	totalMissing += self.parent.parent.control.getMissing(level); 	       	
+								       });  
+
+								       //var qual = 
+								      	return "Missing "+ totalMissing +" values in " + numRecs + " records" ;  })
+								      	.style("font-size", "9pt")
+								      	.style("font-weight", "bold");
+
      						 // draw legend colored rectangles
 							  self.legend.append("rect")
 							      .attr("x", function(d,i){
@@ -593,13 +620,13 @@
 							      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 							      	var name = tex || levels[d];
 							      	var qual = self.parent.parent.control.getQuality(levels[d]); 
-							      	name = name + " (DQ: "+qual +"%)"; 
+							      	//name = name + " (DQ: "+qual +"%)"; 
 							      	return name;  })
 							      	.style("font-size", "9pt");
 
 
 							    if(numValues > 2){
-							    	margin.top = 15 * Math.ceil(numValues/2);
+							    	margin.top = 20 * Math.ceil(numValues/2);
 							    	height = svgh - margin.top - margin.bottom;
 							     }	
 							     // y-axis labels
@@ -607,7 +634,7 @@
 							     	  .attr("class", "ylabel")
 								      .attr("transform", "rotate(-90)")
 								      .attr("y", margin.left/5)
-								      .attr("x",0 - (height *0.6) )
+								      .attr("x",0 - (height) )
 								      .attr("dy", "1em")
 								      .style("text-anchor", "middle")
 								      .style("font-size", "9pt")
@@ -615,15 +642,19 @@
 
 								 // x-axis labels
 								 self.parent.svg.append("text") 
-								 	  .attr("class", "xlabel")            
+								 	  .attr("class", "xlabel"+viewId)            
 								      .attr("transform",
 								            "translate(" + (svgw/2) + " ," + 
 								                           (height + margin.top + margin.bottom) + ")")
 								      .style("text-anchor", "middle")
 								      .style("font-size", "9pt")
-								      .text(self.parent.parent.control.getYear());					
+								      .style("font-weight", "bold")
+								      .text(function(d)
+								      	{   
+								      		return "Selected: " +  0 + " records in " + self.parent.parent.control.getYear();});					
 
 							    }
+
 							self.marginTop = margin.top; 
 							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ")" );
 
@@ -661,11 +692,11 @@
 							    .attr("height", 0)
 							    .style("stroke", "darkgrey")
 							     .on("mouseover", function(d, i){
-							  
+							  		var proportion = self.toggle=== "grouped"? "": ("<br>" + Math.round(((d[1] - d[0]) / (d[1] + d[0]) * 100)*10)/10 + "%"); 
 							      	div.transition()
 							      		.duration(200)
 							      		.style("opacity", 0.9);
-							      	div .html((d[1] - d[0]+ ""))
+							      	div .html((d[1] - d[0]+ proportion))
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	//origColor = d3.select(this).style("fill");
@@ -696,11 +727,16 @@
 							      	var selStatus = d3.select(this).attr("selected");
 							      	if(!selStatus || selStatus === "false"){
 							      		// set selection
-								      	for(var key in dict[i+1]){
+							      		//d3.select(".xlabel").remove(); 
+							      		var txt = "Selected: "; 
+								      	for(var key in dict[i+1]){								      		
 								      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
-								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 1); 
+								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 1); 							
 								      			} 
-								      	}							      	
+								      	  //d3.select(".xlabel"+viewId).text("Selected: "+ dict[i+1][key]['data'] + " in 2014");
+								      	}	
+								      	var totalSelected = self.parent.getSelection(); 
+								      							      	
 								      	d3.select(this).attr("selected", true); 
 								      	d3.select(this).style("fill", self.highlightColor);
 							      					//.style("opacity",self.highlightOpacity)
@@ -1116,7 +1152,7 @@
 								      .attr("x",0 - (height *0.6) );
 								      
 								 // x-axis labels
-								 self.parent.svg.select(".xlabel")             
+								 self.parent.svg.select(".xlabel"+self.id)             
 								      .attr("transform",
 								            "translate(" + (svgw/2) + " ," + 
 								                           (height + margin.top + margin.bottom) + ")");

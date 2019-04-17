@@ -646,12 +646,13 @@
 							
 								
 							if(self.expanded){
-								
+								d3.select("#sel"+self.id).style("margin-left", "1%"); 
+								d3.select("#sel"+self.id).style("width", "48%"); 
 								if(self.ssvg1){
 									// remove existing slaves if they exist
 									// this is to create them anew and position them
 									// according to the newly resized card dimensions
-									d3.select("#sel"+self.id).style("width", "50%"); 
+																	
 									var undef;								
 									d3.selectAll(".ssvg"+self.id).remove(); 
 									d3.selectAll("#ssvgtdiv"+self.id).remove();
@@ -667,8 +668,7 @@
 
 								// populate the first slave
 								var slaves = self.getSlaves(); 
-								////console.log(slaves);
-
+							
 								// handle the first visualization: a categorical
 								
 								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
@@ -678,6 +678,7 @@
 								
 							}
 							else if(!refresh || ((xoffset + ssvgW) > drawAreaW)){
+								d3.select("#sel"+self.id).style("margin-left", "0%"); 
 								var undef;								
 								d3.selectAll(".ssvg"+self.id).remove(); 
 								d3.selectAll("#ssvgtdiv"+self.id).remove();
@@ -713,6 +714,9 @@
 							var slaves = self.getSlaves();
 							self.createSlave2(slaves, ssvgW, ssvgH, xoffset);							
 
+						},
+						getSelection: function(){
+							return this.selection; 
 						},
 						updateSelection: function(key, newIds, union, intersect, subtract){
 							var self = this;							
