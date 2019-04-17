@@ -194,7 +194,7 @@
 								.attr("dy", "1.2em")
 								.attr("dx", ".3em")
 							    .text(function(d) { return $Q.Picanet["variableDict"][d] || d; })
-							    .style("font", "8px sans-serif")
+							    .style("font", "9px sans-serif")
 							     .style("text-anchor", "bottom");
 							
 							if(self.state['selectedCat']){
@@ -320,7 +320,7 @@
 								.attr("dx", "1.3em")
 							    .text(function(d) { 
 							    	return auditVars["variableDict"][d['q']] || d['q']; })
-							    .style("font", "8px sans-serif")
+							    .style("font", "9px sans-serif")
 							     .style("text-anchor", "bottom");
 							
 							var quant1 = quantityNames[0]['q'];

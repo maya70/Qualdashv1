@@ -9,8 +9,8 @@
 						self.id = dataView['viewId'];
 						//self.dualAxis = true; 
 						self.iter = 0; 												
-						self.toggle = self.id < 4? "grouped": "stacked";
-						if(self.id === 1) self.toggle = "stacked"; 
+						self.toggle = self.id > 0 ? "stacked": "grouped";
+						//if(self.id === 1) self.toggle = "stacked"; 
 						self.dataView = dataView; 
 						self.dualData = [];
 						// do we need dual axis?
@@ -27,6 +27,7 @@
 								self.dualAxis = true; 
 								// put the average on a dual axis
 								var dualVarName = dataView['levels'][avgIndex];
+								self.dualVarName = dualVarName; 
 								for(var key in dataView['data']){
 									// store the dual axis values
 									var val = dataView['data'][key][dualVarName]['value'];
@@ -645,12 +646,13 @@
 								 	  .attr("class", "xlabel"+viewId)            
 								      .attr("transform",
 								            "translate(" + (svgw/2) + " ," + 
-								                           (height + margin.top + margin.bottom) + ")")
+								                           (height + margin.top + margin.bottom-8) + ")")
 								      .style("text-anchor", "middle")
 								      .style("font-size", "9pt")
 								      .style("font-weight", "bold")
 								      .text(function(d)
 								      	{   
+								      		self.nsel = {}; 
 								      		return "Selected: " +  0 + " records in " + self.parent.parent.control.getYear();});					
 
 							    }
@@ -729,14 +731,25 @@
 							      		// set selection
 							      		//d3.select(".xlabel").remove(); 
 							      		var txt = "Selected: "; 
+
 								      	for(var key in dict[i+1]){								      		
 								      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
-								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 1); 							
+								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 1); 
+								      				if(!self.nsel[key])
+										        		self.nsel[key] = 0; 
+										        	self.nsel[key] += d[1] - d[0]; 							
 								      			} 
 								      	  //d3.select(".xlabel"+viewId).text("Selected: "+ dict[i+1][key]['data'] + " in 2014");
 								      	}	
-								      	var totalSelected = self.parent.getSelection(); 
-								      							      	
+								      	//var totalSelected = self.parent.getSelection(); 
+								        //for(var key in totalSelected){
+								        for(var key in self.nsel){
+								        	var keyname = $Q.Picanet["variableDict"][key] || key;
+								        	var nrecs = self.nsel[key]; 
+								        	txt += nrecs +" "+ keyname +" "; 
+								        }		      	
+								        txt += " in 2014"; 
+								        d3.select(".xlabel"+ viewId).text(txt);
 								      	d3.select(this).attr("selected", true); 
 								      	d3.select(this).style("fill", self.highlightColor);
 							      					//.style("opacity",self.highlightOpacity)
@@ -756,8 +769,17 @@
 								     	for(var key in dict[i+1]){
 								      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
 								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 0, 0, 1); 
+								      				self.nsel[key] -= d[1] - d[0];
 								      			} 
-								      	}							      	
+								      	}
+								      	for(var key in self.nsel){
+								        	var keyname = $Q.Picanet["variableDict"][key] || key;
+								        	var nrecs = self.nsel[key]; 
+								        	txt += nrecs +" "+ keyname +" "; 
+								        }		      	
+								        txt += " in 2014"; 
+								        d3.select(".xlabel"+ viewId).text(txt);
+								      								      	
 								      	d3.select(this).attr("selected", false); 
 								      	d3.select(this).style("fill", self.palette[d[0]]);
 								      	self.parent.nohighlightSubs(); 
@@ -830,6 +852,20 @@
 							      		.attr("id", "vline"+self.id)
 							      		.attr("d", valueLine)
 							      		.style("stroke", "brown"); 
+
+							      	g.append("text")
+							     	  .attr("class", "ylabel")
+								      //.attr("transform", "rotate(-90)")
+								      .attr("y", -15)
+								      .attr("x", (width-15) )
+								      .attr("dy", "1em")
+								      .style("text-anchor", "middle")
+								      .style("font-size", "9pt")
+								      .text(function(){
+								      	var vname =  self.dualVarName; 
+								      	return $Q.Picanet["variableDict"][vname] || vname; 
+								     	});   
+
 							      	/*g.selectAll(".line")
 							      		.data([dummy])
 							      		.enter().append("path")
@@ -1155,7 +1191,7 @@
 								 self.parent.svg.select(".xlabel"+self.id)             
 								      .attr("transform",
 								            "translate(" + (svgw/2) + " ," + 
-								                           (height + margin.top + margin.bottom) + ")");
+								                           (height + margin.top + margin.bottom-5) + ")");
 								      
 							  }
 							
