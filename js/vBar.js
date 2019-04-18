@@ -203,7 +203,7 @@
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							
-							console.log(width);
+							//console.log(width);
 
 							var g = self.parent.svg.append("g").attr("transform","translate(" + margin.left + "," + (margin.top) + ")" );
 							
@@ -503,7 +503,7 @@
                                         }
                                     }
                                    
-                                   console.log(yz);
+                                   //console.log(yz);
 
                                    var y01z = d3.stack().keys(d3.range(levels.length))(d3.transpose(yz)),
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
@@ -555,7 +555,7 @@
 							    .domain(d3.range(levels.length))
 							    .range($Q.colors);
 							
-							   console.log(width); 
+							   //console.log(width); 
 							 
 							 if(!self.legend)
 							 {	
@@ -855,6 +855,7 @@
 
 							      	g.append("text")
 							     	  .attr("class", "ylabel")
+							     	  .attr("id", "dualabel"+self.id)
 								      //.attr("transform", "rotate(-90)")
 								      .attr("y", -15)
 								      .attr("x", (width-15) )
@@ -887,7 +888,7 @@
 							    transitionStacked();
 							}
 						self.changed = function(newx, newy, nviewId){
-							 console.log("changing"); 
+							 //console.log("changing"); 
 							 //timeout.stop();
 							  if (self.toggle === "grouped") 
 							  	transitionGrouped(newx, newy, nviewId);
@@ -928,7 +929,7 @@
 						  	//console.log("THERE");
 						  	//console.log(viewId); 
 						  	  series = d3.selectAll(".series"+viewId);
-						  	  console.log(series);
+						  	  //console.log(series);
 						  	  rect = series.selectAll("rect");
 						  }
 						  rect.transition()
@@ -1152,12 +1153,13 @@
 										.call(d3.axisRight(ydscale).ticks(5, "s"))
 							      		.attr("transform", "translate("+(width-15)+","+ 0 +")");
 
-
+							      	self.svg.select("#dualabel"+self.id)
+							      			.attr("transform", "translate("+ (width-15)+",0)");
 							    	var valueLine = d3.line()
 							    					.x(function(d) { 
 							    						return xdscale(d.date); })
 							      					.y(function(d) { 
-							      						console.log(ydscale(d.value)); 
+							      						//console.log(ydscale(d.value)); 
 							      						return ydscale(d.value); });
 								
 							    	

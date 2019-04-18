@@ -20,6 +20,8 @@
 							self.availMetrics = self.control.getAvailMetrics(); 
 							self.meta = self.control.getMetaData(); 
 							self.metaHier = self.control.buildMetaHier(); 
+							d3.selectAll(".loader").remove(); 
+							d3.selectAll(".loadermsg").remove(); 
 							
 							for(var i=0; i< dataViews.length; i++){
 								self.expanded[i] = false; 
@@ -242,20 +244,23 @@
 							$(document).on('click', '#quantity-but'+viewId, function(){
 								var outQs = [];
 								var movedItems = [];
-								/*if(self.justMoved && self.justMoved[viewId]){
+								if(self.justMoved && self.justMoved[viewId]){
 									self.justMoved[viewId].each(function(item){
 										movedItems.push($(this).val()); 
 									});
 									console.log(movedItems); 
-								}*/
+								}
 								var inQsel = $("#qvar-in"+viewId+" option");
 								var outQsel = $("#qvar-out"+viewId+" option").each(function(opt){
 									var vv = $(this).val();
-									//if(outQs.indexOf(vv)<0 && movedItems.indexOf(vv)<0)
+									if(outQs.indexOf(vv)<0 && movedItems.indexOf(vv)<0)
+									//if(outQs.indexOf(vv)<0)
 										outQs.push(vv);
 								});								
 								var cardQs = self.control.getCardQs(viewId);
 								
+
+								console.log(outQs); 
 								/*for(var iter = 0; iter < cardQs.length; iter++){
 									var index = outQs.length-1;
 									outQs.splice(index, 1);
@@ -424,7 +429,7 @@
 								if(self.meta[m]['fieldType'] === "q")
 								{
 									var newvar = self.meta[m]['fieldName'];
-									if(cardQs.indexOf(newvar) < 0){
+									if(cardQs.indexOf(newvar) < 0 && newvar !== "der_readmit"){
 										if(self.control.variableInData(newvar) && !inobj[newvar]){
 											inobj[newvar] = 1;
 										qvarselect.append("option")
@@ -435,7 +440,7 @@
 											}
 										}
 									else {
-										if(!outobj[newvar] && (mainQs.indexOf(newvar) <0) ){
+										if(!outobj[newvar] && (mainQs.indexOf(newvar) <0) && newvar !== "der_readmit" ){
 											outobj[newvar] = 1; 
 											qvarselectOut.append("option")
 												.attr("value", newvar)
@@ -450,7 +455,7 @@
 							// append derived quantities to the rigt or left depending on whether they are displayed in tabs
 							if(cardQs.constructor == Array){
 								cardQs.forEach(function(cq){
-									if(!outobj[cq] && (mainQs.indexOf(cq) <0)){
+									if(!outobj[cq] && (mainQs.indexOf(cq) <0) && cq !== "der_readmit"){
 										outobj[cq] = 1;
 										qvarselectOut.append("option")
 												.attr("value", cq)
@@ -462,7 +467,7 @@
 									});
 								}
 							else{
-								if(!outobj[cardQs] && (mainQs.indexOf(cardQs) <0)){
+								if(!outobj[cardQs] && (mainQs.indexOf(cardQs) <0) && cardQs !== "der_readmit"){
 										outobj[cardQs] = 1; 
 										qvarselectOut.append("option")
 												.attr("value", cardQs)

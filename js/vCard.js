@@ -227,7 +227,8 @@
 
 								quantityNames.forEach(function(q, i){
 									var index = mainQs.indexOf(q['q']);
-									if(index >=0){
+									var first = quantityNames.indexOf(q); 
+									if(index >=0 || first !== i){
 										quantityNames.splice(i,1);
 										//self.cardPalette.splice(i,1); 
 									}
