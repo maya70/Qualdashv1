@@ -242,16 +242,16 @@
 							$(document).on('click', '#quantity-but'+viewId, function(){
 								var outQs = [];
 								var movedItems = [];
-								if(self.justMoved && self.justMoved[viewId]){
+								/*if(self.justMoved && self.justMoved[viewId]){
 									self.justMoved[viewId].each(function(item){
 										movedItems.push($(this).val()); 
 									});
 									console.log(movedItems); 
-								}
+								}*/
 								var inQsel = $("#qvar-in"+viewId+" option");
 								var outQsel = $("#qvar-out"+viewId+" option").each(function(opt){
 									var vv = $(this).val();
-									if(outQs.indexOf(vv)<0 && movedItems.indexOf(vv)<0)
+									//if(outQs.indexOf(vv)<0 && movedItems.indexOf(vv)<0)
 										outQs.push(vv);
 								});								
 								var cardQs = self.control.getCardQs(viewId);
@@ -261,6 +261,8 @@
 									outQs.splice(index, 1);
 								}*/
 								
+								var selectionSize =  $('#qvar-out'+viewId).has('option').length; 
+								if( selectionSize > 0 && outQs.length < 6 ) {						
 								
 								self.control.setCardQs(viewId, outQs);
 								self.updateQMultiSelects(viewId);
@@ -271,6 +273,9 @@
 							          //  return;
 							        //}
 							    });
+							}
+							else
+								alert("[Invalid action] Please select at least one and at most five variables."); 
 							});
 							
 
@@ -412,6 +417,9 @@
 							var inobj = {},
 								outobj = {};								
 
+							var mainQs = self.control.audit === "picanet"? ($Q.Picanet["displayVariables"][viewId]["y"]):
+																				 ($Q.Minap["displayVariables"][viewId]["y"]);
+
 							for(var m = 0; m < self.meta.length; m++){
 								if(self.meta[m]['fieldType'] === "q")
 								{
@@ -427,7 +435,7 @@
 											}
 										}
 									else {
-										if(!outobj[newvar]){
+										if(!outobj[newvar] && (mainQs.indexOf(newvar) <0) ){
 											outobj[newvar] = 1; 
 											qvarselectOut.append("option")
 												.attr("value", newvar)
@@ -442,7 +450,7 @@
 							// append derived quantities to the rigt or left depending on whether they are displayed in tabs
 							if(cardQs.constructor == Array){
 								cardQs.forEach(function(cq){
-									if(!outobj[cq]){
+									if(!outobj[cq] && (mainQs.indexOf(cq) <0)){
 										outobj[cq] = 1;
 										qvarselectOut.append("option")
 												.attr("value", cq)
@@ -454,7 +462,7 @@
 									});
 								}
 							else{
-								if(!outobj[cardQs]){
+								if(!outobj[cardQs] && (mainQs.indexOf(cardQs) <0)){
 										outobj[cardQs] = 1; 
 										qvarselectOut.append("option")
 												.attr("value", cardQs)

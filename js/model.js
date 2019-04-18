@@ -36,9 +36,11 @@
                             var cats = auditVars["categories"]; 
                             var qobjs = auditVars["quantities"];                                                               
                             self.cardCats.push(cats);
+                            var qs = [];
                             qobjs.forEach(function(qobj){
-                                self.cardQs.push(qobj['q']); 
+                                qs.push(qobj['q']); 
                             });
+                            self.cardQs.push(qs); 
 
                         }
                     },
@@ -54,7 +56,7 @@
                                     break; 
                                    }
                             }
-                            ////console.log(metric); 
+                            //////console.log(metric); 
                             // get index of this metric 
                             for(var j=0; j < self.displayVariables.length; j++){
                                 if(self.displayVariables[j]['metric'] === metric){
@@ -1312,8 +1314,8 @@
                                  * handle multiple quantitative variables
                                 **/
                                 var mon = self.audit === "picanet"? self.data[i][dateVar] : self.stringToMonth(self.data[i][dateVar]); 
-                                if(isNaN(mon))
-                                    console.log(mon); 
+                                //if(isNaN(mon))
+                                  //  console.log(mon); 
 
                                 if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                     self.recordEHR(self.data[i], i, metric);                                
@@ -1587,8 +1589,8 @@
                                 return result;
                             } // if(metric === "48h Readmission")
                             else if(metric === "Bed Days and Extubation"){
-                                console.log(dict);
-                                console.log(self.excessDays);
+                                //console.log(dict);
+                                //console.log(self.excessDays);
                                 for(var key in dict){
                                    if(self.excessDays[key])
                                     for(var kk in self.excessDays[key])
@@ -1596,7 +1598,7 @@
                                 }
                             }
                             else{
-                                console.log(result);
+                                //console.log(result);
                                 // calculate averages (if any)
                                 slaves['quants'].forEach(function(q){
                                     if(q['yaggregates'] === "average"){
@@ -1679,7 +1681,7 @@
                                     }
                                     }
                                 });    
-                                console.log(result);
+                                //console.log(result);
                                 return result; 
                             } 
                         },
