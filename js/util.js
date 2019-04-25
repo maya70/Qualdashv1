@@ -84,11 +84,12 @@ $Q.Picanet = {
                     "text": "Bed Days and Extubation"},
                     {"value": "case_mix", 
                     "text": "Specialty Case Mix"},
-                    {"value": "data_quality",
-                     "text": "Data Quality"},
                     {"value": "dependency", 
                       "text": "Dependency"
-                    }], 
+                    },
+                    {"value": "data_quality",
+                     "text": "Data Quality"}
+                    ], 
 "variableDict": {"primarydiagnosisgroup": "Diagnosis",
                  "unplannedextubation": "Unplanned Extubation", 
                   "adtype": "Ad. type",
