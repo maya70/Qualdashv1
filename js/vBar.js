@@ -199,7 +199,7 @@
 							var svgh = scale * parentArea.node().getBoundingClientRect().height; 
 							var shift = ((scale-1.0)*(1-scale)*parentArea.node().getBoundingClientRect().width); 
 							
-							var margin = {top: self.marginTop, right: 10, bottom: 50, left: self.leftMargin};							
+							var margin = {top: self.marginTop, right: 10, bottom: 80, left: self.leftMargin};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							
@@ -548,7 +548,7 @@
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
-							var margin = {top: 65, right: 10, bottom: 50, left: self.leftMargin};							
+							var margin = {top: 65, right: 10, bottom: 80, left: self.leftMargin};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
 							var color = d3.scaleOrdinal()
@@ -642,7 +642,7 @@
 								      .text(auditVars["displayVariables"][viewId]["ylabel"]);   
 
 								 // x-axis labels
-								 self.parent.svg.append("text") 
+								/* self.parent.svg.append("text") 
 								 	  .attr("class", "xlabel"+viewId)            
 								      .attr("transform",
 								            "translate(" + (svgw/2) + " ," + 
@@ -653,7 +653,108 @@
 								      .text(function(d)
 								      	{   
 								      		self.nsel = {}; 
-								      		return "Selected: " +  0 + " records in " + self.parent.parent.control.getYear();});					
+								      		return "Selected: " +  0 + " records in " + self.parent.parent.control.getYear();
+								      	});	*/
+
+								  self.nsel = {}; 
+								  var sl = self.parent.svg
+								  			.append("g")
+								  				.attr("class", "selection-legend"+viewId)
+								  				.attr("transform", "translate(" + (svgw/10) + "," + (svgh-margin.bottom/2)  + ")");
+								  				
+								  var sltitle= sl.append("g").attr("transform", "translate(0,0)");
+
+								  sltitle.append("rect")
+								  				.attr("width", 60)
+								  				.attr("height", 15)	
+								  				.style("fill", "white")	
+								  				.style("stroke-width", 0.5)						  				
+								  				.style("stroke", "none");
+								  sltitle.append("text")
+								  	.attr("x", 2)
+								  	.attr("y", 12)
+								  	  .style("font-size", "9pt")
+								      .text("Selection:");
+
+								 var slbut = sl.append("g").attr("transform", "translate(0,16)")
+								 				.on("click", function(){
+								 					//console.log("CLEARING");
+								 					if(!self.svg)
+								 						self.svg = self.getMainSVG(self.id); 
+								 					self.svg.selectAll(".bar").each(function(d){
+								 						d3.select(this).attr("selected", false);
+								 						d3.select(this).style("fill", self.palette[d[0]]);
+								 					});								 			
+								 					self.nsel = {};		
+								 					self.parent.clearSelection(); 						 					
+								      				self.parent.nohighlightSubs(); 
+								     				d3.selectAll(".slcount-"+self.id).text("0");
+								     				d3.select("#slbut-"+self.id).style("fill", "grey");
+								 				});
+								 slbut.append("rect")
+								  				.attr("width", 60)
+								  				.attr("height", 15)	
+								  				.style("fill", "lightgrey")	
+								  				.style("stroke-width", 0.5)
+								  				.style("rx", 2)						  				
+								  				.style("stroke", "black");
+								  slbut.append("text")
+								  	.attr("id", "slbut-"+viewId)
+								  	.attr("x", 10)
+								  	.attr("y", 12)
+								  	  .style("font-size", "9pt")
+								  	  .style("font-weight", "bold")
+								  	  .style("fill", "grey")
+								      .text("Clear");
+
+
+
+								 var sllabels = sl.selectAll(".varname")
+								 				.data(color.domain())
+							 						.enter().append("g")
+							 					 .attr("class", "varname")
+     											 .attr("transform", function(d, i) { return "translate("+60 +"," + (i*15) + ")"; });
+     								sllabels.append("rect")
+     										.attr("width", (width)*0.6)
+								  				.attr("height", 15)	
+								  				.style("fill", "white")	
+								  				.style("stroke-width", 0.5)						  				
+								  				.style("stroke", "none");
+								  	sllabels.append("text")
+								  			.attr("x", 2)
+								  			.attr("y", 12)
+										  	  .style("font-size", "9pt")
+										      .text(function(d){ 
+										      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
+										      	var name = tex || levels[d];
+										      	var qual = self.parent.parent.control.getQuality(levels[d]); 
+										      	//name = name + " (DQ: "+qual +"%)"; 
+										      	return name;
+										       });
+
+							 	var slcounts = sl.selectAll(".varcount")
+							 					.data(levels)
+							 						.enter().append("g")
+							 					 .attr("class", "varcount")
+     											 .attr("transform", function(d, i) { return "translate("+(60+ width*0.6) +"," + (i*15) + ")"; });
+
+     						 	slcounts.append("rect")
+     										.attr("width", (width)*0.4)
+								  				.attr("height", 15)	
+								  				.style("fill", "white")	
+								  				.style("stroke-width", 0.5)						  				
+								  				.style("stroke", "none");
+								slcounts.append("text")
+											.attr("id", function(d,i){
+												return "slcount-"+viewId+"-"+i; 
+											})
+											.attr("class", "slcount-"+viewId)
+								  			.attr("x", 2)
+								  			.attr("y", 12)
+										  	  .style("font-size", "9pt")
+										      .text("0");
+
+
 
 							    }
 
@@ -728,8 +829,7 @@
 							      .on("click", function(d,i){
 							      	var selStatus = d3.select(this).attr("selected");
 							      	if(!selStatus || selStatus === "false"){
-							      		// set selection
-							      		//d3.select(".xlabel").remove(); 
+							      		// set selection							      		
 							      		var txt = "Selected: "; 
 
 								      	for(var key in dict[i+1]){								      		
@@ -738,24 +838,22 @@
 								      				if(!self.nsel[key])
 										        		self.nsel[key] = 0; 
 										        	self.nsel[key] += d[1] - d[0]; 							
-								      			} 
-								      	  //d3.select(".xlabel"+viewId).text("Selected: "+ dict[i+1][key]['data'] + " in 2014");
+								      			} 								      	  
 								      	}	
 								      	//var totalSelected = self.parent.getSelection(); 
 								        //for(var key in totalSelected){
 								        for(var key in self.nsel){
 								        	var keyname = $Q.Picanet["variableDict"][key] || key;
 								        	var nrecs = self.nsel[key]; 
-								        	txt += nrecs +" "+ keyname +" "; 
+								        	//txt += nrecs +" "+ keyname +" "; 
+								        	var id = self.levels.indexOf(key); 
+								        	d3.select("#slcount-"+self.id+"-"+id).text(nrecs);
 								        }		      	
-								        txt += " in 2014"; 
-								        d3.select(".xlabel"+ viewId).text(txt);
+								        //txt += " in 2014"; 
+								        //d3.select(".xlabel"+ viewId).text(txt);
 								      	d3.select(this).attr("selected", true); 
 								      	d3.select(this).style("fill", self.highlightColor);
-							      					//.style("opacity",self.highlightOpacity)
-							      					//.style("stroke-width", 1.0)
-													//.style("stroke", self.highlightColor); 
-							
+							      		d3.select("#slbut-"+self.id).style("fill", "black"); 
 							      	// find the key for the corresponding data entry
 							      	for(var key in dict[i+1]){
 							      		if(dict[i+1][key]['value'] === (d[1] - d[0]))
@@ -766,6 +864,7 @@
 								      }
 								     else{
 								     	// reset selection
+								     	txt = "Selected: "; 
 								     	for(var key in dict[i+1]){
 								      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
 								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 0, 0, 1); 
@@ -773,16 +872,20 @@
 								      			} 
 								      	}
 								      	for(var key in self.nsel){
-								        	var keyname = $Q.Picanet["variableDict"][key] || key;
-								        	var nrecs = self.nsel[key]; 
-								        	txt += nrecs +" "+ keyname +" "; 
+								        	//var keyname = $Q.Picanet["variableDict"][key] || key;
+								        	var nrecs = self.nsel[key]? self.nsel[key] : 0 ; 
+								        	//txt += nrecs +" "+ keyname +" "; 
+								        	var id = self.levels.indexOf(key); 
+								        	d3.select("#slcount-"+self.id+"-"+id).text(nrecs);
 								        }		      	
-								        txt += " in 2014"; 
-								        d3.select(".xlabel"+ viewId).text(txt);
+								        //txt += " in 2014"; 
+								        //d3.select(".xlabel"+ viewId).text(txt);
 								      								      	
 								      	d3.select(this).attr("selected", false); 
 								      	d3.select(this).style("fill", self.palette[d[0]]);
 								      	self.parent.nohighlightSubs(); 
+								      	if(self.parent.selectionEmpty())
+								      		d3.select("#slbut-"+self.id).style("fill", "grey"); 
 								     
 								     }
 							      });
@@ -1071,7 +1174,7 @@
 						},
 						resizeCatBar: function(){
 							var self = this;
-							var margin = self.cat? {top: self.marginTop, right: 10, bottom: 50, left:self.leftMargin} : {top: 10, right: 10, bottom: 65, left:self.leftMargin}; //TODO: modify this according to different views
+							var margin = self.cat? {top: self.marginTop, right: 10, bottom: 80, left:self.leftMargin} : {top: 10, right: 10, bottom: 65, left:self.leftMargin}; //TODO: modify this according to different views
 							var scale = self.parent.expanded? 0.6 : 0.9; 
 							var drawArea = d3.select("#draw-area"+self.id);							
 							var parentArea = drawArea.select(function(){
@@ -1190,10 +1293,13 @@
 								      .attr("x",0 - (height *0.6) );
 								      
 								 // x-axis labels
-								 self.parent.svg.select(".xlabel"+self.id)             
+								 /*self.parent.svg.select(".xlabel"+self.id)             
 								      .attr("transform",
 								            "translate(" + (svgw/2) + " ," + 
-								                           (height + margin.top + margin.bottom-5) + ")");
+								                           (height + margin.top + margin.bottom-5) + ")");*/
+
+								 self.parent.svg.select(".selection-legend"+self.id)
+								 .attr("transform", "translate(" + (svgw/10) + "," + (svgh-margin.bottom/2)  + ")");
 								      
 							  }
 							

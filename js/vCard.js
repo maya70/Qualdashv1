@@ -56,6 +56,7 @@
 							.attr("class", "draw-area")
 							.attr("id", "draw-area"+viewId);
 
+						
 						var panel = cbody.append("div")
 										.attr("class", "w3-sidebar")
 										.attr("id", "panel"+viewId)
@@ -1133,6 +1134,11 @@
 									isEmpty = false; 
 							}
 							return isEmpty; 
+						},
+						clearSelection: function(){
+							var self = this;
+							var undef; 
+							self.selection = undef; 
 						},
 						getAuditInfo: function(){
 							return this.parent.control.audit; 
