@@ -10,7 +10,7 @@
                         self.ehrHist = {};
                         //self.unitID = "194281";                        
                         self.slaves = {};
-                        self.year = "2014"; 
+                        
                         self.cardCats = []; 
                         self.cardQs = []; 
                         self.missing = {}; 
@@ -19,6 +19,7 @@
                          *  Defaults for each audit are set here
                          *  On launching the site it will display metrics in this order 
                          */ 
+                        self.year = $Q.getUrlVars()["year"] || "2014";
                         self.audit = $Q.getUrlVars()["audit"];
                         self.unitID = (self.audit === "picanet")? "194281" :"MRI"; 
                         var auditMetrics = (self.audit==="picanet")? $Q.Picanet.availMetrics : $Q.Minap.availMetrics; 
@@ -136,10 +137,15 @@
                                         for(var i=0; i < self.data.length; i++){
                                             self.data[i]["EVENTID"] = ""+self.data[i]["eventidscr"];                                            
                                         }                                    
-                                        d3.csv("./data/picanet_admission/shortactiv"+self.year+".csv", function(extra){                                                                         
+                                        d3.csv("./data/picanet_admission/shortactiv"+self.year+".csv", function(error, extra){                                                                         
                                             
+                                            if (error) {
+                                                    console.warn(error);
+                                                }
                                             self.activityIndex = {};
-                                            for(var ex=0; ex < extra.length; ex++){
+                                            if(extra)
+                                            {
+                                             for(var ex=0; ex < extra.length; ex++){
                                                 if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID){
                                                     if(!self.activityIndex[extra[ex]["eventidscr"]])
                                                         self.activityIndex[extra[ex]["eventidscr"]] = [];
@@ -147,6 +153,7 @@
                                                 }
                                             }
                                             //console.log(self.activityIndex); 
+                                            }
                                             
                                             for(var display = 0; display < self.displayVariables.length; display++)
                                             { 
