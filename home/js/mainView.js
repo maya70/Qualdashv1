@@ -214,6 +214,7 @@
 							$(document).on('click', '#group-but'+viewId, function(){
 								//////console.log($('#varsel'+viewId +' option:selected').val());
 								//self.addGroup(viewId, $('#nvarsel'+viewId +' option:selected').val()); 
+								self.control.addBtnClick();
 								var outcats = [];
 								var outcatsel = $("#nvar-out"+viewId+" option").each(function(opt){
 									var vv = $(this).val();
@@ -242,6 +243,7 @@
 							});
 
 							$(document).on('click', '#quantity-but'+viewId, function(){
+								self.control.addBtnClick();
 								var outQs = [];
 								var movedItems = [];
 								if(self.justMoved && self.justMoved[viewId]){

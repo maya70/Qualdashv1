@@ -5,6 +5,7 @@
 					function Control(config){
 						var self = this;
 						self.highlightColor = "cyan"; 
+						self.sessionLog = {}; 
 						self.dataModel = new $Q.Model(self); 
 						self.mainView = new $Q.MainView(self); 						
 					
@@ -17,6 +18,37 @@
 								self.dataModel.readMinapData(); 
 							else 
 								self.dataModel.readPicanetData(); 
+						},
+						startSessionLog: function(config){
+							var self = this;
+							self.sessionLog['cardExpands'] = []; 
+							self.sessionLog['btnClicks'] = 0; 
+							for(var key in config)
+								self.sessionLog[key] = config[key]; 
+							console.log(self.sessionLog); 
+						},
+						writeSessionLog: function(){
+							var self = this;
+							self.sessionLog['exitTime'] = Date.now(); 
+							$Q.handleJSON('./php/submit_log.php', 
+												function(){},
+												{
+													type: 'POST',
+								                    data: {
+								                       "sessionLog": self.sessionLog								                      
+								                      }
+												});
+						        
+						},
+						addBtnClick: function(){
+							var self = this;
+							self.sessionLog['btnClicks']++;
+							console.log(self.sessionLog); 
+						},
+						addCardExpand: function(cardname){
+							var self = this; 
+							self.sessionLog['cardExpands'].push(cardname); 
+							console.log(self.sessionLog); 
 						},
 						getMetaData: function(){
 							var self = this; 

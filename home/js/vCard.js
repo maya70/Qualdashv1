@@ -13,6 +13,7 @@
 											.attr("id", "cardcontainer"+viewId)
 											.on("dblclick", function(){
 												////////console.log(this);	
+												
 												var curh = parseInt($(this).css("height")),
 													curw = parseInt($(this).css("width"));
 												
@@ -670,7 +671,7 @@
 
 								// populate the first slave
 								var slaves = self.getSlaves(); 
-							
+								self.parent.control.addCardExpand(self.metric);
 								// handle the first visualization: a categorical
 								
 								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
@@ -1183,6 +1184,7 @@
 						},
 						updateTimeView: function(viewType){
 							var self = this;
+							self.control.addBtnClick();
 							//console.log(self.id); 
 							//console.log(viewType);  
 							self.subVisT.draw(self.id, self.state['selectedTime'] ,self.state['tspan'], self.state['timeData'] , self, 

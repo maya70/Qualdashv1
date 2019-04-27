@@ -3,5 +3,11 @@
  * Date: 18/09/2018
  */  
 (function($Q){
-	$Q.mainControl = new $Q.Control(); 
+	$Q.mainControl = new $Q.Control();
+	window.onbeforeunload = function() {
+		$Q.mainControl.writeSessionLog();
+		console.log("BYE");
+    return "Saving session log. Bye!";
+	};
+	 
 })(QUALDASH);
