@@ -65,19 +65,25 @@
 							var self = this;
 							var mainsvg = (self.cat)? "#mainsvg"+self.id+"_"+self.iter :".mainsvg"+self.id; 
 							var svgEl = $(mainsvg)[0];
-							var name =  self.parent["metric"]+".svg"; 
+							var name =  self.parent["metric"]+".png"; 
 							//console.log(name); 
 							svgEl.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 						    var svgData = svgEl.outerHTML;
 						    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
 						    var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
 						    var svgUrl = URL.createObjectURL(svgBlob);
-						    var downloadLink = document.createElement("a");
-						    downloadLink.href = svgUrl;
+						     canvg('canvas', svgData);
+						    var canvas = document.getElementById("canvas");
+							var img = canvas.toDataURL("image/png");
+
+							var downloadLink = document.createElement("a");
+						    //downloadLink.href = svgUrl;
+						    downloadLink.href = img;
 						    downloadLink.download = name;
 						    document.body.appendChild(downloadLink);
 						    downloadLink.click();
 						    document.body.removeChild(downloadLink);
+
 
 						},
 						getData: function(){

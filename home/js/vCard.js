@@ -760,13 +760,13 @@
 						saveSubSVGs: function(){
 							var self = this;
 							if(self.ssvg1){
-								self.saveSVG("#ssvg1"+self.id, self.metric+"category.svg");
+								self.saveSVG("#ssvg1"+self.id, self.metric+"category.png");
 							}
 							if(self.ssvg2){
-								self.saveSVG("#ssvg2"+self.id, self.metric+"quantity.svg");	
+								self.saveSVG("#ssvg2"+self.id, self.metric+"quantity.png");	
 							}
 							if(self.ssvgt){
-								self.saveSVG("#ssvgt"+self.id, self.metric+"timeView.svg");	
+								self.saveSVG("#ssvgt"+self.id, self.metric+"timeView.png");	
 							}
 
 						},
@@ -779,12 +779,20 @@
 						    var preface = '<?xml version="1.0" standalone="no"?>\r\n';
 						    var svgBlob = new Blob([preface, svgData], {type:"image/svg+xml;charset=utf-8"});
 						    var svgUrl = URL.createObjectURL(svgBlob);
-						    var downloadLink = document.createElement("a");
-						    downloadLink.href = svgUrl;
+						    
+						    canvg('canvas', svgData);
+						    var canvas = document.getElementById("canvas");
+							var img = canvas.toDataURL("image/png");
+
+							var downloadLink = document.createElement("a");
+						    //downloadLink.href = svgUrl;
+						    downloadLink.href = img;
 						    downloadLink.download = name;
 						    document.body.appendChild(downloadLink);
 						    downloadLink.click();
 						    document.body.removeChild(downloadLink);
+
+
 
 						},
 						createHeader: function(container, viewId){

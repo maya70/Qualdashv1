@@ -577,7 +577,7 @@ svg{
 </div>
 
  
-
+<canvas id="canvas" width="1000px" height="600px" style="visibility: hidden;"></canvas>
   <!-- Footer >
   <footer class="w3-container  w3-light-grey w3-center" style="width: 100%; align-content: : left;">
     <span class="w3-bar-item" > QualDash &copy </span> 
@@ -769,6 +769,13 @@ function openCity(evt, cityName) {
 <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
 <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 
+<!-- Canvg and dependencies to save PNG from visualizations -->
+<!-- for info see: https://github.com/canvg/canvg -->
+<script src="https://cdn.jsdelivr.net/npm/rgbcolor@^1/index.js"></script>
+<!-- Optional if you want blur -->
+<script src="https://cdn.jsdelivr.net/npm/stackblur-canvas@^1/dist/stackblur.min.js"></script>
+<!-- Main canvg code -->
+<script src="https://cdn.jsdelivr.net/npm/canvg/dist/browser/canvg.min.js"></script>
 
 <script>
 
