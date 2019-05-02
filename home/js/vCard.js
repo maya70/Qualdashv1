@@ -1192,7 +1192,7 @@
 						},
 						updateTimeView: function(viewType){
 							var self = this;
-							self.control.addBtnClick();
+							self.parent.control.addBtnClick();
 							//console.log(self.id); 
 							//console.log(viewType);  
 							self.subVisT.draw(self.id, self.state['selectedTime'] ,self.state['tspan'], self.state['timeData'] , self, 
