@@ -891,7 +891,7 @@
 												  		//console.log(self.selection);	
 												  		 $('[href="#tabCanvas"]').tab('show');						  		
 												  		
-												  		var tabContents = self.parent.setTableTabs(Object.keys(self.selection));
+												  		var tabContents = self.parent.setTableTabs(Object.keys(self.selection), self);
 												  		
 												  		for(var key in self.selection){
 												  			if(!isEmpty(self.selection[key])){
@@ -905,7 +905,7 @@
 														  			tabContents[key].append("p")
 														  					.style("font-size", "12pt")
 														  					.text("Number of selected records: "+ Object.keys(self.selection[key]).length);
-														  			var table = tabContents[key].append('table');
+														  			var table = tabContents[key].append('table').attr("id", "spreadsheet-"+key);
 																	var thead = table.append('thead');
 																	var	tbody = table.append('tbody');
 																	var columns = Object.keys(self.selection[key][Object.keys(self.selection[key])[0]]);
@@ -935,6 +935,7 @@
 																			  .enter()
 																			  .append('td')
 																			    .text(function (d) { return d.value; });
+
 
 																		}
 														  			} 
@@ -1025,6 +1026,12 @@
 								e.stopPropagation(); 
 							});
 
+
+							
+						},
+						tableToCSV: function(key){							
+							var self = this;							
+							
 
 							
 						},
