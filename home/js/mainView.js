@@ -40,16 +40,44 @@
 						setTableTabs: function(keys){
 							var self = this;
 							var tabs = d3.select("#tableTabs");
+							if (!self.tableTabs) self.tableTabs = {};
+							var tabContents = {};
 
-							keys.forEach(function(key){
-								tabs.append("li")
-												.append("a")
-													.attr("data-toggle", "tab")
-													.attr("href", "#home")
-													.style("border", "1px solid #ccc")
-													.style("background-color", "#f1f1f1")
-													.text(key); 
+							keys.forEach(function(key, i){
+								if(!self.tableTabs[key]){
+									var str = (i>0)? "" : " in active";
+									
+									self.tableTabs[key] = 1; 
+									tabs.append("li")
+										.attr("class", function(){
+											return (i>0)? "nav-item px-1": "active nav-item px-1"; 
+										})
+										.append("a")
+											.attr("class", "nav-link")
+											.attr("data-toggle", "tab")
+											.attr("href", "#tab-content-"+key)
+											.style("border", "1px solid #ccc")
+											.style("background-color", "#f1f1f1")
+											.style("display", "inline-block")
+											.text(key);
+
+									tabContents[key] = d3.select('#tableContents').append("div")
+															.attr("id", "tab-content-"+key)
+															.attr("class", "tab-pane fade"+str)
+						  									.style("height", "450px")
+						  									.style("border", "3px solid #000000")
+						  									.style("overflow", "scroll")
+						  									.style("width", "95%")
+						  									.style("position", "absolute")
+						  									.style("top", 10)
+						  									.style("left", 10);
+
+		
+								}
+								else
+									tabContents[key] = d3.select("#tab-content-"+key); 
 							});
+							return tabContents; 
 						},
 						updateDataViews: function(viewId, slaves){
 							var self = this; 

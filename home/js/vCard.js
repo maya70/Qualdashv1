@@ -875,6 +875,7 @@
 												//.text("Toggle View"); 
 							var exportTableBtn = header.append("button")
 												.attr("type", "button")
+												.attr("title", "Export to table")
 												.attr("class", "form-control ctrl-btn fa fa-table")
 												.attr("id", "export-btn"+viewId)
 												.attr("disabled", "true")
@@ -887,24 +888,24 @@
 												.style("background-color", "lightgrey")
 												.style("color", "black")
 												.on("click", function(){
-												  		//console.log(self.selection);							  		
-												  		var tabs= self.parent.setTableTabs(Object.keys(self.selection));
-												  		var tabCanvas = d3.select('#tableContents').append("div")
-												  									.style("max-height", "450px")
-												  									.style("border", "3px solid #000000")
-												  									.style("overflow", "scroll"); 
-												  		tabCanvas.append("p")
-												  				.style("font-size", "16pt")
-												  				.text("Data exported from card: "+ self.metric);
+												  		//console.log(self.selection);	
+												  		 $('[href="#tabCanvas"]').tab('show');						  		
+												  		
+												  		var tabContents = self.parent.setTableTabs(Object.keys(self.selection));
+												  		
 												  		for(var key in self.selection){
 												  			if(!isEmpty(self.selection[key])){
-														  			tabCanvas.append("p")
+												  				tabContents[key].append("p")
+														  				.style("font-size", "16pt")
+														  				.text("Data exported from card: "+ self.metric);
+														  			tabContents[key].append("p")
 														  					.style("font-size", "12pt")
 														  					.text("Selected variable: "+ key);
-														  			tabCanvas.append("p")
+														  					
+														  			tabContents[key].append("p")
 														  					.style("font-size", "12pt")
 														  					.text("Number of selected records: "+ Object.keys(self.selection[key]).length);
-														  			var table = tabCanvas.append('table');
+														  			var table = tabContents[key].append('table');
 																	var thead = table.append('thead');
 																	var	tbody = table.append('tbody');
 																	var columns = Object.keys(self.selection[key][Object.keys(self.selection[key])[0]]);
