@@ -33,7 +33,7 @@ body {
 }
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=select]  {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -183,13 +183,13 @@ a.button {
    
     <div class="container">
       <label for="audit"><b>Select Audit:</b></label>
-      <input type="text" placeholder="Enter Audit" name="audit" required>
+      <input type="select" placeholder="Enter Audit" name="audit" required>
 
       <label for="year"><b>Select Year:</b></label>
-      <input type="text" placeholder="Enter Year" name="year" required>
+      <input type="select" placeholder="Enter Year" name="year" required>
 
       <label for="year"><b>Your job Title:</b></label>
-      <input type="text" placeholder="Enter job Title" name="title" required>
+      <input type="select" placeholder="Enter job Title" name="title" required>
         
       <button type="submit" id="launchbtn" formaction="home/">Launch QualDash</button>
       <!--a href="http://google.com" class="button">Go to Google</a-->
