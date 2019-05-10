@@ -13,7 +13,33 @@
 											{"value": "scatter", "text": "Scatter Plot"}, 
 											{"value": "pie", "text": "Pie Chart"}]; 
 					},
-					{
+					{	createQualityPane: function(){
+						var self = this;
+						var auditVars = self.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
+						var missing = self.control.getAllMissing(); 
+						var qualityDiv = d3.select("#quality-div");
+						qualityDiv.selectAll("p").remove();
+
+						for(var key in missing){
+							var percent = self.control.getQuality(key);
+							qualityDiv.append("p")
+										.text(auditVars["variableDict"][key] || key); 
+							var gbar = qualityDiv.append("div")
+										.attr("class", "w3-grey-item"); 
+							gbar.append("div")
+									.attr("class", function(){
+										if (percent > 75)
+											return "w3-container w3-center w3-padding w3-green myitem"; 
+										else if(percent > 25)
+											return "w3-container w3-center w3-padding w3-orange myitem";
+										else return "w3-container w3-center w3-padding w3-red myitem";
+
+									})									
+									.style("width", percent+"%")
+									.text(percent+"%"); 
+							qualityDiv.append("hr"); 
+						}
+					},
 						createQualCards: function(dataViews){
 							var self = this; 
 							self.dataViews = dataViews; 

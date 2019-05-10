@@ -59,6 +59,7 @@
 							self.dataViews = dataViews; 						
 							self.allVars =  Object.keys(rawData[0]); 
 							self.mainView.createQualCards(dataViews);
+							self.mainView.createQualityPane(); 
 						},
 						getYear: function(){
 							return this.dataModel.year; 
@@ -140,6 +141,9 @@
 						},
 						getMissing: function(varname){
 							return this.dataModel.getMissing(varname); 
+						},
+						getAllMissing: function(){
+							return this.dataModel.getAllMissing(); 
 						},
 						getDataLength: function(){
 							var self = this; 

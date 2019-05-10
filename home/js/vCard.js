@@ -112,7 +112,7 @@
 							var cat1 = cats['cats'][0];
 							var catdata = cats['data'][cat1];
 							//////console.log(catdata);
-
+							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
 							var tabW = ssvgW/ cats['cats'].length;
 
 							self.ssvg1div =d3.select("#draw-area"+self.id).append("div")
@@ -195,7 +195,7 @@
 							tabs.append("text")
 								.attr("dy", "1.2em")
 								.attr("dx", ".3em")
-							    .text(function(d) { return $Q.Picanet["variableDict"][d] || d; })
+							    .text(function(d) { return auditVars["variableDict"][d] || d; })
 							    .style("font", "9px sans-serif")
 							     .style("text-anchor", "bottom");
 							

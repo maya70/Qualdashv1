@@ -930,13 +930,13 @@
                         },
                         getDataLength: function(){
                             var self = this;
-                            return self.data.length; 
+                            return self.ownrecords; 
                         },
                         getQuality: function(varname){
                             var self = this;
                             if(self.missing[varname])
                                 {
-                                    var qual = (self.data.length - self.missing[varname])/ self.data.length * 100; 
+                                    var qual = (self.ownrecords - self.missing[varname])/ self.ownrecords * 100; 
                                     return Math.round(qual*10)/10; 
                                 }
                             else 
@@ -952,6 +952,9 @@
                                 }
                             else 
                                 return 0; 
+                        },
+                        getAllMissing: function(){
+                            return this.missing;
                         },
                         computeVarSingle: function(group, cat, yvar, displayObj, rec){
                             var self = this;
@@ -1174,7 +1177,7 @@
                                                              
                             } // end for data records
                             ////console.log(self.tHier); 
-
+                            self.ownrecords = ownrecords; 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
                             
@@ -1331,7 +1334,7 @@
                                                              
                             } // end for data records
                             ////console.log(self.tHier); 
-
+                            self.ownrecords = ownrecords; 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
                             //if(metric === "48h Readmission"){

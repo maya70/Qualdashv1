@@ -451,7 +451,8 @@ svg{
 
 <!-- Top container -->
 <div class="w3-bar w3-top w3-white w3-large" style="z-index:4; max-height: 45px; display: inline-block; ">
-  <button class="w3-button w3-black w3-xlarge" onclick="w3_open()" style="vertical-align: top;">☰</button>
+  <img src="img/logo.jpg" class=" w3-margin-right" style="width:46px; position: relative; margin-left: 0px; margin-top: -40px;">
+  <!--button class="w3-button w3-black w3-xlarge" onclick="w3_open()" style="vertical-align: top;">☰</button-->
   <!--button class="w3-bar-item w3-button w3-hide-large w3-hover-none w3-hover-text-light-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button-->
 
   <!-- Header -->
@@ -460,7 +461,7 @@ svg{
       <li class="active nav-item px-1"><a class="nav-link" data-toggle="tab" href="#home" style="display:inline-block;">Home</a></li>
       <li class="nav-item px-1" ><a class="nav-link" data-toggle="tab" href="#tabCanvas" style="display:inline-block;">Tabular View</a></li>
       <!--li class="nav-item"><a data-toggle="tab" href="#can2">Database Status</a></li-->
-      <li class="nav-item px-1"><a class="nav-link" data-toggle="tab" href="#expPlaceHolder" style="display: inline-block;">>></a></li>  
+      <!--li class="nav-item px-1"><a class="nav-link" data-toggle="tab" href="#expPlaceHolder" style="display: inline-block;">>></a></li-->  
       <li><p style="padding-top:10px; font-weight: bold; color: red;"> Note: Simulated data only  </p> </li>
     </ul>
     
@@ -471,8 +472,8 @@ svg{
   
       <div class="w3-bar w3-border w3-card-4 w3-light-grey w3-right" style="width: 200px; display: inline; margin-top: 5px; ">
            <button class="w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right  w3-border-left topright-panel" id="b11" onclick="layout1x1()">1x1</button>
-           <button class="w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b22" onclick="layout2x3()">2x3</button>
-           <button class="active w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b32" onclick="layout3x2()">3x2</button>
+           <button class="w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b22" onclick="layout2x3()">2x2</button>
+           <button class="active w3-button w3-light-grey w3-small w3-right w3-round  w3-border-right w3-border-left topright-panel" id="b32" onclick="layout3x2()">2x3</button>
           <!--a class="w3-button w3-light-grey w3-small w3-right w3-round  topright-panel">Layouts:</a-->
 
       </div>
@@ -481,7 +482,7 @@ svg{
 
 <!-- Sidebar/menu -->
 <!--nav class="w3-sidebar w3-collapse w3-white w3-animate-left" style="z-index:3;width:240px;" id="mySidebar"><br-->
-<div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
+<!--div class="w3-sidebar w3-bar-block w3-border-right" style="display:none" id="mySidebar">
   <button onclick="w3_close()" class="w3-bar-item w3-large">Hide &times;</button>
   <div class="w3-container w3-row">
     <div class="w3-col s4">
@@ -489,8 +490,7 @@ svg{
     </div>
     <div class="w3-col s8 w3-bar">
       <span>Welcome, <strong>Mai</strong>
-        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Profile</a>
-        <!--a href="#" class="w3-bar-item w3-button" style="width: 20px;"><i class="fa fa-bell"></i></a-->
+        <a href="#" class="w3-bar-item w3-button"><i class="fa fa-user"></i> Profile</a>       
       </span>
       
       
@@ -517,13 +517,13 @@ svg{
     <a href="#" class="w3-bar-item w3-button w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a><br><br>
   </div>
    
-</div>
+</div-->
 <div class="w3-sidebar w3-bar-block w3-card w3-animate-right" style="right:0;" id="rightMenu">
   <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-medium">Hide &times;</button>
-  <div class="w3-container">
+  <div class="w3-container" id="quality-div">
     <h4>Data Quality</h4>
-    <p>Overall Quality Score</p>
-    <div class="w3-grey-item" id="item1">
+    <p>Loading...</p>
+    <!--div class="w3-grey-item" id="item1">
       <div class="w3-container w3-center w3-padding w3-green myitem" style="width:75%">75%</div>
     </div>
 
@@ -535,7 +535,7 @@ svg{
     <p>Comorbidities</p>
     <div class="w3-grey-item">
       <div class="w3-container w3-center w3-padding w3-red myitem" style="width:35%">35%</div>
-    </div>
+    </div-->
   </div>
 </div>
 

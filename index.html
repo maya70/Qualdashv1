@@ -33,7 +33,7 @@ body {
 }
 
 /* Full-width input fields */
-input[type=text], input[type=password], input[type=select]  {
+input[type=text], input[type=password], input[type=select], select  {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -183,7 +183,12 @@ a.button {
    
     <div class="container">
       <label for="audit"><b>Select Audit:</b></label>
-      <input type="select" placeholder="Enter Audit" name="audit" required>
+      <!--input type="select" placeholder="Enter Audit" name="audit" required-->
+      <select name="audit" required>
+        <option value="" disabled selected> Please select audit </option> 
+        <option value="picanet"> PICANet </option>
+        <option value="minap"> MINAP </option>
+      </select>
 
       <label for="year"><b>Select Year:</b></label>
       <input type="select" placeholder="Enter Year" name="year" required>

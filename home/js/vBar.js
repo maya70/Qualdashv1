@@ -597,6 +597,7 @@
 								       //var qual = 
 								      	return "Missing "+ totalMissing +" values in " + numRecs + " records" ;  })
 								      	.style("font-size", "9pt")
+								      	.style("font-family", "sans-serif")
 								      	.style("font-weight", "bold");
 
      						 // draw legend colored rectangles
