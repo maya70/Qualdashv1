@@ -642,7 +642,7 @@
 							     	  .attr("class", "ylabel")
 								      .attr("transform", "rotate(-90)")
 								      .attr("y", margin.left/5)
-								      .attr("x",0 - (height) )
+								      .attr("x",0 - (height) - margin.top/2 )
 								      .attr("dy", "1em")
 								      .style("text-anchor", "middle")
 								      .style("font-size", "9pt")
@@ -1297,7 +1297,7 @@
 							 {	
 							     // y-axis labels
 							     self.parent.svg.select(".ylabel")
-								      .attr("x",0 - (height *0.6) );
+								      .attr("x",0 - (height) - margin.top/2 );
 								      
 								 // x-axis labels
 								 /*self.parent.svg.select(".xlabel"+self.id)             
@@ -1306,7 +1306,7 @@
 								                           (height + margin.top + margin.bottom-5) + ")");*/
 
 								 self.parent.svg.select(".selection-legend"+self.id)
-								 .attr("transform", "translate(" + (svgw/10) + "," + (svgh-margin.bottom/2)  + ")");
+								  .attr("transform", "translate(" + (svgw/10) + "," + (svgh-margin.bottom/2)  + ")");
 								      
 							  }
 							
