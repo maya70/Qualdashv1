@@ -154,31 +154,29 @@
 							  var  width = 1.5*svgw - margin - margin,
 							    height = svgh * scale - margin - margin;
 							
-//var width = 500;
-//var height = 300;
-//var margin = 50;
-var duration = 250;
 
-var lineOpacity = "0.25";
-var lineOpacityHover = "0.85";
-var otherLinesOpacityHover = "0.1";
-var lineStroke = "1.5px";
-var lineStrokeHover = "2.5px";
+								var duration = 250;
 
-var circleOpacity = '0.85';
-var circleOpacityOnLineHover = "0.25"
-var circleRadius = 3;
-var circleRadiusHover = 6;
+								var lineOpacity = "0.25";
+								var lineOpacityHover = "0.85";
+								var otherLinesOpacityHover = "0.1";
+								var lineStroke = "1.5px";
+								var lineStrokeHover = "2.5px";
+
+								var circleOpacity = '0.85';
+								var circleOpacityOnLineHover = "0.25"
+								var circleRadius = 3;
+								var circleRadiusHover = 6;
 
 
-/* Format Data */
-var parseDate = d3.timeParse("%B");
-self.data.forEach(function(d) { 
-  d.values.forEach(function(d) {
-    d.date = parseDate(d.date);
-    d.value = +d.value;    
-  });
-});
+								/* Format Data */
+								var parseDate = d3.timeParse("%B");
+								self.data.forEach(function(d) { 
+								  d.values.forEach(function(d) {
+								    d.date = parseDate(d.date);
+								    d.value = +d.value;    
+								  });
+								});
 
 
 /* Scale */

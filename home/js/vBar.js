@@ -215,7 +215,7 @@
 							
 							var x = d3.scaleBand()
 									    .domain(xz)
-									    .rangeRound([0, (width-15)])
+									    .rangeRound([0, (width-35)])
 									    .padding(0.1);
 
 							var y = d3.scaleLinear()
@@ -774,7 +774,7 @@
 
 							var x = d3.scaleBand()
 									    .domain(xz)
-									    .rangeRound([0, (width-15)])
+									    .rangeRound([0, (width-35)])
 									    .padding(0.1);
 
 							var y = d3.scaleLinear()
@@ -940,15 +940,15 @@
 							    		.attr("class", "y axis")
 							    		.attr("id", "dualAxis")
 							    		.call(d3.axisRight(ydscale).ticks(5, "s"))
-							    		.attr("transform", "translate("+(width-15)+","+0+")");
+							    		.attr("transform", "translate("+(width-35)+","+0+")");
 							    	
 							    	var xdscale = d3.scaleTime()
 									    			.domain(d3.extent(self.dualData, function(d){
 									    							return d.date; 
 									    			}))
-									    			.range([0, (width-15)]);
-									    			//.range([x("1"), x("10")]);
- 
+									    			.range([x(xz[0])+x.bandwidth()/2 , x(xz[xz.length-1])+x.bandwidth()/2]);
+									    			
+ 									self.xz = xz; 
 
 							    	var valueLine = d3.line()
 							    					.x(function(d) { 
@@ -956,7 +956,7 @@
 							      					.y(function(d) { 
 							      						//console.log(ydscale(d.value)); 
 							      						return ydscale(d.value); })
-							      	g.append("path")
+							      	var line = g.append("path")
 							      		.data([self.dualData])
 							      		.attr("class", "line")
 							      		.attr("id", "vline"+self.id)
@@ -967,14 +967,15 @@
 							     	  .attr("class", "ylabel")
 							     	  .attr("id", "dualabel"+self.id)
 								      //.attr("transform", "rotate(-90)")
-								      .attr("y", -15)
-								      .attr("x", (width-15) )
+								     .attr("transform", "rotate(-90)")
+								      .attr("y", width-5)
+								      .attr("x",0 -  margin.top/2 )
 								      .attr("dy", "1em")
 								      .style("text-anchor", "middle")
 								      .style("font-size", "9pt")
 								      .text(function(){
 								      	var vname =  self.dualVarName; 
-								      	return $Q.Picanet["variableDict"][vname] || vname; 
+								      	return auditVars["variableDict"][vname] || vname; 
 								     	});   
 
 							      	/*g.selectAll(".line")
@@ -984,6 +985,56 @@
 							      		.attr("d", valueLine)
 							      		.style("stroke", "red")
 							      		.style("fill", "none"); */
+
+var circleOpacity = '0.85';
+								var circleOpacityOnLineHover = "0.25"
+								var circleRadius = 3;
+								var circleRadiusHover = 6;
+
+var duration = 250;
+							      	
+  g.selectAll("circle")
+  .data(self.dualData).enter()
+  .append("g")
+  .attr("class", "circle")  
+  .on("mouseover", function(d) {
+      d3.select(this)     
+        .style("cursor", "pointer")
+        .append("text")
+        .attr("class", "text")
+        .text(function(d) {
+        	return Math.round(d.value*100)/100;
+        })
+        .style("font-family", "sans-serif")
+        .style("fill", "brown")
+        .attr("x", d => xdscale(d.date) + 5)
+        .attr("y", d => ydscale(d.value) - 10);
+    })
+  .on("mouseout", function(d) {
+      d3.select(this)
+        .style("cursor", "none")  
+        .transition()
+        .duration(duration)
+        .selectAll(".text").remove();
+    })
+  .append("circle")
+  .attr("cx", d => xdscale(d.date))
+  .attr("cy", d => ydscale(d.value))
+  .attr("r", circleRadius)
+  .style('opacity', 1)
+  .style("fill", "brown")
+  .on("mouseover", function(d) {
+        d3.select(this)
+          .transition()
+          .duration(duration)
+          .attr("r", circleRadiusHover);
+      })
+    .on("mouseout", function(d) {
+        d3.select(this) 
+          .transition()
+          .duration(duration)
+          .attr("r", circleRadius);  
+      });
 
 							    }
 
@@ -1201,7 +1252,7 @@
 
 							self.height = height; 
 
-							var x = d3.scaleBand().rangeRound([0, (width-15)]).padding(0.1), 
+							var x = d3.scaleBand().rangeRound([0, (width-35)]).padding(0.1), 
 								y = d3.scaleLinear().range([height, 0]).nice(); 
 							//var data = self.audit === "picanet"? self.fixDataFormat() :self.data; 							
 							var data = self.data; 
@@ -1221,7 +1272,7 @@
 									.attr("height", svgh)
 									.attr("transform", "translate("+ xoffset +",0)" );
 
-							x.rangeRound([0, (width-15)]).padding(0.1);
+							x.rangeRound([0, (width-35)]).padding(0.1);
 							y.range([(height), 0]); 
 
 							////console.log(self.svg.selectAll("*"));
@@ -1248,7 +1299,7 @@
 									    							return d.date; 
 
 									    			}))
-									    			.range([0, width-15]);
+									    			.range([x(self.xz[0])+x.bandwidth()/2 , x(self.xz[self.xz.length-1])+x.bandwidth()/2]);
 									    			//.range([x("1"), x("10")]);
 
 
@@ -1261,10 +1312,11 @@
 							    	
 							    	self.svg.select("#dualAxis")
 										.call(d3.axisRight(ydscale).ticks(5, "s"))
-							      		.attr("transform", "translate("+(width-15)+","+ 0 +")");
+							      		.attr("transform", "translate("+(width-35)+","+ 0 +")");
 
 							      	self.svg.select("#dualabel"+self.id)
-							      			.attr("transform", "translate("+ (width-15)+",0)");
+							      			.attr("x",0 - height/2 )
+							      			.attr("y", width-5);
 							    	var valueLine = d3.line()
 							    					.x(function(d) { 
 							    						return xdscale(d.date); })
@@ -1281,6 +1333,9 @@
 							      		.attr("d", valueLine)
 							      		.attr("transform", "translate("+margin.left+","+margin.top+")")
 							      		.style("stroke", "brown"); 
+							      	self.svg.selectAll("circle")
+							      		.attr("cx", d=> xdscale(d.date) )
+							      		.attr("cy", d=> ydscale(d.value));
 
 							}
 							if(self.cat) self.changed(x, y, self.id); 
