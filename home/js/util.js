@@ -517,11 +517,13 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                       };
 $Q.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 //$Q.colors = ["#93969b", "#0f0f0f", "#c18f2a"];
-$Q.colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99",
+/*$Q.colors = ["#a6cee3", "#1f78b4", "#b2df8a", "#33a02c", "#fb9a99",
 "#e31a1c",
 "#fdbf6f",
 "#ff7f00",
 "#cab2d6",
 "#6a3d9a",
 "#ffff99",
-"#b15928"];
+"#b15928"];*/
+
+$Q.colors = [ "#a6cee3", "#1f78b4" , "#4daf4a", "#f781bf", "#999999", "#a65628", "#e41a1c", "#ffff33", "#984ea3", "#ff7f00"];

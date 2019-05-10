@@ -728,7 +728,7 @@
 								  				.style("stroke-width", 0.5)						  				
 								  				.style("stroke", "none");
 								  	sllabels.append("text")
-								  			.attr("x", 2)
+								  			.attr("x", 6)
 								  			.attr("y", 12)
 										  	  .style("font-size", "9pt")
 										      .text(function(d){ 
