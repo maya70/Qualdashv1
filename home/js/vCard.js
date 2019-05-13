@@ -7,7 +7,8 @@
 						self.expanded = false; 
 						self.id = viewId; 
 						self.parent = mainView; 
-						self.state = {}; 						
+						self.state = {}; 	
+						self.year = self.parent.control.getYear(); 					
 						var container = d3.select("#mainCanvas").append("div")
 											.attr("class", "item")
 											.attr("id", "cardcontainer"+viewId)
@@ -826,10 +827,11 @@
 												.style("left", "0px")
 												.style("margin-left", "0px")
 												.style("min-height", "25px")
-												.style("border-radius", "0px")
-												.text(self.parent.availMetrics[viewId]['text'])
+												.style("border-radius", "0px")												
+												.text("["+ self.year + "] "+ self.parent.availMetrics[viewId]['text'])
 													.style("font-weight", "bold")
-													.style("font-size", "13pt");
+													.style("font-family", "sans-serif")
+													.style("font-size", "11pt");
 												/*.on("change", function(d){													
 													////////console.log(this.value);													
 													self.parent.control.updateMetrics(viewId, this.value); 											
