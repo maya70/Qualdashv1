@@ -21,15 +21,64 @@
 						},
 						startSessionLog: function(config){
 							var self = this;
-							self.sessionLog['cardExpands'] = []; 
-							self.sessionLog['btnClicks'] = 0; 
-							for(var key in config)
-								self.sessionLog[key] = config[key]; 
+							self.sessionLog = [];
+							
+							if(!self.sessionID) self.sessionID = 0; 
+							$Q.handleJSON('./php/get_session_id.php', 
+											function(newID){
+												self.sessionID = newID; 
+											}, 
+											{
+												type: 'GET',
+												data: {id: 0}
+											});
+							
+							//self.sessionParams = {}; // stores audit, year and job title to be retrievable later
+							//self.sessionLog['cardExpands'] = []; 
+							//self.sessionLog['btnClicks'] = 0; 
+							
+							for(var key in config){
+								var rec = {};
+								rec['sessionID'] = self.sessionID; 							
+								rec['evtOwnedBy'] = "application";
+								rec['evtType'] = "start";							
+								rec['evtTime'] = new Date().toLocaleString(); 
+								rec['paramName'] = key;
+								rec['paramValue'] = config[key]; 
+								self.sessionLog.push(rec); 
+							}
+							//self.sessionLog['evtParam'] = self.sessionParams; 
 							console.log(self.sessionLog); 
+						},
+						updateSessionLog: function(config){
+							var self = this;
+							if(config['params']){
+								for(var key in config['params']){
+									var rec = {};
+									rec['sessionID'] = self.sessionID; 							
+									rec['evtOwnedBy'] = config['owner'] ;
+									rec['evtType'] = config['type'];							
+									rec['evtTime'] = new Date().toLocaleString(); 
+									rec['paramName'] = key;
+									rec['paramValue'] = config['params'][key]; 
+									self.sessionLog.push(rec); 
+								}
+							}
+							else{
+								var rec = {};
+									rec['sessionID'] = self.sessionID; 							
+									rec['evtOwnedBy'] = config['owner'] ;
+									rec['evtType'] = config['type'];							
+									rec['evtTime'] = new Date().toLocaleString(); 
+									rec['paramName'] = '';
+									rec['paramValue'] = ''; 
+									self.sessionLog.push(rec); 
+							}
+							
 						},
 						writeSessionLog: function(){
 							var self = this;
-							self.sessionLog['exitTime'] = Date.now(); 
+							//self.sessionLog['exitTime'] = Date.now(); 
 							$Q.handleJSON('./php/submit_log.php', 
 												function(){},
 												{
@@ -40,6 +89,18 @@
 												});
 						        
 						},
+						writeSessionErr: function(msg){
+							var self = this;
+							//self.sessionLog['exitTime'] = Date.now(); 
+							$Q.handleJSON('./php/submit_err.php', 
+												function(){},
+												{
+													type: 'POST',
+								                    data: {
+								                       "sessionErr": msg								                      
+								                      }
+												});			        
+						},						
 						addBtnClick: function(){
 							var self = this;
 							self.sessionLog['btnClicks']++;
@@ -162,8 +223,8 @@
 						refreshGrid1x1: function(){
 							this.mainView.refreshGrid1x1(); 
 						},
-						refreshGrid32x23: function(){
-							this.mainView.refreshGrid32x23(); 
+						refreshGrid32x23: function(str){
+							this.mainView.refreshGrid32x23(str); 
 						}
 						
 					}

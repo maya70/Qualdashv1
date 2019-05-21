@@ -25,7 +25,7 @@
                         var auditMetrics = (self.audit==="picanet")? $Q.Picanet.availMetrics : $Q.Minap.availMetrics; 
                         var auditVariables = (self.audit==="picanet")? $Q.Picanet.displayVariables : $Q.Minap.displayVariables; 
                         
-                        self.control.startSessionLog({ 'startTime': Date.now(),
+                        self.control.startSessionLog({ 
                                                         'year': self.year, 
                                                         'audit': self.audit, 
                                                         'jobTitle': $Q.getUrlVars()["title"] }); 

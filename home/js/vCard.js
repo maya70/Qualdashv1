@@ -672,7 +672,11 @@
 
 								// populate the first slave
 								var slaves = self.getSlaves(); 
-								self.parent.control.addCardExpand(self.metric);
+								//self.parent.control.addCardExpand(self.metric);
+								self.parent.control.updateSessionLog({'type': 'expand' , 
+											'owner': 'card' , 
+											'params': {'metric': self.metric}
+										});
 								// handle the first visualization: a categorical
 								
 								self.createSlave1(slaves, ssvgW, ssvgH, xoffset);
@@ -1202,7 +1206,7 @@
 						},
 						updateTimeView: function(viewType){
 							var self = this;
-							self.parent.control.addBtnClick();
+							//self.parent.control.addBtnClick();
 							//console.log(self.id); 
 							//console.log(viewType);  
 							self.subVisT.draw(self.id, self.state['selectedTime'] ,self.state['tspan'], self.state['timeData'] , self, 

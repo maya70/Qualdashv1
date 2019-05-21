@@ -326,7 +326,7 @@
 							$(document).on('click', '#group-but'+viewId, function(){
 								//////console.log($('#varsel'+viewId +' option:selected').val());
 								//self.addGroup(viewId, $('#nvarsel'+viewId +' option:selected').val()); 
-								self.control.addBtnClick();
+								//self.control.addBtnClick();
 								var outcats = [];
 								var outcatsel = $("#nvar-out"+viewId+" option").each(function(opt){
 									var vv = $(this).val();
@@ -355,7 +355,7 @@
 							});
 
 							$(document).on('click', '#quantity-but'+viewId, function(){
-								self.control.addBtnClick();
+								//self.control.addBtnClick();
 								var outQs = [];
 								var movedItems = [];
 								if(self.justMoved && self.justMoved[viewId]){
@@ -707,6 +707,10 @@
 						},
 						refreshGrid1x1: function(){
 							var self = this; 
+							self.control.updateSessionLog({
+								'owner': 'layoutCtrl', 
+								'type' : '1x1'	
+							});
 							self.grid.refreshItems().layout();	
 							self.cards.forEach(function(card){
 								if(!card.getExpansionState()){
@@ -714,9 +718,14 @@
 									}
 									card.resizeVis(); 
 								});
+							
 						},
-						refreshGrid32x23: function(){
+						refreshGrid32x23: function(str){
 							var self = this; 
+							self.control.updateSessionLog({
+								'owner': 'layoutCtrl', 
+								'type' : str	
+							});
 							self.grid.refreshItems().layout();	
 							self.cards.forEach(function(card){
 								 if(card.getExpansionState()){
@@ -724,6 +733,7 @@
 									}
 									card.resizeVis(); 
 								});	
+							
 						},
 						refreshGrid: function(singleCard) {
 							var self = this;
