@@ -158,7 +158,8 @@
                                             //console.log(self.activityIndex); 
                                             }
                                             
-                                            for(var display = 0; display < self.displayVariables.length; display++)
+                                            //for(var display = 0; display < self.displayVariables.length; display++)
+                                            for(var display = 0; display < 2; display++)
                                             { 
                                                self.applyAggregateRule2(self.displayVariables[display],display, data);
                                             }

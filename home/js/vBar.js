@@ -760,6 +760,7 @@
 								  			.attr("x", 12)
 								  			.attr("y", 12)
 										  	  .style("font-size", "9pt")
+										  	  .style("font-family", "sans-serif")
 										      .text("0");
 
 								var sltots = sl.selectAll(".vartotal")
@@ -782,6 +783,15 @@
 								  			.attr("x", 2)
 								  			.attr("y", 12)
 										  	  .style("font-size", "9pt")
+										  	  .style("font-family", "sans-serif")
+										      .text(function(d,i){
+										      	return "of ";
+										      });
+								sltots.append("text")
+								  			.attr("x", 25)
+								  			.attr("y", 12)
+										  	  .style("font-size", "9pt")
+										  	  .style("font-family", "sans-serif")
 										      .text(function(d,i){
 										      	//console.log(self.dict);
 										      	var count =0; 
@@ -789,9 +799,8 @@
 										      		if(self.dict[key][d])
 										      			count += self.dict[key][d]["value"];
 										      	}
-										      	return "of     "+count;
+										      	return count;
 										      });
-
 
 
 
