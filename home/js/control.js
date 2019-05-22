@@ -200,8 +200,8 @@
 							console.log(value); 
 							self.dataModel.updateMetrics(viewId, value); 
 						},
-						getMissing: function(varname){
-							return this.dataModel.getMissing(varname); 
+						getMissing: function(metric, varname){
+							return this.dataModel.getMissing(metric, varname); 
 						},
 						getAllMissing: function(){
 							return this.dataModel.getAllMissing(); 

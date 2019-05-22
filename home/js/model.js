@@ -8,7 +8,6 @@
                         self.dataViews = []; 
                         self.ehr = {};  // keeps a dictionary by patient NHS number for patient pathway calculations (including 48h readmission)
                         self.ehrHist = {};
-                        //self.unitID = "194281";                        
                         self.slaves = {};
                         
                         self.cardCats = []; 
@@ -409,14 +408,24 @@
                             }
                             
                         },
-                        recordMissing: function(vname, rec){
+                        recordMissing: function(metric, vname, rec){
                             var self = this;
-                            if(!self.missing[vname])
-                                self.missing[vname] = 1; 
+                            var availMetrics = self.audit==='picanet'? $Q.Picanet["availMetrics"] : $Q.Minap["availMetrics"];
+                            var metricKey;
+                            availMetrics.forEach(function(entry){
+                                if(entry['text'] === metric)
+                                    metricKey = entry['value'];
+                            });
+                            metric = metricKey || metric; 
+
+                            if(!self.missing[metric])
+                                self.missing[metric] = {};
+                            if(!self.missing[metric][vname])
+                                self.missing[metric][vname] = 1; 
                             else
-                                self.missing[vname]++; 
+                                self.missing[metric][vname]++; 
                         },
-                        getDerivedValue: function(vname, rec, mainview){
+                        getDerivedValue: function(vname, rec, mainview, metric){
                             var self = this;
                             //TODO: use callbacks for variable rules instead of this exhaustive branching
 
@@ -426,13 +435,13 @@
                                 else{
                                     var val = rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]];
                                     if(val !== "1" && val !== "9")
-                                        self.recordMissing("der_"+vname, rec);
+                                        self.recordMissing(metric, "der_"+vname, rec);
                                     return 0; 
                                 }
                             }
                             else if(vname === "smr" && self.audit === "picanet"){
                                 if(isNaN(rec["pim3_s"]))
-                                    self.recordMissing("der_"+vname, rec);
+                                    self.recordMissing(metric, "der_"+vname, rec);
                                 return rec["pim3_s"]; 
                             }
                             else if(vname === "discharge"){
@@ -442,7 +451,7 @@
                                 else{
                                     var val = rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]];
                                     if(isNaN(val) || val === "NA" || val === "")
-                                        self.recordMissing("der_"+vname, rec); 
+                                        self.recordMissing(metric, "der_"+vname, rec); 
                                     return 0; 
                                 }
                             }
@@ -460,7 +469,7 @@
                                     m2 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
 
                                 if(isNaN(d1) || isNaN(d2))
-                                    self.recordMissing("der_"+vname, rec);   
+                                    self.recordMissing(metric, "der_"+vname, rec);   
 
                                 var dayCount = Math.round(Math.abs( d1 - d2)/one_day*10)/10;   
 
@@ -894,7 +903,7 @@
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
                             var dateVar = auditVars['x'];
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][sid] : displayObj["yaggregates"] ;
-                            
+                            var metric = displayObj["metric"];
 
                             if(yvar.indexOf("_") >= 0 ){
                                 var strs = yvar.split("_");
@@ -908,12 +917,15 @@
                                 vval = (yaggregates === "count")? 1 : rec[vname];  
                                 if(isNaN(vval)){
                                     vval = 0;
-                                    if(!self.missing[yvar])
-                                        self.missing[yvar] = 1;
+                                    if(!self.missing[metric])
+                                        self.missing[metric] = {};
+                            
+                                    if(!self.missing[metric][yvar])
+                                        self.missing[metric][yvar] = 1;
                                     //if(!self.missing[yvar][dateVar])
                                     //    self.missing[yvar][dateVar] = 1; 
                                     else 
-                                        self.missing[yvar]++; 
+                                        self.missing[metric][yvar]++; 
                                 }
                             }
                             else{
@@ -921,7 +933,7 @@
                                 var strs = yvar.split("_");
                                 var rule = strs[0]; 
                                 vname = strs[1];
-                                var derval = self.getDerivedValue(vname, rec, mainview);                                
+                                var derval = self.getDerivedValue(vname, rec, mainview, metric);                                
                                 vval = (yaggregates === "count")? ((derval>0)? 1: 0) 
                                             : derval;  
                             }
@@ -934,27 +946,46 @@
                         },
                         getQuality: function(varname){
                             var self = this;
-                            if(self.missing[varname])
-                                {
-                                    var qual = (self.ownrecords - self.missing[varname])/ self.ownrecords * 100; 
-                                    return Math.round(qual*10)/10; 
+                            if(self.uniqMissing){
+                                var uniqMissing = {};
+                                for(var metric in self.missing ){
+                                    for(var key in self.missing[metric]){
+                                        if(!uniqMissing[key]){
+                                            uniqMissing[key] = self.missing[metric][key];
+                                        }
+                                    }
                                 }
+                                self.uniqMissing = uniqMissing;     
+                            } 
+                            if(self.uniqMissing[varname]) {
+                                var qual = (self.ownrecords - self.uniqMissing[varname])/ self.ownrecords * 100; 
+                                return Math.round(qual*10)/10; 
+                               }                                                                                         
                             else 
                                 return 100; 
                         
                         },
-                        getMissing: function(varname){
+                        getMissing: function(metric, varname){
                             var self = this; 
-                            if(self.missing[varname])
-                                {
-                                    
-                                    return self.missing[varname]; 
-                                }
+                            
+                            if( self.missing[metric] && self.missing[metric][varname])
+                                    return self.missing[metric][varname]; 
+                              
                             else 
                                 return 0; 
                         },
                         getAllMissing: function(){
-                            return this.missing;
+                            var self = this;
+                            var uniqMissing = {};
+                            for(var metric in self.missing ){
+                                for(var key in self.missing[metric]){
+                                    if(!uniqMissing[key]){
+                                        uniqMissing[key] = self.missing[metric][key];
+                                    }
+                                }
+                            }
+                            self.uniqMissing = uniqMissing; 
+                            return uniqMissing;
                         },
                         computeVarSingle: function(group, cat, yvar, displayObj, rec){
                             var self = this;
@@ -964,6 +995,7 @@
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][0] ;
                             var dateVar = auditVars['x'];
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][0] : displayObj["yaggregates"] ;
+                            var metric = displayObj['metric'];
 
                            if(yvar.indexOf("_") >= 0 ){
                                   var strs = yvar.split("_");
@@ -999,12 +1031,12 @@
                              //   //console.log(rec);
                               if(isNaN(vval)){
                                      vval = 0;
-                                     if(!self.missing[yvar])                    
-                                          self.missing[yvar] = 1;
+                                     if(!self.missing[metric][yvar])                    
+                                          self.missing[metric][yvar] = 1;
                                      //if(!self.missing[yvar][dateVar])
                                       //    self.missing[yvar][dateVar] = 1; 
                                      else 
-                                         self.missing[yvar]++; 
+                                         self.missing[metric][yvar]++; 
                                     }
                             return vval; 
 
@@ -1082,8 +1114,10 @@
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             for(var i=0; i < self.data.length; i++){
-                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
                                     self.recordEHR(self.data[i], i, metric);                                
+                                    ownrecords++; 
+                                }
                                 // the main dict will hold aggregates for all groups                                    
                                 groups.forEach(function(group, id){
                                         //var vname;
@@ -1091,7 +1125,7 @@
                                         // select yspan items
                                         if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                             {
-                                            ownrecords++; 
+                                            
                                             // update x-bin                                                       
                                             if(!dict[self.data[i][dateVar]][group]["value"])
                                                 dict[self.data[i][dateVar]][group]["value"] = 0;                                             
@@ -1244,8 +1278,10 @@
                                 //if(isNaN(mon))
                                   //  console.log(mon); 
 
-                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
                                     self.recordEHR(self.data[i], i, metric);                                
+                                    ownrecords++; 
+                                }
                                 // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                 displayVar.forEach(function(yvar, id){
                                         //var vname;
@@ -1260,7 +1296,7 @@
                                         // select yspan items
                                         if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                             {
-                                            ownrecords++; 
+                                            
                                             // update x-bin                                                       
                                             if(!dict[mon][yvar]["value"])
                                                 dict[mon][yvar]["value"] = 0;                                             
@@ -1494,7 +1530,7 @@
                                                     var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
                                                     var week = parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
                                                     if(isNaN(mon))
-                                                        self.recordMissing("der_readmit"); 
+                                                        self.recordMissing(metric, "der_readmit"); 
                                                     if(unit === self.unitID){
                                                         // update this view's master dict
                                                         result['dict'][month]["der_readmit"]["value"]++;

@@ -591,7 +591,8 @@
 								       var numRecs = self.parent.parent.control.getDataLength();
 								       var totalMissing = 0; 
 								       levels.forEach(function(level){
-								       	totalMissing += self.parent.parent.control.getMissing(level); 	       	
+								       	totalMissing += self.parent.parent.control.getMissing(self.parent.metric, level); 	       	
+								       //totalMissing = 0; 
 								       });  
 
 								       //var qual = 
@@ -627,7 +628,7 @@
 							      .text(function(d) {
 							      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 							      	var name = tex || levels[d];
-							      	var qual = self.parent.parent.control.getQuality(levels[d]); 
+							      	//var qual = self.parent.parent.control.getQuality(self.parent.metric, levels[d]); 
 							      	//name = name + " (DQ: "+qual +"%)"; 
 							      	return name;  })
 							      	.style("font-size", "9pt");
@@ -681,7 +682,7 @@
 								  	.attr("x", 2)
 								  	.attr("y", 12)
 								  	  .style("font-size", "9pt")
-								      .text("Selection:");
+								      .text("Selected:");
 
 								 var slbut = sl.append("g").attr("transform", "translate(0,16)")
 								 				.on("click", function(){
@@ -720,7 +721,7 @@
 								 				.data(color.domain())
 							 						.enter().append("g")
 							 					 .attr("class", "varname")
-     											 .attr("transform", function(d, i) { return "translate("+60 +"," + (i*15) + ")"; });
+     											 .attr("transform", function(d, i) { return "translate("+(160) +"," + (i*15) + ")"; });
      								sllabels.append("rect")
      										.attr("width", (width)*0.6)
 								  				.attr("height", 15)	
@@ -734,7 +735,7 @@
 										      .text(function(d){ 
 										      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 										      	var name = tex || levels[d];
-										      	var qual = self.parent.parent.control.getQuality(levels[d]); 
+										      	//var qual = self.parent.parent.control.getQuality(self.parent.metric, levels[d]); 
 										      	//name = name + " (DQ: "+qual +"%)"; 
 										      	return name;
 										       });
@@ -743,10 +744,10 @@
 							 					.data(levels)
 							 						.enter().append("g")
 							 					 .attr("class", "varcount")
-     											 .attr("transform", function(d, i) { return "translate("+(60+ width*0.6) +"," + (i*15) + ")"; });
+     											 .attr("transform", function(d, i) { return "translate("+ 60 +"," + (i*15) + ")"; });
 
      						 	slcounts.append("rect")
-     										.attr("width", (width)*0.4)
+     										.attr("width", 40)
 								  				.attr("height", 15)	
 								  				.style("fill", "white")	
 								  				.style("stroke-width", 0.5)						  				
@@ -756,10 +757,42 @@
 												return "slcount-"+viewId+"-"+i; 
 											})
 											.attr("class", "slcount-"+viewId)
-								  			.attr("x", 2)
+								  			.attr("x", 12)
 								  			.attr("y", 12)
 										  	  .style("font-size", "9pt")
 										      .text("0");
+
+								var sltots = sl.selectAll(".vartotal")
+							 					.data(levels)
+							 						.enter().append("g")
+							 					 .attr("class", "vartotal")
+     											 .attr("transform", function(d, i) { return "translate("+ (110) +"," + (i*15) + ")"; });
+
+     						 	sltots.append("rect")
+     										.attr("width", 55)
+								  				.attr("height", 15)	
+								  				.style("fill", "white")	
+								  				.style("stroke-width", 0.5)						  				
+								  				.style("stroke", "none");
+								sltots.append("text")
+											.attr("id", function(d,i){
+												return "sltot-"+viewId+"-"+i; 
+											})
+											.attr("class", "sltot-"+viewId)
+								  			.attr("x", 2)
+								  			.attr("y", 12)
+										  	  .style("font-size", "9pt")
+										      .text(function(d,i){
+										      	//console.log(self.dict);
+										      	var count =0; 
+										      	for(var key in self.dict){
+										      		if(self.dict[key][d])
+										      			count += self.dict[key][d]["value"];
+										      	}
+										      	return "of     "+count;
+										      });
+
+
 
 
 
