@@ -185,59 +185,7 @@
 											.attr("class", "popover-body")
 											.attr("id", "cat-popover"); 
 
-							/*var tabvar = pbody.append("ul")
-												.attr("class", "nav nav-tabs");
-							var qvar = tabvar.append("li")
-										.attr("class", "active")
-										.append("a")
-											.attr("data-toggle", "tab")
-											.attr("href", "#qvar"+viewId)
-											.text("Quantiative");
-
-							var nvar = tabvar.append("li")										
-										.append("a")
-											.attr("data-toggle", "tab")
-											.attr("href", "#nvar"+viewId)
-											.text("Categorical");
 							
-							var tabs = pbody.append("div")
-								.attr("class", "tab-content");
-
-							var qtab = tabs.append("div")
-										.attr("id", "qvar"+viewId)
-										.attr("class", "tab-pane fade in active");
-
-							var ntab = tabs.append("div")
-										.attr("id", "nvar"+viewId)
-										.attr("class", "tab-pane fade");
-							var qvarselect=	qtab.append("select")
-												.attr("name", "varselector")
-												.attr("class", "form-control")
-												.style("vertical-align", "top")
-												.attr("id", "qvarsel"+viewId)
-												.style("font-size", "9pt")
-												.style("horizontal-align", "left")
-												.style("min-width", "65%")
-												.style("margin-left",0)
-												.on("change", function(d){
-													//////console.log(this.value);
-												});
-								for(var m = 0; m < self.meta.length; m++){
-								if(self.meta[m]['fieldType'] === "q")
-								{
-									qvarselect.append("option")
-												.attr("value", self.meta[m]['fieldName'])
-												.text(self.meta[m]['fieldName'])
-												.style("font-size", "9pt");
-									}	
-								}
-
-								qtab.append("button")
-									.attr("type", "submit")						
-									.attr("class", "btn_vg_parse hide-vl")
-									.text( "Add")
-									.attr("id", "quantity-but"+viewId);
-							*/
 							var row = pbody.append("div")
 											.attr("class", "row");
 

@@ -441,7 +441,7 @@
 								    		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
 													 	$Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
 								    		var percent = Math.round(parseInt(d.data.number)/self.totalNumRecs * 100); 
-								    		return name+ ": "+ percent+ "%"; });
+								    		return  name+ ": "+ percent+ "% (value: "+ d.data.number +")"; });
 								      	// update original color only if this slice isn't selected
 								      	origColor = d3.select(this).style("fill");
 								      	if(origColor !== self.highlightColor)
@@ -622,7 +622,7 @@
 							
 							self.parent.keepHighlights(); 
 
-							
+							 
 							
 						}
 					});

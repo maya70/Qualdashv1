@@ -158,8 +158,7 @@
                                             //console.log(self.activityIndex); 
                                             }
                                             
-                                            //for(var display = 0; display < self.displayVariables.length; display++)
-                                            for(var display = 0; display < 2; display++)
+                                            for(var display = 0; display < self.displayVariables.length; display++)
                                             { 
                                                self.applyAggregateRule2(self.displayVariables[display],display, data);
                                             }
@@ -263,11 +262,23 @@
                             var self = this;
                             var qres;  
                             var auditVars = self.audit === "picanet"? $Q.Picanet['displayVariables'][viewId] : $Q.Minap['displayVariables'][viewId];
+                            
+                            // first look for details of this variable in the main view
+                            if(auditVars['y'] === qname || auditVars['y'].indexOf(qname) >=0){
+                                var sid =  auditVars['y'].indexOf(qname);
+                                return {'q': qname, 
+                                        'yaggregates': auditVars['yaggregates'][sid],
+                                        'granT': auditVars['x'],
+                                        'granP':["unit"]};
+                            }
+                            // then check to see if we know about it in the slaves
                             auditVars['quantities'].forEach(function(qobj){
                                 if(qobj['q'] === qname){
-                                            qres = qobj;
+                                            return qobj;
                                         }
                             });
+                            // if all else fails return a default
+                            qres = {'q': qname, 'yaggregates': 'sum', 'granP':["unit"]};
                             return qres; 
                         },
                         addCategorical: function(viewId, varName){
@@ -337,30 +348,31 @@
                                 slaves['quants'].forEach(function(quant, sid){
                                     if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
                                             var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid, viewId)) ; 
+                                            var mon = self.stringToMonth(self.data[i][dateVar]);
 
                                             if(!slaves['data'][quant['q']])
                                                 slaves['data'][quant['q']] = {}; 
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]] =  {};
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]] = {};
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                            if(!slaves['data'][quant['q']][mon])
+                                                slaves['data'][quant['q']][mon] =  {};
+                                            if(!slaves['data'][quant['q']][mon])
+                                                slaves['data'][quant['q']][mon] = {};
+                                            if(!slaves['data'][quant['q']][mon]['unit'])
+                                                slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
                                             else
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                                slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                             
                                             
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['data'])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['data'] = [];
+                                            if(!slaves['data'][quant['q']][mon]['data'])
+                                                slaves['data'][quant['q']][mon]['data'] = [];
                                             
                                             if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['data'].push(i);
+                                                slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             //keeping national computations the same for now
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
-                                                        slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = qval;            
+                                            if(!slaves['data'][quant['q']][mon]['national'])
+                                                        slaves['data'][quant['q']][mon]['national'] = qval;            
                                             else
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
+                                                slaves['data'][quant['q']][mon]['national'] += qval;
                                                 ////console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                             
                                             
@@ -430,17 +442,8 @@
                             var self = this;
                             //TODO: use callbacks for variable rules instead of this exhaustive branching
 
-                            if(vname === "death" && self.audit === "picanet"){
-                                if(rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "2")
-                                    return 1;
-                                else{
-                                    var val = rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]];
-                                    if(val !== "1" && val !== "9")
-                                        self.recordMissing(metric, "der_"+vname, rec);
-                                    return 0; 
-                                }
-                            }
-                            else if(vname === "smr" && self.audit === "picanet"){
+                           
+                            if(vname === "smr" && self.audit === "picanet"){
                                 if(isNaN(rec["pim3_s"]))
                                     self.recordMissing(metric, "der_"+vname, rec);
                                 return rec["pim3_s"]; 
@@ -903,6 +906,7 @@
                             var isDerived = false; 
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
                             var dateVar = auditVars['x'];
+                            var yfilters =  auditVars['yfilters'][yvar]; 
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][sid] : displayObj["yaggregates"] ;
                             var metric = displayObj["metric"];
 
@@ -915,7 +919,26 @@
                             if(!isDerived ){
                                 // this is a database variable
                                 vname = yvar; 
-                                vval = (yaggregates === "count")? 1 : rec[vname];  
+                                
+                                if(!yfilters || yfilters['where'] === "*"){
+                                    vval = (yaggregates === "count")? 1 : rec[vname]; 
+
+                                }
+                                else{
+                                    var criterion = yfilters['where'];
+                                    var value = yfilters['value']; 
+                                    if(yfilters['sign'] === '='){
+                                        if(rec[criterion] === value)
+                                            return 1;
+                                        else {
+                                            var val = rec[criterion];
+                                            if(yfilters['valid'].indexOf(val) < 0)
+                                                self.recordMissing(metric, vname, rec);
+                                            return 0; 
+                                        }
+                                    } // end case when sign: '='
+
+                                }
                                 if(isNaN(vval)){
                                     vval = 0;
                                     if(!self.missing[metric])
@@ -1088,7 +1111,8 @@
                                  // define levels of the x-axis
                             var xlevels = d3.map(self.data, function(item){
                                                 var res;
-                                                res = (self.audit === "picanet")? item[dateVar] : self.stringToMonth(item[dateVar]);
+                                                //res = (self.audit === "picanet")? item[dateVar] : self.stringToMonth(item[dateVar]);
+                                                res = self.stringToMonth(item[dateVar]);
                                                 return res;
                                                 }).keys();
 
@@ -1216,7 +1240,8 @@
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
                             
-                                var postData = self.postProcess(dict, slaves, metric, self.observedDeathsNational, displayObj);
+                                //var postData = self.postProcess(dict, slaves, metric, self.observedDeathsNational, displayObj);
+                                var postData = self.postProcess(dict, slaves, metric, displayObj);
                                 dict = postData? postData['dict']: dict;
                                 slaves =postData? postData['slaves']: slaves;
                                 self.slaves[displayId] = slaves; 
@@ -1250,7 +1275,8 @@
                             // define levels of the x-axis
                             var xlevels = d3.map(self.data, function(item){
                                                 var res;
-                                                res = (self.audit === "picanet")? item[dateVar] : self.stringToMonth(item[dateVar]);
+                                                //res = (self.audit === "picanet")? item[dateVar] : self.stringToMonth(item[dateVar]);
+                                                res = self.stringToMonth(item[dateVar]);
                                                 return res;
                                                 }).keys();
                             
@@ -1269,15 +1295,15 @@
                      
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
-                            var observedDeathsNational = {}; 
+                            //var observedDeathsNational = {}; 
                            
                             for(var i=0; i < self.data.length; i++){
                                 /**
                                  * handle multiple quantitative variables
                                 **/
-                                var mon = self.audit === "picanet"? self.data[i][dateVar] : self.stringToMonth(self.data[i][dateVar]); 
-                                //if(isNaN(mon))
-                                  //  console.log(mon); 
+                               //var mon = self.audit === "picanet"? self.data[i][dateVar] : self.stringToMonth(self.data[i][dateVar]); 
+                               var mon = self.stringToMonth(self.data[i][dateVar]);
+                                
 
                                 if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
                                     self.recordEHR(self.data[i], i, metric);                                
@@ -1288,12 +1314,12 @@
                                         //var vname;
                                         var vval = parseFloat(self.computeVar(yvar, displayObj, self.data[i], id, displayId, 1));
                                         self.setDerivedValue(displayId, i, yvar, vval);
-                                        if(yvar === "der_death"){
+                                        /*if(yvar === "der_death"){
                                             if(!observedDeathsNational[self.data[i][dateVar]])
                                                 observedDeathsNational[self.data[i][dateVar]] = vval; 
                                             else
                                                 observedDeathsNational[self.data[i][dateVar]] += vval;                                                 
-                                            }
+                                            }*/
                                         // select yspan items
                                         if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                             {
@@ -1375,8 +1401,9 @@
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
                             //if(metric === "48h Readmission"){
-                                self.observedDeathsNational = observedDeathsNational; 
-                                var postData = self.postProcess(dict, slaves, metric, observedDeathsNational, displayObj);
+                                //self.observedDeathsNational = observedDeathsNational; 
+                                //var postData = self.postProcess(dict, slaves, metric, observedDeathsNational, displayObj);
+                                var postData = self.postProcess(dict, slaves, metric, displayObj);
                                 dict = postData? postData['dict']: dict;
                                 slaves = postData? postData['slaves']: slaves;
                                 //console.log(slaves);                                 
@@ -1494,7 +1521,7 @@
                                  }
                             }
                         },
-                        postProcess: function(dict, slaves, metric, observedDeathsNational, displayObj){
+                        postProcess: function(dict, slaves, metric, displayObj){
                             var self = this;
                             var result = {};
                             result['dict'] = dict;
@@ -1597,7 +1624,7 @@
 
                                         if(quant['q'] === "der_smr" && slaves['data'][quant['q']]){
                                             for(var key in slaves['data'][quant['q']]){
-                                                slaves['data'][quant['q']][key]['national'] = observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
+                                                slaves['data'][quant['q']][key]['national'] = 0; //observedDeathsNational[key] / slaves['data'][quant['q']][key]['national'];
                                                 slaves['data'][quant['q']][key]['unit'] = dict[key]["der_death"]['value'] / slaves['data'][quant['q']][key]['unit']; 
                                             }
                                         }
