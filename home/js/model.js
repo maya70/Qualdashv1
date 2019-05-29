@@ -309,7 +309,7 @@
                                             if(!slaves['data'][cat])
                                                 slaves['data'][cat] = {};
                                             if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
-                                            else slaves['data'][cat][lev].push(i);  
+                                             slaves['data'][cat][lev].push(i);  
                                          });
                                     }
                                 }
@@ -1193,7 +1193,7 @@
                                             if(!slaves['data'][cat])
                                                 slaves['data'][cat] = {};
                                             if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
-                                            else slaves['data'][cat][lev].push(i);  
+                                             slaves['data'][cat][lev].push(i);  
                                          });
                                     }
                                     // setup quantitative slaves
@@ -1348,7 +1348,7 @@
                                             if(!slaves['data'][cat])
                                                 slaves['data'][cat] = {};
                                             if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
-                                            else slaves['data'][cat][lev].push(i);  
+                                            slaves['data'][cat][lev].push(i);  
                                          });
                                     }
                                     // setup quantitative slaves
