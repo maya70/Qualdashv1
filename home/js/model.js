@@ -119,7 +119,9 @@
                             var self = this; 
                             self.meta = [];
                             self.metaDict = {}; 
-                            d3.csv("./data/picanet_meta.csv", function(meta){
+                            d3.csv("./data/picanet_meta.csv", function(er, meta){
+                                if(er)
+                                    alert("QualDash cannot find the necessary Picanet metadata"); 
                                 for(var k=0; k < meta.length; k++){
                                     if(meta[k]['COLUMN_NAME'] !== ""){
                                         var metaEntry = {}; 
@@ -134,16 +136,18 @@
                                     }
                                 }
                                 
-                                d3.csv("./data/picanet_admission/"+self.year+".csv", function(data){                                      
+                                d3.csv("./data/picanet_admission/"+self.year+".csv", function(err, data){                                      
                                         self.data = data;  
-                                        //console.log(self.data);
+                                        
+                                        if(err)
+                                            alert("QualDash cannot find the necessary Picanet admission file(s)");
                                         for(var i=0; i < self.data.length; i++){
                                             self.data[i]["EVENTID"] = ""+self.data[i]["eventidscr"];                                            
                                         }                                    
-                                        d3.csv("./data/picanet_admission/shortactiv"+self.year+".csv", function(error, extra){                                                                         
+                                        d3.csv("./data/picanet_activity/shortactiv"+self.year+".csv", function(error, extra){                                                                         
                                             
                                             if (error) {
-                                                    console.warn(error);
+                                                    alert("WARNING: No activity data available"); 
                                                 }
                                             self.activityIndex = {};
                                             if(extra)
