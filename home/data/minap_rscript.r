@@ -14,4 +14,7 @@
      write.csv(tmp, fn, row.names = FALSE)
  }
 
+ yfn = paste('C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/minap_admission/avail_years.csv', sep='' )
+ write.csv(unique(years), yfn, row.names = FALSE)
+
  

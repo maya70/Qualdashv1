@@ -20,7 +20,7 @@
                          */ 
                         self.year = $Q.getUrlVars()["year"] || "2014";
                         self.audit = $Q.getUrlVars()["audit"];
-                        self.unitID = (self.audit === "picanet")? "194281" :"MRI"; 
+                        //self.unitID = (self.audit === "picanet")? "194281" :"MRI"; 
                         var auditMetrics = (self.audit==="picanet")? $Q.Picanet.availMetrics : $Q.Minap.availMetrics; 
                         var auditVariables = (self.audit==="picanet")? $Q.Picanet.displayVariables : $Q.Minap.displayVariables; 
                         
@@ -99,7 +99,8 @@
                                 ////console.log(meta); 
                                 d3.csv("./data/minap_admission/"+self.year+".csv", function(data){
                                         ////console.log(data); 
-                                        self.data = data;                                     
+                                        self.data = data;   
+                                        self.unitID = data[0]['1.01 Hospital identifier'];                                  
                                         ////////console.log(displayVar);
                                          for(var i=0; i < self.data.length; i++){
                                             self.data[i]["1.02 Patient case record number"] = ""+self.data[i]["1.02 Patient case record number"];                                            
@@ -124,6 +125,7 @@
                             d3.csv("./data/picanet_meta.csv", function(er, meta){
                                 if(er)
                                     alert("Error: QualDash cannot find the necessary Picanet metadata"); 
+
                                 for(var k=0; k < meta.length; k++){
                                     if(meta[k]['COLUMN_NAME'] !== ""){
                                         var metaEntry = {}; 
@@ -140,7 +142,7 @@
                                 
                                 d3.csv("./data/picanet_admission/"+self.year+".csv", function(err, data){                                      
                                         self.data = data;  
-                                        
+                                        self.unitID = data[0]['siteidscr'];
                                         if(err)
                                             alert("QualDash cannot find the necessary Picanet admission file(s)");
                                         for(var i=0; i < self.data.length; i++){

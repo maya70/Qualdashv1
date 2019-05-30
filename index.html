@@ -184,7 +184,7 @@ a.button {
     <div class="container">
       <label for="audit"><b>Select Audit:</b></label>
       <!--input type="select" placeholder="Enter Audit" name="audit" required-->
-      <select name="audit" required>
+      <select name="audit" onchange="populateYears(this, getElementById('year-sel'))" required>
         <option value="" disabled selected> Please select audit to be loaded in QualDash </option> 
         <option value="picanet"> PICANet </option>
         <option value="minap"> MINAP </option>
@@ -192,11 +192,11 @@ a.button {
 
       <label for="year"><b>Select Year:</b></label>
       <!--input type="select" placeholder="Enter Year" name="year" required-->
-      <select name="year" required>
+      <select name="year" id="year-sel" required>
         <option value="" disabled selected> Please select year of data to be loaded in QualDash </option> 
-        <option value="2012"> 2012 </option>
+        <!--option value="2012"> 2012 </option>
         <option value="2013"> 2013 </option>
-        <option value="2014"> 2014 </option>
+        <option value="2014"> 2014 </option-->
       </select>
 
       <label for="year"><b>Your job Title:</b></label>
@@ -223,7 +223,9 @@ a.button {
   </form>
 </div>
 
+<script src="https://d3js.org/d3.v4.min.js"></script>
 <script>
+
 // Get the modal
 var modal = document.getElementById('id01');
 
@@ -234,6 +236,53 @@ window.onclick = function(event) {
     }
 }
 
+function populateYears(list1, list2){
+    var auditPath = (list1.value === "picanet")? "./home/data/picanet_admission/" : "./home/data/minap_admission/";
+    var yearfile = auditPath + "avail_years.csv";
+    d3.csv(yearfile, function(error, yearData){
+      if(error){
+
+      }
+      else{
+        list2.options.length = 0; 
+        for(var i =0; i < yearData.length; i++){
+          createOption(list2, yearData[i]['x'], yearData[i]['x']); 
+        } 
+
+        sortSelect(list2);  
+      }
+
+    }); 
+
+  
+}
+
+function createOption(ddl, text, value) {
+  var opt = document.createElement('option');
+  opt.value = value;
+  opt.text = text;
+  ddl.options.add(opt);
+}
+
+function sortSelect(elem) {
+    var tmpAry = [];
+    // Retain selected value before sorting
+    var selectedValue = elem[elem.selectedIndex].value;
+    // Grab all existing entries
+    for (var i=0;i<elem.options.length;i++) tmpAry.push(elem.options[i]);
+    // Sort array by text attribute
+    tmpAry.sort(function(a,b){ return (a.text < b.text)?-1:1; });
+    // Wipe out existing elements
+    while (elem.options.length > 0) elem.options[0] = null;
+    // Restore sorted elements
+    var newSelectedIndex = 0;
+    for (var i=0;i<tmpAry.length;i++) {
+        elem.options[i] = tmpAry[i];
+        if(elem.options[i].value == selectedValue) newSelectedIndex = i;
+    }
+    elem.selectedIndex = newSelectedIndex; // Set new selected index after sorting
+    return;
+}
 
 </script>
 

@@ -95,12 +95,15 @@ $Q.Minap = {
                       }, 
     "displayVariables": [
                          {  
-                        "metric": "Mortality",
-                        "mainQ": "What is the number of inpatient mortality per month?",
+                        "metric": "Mortality",                      
                         "mark": "bar", // should remove this 
+                        "chart": "stack",
                         "x": "3.06 Date/time arrival at hospital",
                         "y": ["1.02 Patient case record number", "4.04 Death in hospital"], 
                         "yaggregates": ["count", "sum"], 
+                        "yfilters": {"1.02 Patient case record number": {"where": "*"}, 
+                                     "4.04 Death in hospital": {"where": "4.04 Death in hospital", "sign": "=", "value": "1", "valid": ["0"]}
+                                      },
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "xspan": "year",    
