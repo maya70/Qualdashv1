@@ -87,7 +87,9 @@
                             var self = this; 
                             self.meta = [];
                             self.metaDict = {}; 
-                            d3.csv("./data/minap_meta.csv", function(meta){
+                            d3.csv("./data/minap_meta.csv", function(er, meta){
+                                if(er)
+                                    alert("Error: QualDash cannot find the necessary Picanet metadata"); 
                                 for(var k=0; k < meta.length; k++)
                                     if(meta[k]['fieldName'] !== ""){
                                         self.meta.push(meta[k]); 
@@ -121,7 +123,7 @@
                             self.metaDict = {}; 
                             d3.csv("./data/picanet_meta.csv", function(er, meta){
                                 if(er)
-                                    alert("QualDash cannot find the necessary Picanet metadata"); 
+                                    alert("Error: QualDash cannot find the necessary Picanet metadata"); 
                                 for(var k=0; k < meta.length; k++){
                                     if(meta[k]['COLUMN_NAME'] !== ""){
                                         var metaEntry = {}; 
