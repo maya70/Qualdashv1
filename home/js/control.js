@@ -115,6 +115,9 @@
 							var self = this; 
 							return self.dataModel.getMetaData(); 
 						},
+						getVarDesc: function(vname){
+                            return this.dataModel.getVarDesc(vname); 
+                        },                        
 						dataReady: function(dataViews, rawData){
 							var self = this;	
 							self.dataViews = dataViews; 						

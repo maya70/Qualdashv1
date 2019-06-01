@@ -43,7 +43,7 @@ $Q.Picanet = {
                         "chart": "stack", 
                         "x": "addate",
                         "y": ["eventidscr", "unitdisstatus"], 
-                        "ylegend": ["Admissions", "Deaths in unit"],
+                        "legend": ["Admissions", "Deaths in unit"],
                         "yaggregates": ["count", "count"], 
                         "yfilters": {"eventidscr": {"where": "*"},      
                                      "unitdisstatus":{"where": "unitdisstatus", "sign": "=", "value":"2", "valid":["1", "9"]}

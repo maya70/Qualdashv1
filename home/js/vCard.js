@@ -523,9 +523,15 @@
 							tabs.append("text")
 								.attr("dy", "1.2em")
 								.attr("dx", "1.3em")
-							    .text(function(d) { 
+							    .text(function(d, i) { 
 							    	////console.log(d);
-							    	 return auditVars["variableDict"][d] || d; })
+							    	var mssLegend = auditVars["displayVariables"][self.id]["legend"][i];
+							      	var dictLegend = auditVars['variableDict'][d];
+							      	var descLegend = self.parent.control.getVarDesc(d);
+
+							      	var name = mssLegend || dictLegend ||  descLegend || d;
+							      	
+							    	return name; })
 							    .style("font", "8px sans-serif")
 							     .style("text-anchor", "bottom");
 
@@ -807,7 +813,7 @@
 									.attr("class", "form-inline")
 									.style("text-align", "left")
 									.style("max-height", 35)
-									.style("width", "90%")
+									.style("width", "99%")
 									.style("margin-left", "3px")
 									.style("overflow", "hidden")
 										.append("div").attr("class", "form-group")
@@ -869,8 +875,9 @@
 												.style("vertical-align", "top")
 												.style("horizontal-align", "right")												
 												.style("min-width", "40px")
+												.style("min-height", "24px")
 												.style("position", "relative")
-												.style("left", "43%")
+												.style("left", "40%")
 												.style("background-color", "lightgrey")
 												.style("color", "black")
 												.on("click", function(){
@@ -889,8 +896,9 @@
 												.style("vertical-align", "top")
 												.style("horizontal-align", "right")												
 												.style("min-width", "40px")
+												.style("min-height", "24px")
 												.style("position", "relative")
-												.style("left", "43%")
+												.style("left", "40%")
 												.style("background-color", "lightgrey")
 												.style("color", "black")
 												.on("click", function(){
@@ -956,8 +964,9 @@
 												.style("vertical-align", "top")
 												.style("horizontal-align", "right")												
 												.style("min-width", "40px")
+												.style("min-height", "24px")
 												.style("position", "relative")
-												.style("left", "43%")
+												.style("left", "40%")
 												.style("background-color", "lightgrey")
 												.style("color", "black")
 												.on("click", function(){

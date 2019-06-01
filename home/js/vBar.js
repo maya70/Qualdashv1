@@ -625,11 +625,13 @@
 							      })
 							      .attr("dy", ".35em")
 							      .style("text-anchor", "start")							      
-							      .text(function(d) {
-							      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
-							      	var name = tex || levels[d];
-							      	//var qual = self.parent.parent.control.getQuality(self.parent.metric, levels[d]); 
-							      	//name = name + " (DQ: "+qual +"%)"; 
+							      .text(function(d, i) {
+							      	var mssLegend = auditVars["displayVariables"][viewId]["legend"][i];
+							      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
+							      	var descLegend = self.parent.parent.control.getVarDesc(levels[d]);
+
+							      	var name = mssLegend || dictLegend ||  descLegend || levels[d];
+							      	
 							      	return name;  })
 							      	.style("font-size", "9pt");
 
@@ -732,9 +734,14 @@
 								  			.attr("x", 6)
 								  			.attr("y", 12)
 										  	  .style("font-size", "9pt")
-										      .text(function(d){ 
-										      	var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
-										      	var name = tex || levels[d];
+										      .text(function(d, i){ 
+										      	//var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
+										      	//var name = tex || levels[d];
+										      	var mssLegend = auditVars["displayVariables"][viewId]["legend"][i];
+										      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
+										      	var descLegend = self.parent.parent.control.getVarDesc(levels[d]);
+
+										      	var name = mssLegend || dictLegend ||  descLegend || levels[d];
 										      	//var qual = self.parent.parent.control.getQuality(self.parent.metric, levels[d]); 
 										      	//name = name + " (DQ: "+qual +"%)"; 
 										      	return name;

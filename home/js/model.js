@@ -165,7 +165,12 @@
                                             }
                                             //console.log(self.activityIndex); 
                                             }
-                                            
+                                            // populate the global variable descriptions
+                                            self.variableDesc = {};
+                                            $Q.variableDesc["picanet"].forEach(function(v){
+                                                self.variableDesc[v['Name']] = v['Description'];
+                                            }); 
+
                                             for(var display = 0; display < self.displayVariables.length; display++)
                                             { 
                                                self.applyAggregateRule2(self.displayVariables[display],display, data);
@@ -177,6 +182,9 @@
                                     });
                                 });
                             },
+                        getVarDesc: function(vname){
+                            return this.variableDesc[vname.toUpperCase()]; 
+                        },
                         getTimeQs: function(viewId){
                             var self = this; 
                             var Qs = []; 

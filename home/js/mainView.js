@@ -21,21 +21,32 @@
 						qualityDiv.selectAll("p").remove();
 
 						for(var key in missing){
-							var percent = self.control.getQuality(key);
+							var quality =  100 - self.control.getQuality(key);
+							var percent = Math.round(quality*10)/10; 
+
 							qualityDiv.append("p")
-										.text(auditVars["variableDict"][key] || key); 
+										.text(function(){
+											//auditVars["variableDict"][key] || key;
+									      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][key]: $Q.Minap['variableDict'][key];
+									      	var descLegend = self.control.getVarDesc(key);
+
+									      	var name = dictLegend ||  descLegend || key;
+									      	return name; 
+									      	
+										}); 
+										
 							var gbar = qualityDiv.append("div")
 										.attr("class", "w3-grey-item"); 
 							gbar.append("div")
 									.attr("class", function(){
 										if (percent > 75)
-											return "w3-container w3-center w3-padding w3-green myitem"; 
+											return "w3-container w3-center w3-padding w3-red myitem"; 
 										else if(percent > 25)
 											return "w3-container w3-center w3-padding w3-orange myitem";
-										else return "w3-container w3-center w3-padding w3-red myitem";
+										else return "w3-container w3-center w3-padding w3-green myitem";
 
 									})									
-									.style("width", percent+"%")
+									.style("width", Math.round(percent) +"%")
 									.text(percent+"%"); 
 							qualityDiv.append("hr"); 
 						}
