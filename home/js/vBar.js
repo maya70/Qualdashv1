@@ -8,8 +8,8 @@
 						self.audit = self.parent.getAuditInfo(); 
 						self.id = dataView['viewId'];
 						//self.dualAxis = true; 
-						self.iter = 0; 												
-						self.toggle = self.id > 0 ? "stacked": "grouped";
+						self.iter = 0; 	
+						//self.id > 0 ? "stacked": "grouped";
 						//if(self.id === 1) self.toggle = "stacked"; 
 						self.dataView = dataView; 
 						self.dualData = [];
@@ -474,6 +474,7 @@
 								self.levels = levels; 
 								var undef;
 								var auditVars = self.audit === "picanet"? $Q.Picanet : $Q.Minap; 
+								self.toggle = auditVars["displayVariables"][viewId]["chart"]; 
 								if(trellis)
 									console.log("this is a trellis view");
 								// sort dict by date

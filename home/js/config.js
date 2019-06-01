@@ -40,7 +40,7 @@ $Q.Picanet = {
                 },
 "displayVariables": [{  "metric": "Mortality",
                         "mark": "bar", 
-                        "chart": "stack", 
+                        "chart": "grouped", 
                         "x": "addate",
                         "y": ["eventidscr", "unitdisstatus"], 
                         "legend": ["Admissions", "Deaths in unit"],
@@ -97,7 +97,7 @@ $Q.Minap = {
                          {  
                         "metric": "Mortality",                      
                         "mark": "bar", // should remove this 
-                        "chart": "stack",
+                        "chart": "stacked",
                         "x": "3.06 Date/time arrival at hospital",
                         "y": ["1.02 Patient case record number", "4.04 Death in hospital"], 
                         "yaggregates": ["count", "sum"], 
