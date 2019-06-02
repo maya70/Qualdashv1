@@ -12,7 +12,8 @@
 						self.palette = self.parent.vis.getPalette(); 
 						console.log(self.palette); 
 						if(self.numYears >= 2){
-							if(span.indexOf("-") < 0)
+							//if(span.indexOf("-") < 0)
+							if(viewType === "series")
 								self.drawSimple(viewId, vname, data, parent, svgw, svgh);
 							else
 								self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
@@ -38,14 +39,15 @@
 								self.displayMessage(parent,svgw, svgh);
 						},
 						getChildStart: function(){
-							return "2012";
+							return this.data[0]["Year"];
 						},
 						getChildEnd: function(){
-							return "2014";
+							return this.data[this.data.length-1]["Year"];
 						},
 						prepData:function(data, yvar, span, viewType){
 							var self = this;
 							var result = []; 
+							self.numYears = 0;
 							//if(span.indexOf("-") < 0){
 							if(viewType === "series"){
 								// prep data for a simple bar chart given a span of a week or a quarter		
@@ -56,6 +58,7 @@
 								if(granT === "monthly")  // most common case
 								{
 									for(var year in data){
+										self.numYears++; 
 										result.push({'name': year, 'values': []});
 										for(var quarter in data[year]){
 											for(var mon in data[year][quarter]){
@@ -90,7 +93,7 @@
 							}
 							else{
 								// prepare data for small multiples -- default view
-								self.numYears = 0;
+								
 								for(var year in data){
 									self.numYears++; 
 									for(var quar in data[year]){
@@ -212,10 +215,13 @@
 /* Scale */
 var xScale = d3.scaleTime()
   .domain(d3.extent(self.data[0].values, d => d.date))
-  .range([0, width-margin]);
+  .range([0, width-margin-40]);
 
 var yScale = d3.scaleLinear()
-  .domain([0, d3.max(self.data[0].values, d => d.value)])
+  //.domain([0, d3.max(self.data[0].values, d => d.value)])
+  .domain([0, d3.max(self.data, function(array){
+  	return d3.max(array.values, d => d.value );
+  })])
   .range([height-margin-20, 0]);
 
 var color = d3.scaleSequential(d3.interpolateViridis); //d3.scaleOrdinal(d3.schemeCategory10);
@@ -235,7 +241,8 @@ color.domain([0,4]);
 			*/
 
 self.svg = parent.ssvgt.append("svg")			    
-  .attr("width", (width+margin*2)+"px")
+  //.attr("width", (width+margin*2)+"px")
+  .attr("width", "100%")
   .attr("height", (height+margin+20)+"px")
   .append('g')
   .attr("transform", "translate("+(margin+30)+","+(margin*2)+")");
@@ -369,6 +376,25 @@ self.svg.append("g")
   .attr("transform", "rotate(-90)")
   .attr("fill", "#000");
   //.text("Total values");
+
+  var legend = self.svg.append("g")
+  				.attr("class", "time-legend")
+  				.attr("transform", "translate("+ (width-margin) + ", 10)");
+
+  self.data.forEach(function(year, i){
+  	legend.append("line")
+  			.attr("x1", 0 )
+  			.attr("x2", 10)
+  			.attr("y1", i*20)
+  			.attr("y2", i*20)
+  			.style('stroke', color(i))  			
+  			.style("stroke-dasharray",("3," + (i*2)));
+
+  	legend.append("text")
+  			.attr("x", 12)
+  			.attr("y", i*20)
+  			.text(year['name']); 
+  });
 
 						},
 

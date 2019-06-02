@@ -7,10 +7,7 @@
 						self.parent = pCard;
 						self.audit = self.parent.getAuditInfo(); 
 						self.id = dataView['viewId'];
-						//self.dualAxis = true; 
 						self.iter = 0; 	
-						//self.id > 0 ? "stacked": "grouped";
-						//if(self.id === 1) self.toggle = "stacked"; 
 						self.dataView = dataView; 
 						self.dualData = [];
 						// do we need dual axis?
@@ -651,6 +648,37 @@
 								      .style("text-anchor", "middle")
 								      .style("font-size", "9pt")
 								      .text(auditVars["displayVariables"][viewId]["ylabel"]);   
+
+								if(self.dualAxis){
+									self.legend.append("text")
+									      .attr("x", function(d,i){
+									      	return legWidth+14; 
+									      })
+									      .attr("y", function(d,i){
+									      	return 20 * Math.ceil(numValues/2)+20;
+									      })
+									      .attr("id", "dual-legend")
+									      .attr("dy", ".35em")
+									      .style("text-anchor", "start")							      
+									      .text(function(d, i) {
+									      		var idx = auditVars["displayVariables"][viewId]["y"].indexOf(self.dualVarName);
+												var mssLegend = auditVars["displayVariables"][viewId]["legend"][idx];
+										      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][self.dualVarName]: $Q.Minap['variableDict'][self.dualVarName];
+										      	var descLegend = self.parent.parent.control.getVarDesc(self.dualVarName);
+
+										      	var name = mssLegend || dictLegend ||  descLegend || self.dualVarName;
+										      	return name;
+										        	
+									      	  })
+									      	.style("font-size", "9pt");
+									self.legend.append("line")
+												.attr("x1", legWidth )
+												.attr("x2", legWidth+ 9)
+												.attr("y1", 20 * Math.ceil(numValues/2)+20)
+												.attr("y2", 20 * Math.ceil(numValues/2)+20)
+												.style("stroke", "brown");
+
+								}
 
 								 // x-axis labels
 								/* self.parent.svg.append("text") 

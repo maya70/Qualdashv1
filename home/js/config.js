@@ -42,9 +42,9 @@ $Q.Picanet = {
                         "mark": "bar", 
                         "chart": "grouped", 
                         "x": "addate",
-                        "y": ["eventidscr", "unitdisstatus"], 
+                        "y": ["eventidscr", "unitdisstatus", "der_smr"], 
                         "legend": ["Admissions", "Deaths in unit"],
-                        "yaggregates": ["count", "count"], 
+                        "yaggregates": ["count", "count", "runningAvg"], 
                         "yfilters": {"eventidscr": {"where": "*"},      
                                      "unitdisstatus":{"where": "unitdisstatus", "sign": "=", "value":"2", "valid":["1", "9"]}
                                      },                                                

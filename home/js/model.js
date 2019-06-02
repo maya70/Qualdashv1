@@ -550,21 +550,7 @@
                             }
                             else if(vname === "extubation" && self.audit === "picanet"){
                                 return (parseInt(rec["unplannedextubation"])===1)? 1: 0;
-                                /*var countVent = 0; 
-                                // get the corresponding activity records
-                                var active = self.activityIndex[rec["EVENTID"]];
-                                if(active){
-                                    active.forEach(function(a, i){
-                                        active.forEach(function(b, j){
-                                            if( (i < j) && a["invventet"] === "1" && b["invventet"] === "0") 
-                                                //&& self.stringToDate(a["addate"]).getTime() < self.stringToDate(b["addate"]).getTime())
-                                                countVent++; 
-                                        });
-                                    });
-                                    return countVent; 
-                                }
-                                return 0; */
-
+                                
                             }
                             else if(self.audit === "picanet" && vname==="depLevel0"){
                                 var countDep = 0; 

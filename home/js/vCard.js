@@ -433,6 +433,7 @@
 							//var tdata = self.parent.control.getHistoryData(); 							
 							var tdata = self.parent.control.getTimeHier(); 
 							console.log(tdata);
+							self.tView = "series";
 							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
 							var span = auditVars['displayVariables'][self.id]['granT'];
 							// filter tspan to remove the first time granularity, which is already displayed in the main view
@@ -486,7 +487,7 @@
 											self.state['timeData'] = tdata;
 											self.state['timeW'] = mainsvgW-10;
 											self.state['timeH'] = ssvgH-10;
-											self.subVisT.draw(self.id, d , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, "multiples");				
+											self.subVisT.draw(self.id, d , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, self.tView);				
 
 										})
 										.on("mouseover", function(d){
@@ -541,7 +542,7 @@
 							self.state['timeW'] = mainsvgW-10;
 							self.state['timeH'] = ssvgH-10;
 							
-							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]][0] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, "multiples");						
+							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]][0] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, self.tView);						
 						},
 						nohighlight: function(){
 							var self = this;
@@ -1058,8 +1059,8 @@
 							self.btn_data = [ 
 											{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 											
 											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId},
-											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#grantpp"+viewId}
-											//{"id": "export-btn"+viewId, "class": "ctrl-btn fa fa-external-link", "data-toggle": "none", "hidden": false}
+											//{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#grantpp"+viewId}
+											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "none", "hidden": false}
 											]; 
 
 							
@@ -1142,10 +1143,13 @@
 								e.stopPropagation();
 								});
 
+							  $("#time-btn"+viewId).on("click", function(e){
+							  	self.updateTimeView(); 
+							  });
 							  var time_ttip = $("#time-btn"+viewId).tooltip({    
 							    placement : 'bottom', 
 							    trigger: 'hover', 
-							    title : "Time View Settings"         
+							    title : "Toggle Time View"         
 							  });
 
 							  /*d3.select("#export-btn"+viewId)							  	
@@ -1213,13 +1217,15 @@
 							
 
 						},
-						updateTimeView: function(viewType){
+						updateTimeView: function(){
 							var self = this;
 							//self.parent.control.addBtnClick();
 							//console.log(self.id); 
 							//console.log(viewType);  
+							self.tView = self.tView==="series"? "multiples" : "series"; 
+
 							self.subVisT.draw(self.id, self.state['selectedTime'] ,self.state['tspan'], self.state['timeData'] , self, 
-											 self.state['timeW'], self.state['timeH'], viewType);			
+											 self.state['timeW'], self.state['timeH'], self.tView);			
 						},
 						drawScatter: function(dataView){
 							var self = this; 
