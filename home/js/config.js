@@ -47,7 +47,7 @@ $Q.Picanet = {
                         "legend": ["Admissions", "Deaths in unit"],
                         "yaggregates": ["count", "count", "runningAvg"], 
                         "yfilters": {"eventidscr": {"where": "*"},      
-                                     "unitdisstatus":{"where": "unitdisstatus", "sign": "=", "value":"2", "valid":["1", "9"]}
+                                     "unitdisstatus":{"where": "unitdisstatus", "sign": "=", "value":"2", "valid":["1", "9"], "countexisting": {"unitdisdate":""}}
                                      },                                                
                         "xType": "t",
                         "yType": ["q", "q", "q"],  
@@ -64,27 +64,26 @@ $Q.Picanet = {
                         "granT": {"monthly-annual": ["eventidscr", "unitdisstatus"] }   // the first element holds the master view's granT                                             
           
                      },
-                      {  "metric": "dependency",                        
-                        "mark": "bar", 
-                        "chart": "stacked",
+                     {  "metric": "48h Readmission",
+                        "mark": "bar",
                         "x": "addate",
-                        "y": ["der_depLevel0", "der_depLevelEC" ,"der_depLevel1", "der_depLevel2", "der_depLevel3", "der_depLevel4", "der_depLevel5", "der_depLevel6"], 
-                        "yaggregates": ["count"], 
-                        "xType": ["t", "n"],
-                        "yType": "q",  
+                        "y": ["der_discharge", "der_readmit"],
+                        "categories": ["sourcead", "careareaad", "unitdisdest", "primarydiagnosisgroup"], 
+                        "quantities": [{"q":"der_readmit", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
+                                      {"q":"der_unplannedAdm", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],
+                        "xType": "t",
+                        "yType": ["q", "q"],
                         "xspan": "year",    
-                        "yspan": "unit",  
-                        "tspan": 3,                           
-                        "granP": ["unit"], 
-                        "ehr": "Admissions",                        
-                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [ {"q":"der_depLevel2", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"der_depLevel3", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
-                                       ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["der_depLevel2", "der_depLevel3"]}   // the first element holds the master view's granT                                             
-          
-                     }, 
+                        "yspan": "unit", 
+                        "ylabel": "No. Records",
+                        "tspan": 3,
+                        "yaggregates": ["count", "count"],
+                        "ehr": "Admissions",
+                        "granP": ["unit", "unit"], 
+                        "granT": {"monthly-annual": ["der_readmit"]}, 
+                        "combinations": ["adtype&der_readmit"]
+                     }
+                       
                     
                      
                      ]

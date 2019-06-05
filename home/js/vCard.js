@@ -855,12 +855,7 @@
 
 							document.getElementById("sel"+viewId).disabled = true;
 							
-							/*for(var m = 0; m < self.parent.availMetrics.length; m++){
-								metricSelect.append("option")
-											.attr("value", self.parent.availMetrics[m]['value'])
-											.text(self.parent.availMetrics[m]['text'])
-											.style("font-size", "9pt");
-							}*/
+							
 							
 							var curMetric = self.parent.availMetrics[(viewId%self.parent.availMetrics.length)]['value'];
 							self.metric = curMetric; 

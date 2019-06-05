@@ -103,7 +103,28 @@
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["der_missing"]}   // the first element holds the master view's granT                                             
           
-                     }
+                     },
+                     {  "metric": "Dependency",                        
+                        "mark": "bar", 
+                        "chart": "stacked",
+                        "x": "addate",
+                        "y": ["der_depLevel0", "der_depLevelEC" ,"der_depLevel1", "der_depLevel2", "der_depLevel3", "der_depLevel4", "der_depLevel5", "der_depLevel6"], 
+                        "yaggregates": ["count"], 
+                        "xType": ["t", "n"],
+                        "yType": "q",  
+                        "xspan": "year",    
+                        "yspan": "unit",  
+                        "tspan": 3,                           
+                        "granP": ["unit"], 
+                        "ehr": "Admissions",                        
+                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
+                        "quantities": [ {"q":"der_depLevel2", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"der_depLevel3", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": ["der_depLevel2", "der_depLevel3"]}   // the first element holds the master view's granT                                             
+          
+                     },
 
 
 

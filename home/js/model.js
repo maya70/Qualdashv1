@@ -710,9 +710,9 @@
 
                             var dateParts = date.split(dateSeparator);
                             if(time) timeParts = time.split(":");
-                            var day = dateParts[0],
+                            var day = dateParts[2],
                                 month = dateParts[1],
-                                year = (dateParts[2] && dateParts[2].length<=2)? "20"+dateParts[2]: dateParts[2];
+                                year = (dateParts[0] && dateParts[0].length<=2)? "20"+dateParts[0]: dateParts[0];
                             if(timeParts){
                                 hour = timeParts[0],
                                 minute = timeParts[1],
@@ -733,9 +733,9 @@
 
                             var dateParts = date.split(dateSeparator);
                             if(time) timeParts = time.split(":");
-                            var day = dateParts[0],
+                            var day = dateParts[2],
                                 month = dateParts[1],
-                                year = (dateParts[2] && dateParts[2].length<=2)? "20"+dateParts[2]: dateParts[2];
+                                year = (dateParts[0] && dateParts[0].length<=2)? "20"+dateParts[0]: dateParts[0];
                             if(timeParts){
                                 hour = timeParts[0],
                                 minute = timeParts[1],
@@ -1077,10 +1077,10 @@
                                 var quar = self.getRecordQuarter(rec); 
                                 if(!self.tHier[year][quar])
                                     self.tHier[year][quar] = {};
-                                var mon = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                var mon =  self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
                                 if(!self.tHier[year][quar][mon])
                                     self.tHier[year][quar][mon] = {};
-                                var week = parseInt(rec[$Q.DataDefs[self.audit]["weekVar"]]) || parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
+                                var week = parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
                                 if(!self.tHier[year][quar][mon][week])
                                     self.tHier[year][quar][mon][week] = {};
                                 if(!self.tHier[year][quar][mon][week][varname])
@@ -1501,7 +1501,8 @@
                                                 var quar = self.getRecordQuarter(adrec);
                                                 //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
                                                 var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
-                                                var week = parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
+                                                var week = parseInt(self.stringToDate(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
+                                                //parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
                                                 var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
                                                 
                                                 if(unit === self.unitID){
@@ -1558,7 +1559,8 @@
                                                     var quar = self.getRecordQuarter(adrec);
                                                     //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
                                                     var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
-                                                    var week = parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
+                                                    var week = parseInt(self.stringToDate(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
+                                                    //parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
                                                     if(isNaN(mon))
                                                         self.recordMissing(metric, "der_readmit"); 
                                                     if(unit === self.unitID){

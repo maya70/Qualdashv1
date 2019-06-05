@@ -77,7 +77,10 @@ img.avatar {
 }
 
 .container {
+  width: 48%;
   padding: 16px;
+  display: inline-block;
+  *display: inline; zoom: 1; vertical-align: top; font-size: 12px;
 }
 
 span.psw {
@@ -159,6 +162,15 @@ a.button {
 
     width: 100%; 
 }
+#message{
+  width: 100%;
+  height: 90%;
+}
+#launchbtn{
+  width: 70%;
+  margin-left: 10%;
+}
+
 </style>
 <body>
 
@@ -180,7 +192,7 @@ a.button {
 <div id="id01" class="modal">
   
   <form class="modal-content animate" action="/action_page.php">
-   
+   <div class="parent">
     <div class="container">
       <label for="audit"><b>Select Audit:</b></label>
       <!--input type="select" placeholder="Enter Audit" name="audit" required-->
@@ -194,32 +206,43 @@ a.button {
       <!--input type="select" placeholder="Enter Year" name="year" required-->
       <select name="year" id="year-sel" required>
         <option value="" disabled selected> Please select year of data to be loaded in QualDash </option> 
-        <!--option value="2012"> 2012 </option>
-        <option value="2013"> 2013 </option>
-        <option value="2014"> 2014 </option-->
+        
       </select>
 
       <label for="year"><b>Your job Title:</b></label>
       <input type="select" placeholder="Enter job Title" name="title" required>
-      <!--select name="title" required>
-        <option value="" disabled selected> Please select your job title </option> 
-        <option value="physician"> Physician </option>
-        <option value="nurse"> Nurse </option>
-        <option value="other"> other </option>
-      </select-->
+     
 
         
-      <button type="submit" id="launchbtn" formaction="home/">Launch QualDash</button>
+     
       <!--a href="http://google.com" class="button">Go to Google</a-->
-      <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
-      </label>
+     
     </div>
 
     <div class="container" style="background-color:#f1f1f1">
-      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+       <label><b>Notice on data collection:</b></label>
+      <textarea id="message" rows="8" cols="50" disabled="true">
+        At QualDash, we collect usage data to inform the evaluation of the software. No personal or identifiable data is collected at any point. The data we collect include the values you enter on this form and interactions (e.g. mouse clicks) during a session of use for the software. We also log the date and time of a session. If you have any questions or concerns regarding the collected data and its use, please contact one of the QualDash team members. 
+    </textarea>
+     <label>
+        <input type="checkbox" checked="checked" name="remember"> I agree. 
+      </label>
      
     </div>
+
+    <div class="controls">
+       <button type="submit" id="launchbtn" formaction="home/">Launch QualDash</button>
+      <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+     
+     
+      
+    </div>
+    
+   
+     
+ 
+  </div>
+
   </form>
 </div>
 
