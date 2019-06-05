@@ -624,7 +624,8 @@
 							      .attr("dy", ".35em")
 							      .style("text-anchor", "start")							      
 							      .text(function(d, i) {
-							      	var mssLegend = auditVars["displayVariables"][viewId]["legend"][i];
+							      	var undef; 
+							      	var mssLegend = auditVars["displayVariables"][viewId]["legend"]? auditVars["displayVariables"][viewId]["legend"][i]: undef;
 							      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 							      	var descLegend = self.parent.parent.control.getVarDesc(levels[d]);
 
@@ -661,8 +662,9 @@
 									      .attr("dy", ".35em")
 									      .style("text-anchor", "start")							      
 									      .text(function(d, i) {
+									      	    var undef; 
 									      		var idx = auditVars["displayVariables"][viewId]["y"].indexOf(self.dualVarName);
-												var mssLegend = auditVars["displayVariables"][viewId]["legend"][idx];
+												var mssLegend = auditVars["displayVariables"][viewId]["legend"]? auditVars["displayVariables"][viewId]["legend"][idx]: undef;
 										      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][self.dualVarName]: $Q.Minap['variableDict'][self.dualVarName];
 										      	var descLegend = self.parent.parent.control.getVarDesc(self.dualVarName);
 
@@ -766,7 +768,8 @@
 										      .text(function(d, i){ 
 										      	//var tex = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 										      	//var name = tex || levels[d];
-										      	var mssLegend = auditVars["displayVariables"][viewId]["legend"][i];
+										      	var undef;
+										      	var mssLegend = auditVars["displayVariables"][viewId]["legend"]? auditVars["displayVariables"][viewId]["legend"][i]: undef;
 										      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 										      	var descLegend = self.parent.parent.control.getVarDesc(levels[d]);
 
@@ -880,7 +883,16 @@
 							    .attr("height", 0)
 							    .style("stroke", "darkgrey")
 							     .on("mouseover", function(d, i){
-							  		var proportion = self.toggle=== "grouped"? "": ("<br>" + Math.round(((d[1] - d[0]) / (d[1] + d[0]) * 100)*10)/10 + "%"); 
+							     	var numValues = color.domain().length; 
+							     	var prop = Math.round(((d[1] - d[0]) / (d[1] + d[0]) * 100)*10)/10; 
+							     	if(numValues > 2){
+							     		var allBars = 0;
+							     		d['data'].forEach(function(b){
+							     			allBars += b;
+							     		});
+							     		prop = Math.round(((d[1] - d[0]) / allBars * 100)*10)/10 
+							     	}
+							  		var proportion = self.toggle=== "grouped"? "": ("<br>" + prop + "%"); 
 							      	div.transition()
 							      		.duration(200)
 							      		.style("opacity", 0.9);
