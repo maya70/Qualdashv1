@@ -526,7 +526,8 @@
 								.attr("dx", "1.3em")
 							    .text(function(d, i) { 
 							    	////console.log(d);
-							    	var mssLegend = auditVars["displayVariables"][self.id]["legend"][i];
+							    	var undef; 
+							    	var mssLegend = auditVars["displayVariables"][self.id]["legend"]? auditVars["displayVariables"][self.id]["legend"][i]: undef;
 							      	var dictLegend = auditVars['variableDict'][d];
 							      	var descLegend = self.parent.control.getVarDesc(d);
 

@@ -183,7 +183,8 @@
                                 });
                             },
                         getVarDesc: function(vname){
-                            return this.variableDesc[vname.toUpperCase()]; 
+                            var undef;
+                            return this.variableDesc? this.variableDesc[vname.toUpperCase()]: undef; 
                         },
                         getTimeQs: function(viewId){
                             var self = this; 
@@ -934,7 +935,7 @@
                                             return 1;
                                         else {
                                             var val = rec[criterion];
-                                            if(yfilters['valid'].indexOf(val) < 0)
+                                            if(yfilters['valid'] && yfilters['valid'].indexOf(val) < 0)
                                                 self.recordMissing(metric, vname, rec);
                                             return 0; 
                                         }
@@ -1074,7 +1075,12 @@
                                     self.tHier= {}; 
                                 if(!self.tHier[year])
                                     self.tHier[year] = {}; 
-                                var quar = self.getRecordQuarter(rec); 
+                                var quar = self.getRecordQuarter(rec);
+                                if(quar === 1){
+                                    var m = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                    if(m === 12)
+                                        console.log(m); 
+                                }
                                 if(!self.tHier[year][quar])
                                     self.tHier[year][quar] = {};
                                 var mon =  self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
@@ -1683,8 +1689,9 @@
                         },
                         getRecordQuarter: function(rec){
                             var self = this; 
-                            var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getMonth());
-                            if(recMonth === 12) return 4; 
+                            var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || parseInt(self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]));                            
+                            if(recMonth === 12) 
+                                return 4; 
                             return recMonth < 4 ? 1: (recMonth < 7? 2: (recMonth < 10? 3 : 4))
                         },
                         checkGranT: function(varname, displayId){

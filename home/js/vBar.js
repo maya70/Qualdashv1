@@ -224,7 +224,7 @@
 							  .data(y01z)
 							  .enter().append("g")
 							  	.attr("class", "shades")
-							  	.style("stroke-width", 1.0)
+							  	.style("stroke-width", 2.0)
 								.style("stroke", function(d){
 									//console.log(self.palette[self.levels[d["index"]]]); 
 									return self.palette[self.levels[d["index"]]]; 
@@ -235,7 +235,7 @@
 							    //
 								//.style("stroke", self.highlightColor); 
 							
-							 
+							 var count = -1; 
 							 var rect = series.selectAll("rect.shade")
 							  .data(function(d) { return d; })
 							  .enter().append("rect")
@@ -243,7 +243,12 @@
 							    .attr("x", function(d, i) { return x(i); })
 							    .attr("y", height)
 							    .attr("width", x.bandwidth())
-							    .attr("height", 0);
+							    .attr("height", 0)
+							    .attr("id", function(d,i){
+							    	count++;
+							    	return i+"-"+parseInt(count / y01z[0].length); 
+							    });
+							   
 
 							    rect.transition()
 								    .delay(function(d, i) { return i * 10; })
@@ -283,9 +288,18 @@
 						  rect.transition()
 						      .duration(200)
 						      .delay(function(d, i) { return i * 10; })
-						      .attr("y", function(d) { 
-						      	return y(d[1]); })
-						      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+						      .attr("y", function(d, i) { 
+						      	var dictEntry = self.dict[(i+1)+""]; 
+						      	var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
+						      	var prevCatEndsAt = (cat === 0)? 0 : dictEntry[Object.keys(dictEntry)[cat-1]]['value']; 
+						      	//var parent = dictEntry[Object.keys(dictEntry)[cat]]['value']; 
+						      	var y00 = y(0); 						      	
+						      	//console.log(y00);
+						      	//var p = y(prevCatEndsAt);
+						      	//var p1 = y(d[1]);
+						      	return  y(d[1]-d[0]) - (y00 - y(prevCatEndsAt)); })
+						      .attr("height", function(d) { 
+						      	return y(d[0]) - y(d[1]); })
 						    .transition()
 						      .attr("x", function(d, i) { return x(xz[i]); })
 						      .attr("width", x.bandwidth());
@@ -513,7 +527,7 @@
                                         yMax = d3.max(yz, function(y) { return d3.max(y); }),
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
-                               	self.yMax = yMax; 
+                               	self.yMax = y1Max; 
                            //console.log(self.yMax); 
 
 							if(self.parent.svg && iter === 0){
@@ -644,7 +658,7 @@
 							     	  .attr("class", "ylabel")
 								      .attr("transform", "rotate(-90)")
 								      .attr("y", margin.left/5)
-								      .attr("x",0 - (height) - margin.top/2 )
+								      .attr("x",0 - (height/2) - margin.top )
 								      .attr("dy", "1em")
 								      .style("text-anchor", "middle")
 								      .style("font-size", "9pt")
@@ -873,6 +887,8 @@
 
 							
 							var origColor; 
+							var count =0; 
+							var rcount = -1; 
 							var rect = series.selectAll("rect")
 							  .data(function(d) { return d; })
 							  .enter().append("rect")
@@ -885,7 +901,7 @@
 							     .on("mouseover", function(d, i){
 							     	var numValues = color.domain().length; 
 							     	var prop = Math.round(((d[1] - d[0]) / (d[1] + d[0]) * 100)*10)/10; 
-							     	if(numValues > 2){
+							     	if(numValues > 1){
 							     		var allBars = 0;
 							     		d['data'].forEach(function(b){
 							     			allBars += b;
@@ -906,11 +922,14 @@
 													//.style("stroke", self.highlightColor); 
 							
 							      	// find the key for the corresponding data entry
-							      	for(var key in dict[i+1]){
-							      		if(dict[i+1][key]['value'] === (d[1] - d[0]))
-							      			self.parent.highlightSubs(key, dict[i+1][key]['data'], (i+1));
+							      	var dictEntry = self.dict[(i+1)+""]; 
+						      		var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
+						      		var key = Object.keys(dictEntry)[cat];
+							      	//for(var key in dict[i+1]){
+							      	//	if(dict[i+1][key]['value'] === (d[1] - d[0]))
+							      	self.parent.highlightSubs(key, dict[i+1][key]['data'], (i+1));
 							      			//console.log(dict[i+1][key]['data']); 
-							      	}
+							      	//}
 
 							      })
 							      .on("mouseout", function(d){
@@ -928,15 +947,18 @@
 							      	if(!selStatus || selStatus === "false"){
 							      		// set selection							      		
 							      		var txt = "Selected: "; 
-
-								      	for(var key in dict[i+1]){								      		
-								      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
+							      		var dictEntry = self.dict[(i+1)+""]; 
+						      			var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
+						      			var key = Object.keys(dictEntry)[cat];
+							      	
+								      	//for(var key in dict[i+1]){								      		
+								      	//	if(dict[i+1][key]['value'] === (d[1] - d[0])){
 								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 1); 
 								      				if(!self.nsel[key])
 										        		self.nsel[key] = 0; 
-										        	self.nsel[key] += d[1] - d[0]; 							
-								      			} 								      	  
-								      	}	
+										        	self.nsel[key] +=  dictEntry[key]['value'];  //d[1] - d[0]; 							
+								      		//	} 								      	  
+								      	//}	
 								      	//var totalSelected = self.parent.getSelection(); 
 								        //for(var key in totalSelected){
 								        for(var key in self.nsel){
@@ -952,22 +974,27 @@
 								      	d3.select(this).style("fill", self.highlightColor);
 							      		d3.select("#slbut-"+self.id).style("fill", "black"); 
 							      	// find the key for the corresponding data entry
-							      	for(var key in dict[i+1]){
-							      		if(dict[i+1][key]['value'] === (d[1] - d[0]))
+							      	key = Object.keys(dictEntry)[cat];
+							      	//for(var key in dict[i+1]){
+							      	//	if(dict[i+1][key]['value'] === (d[1] - d[0]))
 							      			self.parent.highlightSubs(key, dict[i+1][key]['data'], (i+1), 1);
 							      			//console.log(dict[i+1][key]['data']); 
-							      	}
+							      	//}
 
 								      }
 								     else{
 								     	// reset selection
 								     	txt = "Selected: "; 
-								     	for(var key in dict[i+1]){
-								      		if(dict[i+1][key]['value'] === (d[1] - d[0])){
+								     	var dictEntry = self.dict[(i+1)+""]; 
+						      			var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
+						      			var key = Object.keys(dictEntry)[cat];
+							      	
+								     	//for(var key in dict[i+1]){
+								      	//	if(dict[i+1][key]['value'] === (d[1] - d[0])){
 								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 0, 0, 1); 
 								      				self.nsel[key] -= d[1] - d[0];
-								      			} 
-								      	}
+								      	//		} 
+								      	//}
 								      	for(var key in self.nsel){
 								        	//var keyname = $Q.Picanet["variableDict"][key] || key;
 								        	var nrecs = self.nsel[key]? self.nsel[key] : 0 ; 
@@ -985,7 +1012,11 @@
 								      		d3.select("#slbut-"+self.id).style("fill", "grey"); 
 								     
 								     }
-							      });
+							      })
+							      .attr("id", function(d,i){
+							    	rcount++;
+							    	return "p"+i+"-"+parseInt(rcount / y01z[0].length); 
+							    });
 
 							    rect.transition()
 								    .delay(function(d, i) { return i * 10; })
@@ -1059,7 +1090,7 @@
 								      //.attr("transform", "rotate(-90)")
 								     .attr("transform", "rotate(-90)")
 								      .attr("y", width-5)
-								      .attr("x",0 -  margin.top/2 )
+								      .attr("x",0 - (height/2)- margin.top )
 								      .attr("dy", "1em")
 								      .style("text-anchor", "middle")
 								      .style("font-size", "9pt")
@@ -1186,10 +1217,13 @@ var duration = 250;
 						  rect.transition()
 						      .duration(200)
 						      .delay(function(d, i) { return i * 10; })
-						      .attr("y", function(d) { return y(d[1]); })
-						      .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+						      .attr("y", function(d) { 
+						      	return y(d[1]); })
+						      .attr("height", function(d) { 
+						      	return y(d[0]) - y(d[1]); })
 						    .transition()
-						      .attr("x", function(d, i) { return x(xz[i]); })
+						      .attr("x", function(d, i) { 
+						      	return x(xz[i]); })
 						      .attr("width", x.bandwidth());
 						}
 
@@ -1351,7 +1385,7 @@ var duration = 250;
 							x.domain(data.map(function(d){
 									return d.date; 
 							}));
-							y.domain([0, d3.max(data, function(d){ return d.number; })]);
+							y.domain([0, self.yMax]);
 							
 							// update svg width and height
 							var iter = self.iter; 
@@ -1442,7 +1476,7 @@ var duration = 250;
 							 {	
 							     // y-axis labels
 							     self.parent.svg.select(".ylabel")
-								      .attr("x",0 - (height) - margin.top/2 );
+								      .attr("x",0 - (height/2) - margin.top );
 								      
 								 // x-axis labels
 								 /*self.parent.svg.select(".xlabel"+self.id)             

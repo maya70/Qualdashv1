@@ -12,7 +12,7 @@ $Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
                           "patientIdVar": "1.02 Patient case record number", 
                           "unitIdVar": "1.01 Hospital identifier",
                           "admissionDateVar": "3.06 Date/time arrival at hospital",
-                          "yearVar": "admYear",
+                          "yearVar": "adyear",
                           "dischargeDateVar": "4.01 Date of discharge",
                           "dischargeStatusVar": "4.16 Discharge destination"
                         } };
@@ -64,16 +64,43 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                                             }, 
                             "unplannedextubation": {"1": "yes", "0": "no"}
                             },
-                "minap":{ 
+                "minap":{ "1.07 Patient gender": {
+                              "0": "Not known",
+                              "1": "Male",
+                              "2": "Female", 
+                              "9": "Not specified"  
+                              },
+                          "1.09 Patient admin status": {
+                            "1": "NHS",
+                            "2": "Private", 
+                            "3": "Amenity", 
+                            "9": "Unknown" 
+                          },
+                          "1.13 Patient ethnicity": {
+                            "1": "White", 
+                            "2": "Black", 
+                            "3": "Asian", 
+                            "5": "Mixed", 
+                            "6": "Not stated",
+                            "8": "Other", 
+                            "9": "Unknown"
+                          },
+                          "2.01 Initial diagnosis": {
+                            "1": "Definite myocardial infarction",
+                            "3": "Acute coronary syndrome", 
+                            "4": "Chest pain cause", 
+                            "5": "Other initial diagnosis"
+                          },
                           "2.02 Method of admission": {
                                 "1": "Direct Emergency",
                                 "2": "Self-presenter",
-                                "3": "Alredy in Hospital",
+                                "3": "Already in Hospital",
                                 "4": "Transfer",
                                 "5": "Repatriation",
                                 "6": "Other",
                                 "9": "Unknown"
-                          },
+                          }
+
 
                         }
                       };

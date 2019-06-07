@@ -60,6 +60,9 @@
 									for(var year in data){
 										self.numYears++; 
 										result.push({'name': year, 'values': []});
+										self.months.forEach(function(month){
+											result[result.length-1]['values'].push({'date': month, 'value': 0});
+										});
 										for(var quarter in data[year]){
 											for(var mon in data[year][quarter]){
 												var sum = 0; 
@@ -67,9 +70,10 @@
 													sum += data[year][quarter][mon][week][yvar]; 
 												}
 												var temp = {};
-												temp['date'] = self.months[parseInt(mon)-1];
-												temp['value'] = sum; 
-												result[result.length-1]['values'].push(temp); 
+												//temp['date'] = self.months[parseInt(mon)-1];
+												//temp['value'] = sum; 
+												//result[result.length-1]['values'].push(temp); 
+												result[result.length-1]['values'][parseInt(mon)-1]['value'] = sum; 
 											}
 										}
 									}
@@ -96,6 +100,9 @@
 								
 								for(var year in data){
 									self.numYears++; 
+									self.monthLabels.forEach(function(month){
+										result.push({'Year': year , 'Month': month , 'Number': 0 });
+									});
 									for(var quar in data[year]){
 										for(var mon in data[year][quar]){
 											//thisYearInMonths.push(data[year][quar][mon]);
@@ -103,11 +110,14 @@
 											for(var week in data[year][quar][mon]){
 												sum += data[year][quar][mon][week][yvar]; 
 											}
-										var temp = {};
-										temp['Year'] = year;
-										temp['Month'] = self.monthLabels[parseInt(mon)-1];
-										temp['Number'] = sum; 
-										result.push(temp);
+
+										//var temp = {};
+										//temp['Year'] = year;
+										//temp['Month'] = self.monthLabels[parseInt(mon)-1];
+										//temp['Number'] = sum; 
+										//result.push(temp);
+										var idx = (self.numYears-1) * self.monthLabels.length + parseInt(mon)-1; 
+										result[idx]['Number'] = sum; 
 
 										}
 									}
