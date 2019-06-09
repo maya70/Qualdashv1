@@ -408,7 +408,7 @@
 "407",153856,"2012-11-08","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
 "408",153856,"2012-11-08","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
 "409",154511,"2012-11-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
-"410",156449,"2012-02-29",NA,NA,NA,NA,1,"Invasive only",NA,NA,194281
+"410",156449,"2012-02-29","",NA,NA,NA,1,"Invasive only",NA,NA,194281
 "411",156638,"2012-07-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
 "412",157140,"2012-09-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
 "413",157140,"2012-09-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
@@ -652,11 +652,11 @@
 "651",223020,"2012-06-10","High Dependency",NA,0,0,1,"Non-invasive only",0,0,194281
 "652",223020,"2012-06-10","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
 "653",223020,"2012-06-10","High Dependency",NA,0,0,1,"Non-invasive only",0,0,194281
-"654",223311,"2012-03-01",NA,NA,NA,NA,NA,"Neither",NA,NA,194281
+"654",223311,"2012-03-01","",NA,NA,NA,NA,"Neither",NA,NA,194281
 "655",224323,"2012-05-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
 "656",224323,"2012-05-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
 "657",224323,"2012-05-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
-"658",225035,"2012-04-24",NA,NA,NA,NA,2,"Neither",NA,NA,194281
+"658",225035,"2012-04-24","",NA,NA,NA,2,"Neither",NA,NA,194281
 "659",225052,"2012-01-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
 "660",225052,"2012-01-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
 "661",225052,"2012-01-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
@@ -708,7 +708,7 @@
 "707",235962,"2012-11-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
 "708",235962,"2012-11-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
 "709",235962,"2012-11-12","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
-"710",237998,"2012-01-17",NA,NA,NA,NA,1,"Invasive only",NA,NA,194281
+"710",237998,"2012-01-17","",NA,NA,NA,1,"Invasive only",NA,NA,194281
 "711",239776,"2012-09-27","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
 "712",239776,"2012-09-27","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
 "713",239776,"2012-09-27","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281

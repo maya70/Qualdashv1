@@ -222,7 +222,7 @@
 "221",96001,"2013-03-08","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
 "222",96006,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
 "223",96006,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
-"224",97163,"2013-04-11",NA,NA,NA,NA,1,"Neither",NA,NA,194281
+"224",97163,"2013-04-11","",NA,NA,NA,1,"Neither",NA,NA,194281
 "225",97330,"2013-06-22","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
 "226",97330,"2013-06-22","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
 "227",98471,"2013-04-21","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
@@ -454,7 +454,7 @@
 "453",149320,"2013-06-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
 "454",149320,"2013-06-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
 "455",149320,"2013-06-25","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
-"456",149420,"2013-07-25",NA,NA,NA,NA,2,"Neither",NA,NA,194281
+"456",149420,"2013-07-25","",NA,NA,NA,2,"Neither",NA,NA,194281
 "457",150653,"2013-04-17","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
 "458",150653,"2013-04-17","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
 "459",150653,"2013-04-17","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281

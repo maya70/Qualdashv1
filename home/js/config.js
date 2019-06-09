@@ -47,7 +47,7 @@ $Q.Picanet = {
                         "legend": ["Admissions", "Deaths in unit"],
                         "yaggregates": ["count", "count", "runningAvg"], 
                         "yfilters": {"eventidscr": {"where": "*"},      
-                                     "unitdisstatus":{"where": "unitdisstatus", "sign": "=", "value":"2", "valid":["1", "9"], "countexisting": {"unitdisdate":""}}
+                                     "unitdisstatus":{"where":{ "unitdisstatus": "2" }, "valid":["1", "9"], "countexisting": {"unitdisdate":""}}
                                      },                                                
                         "xType": "t",
                         "yType": ["q", "q", "q"],  
@@ -134,6 +134,7 @@ $Q.Minap = {
                       "der_angioTarget": "DTA Not meeting target",
                       "der_ctbTargetMet": "Met target",
                       "der_ctb": "Avgerage CTB",
+                      "der_bedDays": "Bed Days", 
                       "der_dtb": "Door-to-Balloon"
                       }, 
     "displayVariables": [
@@ -144,23 +145,25 @@ $Q.Minap = {
                         "x": "3.06 Date/time arrival at hospital",
                         "y": ["1.02 Patient case record number", "4.04 Death in hospital"], 
                         "yaggregates": ["count", "sum"], 
-                        "yfilters": {"1.02 Patient case record number": {"where": "4.04 Death in hospital", "sign": "=", "value": "0", "valid": ["1"]}, 
-                                     "4.04 Death in hospital": {"where": "4.04 Death in hospital", "sign": "=", "value": "1", "valid": ["0"]}
+                        "yfilters": {"1.02 Patient case record number": {"where": {"4.04 Death in hospital":"0"},
+                                                                         "valid": ["1"]}, 
+                                     "4.04 Death in hospital": {"where": {"4.04 Death in hospital": "1"}, 
+                                                                "valid": ["0"]}
                                       },
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "xspan": "year",    
                         "yspan": "unit",  
-                        "ylabel": "PCI admissions",                        
+                        "ylabel": "All admissions",                        
                         "tspan": 3,                           
                         "granP": ["unit", "unit"], 
                         "ehr": "Admissions",
                         "legend": ["Alive", "Deceased"],
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["2.01 Initial diagnosis", "2.02 Method of admission"],      
-                        "quantities": [{"q":"4.04 Death in hospital", "granT": "admonth", "granP":["unit"], "yaggregates": "count" },
-                                        {"q":"1.02 Patient case record number","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "average" }
+                        "quantities": [
+                                        //{"q":"1.02 Patient case record number","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["1.02 Patient case record number", "4.04 Death in hospital"] }   // the first element holds the master view's granT                                             
           
@@ -168,27 +171,29 @@ $Q.Minap = {
                         {  
                         "metric": "Call-to-Balloon",                      
                         "mark": "bar", // should remove this 
-                        "chart": "grouped",
+                        "chart": "stacked",
                         "x": "3.06 Date/time arrival at hospital",
-                        "y": [ "2.01 Initial diagnosis", "der_ctbTarget"], 
+                        "y": [ "1.02 Patient case record number", "2.01 Initial diagnosis"], 
                         "yaggregates": ["count", "count"], 
-                        "yfilters": {"2.01 Initial diagnosis": {"where": "2.01 Initial diagnosis", "sign": "=", "value": "1"}, 
-                                     "der_ctbTarget": {"where": "*"}
+                        "yfilters": {"1.02 Patient case record number": {"where": {"2.01 Initial diagnosis": "1"}, 
+                                                                                  "3.10 Delay before treatment": "0" },//"2.01 Initial diagnosis", "sign": "=", "value": "1"}, 
+                                     "2.01 Initial diagnosis": {"where": { "2.01 Initial diagnosis":  "1",
+                                                                          "3.10 Delay before treatment": "1"}}
                                       },
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "xspan": "year",    
                         "yspan": "unit",  
-                        "ylabel": "Num. Records",                        
+                        "ylabel": "PCI Patients",                        
                         "tspan": 3,                           
                         "granP": ["unit", "unit"], 
                         "ehr": "Admissions",
-                        "legend": ["PCI Patients", "Not meeting target"],
+                        "legend": ["Meeting Target", "Not meeting target"],
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["2.02 Method of admission", "Patient District Number"],      
                         "quantities": [
-                                        {"q":"2.01 Initial diagnosis","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"der_ctbTargetMet", "granT": "admonth", "granP":["unit"], "yaggregates": "percent"}, 
+                                       // {"q":"2.01 Initial diagnosis","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        //{"q":"der_ctbTargetMet", "granT": "admonth", "granP":["unit"], "yaggregates": "percent"}, 
                                          {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ],                                                               
                         "granT": {"monthly-annual": [ "2.01 Initial diagnosis", "der_ctbTarget"] }             

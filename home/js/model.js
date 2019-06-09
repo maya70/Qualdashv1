@@ -482,47 +482,49 @@
                             else if(vname === "bedDays"){
                                 if(!self.excessDays)  // record bed days for additional months if the 
                                         self.excessDays = {};  // admission and discharge are not in the same month
-                                    
+                                var timeElement = self.audit === "picanet"? 0 : 1; 
                                 var one_day = 1000*60*60*24;  
-                                var d1 = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]).getTime(),
+                                var d1 = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement).getTime(),
                                     m1 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]);
-                                var d2 = self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getTime(),
+                                var d2 = self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]], timeElement).getTime(),
                                     m2 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
 
                                 if(isNaN(d1) || isNaN(d2))
                                     self.recordMissing(metric, "der_"+vname, rec);   
 
-                                var dayCount = Math.round(Math.abs( d1 - d2)/one_day*10)/10;   
+                                var dayCount = Math.ceil(Math.abs(d1 - d2)/one_day*10)/10;   
 
-                                if(mainview && m1 !== m2){
+                                if(m1 !== m2){
                                     // toss days to the following months (after admission month)
                                     for(var m= m2+1; m <= m1; m++){ 
                                         var span =0; 
 
                                         // did discharge happen in this month?                                        
                                         if(m === m1){
-                                            var lastDayPrevMon = new Date(self.year, m, 0);
-                                            span = Math.round(Math.abs(d1 - lastDayPrevMon.getTime())/one_day*10)/10;     
+                                            var lastDayPrevMon = new Date(self.year, (m-1), 0);
+                                            var disDate = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement); 
+                                            var ss = disDate - lastDayPrevMon; 
+                                            span = Math.ceil(Math.abs(d1 - lastDayPrevMon.getTime())/one_day);     
                                         }
                                         else{
                                             // patient was in hospital throughout this whole month
                                          var firstDay = new Date(self.year, m, 0); //self.stringToDate("1/"+m+"/"+self.year).getTime();
                                          var lastDay = new Date(self.year, (m+1), 0); //self.stringToDate("1/"+(m+1)+"/"+self.year).getTime();
-                                         span = Math.round(Math.abs(lastDay.getTime() - firstDay.getTime())/one_day*10)/10;
+                                         span = Math.round(Math.abs(lastDay.getTime() - firstDay.getTime())/one_day);
                                         }
                                         if(rec[$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                             {                                           
                                             if(!self.excessDays[m])
                                                 self.excessDays[m] = {};
                                             if(!self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]])
-                                                self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]] = [];
-                                            self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]].push(span); 
+                                                self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]] =  span; //[];
+                                            //self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]].push(span); 
                                             }
 
                                     }                                    
                                     // record bed days from admission day to the end of admission month only
-                                    var dd = new Date(self.year, (m2+1), 0);
-                                    dayCount = Math.round(Math.abs(dd.getTime() - d2)/one_day*10) / 10;
+                                    var dd = new Date(self.year, m2, 0);
+                                    dayCount = Math.ceil(Math.abs(dd.getTime() - d2)/one_day);
                                 }
                                 
                                 return dayCount;
@@ -727,6 +729,7 @@
                         stringToDate: function(str, timeElement){
                             var self = this;
                             var time, timeParts, hour, minute, second;
+                            
                             var strings = str.split(" ");
                             var date = strings[0];
                                 time = strings[1];
@@ -929,17 +932,66 @@
                                 }
                                 else{
                                     var criterion = yfilters['where'];
-                                    var value = yfilters['value']; 
-                                    if(yfilters['sign'] === '='){
-                                        if(rec[criterion] === value)
-                                            return 1;
+                                    var count = 0; 
+                                    var arrvals = [];
+
+                                    for(var ckey in criterion){
+                                        count++;
+                                        var value = criterion[ckey];
+                                        if(rec[ckey] === value){
+                                            vval = 1; //(yaggregates === "count")? 1 : value; 
+                                            //return vval;
+                                        }
                                         else {
-                                            var val = rec[criterion];
+                                            var val = rec[ckey];
                                             if(yfilters['valid'] && yfilters['valid'].indexOf(val) < 0)
                                                 self.recordMissing(metric, vname, rec);
-                                            return 0; 
+                                            vval = 0; 
+                                            //return 0; 
                                         }
-                                    } // end case when sign: '='
+                                       arrvals.push(vval);
+                                    }
+                                    if(yfilters['operator']){
+                                        var res; 
+                                        switch(yfilters['operator']){
+                                            case 'AND':{
+                                                res = 1; 
+                                                arrvals.forEach(function(v){
+                                                    if(v === 0){
+                                                        res = 0; 
+                                                        break;                                                         
+                                                    }
+                                                });
+                                                break;
+                                            }
+                                            case 'OR': {
+                                                res = 0; 
+                                                arrvals.forEach(function(v){
+                                                    if(v === 1){
+                                                        res = 1; 
+                                                        break;                                                         
+                                                    }
+                                                });
+                                                break; 
+                                            }
+                                            default: {  // default to AND
+                                                res = 1; 
+                                                arrvals.forEach(function(v){
+                                                    if(v === 0){
+                                                        res = 0; 
+                                                        break;                                                         
+                                                    }
+                                                });
+                                                break;
+                                            }
+
+                                        }
+
+                                    }
+                                    else{
+                                        return arrvals[0]; 
+                                    }
+                                    
 
                                 }
                                 if(isNaN(vval)){
@@ -1267,6 +1319,15 @@
                                                           
                             
                         },
+                        recordIncluded: function(dict, mon, displayVar, i){
+                            var self = this;
+                            var found = 0; 
+                            displayVar.forEach(function(yvar){
+                                if(dict[mon][yvar]["data"].indexOf(i) >= 0)
+                                    found = 1; 
+                            });
+                            return found; 
+                        },
                         applyMultiQ: function(displayObj, displayId, data, redraw){
                             var self = this;
                             var dict = {};
@@ -1311,7 +1372,7 @@
                                 **/
                                //var mon = self.audit === "picanet"? self.data[i][dateVar] : self.stringToMonth(self.data[i][dateVar]); 
                                var mon = self.stringToMonth(self.data[i][dateVar]);
-                                
+                               var vval; 
 
                                 if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
                                     self.recordEHR(self.data[i], i, metric);                                
@@ -1320,7 +1381,7 @@
                                 // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                 displayVar.forEach(function(yvar, id){
                                         //var vname;
-                                        var vval = parseFloat(self.computeVar(yvar, displayObj, self.data[i], id, displayId, 1));
+                                        vval = parseFloat(self.computeVar(yvar, displayObj, self.data[i], id, displayId, 1));
                                         self.setDerivedValue(displayId, i, yvar, vval);
                                         /*if(yvar === "der_death"){
                                             if(!observedDeathsNational[self.data[i][dateVar]])
@@ -1350,14 +1411,15 @@
 
                                 // setup data aggregates for slave categories (this unit only)
                                 if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
-                                        slaves['cats'].forEach(function(cat){
-                                            // get the current rec's level of this categorical
-                                            var lev = self.data[i][cat];
-                                            if(!slaves['data'][cat])
-                                                slaves['data'][cat] = {};
-                                            if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
-                                            slaves['data'][cat][lev].push(i);  
-                                         });
+                                    slaves['cats'].forEach(function(cat){
+                                        // get the current rec's level of this categorical
+                                        var lev = self.data[i][cat];
+                                        if(!slaves['data'][cat])
+                                            slaves['data'][cat] = {};
+                                        if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
+                                        if(self.recordIncluded(dict, mon, displayVar, i)) slaves['data'][cat][lev].push(i);  
+                                     });
+                                
                                     }
                                     // setup quantitative slaves
                                     slaves['quants'].forEach(function(quant, sid){
@@ -1371,19 +1433,19 @@
                                                 slaves['data'][quant['q']] = {}; 
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] =  {};
-                                            if(!slaves['data'][quant['q']][mon]['national'])
+                                            if(!slaves['data'][quant['q']][mon]['national'] && self.recordIncluded(dict, mon, displayVar, i))
                                                 slaves['data'][quant['q']][mon]['national'] = qval;
                                                 
-                                            else{
+                                            else if(self.recordIncluded(dict, mon, displayVar, i)) {
                                                 slaves['data'][quant['q']][mon]['national'] += qval;
                                                 ////console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                             }
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
-                                            if(!slaves['data'][quant['q']][mon]['unit'])
+                                            if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(dict, mon, displayVar, i))
                                                 slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
                                                                                                             (quant['yaggregates']==="count"? 1: qval) : 0;                                               
-                                            else
+                                            else if(self.recordIncluded(dict, mon, displayVar, i))
                                                 slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
                                                                                                             (quant['yaggregates']==="count"? 1: qval) : 0;
                                             
@@ -1391,12 +1453,12 @@
                                             if(!slaves['data'][quant['q']][mon]['data'])
                                                 slaves['data'][quant['q']][mon]['data'] = [];
                                             
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(dict, mon, displayVar, i))
                                                 slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             // check if we need nultiple time granularities for this
                                             // only update the time hierarchy if this variable wasn't already setup in the hierarchy by the main view
-                                            if(displayVar.indexOf(quant['q']) < 0)
+                                            if(displayVar.indexOf(quant['q']) < 0 && self.recordIncluded(dict, mon, displayVar, i))
                                                 self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);  
                                             //self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval);                                               
                                         }
@@ -1590,7 +1652,7 @@
                                 }
                                 return result;
                             } // if(metric === "48h Readmission")
-                            else if(metric === "Bed Days and Extubation"){
+                            /*else if(metric === "Bed Days and Extubation"){
                                 //console.log(dict);
                                 //console.log(self.excessDays);
                                 for(var key in dict){
@@ -1598,9 +1660,22 @@
                                     for(var kk in self.excessDays[key])
                                        result['dict'][key]['der_bedDays']['value'] += self.excessDays[key][kk][0];
                                 }
-                            }
+                            }*/
                             else{
                                 //console.log(result);
+                                // postprocess for bed days (if we're counting them in a main view)
+                                for(var key in dict){
+                                   if(result['dict'][key]['der_bedDays'] && self.excessDays[key])
+                                    for(var kk in self.excessDays[key])
+                                       result['dict'][key]['der_bedDays']['value'] += self.excessDays[key][kk];
+                                }
+                                // postprocess for bed days (if we're counting them in a subview)
+                                for(var key in dict){
+                                   if(result['slaves']['data']['der_bedDays'] && self.excessDays[key])
+                                    for(var kk in self.excessDays[key])
+                                       result['slaves']['data']['der_bedDays'][key]['unit'] += self.excessDays[key][kk];
+                                }
+                                
                                 // calculate averages (if any)
                                 slaves['quants'].forEach(function(q){
                                     if(q['yaggregates'] === "average"){

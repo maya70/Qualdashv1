@@ -316,29 +316,17 @@
 							$(document).on('click', '#quantity-but'+viewId, function(){
 								//self.control.addBtnClick();
 								var outQs = [];
-								var movedItems = [];
-								if(self.justMoved && self.justMoved[viewId]){
-									self.justMoved[viewId].each(function(item){
-										movedItems.push($(this).val()); 
-									});
-									console.log(movedItems); 
-								}
-								var inQsel = $("#qvar-in"+viewId+" option");
 								var outQsel = $("#qvar-out"+viewId+" option").each(function(opt){
 									var vv = $(this).val();
-									if(outQs.indexOf(vv)<0 && movedItems.indexOf(vv)<0)
-									//if(outQs.indexOf(vv)<0)
-										outQs.push(vv);
+									outQs.push(vv);
 								});								
 								var cardQs = self.control.getCardQs(viewId);
-								
-
 								console.log(outQs); 
-								/*for(var iter = 0; iter < cardQs.length; iter++){
-									var index = outQs.length-1;
-									outQs.splice(index, 1);
-								}*/
-								
+								for(var iter = 0; iter < cardQs.length; iter++){
+										var index = outQs.length-1;
+										outQs.splice(index, 1);
+									}
+								console.log(outQs); 
 								var selectionSize =  $('#qvar-out'+viewId).has('option').length; 
 								if( selectionSize > 0 && outQs.length < 6 ) {						
 								
