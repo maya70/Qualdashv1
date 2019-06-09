@@ -226,7 +226,7 @@
                                                         self.recordEHR(data[d], d , metric, yearupdated);
                                                         var qobj = self.getQObject(qname, v); 
                                                         if(qobj){
-                                                                var qval = parseFloat(self.computeVar(qname, qobj, data[d], 0, 0)) ; 
+                                                                var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, 0)) ; 
                                                                 self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
                                                             }
                                                     });
@@ -260,7 +260,7 @@
                                                         self.recordEHR(data[d], d , metric, yearupdated);
                                                         var qobj = self.getQObject(qname, v); 
                                                         if(qobj){
-                                                                var qval = parseFloat(self.computeVar(qname, qobj, data[d], 0, 0)) ; 
+                                                                var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, 0)) ; 
                                                                 self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
                                                             }
                                                     });
@@ -364,7 +364,7 @@
                                 
                                 slaves['quants'].forEach(function(quant, sid){
                                     if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
-                                            var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid, viewId)) ; 
+                                            var qval = parseFloat(self.computeVar(i, quant['q'], quant, self.data[i], sid, viewId)) ; 
                                             var mon = self.stringToMonth(self.data[i][dateVar]);
 
                                             if(!slaves['data'][quant['q']])
@@ -405,7 +405,10 @@
                             for(var key in slaves['data']){
                                 if(!self.slaves[viewId]['data'][key])
                                     self.slaves[viewId]['data'][key] = slaves['data'][key];
-                            }                              
+                                //if(self.derivedLookup[key]) // if derived value take the postprocessed version of it
+                                  //  self.slaves[viewId]['data'][key] = self.derivedLookup[key];
+                            }        
+
                             self.control.updateDataViews(viewId, self.slaves);
 
                         },
@@ -905,13 +908,14 @@
                             var comps = auditVars['displayVariables'][viewId]['combinations'];
                             return comps;
                         },*/
-                        computeVar: function(yvar, displayObj, rec, sid, viewId, mainview){
+                        computeVar: function(i, yvar, displayObj, rec, sid, viewId, mainview){
                             var self = this;
                             var vname;
                             var vval;
                             var isDerived = false; 
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
                             var dateVar = auditVars['x'];
+                            var mon = self.stringToMonth(rec[dateVar]);
                             var yfilters =  auditVars['yfilters'][yvar]; 
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][sid] : displayObj["yaggregates"] ;
                             var metric = displayObj["metric"];
@@ -1014,7 +1018,26 @@
                                 vname = strs[1];
                                 var derval = self.getDerivedValue(vname, rec, mainview, metric);                                
                                 vval = (yaggregates === "count")? ((derval>0)? 1: 0) 
-                                            : derval;  
+                                            : derval; 
+                                if(vval>0) {
+                                    if(!self.derivedLookup)
+                                        self.derivedLookup = {};
+                                    if(!self.derivedLookup[yvar])
+                                        self.derivedLookup[yvar] = {}; 
+
+                                    if(!self.derivedLookup[yvar]['updatedOnce']){    
+                                        if(!self.derivedLookup[yvar][mon]) 
+                                            self.derivedLookup[yvar][mon] = {};
+                                        if(!self.derivedLookup[yvar][mon]['value'])
+                                          self.derivedLookup[yvar][mon]['value'] = vval;
+                                        else
+                                            self.derivedLookup[yvar][mon]['value'] += vval; 
+                                        if(!self.derivedLookup[yvar][mon]['data'])
+                                            self.derivedLookup[yvar][mon]['data'] = [];
+                                        self.derivedLookup[yvar][mon]['data'].push(i); 
+                                    }
+
+                                }
                             }
                             return vval; 
 
@@ -1073,6 +1096,7 @@
                             var isDerived = false; 
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][0] ;
                             var dateVar = auditVars['x'];
+
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][0] : displayObj["yaggregates"] ;
                             var metric = displayObj['metric'];
 
@@ -1151,7 +1175,7 @@
                         variableInData: function(newvar){
                             var self = this;
                             var vars = Object.keys(self.data[0]);
-                            if(vars.indexOf(newvar) >=0)
+                            if(vars.indexOf(newvar) >=0 && newvar.indexOf("_")<0) // disable derived variables from being added for now
                                 return true;
                             return false; 
 
@@ -1162,6 +1186,7 @@
                             var tHier = {}; 
                             var metric = displayObj["metric"],
                                 dateVar = displayObj["x"],
+                                mon = self.stringToMonth(self.data[i][dateVar]),
                                 displayVar = displayObj["y"],
                                 categoricals = displayObj["categories"],
                                 yType = displayObj["yType"],
@@ -1212,13 +1237,13 @@
                                             {
                                             
                                             // update x-bin                                                       
-                                            if(!dict[self.data[i][dateVar]][group]["value"])
-                                                dict[self.data[i][dateVar]][group]["value"] = 0;                                             
-                                            dict[self.data[i][dateVar]][group]["value"] += vval;
+                                            if(!dict[mon][group]["value"])
+                                                dict[mon][group]["value"] = 0;                                             
+                                            dict[mon][group]["value"] += vval;
 
-                                            if(!dict[self.data[i][dateVar]][group]["data"])
-                                                dict[self.data[i][dateVar]][group]["data"] = [];
-                                            if(vval > 0) dict[self.data[i][dateVar]][group]["data"].push(i); 
+                                            if(!dict[mon][group]["data"])
+                                                dict[mon][group]["data"] = [];
+                                            if(vval > 0) dict[mon][group]["data"].push(i); 
 
                                             // setup combo slaves
                                            /* slaves['combo'].forEach(function(combo, sid){
@@ -1262,32 +1287,32 @@
                                         // if we need national data
                                         if(quant['granP'].constructor == Array || quant['granP'] === "national"){
                                             subYlength = 2; 
-                                            var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid, displayId)) ; 
+                                            var qval = parseFloat(self.computeVar(i, quant['q'], quant, self.data[i], sid, displayId)) ; 
 
                                             if(!slaves['data'][quant['q']])
                                                 slaves['data'][quant['q']] = {}; 
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]] =  {};
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['national'])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['national'] = qval;
+                                            if(!slaves['data'][quant['q']][mon])
+                                                slaves['data'][quant['q']][mon] =  {};
+                                            if(!slaves['data'][quant['q']][mon]['national'])
+                                                slaves['data'][quant['q']][mon]['national'] = qval;
                                                 
                                             else{
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['national'] += qval;
+                                                slaves['data'][quant['q']][mon]['national'] += qval;
                                                 ////console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                             }
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]] = {};
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['unit'])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                            if(!slaves['data'][quant['q']][mon])
+                                                slaves['data'][quant['q']][mon] = {};
+                                            if(!slaves['data'][quant['q']][mon]['unit'])
+                                                slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
                                             else
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                                slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                             
                                             
-                                            if(!slaves['data'][quant['q']][self.data[i][dateVar]]['data'])
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['data'] = [];
+                                            if(!slaves['data'][quant['q']][mon]['data'])
+                                                slaves['data'][quant['q']][mon]['data'] = [];
                                             
                                             if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
-                                                slaves['data'][quant['q']][self.data[i][dateVar]]['data'].push(i);
+                                                slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             
                                         }
@@ -1381,7 +1406,7 @@
                                 // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                 displayVar.forEach(function(yvar, id){
                                         //var vname;
-                                        vval = parseFloat(self.computeVar(yvar, displayObj, self.data[i], id, displayId, 1));
+                                        vval = parseFloat(self.computeVar(i, yvar, displayObj, self.data[i], id, displayId, 1));
                                         self.setDerivedValue(displayId, i, yvar, vval);
                                         /*if(yvar === "der_death"){
                                             if(!observedDeathsNational[self.data[i][dateVar]])
@@ -1427,7 +1452,7 @@
                                         // if we need national data
                                         if(quant['granP'].constructor == Array || quant['granP'] === "national"){
                                             subYlength = 2; 
-                                            var qval = parseFloat(self.computeVar(quant['q'], quant, self.data[i], sid, displayId)) ; 
+                                            var qval = parseFloat(self.computeVar(i, quant['q'], quant, self.data[i], sid, displayId)) ; 
                                             self.setDerivedValue(displayId, i, quant['q'], qval);
                                             if(!slaves['data'][quant['q']])
                                                 slaves['data'][quant['q']] = {}; 
@@ -1650,7 +1675,7 @@
                                        
                                      }
                                 }
-                                return result;
+                              //  return result;
                             } // if(metric === "48h Readmission")
                             /*else if(metric === "Bed Days and Extubation"){
                                 //console.log(dict);
@@ -1759,8 +1784,29 @@
                                     }
                                 });    
                                 //console.log(result);
-                                return result; 
+                                // update global derived lookup structure here
+                                for(var key in self.derivedLookup){
+                                  if(!self.derivedLookup[key]['updatedOnce']){
+                                    var updatedDictElements = Object.keys(result['dict']['1']);
+                                    var updatedSlaves = Object.keys(result['slaves']['data']);
+                                    if(updatedDictElements.indexOf(key) >= 0){
+                                        for(var mon in result['dict']){
+                                            if(self.derivedLookup[key] && self.derivedLookup[key][mon])
+                                                self.derivedLookup[key][mon]['value'] = result['dict'][mon][key]['value'];
+                                        }
+                                    }
+                                    else if(updatedSlaves.indexOf(key) >=0){
+                                        for(var mon in result['slaves']['data'][key]){
+                                            if(self.derivedLookup[key] && self.derivedLookup[key][mon])
+                                                self.derivedLookup[key][mon]['value'] = result['slaves']['data'][key][mon]['unit']; 
+                                        }
+                                    }
+                                    self.derivedLookup[key]['updatedOnce'] = 1; 
+                                  }
+                                }
+                               
                             } 
+                             return result; 
                         },
                         getRecordQuarter: function(rec){
                             var self = this; 
