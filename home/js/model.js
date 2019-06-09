@@ -9,7 +9,7 @@
                         self.ehr = {};  // keeps a dictionary by patient NHS number for patient pathway calculations (including 48h readmission)
                         self.ehrHist = {};
                         self.slaves = {};
-                        
+                        self.dicts = {}; 
                         self.cardCats = []; 
                         self.cardQs = []; 
                         self.missing = {}; 
@@ -316,8 +316,10 @@
                             var slaves = {};
                             slaves['cats'] = newcats; 
                             slaves['data'] = {};
-
+                            var dateVar = self.dateVars[viewId];
+                            
                             for(var i=0; i < self.data.length; i++){
+                                var mon = self.stringToMonth(self.data[i][dateVar]);
                                 // setup data aggregates for slave categories (this unit only)
                                 if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
                                         slaves['cats'].forEach(function(cat){
@@ -326,7 +328,9 @@
                                             if(!slaves['data'][cat])
                                                 slaves['data'][cat] = {};
                                             if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
-                                             slaves['data'][cat][lev].push(i);  
+                                            
+                                            //if(self.recordIncluded(self.dicts[viewId], mon, [cat], i, viewId))  
+                                                slaves['data'][cat][lev].push(i);  
                                          });
                                     }
                                 }
@@ -348,6 +352,8 @@
                         setQuantitatives:function(viewId, newQs){
                             var self = this;
                             self.cardQs[viewId] = newQs; 
+                            var dateVar = self.dateVars[viewId];
+                           
                             // update the slaves data structure
                             var slaves = {};
                             slaves['quants'] = []; 
@@ -360,6 +366,8 @@
                             var dateVar = auditVars['x'];
 
                             for(var i=0; i < self.data.length; i++){
+                                 var mon = self.stringToMonth(self.data[i][dateVar]);
+
                                 // setup data aggregates for slave categories (this unit only)
                                 
                                 slaves['quants'].forEach(function(quant, sid){
@@ -373,16 +381,16 @@
                                                 slaves['data'][quant['q']][mon] =  {};
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
-                                            if(!slaves['data'][quant['q']][mon]['unit'])
+                                            if(!slaves['data'][quant['q']][mon]['unit']) // && self.recordIncluded(self.dicts[viewId], mon, [quant], i, viewId))
                                                 slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
-                                            else
+                                            else //if(self.recordIncluded(self.dicts[viewId], mon, [quant], i, viewId))
                                                 slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                             
                                             
                                             if(!slaves['data'][quant['q']][mon]['data'])
                                                 slaves['data'][quant['q']][mon]['data'] = [];
                                             
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID) // && self.recordIncluded(self.dicts[viewId], mon, [quant], i, viewId) )
                                                 slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             //keeping national computations the same for now
@@ -1344,14 +1352,16 @@
                                                           
                             
                         },
-                        recordIncluded: function(dict, mon, displayVar, i){
+                        recordIncluded: function(dict, mon, displayVar, i, viewId){
                             var self = this;
                             var found = 0; 
+                            self.dicts[viewId] = dict;
                             displayVar.forEach(function(yvar){
-                                if(dict[mon][yvar]["data"].indexOf(i) >= 0)
+                                if(dict[mon] && dict[mon][yvar] && dict[mon][yvar]["data"].indexOf(i) >= 0)
                                     found = 1; 
                             });
-                            return found; 
+                            //return found; 
+                            return 1;  // cancel all filters for now
                         },
                         applyMultiQ: function(displayObj, displayId, data, redraw){
                             var self = this;
@@ -1366,6 +1376,11 @@
                                 levels = [],
                                 slaves = {};   
                             
+                            if(!self.dateVars)
+                                self.dateVars = {};
+
+                            self.dateVars[displayId] = dateVar;
+
                             // define levels of the x-axis
                             var xlevels = d3.map(self.data, function(item){
                                                 var res;
@@ -1442,7 +1457,7 @@
                                         if(!slaves['data'][cat])
                                             slaves['data'][cat] = {};
                                         if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
-                                        if(self.recordIncluded(dict, mon, displayVar, i)) slaves['data'][cat][lev].push(i);  
+                                        if(self.recordIncluded(dict, mon, displayVar, i, displayId)) slaves['data'][cat][lev].push(i);  
                                      });
                                 
                                     }
@@ -1458,19 +1473,19 @@
                                                 slaves['data'][quant['q']] = {}; 
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] =  {};
-                                            if(!slaves['data'][quant['q']][mon]['national'] && self.recordIncluded(dict, mon, displayVar, i))
+                                            if(!slaves['data'][quant['q']][mon]['national'] && self.recordIncluded(dict, mon, displayVar, i, displayId))
                                                 slaves['data'][quant['q']][mon]['national'] = qval;
                                                 
-                                            else if(self.recordIncluded(dict, mon, displayVar, i)) {
+                                            else if(self.recordIncluded(dict, mon, displayVar, i, displayId)) {
                                                 slaves['data'][quant['q']][mon]['national'] += qval;
                                                 ////console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                             }
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
-                                            if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(dict, mon, displayVar, i))
+                                            if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(dict, mon, displayVar, i, displayId))
                                                 slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
                                                                                                             (quant['yaggregates']==="count"? 1: qval) : 0;                                               
-                                            else if(self.recordIncluded(dict, mon, displayVar, i))
+                                            else if(self.recordIncluded(dict, mon, displayVar, i, displayId))
                                                 slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
                                                                                                             (quant['yaggregates']==="count"? 1: qval) : 0;
                                             
@@ -1478,12 +1493,12 @@
                                             if(!slaves['data'][quant['q']][mon]['data'])
                                                 slaves['data'][quant['q']][mon]['data'] = [];
                                             
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(dict, mon, displayVar, i))
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(dict, mon, displayVar, i, displayId))
                                                 slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             // check if we need nultiple time granularities for this
                                             // only update the time hierarchy if this variable wasn't already setup in the hierarchy by the main view
-                                            if(displayVar.indexOf(quant['q']) < 0 && self.recordIncluded(dict, mon, displayVar, i))
+                                            if(displayVar.indexOf(quant['q']) < 0 && self.recordIncluded(dict, mon, displayVar, i, displayId))
                                                 self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);  
                                             //self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval);                                               
                                         }
