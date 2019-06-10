@@ -99,9 +99,68 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                                 "5": "Repatriation",
                                 "6": "Other",
                                 "9": "Unknown"
+                          },
+                          "4.05 Discharged on beta blocker": {
+                            "0": "No",
+                            "1": "Yes",
+                            "2": "Contraindicated",
+                            "3": "Patient declined treatment",
+                            "4": "Not applicable", 
+                            "8": "Not indicated",
+                            "9": "Unknown"
+                          },
+                          "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker":{
+                            "0": "No",
+                            "1": "Yes",
+                            "2": "Contraindicated",
+                            "3": "Patient declined treatment",
+                            "4": "Not applicable", 
+                            "8": "Not indicated",
+                            "9": "Unknown"
+                          },
+                          "4.07 Discharged on statin": {
+                            "0": "No",
+                            "1": "Yes",
+                            "2": "Contraindicated",
+                            "3": "Patient declined treatment",
+                            "4": "Not applicable", 
+                            "8": "Not indicated",
+                            "9": "Unknown"
+                          },
+                          "4.08 Discharged on aspirin": {
+                            "0": "No",
+                            "1": "Yes",
+                            "2": "Contraindicated",
+                            "3": "Patient declined treatment",
+                            "4": "Not applicable", 
+                            "8": "Not indicated",
+                            "9": "Unknown"
+                          },
+                          "4.27 Discharged on a thienopyridine inhibitor": {
+                            "0": "No",
+                            "1": "Yes",
+                            "2": "Contraindicated",
+                            "3": "Patient declined treatment",
+                            "4": "Not applicable", 
+                            "8": "Not indicated",
+                            "9": "Unknown"
+                          },
+                          "4.31 Discharged on TIcagrelor (v10.3 Dataset)": {
+                            "0": "No",
+                            "1": "Yes",
+                            "2": "Contraindicated",
+                            "3": "Patient declined treatment",
+                            "4": "Not applicable", 
+                            "8": "Not indicated",
+                            "9": "Unknown"
+                          },
+                          "4.09 Cardiac rehabilitation": {
+                            "0": "No",
+                            "1": "Yes",
+                            "3": "Patient declined",
+                            "8": "Not indicated",
+                            "9": "Unknown"
                           }
-
-
                         }
                       };
 $Q.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];

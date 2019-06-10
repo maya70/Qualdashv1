@@ -430,9 +430,9 @@
 						},
 						createSlaveT: function(slaves, mainsvgW, drawAreaW, ssvgH, xoffset){
 							var self = this;
-							//var tdata = self.parent.control.getHistoryData(); 							
+							
 							var tdata = self.parent.control.getTimeHier(); 
-							console.log(tdata);
+							
 							self.tView = "series";
 							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
 							var span = auditVars['displayVariables'][self.id]['granT'];
@@ -440,7 +440,7 @@
 							//var index = tspan.indexOf("monthly");
 							var tspan = Object.keys(span);
 							//tspan.splice(0, 1);
-							//var tdata = self.parent.control.prepTimeData(tspan[0], self.id, yvar );
+							
 							self.ssvgtdiv =d3.select("#draw-area"+self.id).append("div")	
 											.attr("id", "ssvgtdiv"+self.id)																					
 											.style("max-width", (drawAreaW-20)+"px")

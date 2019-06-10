@@ -117,14 +117,18 @@ $Q.Minap = {
                                               //{"value": "derived_readmission", 
                                                // "text": "48h Readmission"}, 
                                               {"value": "Delay from Call for Help to Reperfusion Treatment", 
-                                              "text": "Call-to-Balloon"},
-                                              {"value": "Delay from Call for Help to Angiogram", 
+                                              "text": "Call-to-Balloon (STEMI Only)"},
+                                              {"value": "Delay from admission at hospital to Angiogram", 
                                               "text": "Door-to-Angio"},
-                                              {"value": "der_reqEcho", 
-                                              "text": "Capacity for Echo"},
-                                              {"value": "Gold Std Drugs",//"Bleeding complications", // TODO: check how to calcul. complication rates 
-                                                "text": "Gold Std Drugs"//"Complications"
-                                              }], 
+                                              //{"value": "der_reqEcho", 
+                                              //"text": "Capacity for Echo"},
+                                              {"value": "Gold Standard Drugs",//"Bleeding complications", // TODO: check how to calcul. complication rates 
+                                                "text": "Gold Standard Drugs"//"Complications"
+                                              }, 
+                                              {"value": "Referral for Cardiac Rehabiliation",
+                                               "text": "Referral for Cardiac Rehabiliation"}], 
+                                              //{"value": "Acute use of Aspirin", 
+                                               //"text": "Acute use of Aspirin"}], 
     "variableDict": {"1.02 Patient case record number": "Admissions",
                       "der_discharge": "Discharges",
                       "der_readmit": "Readmissions",
@@ -169,16 +173,19 @@ $Q.Minap = {
           
                         },
                         {  
-                        "metric": "Call-to-Balloon",                      
+                        "metric": "Call-to-Balloon (STEMI Only)",                      
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 Date/time arrival at hospital",
                         "y": [ "1.02 Patient case record number", "2.01 Initial diagnosis"], 
                         "yaggregates": ["count", "count"], 
-                        "yfilters": {"1.02 Patient case record number": {"where": {"2.01 Initial diagnosis": "1"}, 
-                                                                                  "3.10 Delay before treatment": "0" },//"2.01 Initial diagnosis", "sign": "=", "value": "1"}, 
+                        "yfilters": {"1.02 Patient case record number": {"where": {"2.01 Initial diagnosis": "1", 
+                                                                                  "3.10 Delay before treatment": "0" },
+                                                                          "operator": "AND"
+                                                                                  },
                                      "2.01 Initial diagnosis": {"where": { "2.01 Initial diagnosis":  "1",
-                                                                          "3.10 Delay before treatment": "1"}}
+                                                                          "3.10 Delay before treatment": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"]}, 
+                                                                "operator": "AND"        }
                                       },
                         "xType": "t",
                         "yType": ["q", "q"],  
@@ -196,7 +203,7 @@ $Q.Minap = {
                                         //{"q":"der_ctbTargetMet", "granT": "admonth", "granP":["unit"], "yaggregates": "percent"}, 
                                          {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ],                                                               
-                        "granT": {"monthly-annual": [ "2.01 Initial diagnosis", "der_ctbTarget"] }             
+                        "granT": {"monthly-annual": [ "Meeting Target", "2.01 Initial diagnosis"] }             
           
                         },
                          {  
@@ -229,7 +236,7 @@ $Q.Minap = {
           
                          },
                          {  
-                        "metric": "Gold Std Drugs",
+                        "metric": "Gold Standard Drugs",
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 Date/time arrival at hospital",
@@ -243,14 +250,15 @@ $Q.Minap = {
                                             "4.05 Discharged on beta blocker": "1" , 
                                             "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": "1" ,
                                             "4.07 Discharged on statin": "1" ,
-                                            "4.08 Discharged on aspirin": "1"      
-                            }}, 
+                                            "4.08 Discharged on Aspirin": "1"      
+                            }, "valid": ["0", "2", "3", "4", "8", "9"]}, 
                            "2.02 Method of admission": {"where": {"4.27 Discharged on a thienopyridine inhibitor": "0" ,
                                             "4.31 Discharged on TIcagrelor (v10.3 Dataset)": "0" ,
                                             "4.05 Discharged on beta blocker": "0" , 
                                             "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": "0" ,
                                             "4.07 Discharged on statin": "0" ,
-                                            "4.08 Discharged on aspirin": "0"      }}   
+                                            "4.08 Discharged on Aspirin": "0"      },
+                                          "valid": ["1", "2", "3", "4", "8", "9"]}   
                         }, 
                         "xspan": "year",    
                         "yspan": "unit",  
@@ -260,14 +268,41 @@ $Q.Minap = {
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.02 Method of admission", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
+                        "categories": ["4.05 Discharged on beta blocker", "4.07 Discharged on statin", "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker", "4.27 Discharged on a thienopyridine inhibitor"],      
                         "quantities": [
                                         //{"q":"4.27 Discharged on a thienopyridine inhibitor","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"4.31 Discharged on TIcagrelor (v10.3 Dataset)", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
                                         // {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
                                          {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": [ "1.02 Patient case record number", "2.02 Method of admission" ] }   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": [ "hi", "2.02 Method of admission" ] }   // the first element holds the master view's granT                                             
+          
+                         },
+                          {  
+                        "metric": "Referral for Cardiac Rehabiliation",
+                        "mark": "bar", // should remove this 
+                        "x": "3.06 Date/time arrival at hospital",
+                        "y":  "4.09 Cardiac rehabilitation", 
+                        "yaggregates": [ "count"], 
+                        "xType": "t",
+                        "yType": "n",
+                        "yfilters": {"4.09 Cardiac rehabilitation": {"where": "*", "valid": ["0", "1", "3", "8", "9"] }
+                                      },
+                        "xspan": "year",    
+                        "yspan": "unit",  
+                        "ylabel": "Num. records",                        
+                        "tspan": 3,                           
+                        "granP": [ "unit", "unit"], 
+                        "ehr": "Admissions",
+                        /** Slave Tasks spec begin here **/ 
+                        "categories": ["4.09 Cardiac rehabilitation", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
+                        "quantities": [
+                                        //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
+                                         //{"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
+                                         {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": [ "der_angioTarget", "der_angioNoTarget"] }   // the first element holds the master view's granT                                             
           
                          }
                       

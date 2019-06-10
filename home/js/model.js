@@ -234,7 +234,7 @@
                                             }
                                         }
                                         self.postProcessHistory(yearupdated, "der_readmit" ); 
-                                        //console.log(self.tHier); 
+                                       
 
                                     });
                                 } 
@@ -329,7 +329,7 @@
                                                 slaves['data'][cat] = {};
                                             if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
                                             
-                                            //if(self.recordIncluded(self.dicts[viewId], mon, [cat], i, viewId))  
+                                            if(self.recordIncluded(self.dicts[viewId], mon, i, viewId))  
                                                 slaves['data'][cat][lev].push(i);  
                                          });
                                     }
@@ -381,16 +381,16 @@
                                                 slaves['data'][quant['q']][mon] =  {};
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
-                                            if(!slaves['data'][quant['q']][mon]['unit']) // && self.recordIncluded(self.dicts[viewId], mon, [quant], i, viewId))
+                                            if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(self.dicts[viewId], mon, i, viewId))
                                                 slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
-                                            else //if(self.recordIncluded(self.dicts[viewId], mon, [quant], i, viewId))
+                                            else if(self.recordIncluded(self.dicts[viewId], mon, i, viewId))
                                                 slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                             
                                             
                                             if(!slaves['data'][quant['q']][mon]['data'])
                                                 slaves['data'][quant['q']][mon]['data'] = [];
                                             
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID) // && self.recordIncluded(self.dicts[viewId], mon, [quant], i, viewId) )
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(self.dicts[viewId], mon, i, viewId) )
                                                 slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             //keeping national computations the same for now
@@ -449,7 +449,7 @@
                             }
                             
                         },
-                        recordMissing: function(metric, vname, rec){
+                        recordMissing: function(metric, vname, i){
                             var self = this;
                             var availMetrics = self.audit==='picanet'? $Q.Picanet["availMetrics"] : $Q.Minap["availMetrics"];
                             var metricKey;
@@ -462,18 +462,18 @@
                             if(!self.missing[metric])
                                 self.missing[metric] = {};
                             if(!self.missing[metric][vname])
-                                self.missing[metric][vname] = 1; 
-                            else
-                                self.missing[metric][vname]++; 
+                                self.missing[metric][vname] = []; 
+                            if(self.missing[metric][vname].indexOf(i) <0)
+                                self.missing[metric][vname].push(i); 
                         },
-                        getDerivedValue: function(vname, rec, mainview, metric){
+                        getDerivedValue: function(vname, rec, mainview, metric, i){
                             var self = this;
                             //TODO: use callbacks for variable rules instead of this exhaustive branching
 
                            
                             if(vname === "smr" && self.audit === "picanet"){
                                 if(isNaN(rec["pim3_s"]))
-                                    self.recordMissing(metric, "der_"+vname, rec);
+                                    self.recordMissing(metric, "der_"+vname, i);
                                 return rec["pim3_s"]; 
                             }
                             else if(vname === "discharge"){
@@ -483,7 +483,7 @@
                                 else{
                                     var val = rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]];
                                     if(isNaN(val) || val === "NA" || val === "")
-                                        self.recordMissing(metric, "der_"+vname, rec); 
+                                        self.recordMissing(metric, "der_"+vname, i); 
                                     return 0; 
                                 }
                             }
@@ -501,7 +501,7 @@
                                     m2 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
 
                                 if(isNaN(d1) || isNaN(d2))
-                                    self.recordMissing(metric, "der_"+vname, rec);   
+                                    self.recordMissing(metric, "der_"+vname, i);   
 
                                 var dayCount = Math.ceil(Math.abs(d1 - d2)/one_day*10)/10;   
 
@@ -684,7 +684,7 @@
                                  var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
                                  if(isNaN(tta)){
                                     if(! (rec["4.18 Local angio date"] instanceof Date) || (! (rec["3.02 Date/time of call for help"] instanceof Date)))
-                                        self.recordMissing(metric, vname , rec);
+                                        self.recordMissing(metric, vname , i);
                                      
                                         
                                 }
@@ -961,10 +961,14 @@
                                             vval = 1; //(yaggregates === "count")? 1 : value; 
                                             //return vval;
                                         }
+                                        else if( value.constructor === Array){
+                                            if(value.indexOf(rec[ckey]) >=0)
+                                                vval = 1; 
+                                        }
                                         else {
                                             var val = rec[ckey];
                                             if(yfilters['valid'] && yfilters['valid'].indexOf(val) < 0)
-                                                self.recordMissing(metric, vname, rec);
+                                                self.recordMissing(metric, ckey, i);
                                             vval = 0; 
                                             //return 0; 
                                         }
@@ -977,8 +981,7 @@
                                                 res = 1; 
                                                 arrvals.forEach(function(v){
                                                     if(v === 0){
-                                                        res = 0; 
-                                                        break;                                                         
+                                                        res = 0;                                                         
                                                     }
                                                 });
                                                 break;
@@ -987,8 +990,7 @@
                                                 res = 0; 
                                                 arrvals.forEach(function(v){
                                                     if(v === 1){
-                                                        res = 1; 
-                                                        break;                                                         
+                                                        res = 1;                                                        
                                                     }
                                                 });
                                                 break; 
@@ -998,17 +1000,17 @@
                                                 arrvals.forEach(function(v){
                                                     if(v === 0){
                                                         res = 0; 
-                                                        break;                                                         
+                                                                                                  
                                                     }
                                                 });
                                                 break;
                                             }
 
                                         }
-
+                                        vval = res; 
                                     }
-                                    else{
-                                        return arrvals[0]; 
+                                    else{ // default to AND
+                                       vval = arrvals[0]; 
                                     }
                                     
 
@@ -1031,7 +1033,7 @@
                                 var strs = yvar.split("_");
                                 var rule = strs[0]; 
                                 vname = strs[1];
-                                var derval = self.getDerivedValue(vname, rec, mainview, metric);                                
+                                var derval = self.getDerivedValue(vname, rec, mainview, metric, i);                                
                                 vval = (yaggregates === "count")? ((derval>0)? 1: 0) 
                                             : derval; 
                                 if(vval>0) {
@@ -1088,7 +1090,7 @@
                             if(self.missing[metric]){
                                 var totalMissing = 0; 
                                 for(var key in self.missing[metric]){
-                                    totalMissing += self.missing[metric][key]; 
+                                    totalMissing += self.missing[metric][key].length; 
                                 }
                                 return totalMissing; 
                             } // && self.missing[metric][varname])                                    
@@ -1109,7 +1111,7 @@
                             self.uniqMissing = uniqMissing; 
                             return uniqMissing;
                         },
-                        computeVarSingle: function(group, cat, yvar, displayObj, rec){
+                        computeVarSingle: function(group, cat, yvar, displayObj, rec, i){
                             var self = this;
                             var vname;
                             var vval; 
@@ -1140,7 +1142,7 @@
                                 var strs = yvar.split("_");
                                 var rule = strs[0]; 
                                 vname = strs[1];
-                                var derval = self.getDerivedValue(vname, rec, mainview);
+                                var derval = self.getDerivedValue(vname, rec, mainview, metric, i);
                                 if(!displayObj)
                                    {//console.log(yvar);
                                     //console.log(rec);
@@ -1169,6 +1171,7 @@
                             if(self.checkGranT(varname , displayId)){
                                 if(!self.tHier)
                                     self.tHier= {}; 
+                                
                                 if(!self.tHier[year])
                                     self.tHier[year] = {}; 
                                 var quar = self.getRecordQuarter(rec);
@@ -1206,7 +1209,7 @@
                             var tHier = {}; 
                             var metric = displayObj["metric"],
                                 dateVar = displayObj["x"],
-                                mon = self.stringToMonth(self.data[i][dateVar]),
+                                
                                 displayVar = displayObj["y"],
                                 categoricals = displayObj["categories"],
                                 yType = displayObj["yType"],
@@ -1223,7 +1226,7 @@
 
                            
                             // define record groups using the first categorical
-                            var cat = categoricals[0];
+                            var cat = displayVar;
                             var groups = d3.map(self.data, function(item){
                                                 return item[cat];
                                                 }).keys();
@@ -1244,6 +1247,7 @@
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             for(var i=0; i < self.data.length; i++){
+                                var mon = self.stringToMonth(self.data[i][dateVar]);
                                 if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
                                     self.recordEHR(self.data[i], i, metric);                                
                                     ownrecords++; 
@@ -1251,7 +1255,7 @@
                                 // the main dict will hold aggregates for all groups                                    
                                 groups.forEach(function(group, id){
                                         //var vname;
-                                        var vval = self.computeVarSingle(group, cat, displayVar, displayObj, self.data[i], id);
+                                        var vval = self.computeVarSingle(group, cat, displayVar, displayObj, self.data[i], id, i);
                                         // select yspan items
                                         if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                             {
@@ -1340,7 +1344,7 @@
                                     });                                                   
                                                              
                             } // end for data records
-                            ////console.log(self.tHier); 
+                          
                             self.ownrecords = ownrecords; 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
@@ -1358,22 +1362,23 @@
                                                     //"cats": categoricals,
                                                     "levels": levels,
                                                     "slaves": slaves, 
-                                                    "ylength": displayObj["y"].length, 
+                                                    "ylength": levels.length, 
                                                     "metricLabel": self.availMetrics[displayId]['text']});                                 
                            
                                                           
                             
                         },
-                        recordIncluded: function(dict, mon, displayVar, i, viewId){
+                        recordIncluded: function(dict, mon, i, viewId){
                             var self = this;
                             var found = 0; 
                             self.dicts[viewId] = dict;
+                            var displayVar = Object.keys(dict[Object.keys(dict)[0]]);
                             displayVar.forEach(function(yvar){
                                 if(dict[mon] && dict[mon][yvar] && dict[mon][yvar]["data"].indexOf(i) >= 0)
                                     found = 1; 
                             });
-                            //return found; 
-                            return 1;  // cancel all filters for now
+                            return found; 
+                            //return 1;  // cancel all filters for now
                         },
                         applyMultiQ: function(displayObj, displayId, data, redraw){
                             var self = this;
@@ -1469,7 +1474,7 @@
                                         if(!slaves['data'][cat])
                                             slaves['data'][cat] = {};
                                         if(!slaves['data'][cat][lev]) slaves['data'][cat][lev] = [];
-                                        if(self.recordIncluded(dict, mon, displayVar, i, displayId)) slaves['data'][cat][lev].push(i);  
+                                        if(self.recordIncluded(dict, mon, i, displayId)) slaves['data'][cat][lev].push(i);  
                                      });
                                 
                                     }
@@ -1485,19 +1490,19 @@
                                                 slaves['data'][quant['q']] = {}; 
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] =  {};
-                                            if(!slaves['data'][quant['q']][mon]['national'] && self.recordIncluded(dict, mon, displayVar, i, displayId))
+                                            if(!slaves['data'][quant['q']][mon]['national'] && self.recordIncluded(dict, mon, i, displayId))
                                                 slaves['data'][quant['q']][mon]['national'] = qval;
                                                 
-                                            else if(self.recordIncluded(dict, mon, displayVar, i, displayId)) {
+                                            else if(self.recordIncluded(dict, mon, i, displayId)) {
                                                 slaves['data'][quant['q']][mon]['national'] += qval;
                                                 ////console.log(slaves['data'][quant['q']]['national'][self.data[i][dateVar]]);                                             
                                             }
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
-                                            if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(dict, mon, displayVar, i, displayId))
+                                            if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(dict, mon, i, displayId))
                                                 slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
                                                                                                             (quant['yaggregates']==="count"? 1: qval) : 0;                                               
-                                            else if(self.recordIncluded(dict, mon, displayVar, i, displayId))
+                                            else if(self.recordIncluded(dict, mon, i, displayId))
                                                 slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
                                                                                                             (quant['yaggregates']==="count"? 1: qval) : 0;
                                             
@@ -1505,12 +1510,12 @@
                                             if(!slaves['data'][quant['q']][mon]['data'])
                                                 slaves['data'][quant['q']][mon]['data'] = [];
                                             
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(dict, mon, displayVar, i, displayId))
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(dict, mon, i, displayId))
                                                 slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             // check if we need nultiple time granularities for this
                                             // only update the time hierarchy if this variable wasn't already setup in the hierarchy by the main view
-                                            if(displayVar.indexOf(quant['q']) < 0 && self.recordIncluded(dict, mon, displayVar, i, displayId))
+                                            if(displayVar.indexOf(quant['q']) < 0 && self.recordIncluded(dict, mon, i, displayId))
                                                 self.updateTimeHierarchy(self.year, quant['q'], displayId, self.data[i], qval);  
                                             //self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval);                                               
                                         }
@@ -1518,7 +1523,7 @@
                                     });                                                   
                                                              
                             } // end for data records
-                            ////console.log(self.tHier); 
+                            
                             self.ownrecords = ownrecords; 
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
@@ -1682,7 +1687,7 @@
                                                     var week = parseInt(self.stringToDate(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
                                                     //parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
                                                     if(isNaN(mon))
-                                                        self.recordMissing(metric, "der_readmit"); 
+                                                        self.recordMissing(metric, "der_readmit", aid); 
                                                     if(unit === self.unitID){
                                                         // update this view's master dict
                                                         result['dict'][month]["der_readmit"]["value"]++;

@@ -437,11 +437,18 @@
 								      	//console.log(d.data.number);	
 								      	// update title here
 								      	d3.select(this).select("title").text(function(t){
+								      		var undef; 
 								      		//var datasize = (self.parent.selectionEmpty())? self.totalNumRecs:  Object.keys(self.parent.selection).length;
 								    		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
 													 	$Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
+											if(name === undef){
+												var dstatus = d.data.date;
+												if(dstatus === "")
+													dstatus = "BLANK";
+												name = "invalid data: " + dstatus ; 
+											}
 								    		var percent = Math.round(parseInt(d.data.number)/self.totalNumRecs * 100); 
-								    		return  name+ ": "+ percent+ "% (value: "+ d.data.number +")"; });
+								    		return  name+ "\n "+ percent+ "% (value: "+ d.data.number +")"; });
 								      	// update original color only if this slice isn't selected
 								      	origColor = d3.select(this).style("fill");
 								      	if(origColor !== self.highlightColor)
@@ -540,8 +547,15 @@
 											//if(d.data.number < (self.totalNumRecs* 0.1))
 											//	return '';
 											//else 
-												return $Q.ValueDefs[self.parent.parent.control.audit][dname]?
+											var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
 												 $Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
+											if(name === undef){
+												var dstatus = d.data.date;
+												if(dstatus === "")
+													dstatus = "BLANK";
+												name = "invalid data: " + dstatus ; 
+											}
+												return name;
 										});
 									
 							function midAngle(d){
