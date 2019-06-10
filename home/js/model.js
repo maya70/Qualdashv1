@@ -680,8 +680,15 @@
                             else if(vname === "stemi"){
                                 return rec["2.01 Initial diagnosis"] === "1" ? 1: 0; 
                             }
-                            else if(vname === "nstemi"){
-                                return rec["2.01 Initial diagnosis"] === "1" ? 0: 1; 
+                            else if(vname === "angioTarget"){
+                                 var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
+                                 if(isNaN(tta)){
+                                    if(! (rec["4.18 Local angio date"] instanceof Date) || (! (rec["3.02 Date/time of call for help"] instanceof Date)))
+                                        self.recordMissing(metric, vname , rec);
+                                     
+                                        
+                                }
+                                return (rec["2.01 Initial diagnosis"] !== "1" &&  tta < 360)? 1: 0; 
                             }
                             else if(vname === "ctbTarget"){
                                 return (rec["2.01 Initial diagnosis"] === "1" && rec["3.10 Delay before treatment"] !== "0")? 1: 0; 
@@ -696,7 +703,7 @@
                                 var dtb = (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
                                 return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
                             }
-                            else if(vname === "angioTarget"){
+                            else if(vname === "angioNoTarget"){
                                 var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
                                 return (rec["2.01 Initial diagnosis"] !== "1" &&  tta > 360)? 1: 0; 
                             }
@@ -1078,8 +1085,13 @@
                         getMissing: function(metric, varname){
                             var self = this; 
                             
-                            if( self.missing[metric] && self.missing[metric][varname])
-                                    return self.missing[metric][varname]; 
+                            if(self.missing[metric]){
+                                var totalMissing = 0; 
+                                for(var key in self.missing[metric]){
+                                    totalMissing += self.missing[metric][key]; 
+                                }
+                                return totalMissing; 
+                            } // && self.missing[metric][varname])                                    
                               
                             else 
                                 return 0; 

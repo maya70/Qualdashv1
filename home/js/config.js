@@ -203,28 +203,29 @@ $Q.Minap = {
                         "metric": "Door-to-Angio",
                         "mark": "bar", // should remove this 
                         "x": "3.06 Date/time arrival at hospital",
-                        "y": [ "der_nstemi", "der_angioTarget"], 
+                        "y": [ "der_angioTarget", "der_angioNoTarget"], 
                         "yaggregates": [ "count", "count"], 
+                        "legend": ["Meeting Target", "Not meeting target"],
                         "xType": "t",
                         "yType": [ "q", "q"],
-                        "yfilters": {"der_nstemi": {"where": "*"}, 
-                                     "der_angioTarget": {"where": "*"}
+                        "yfilters": {"der_angioTarget": {"where": "*"}, 
+                                     "der_angioNoTarget": {"where": "*"}
                                       },
                         "xspan": "year",    
                         "yspan": "unit",  
-                        "ylabel": "Num. Records",                        
+                        "ylabel": "NSTEMI Admissions",                        
                         "tspan": 3,                           
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["2.02 Method of admission", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
                         "quantities": [
-                                        {"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
-                                         {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
+                                        //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
+                                         //{"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
                                          {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": [ "der_nstemi", "der_ctbTarget"] }   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": [ "der_angioTarget", "der_angioNoTarget"] }   // the first element holds the master view's granT                                             
           
                          },
                          {  
@@ -232,34 +233,41 @@ $Q.Minap = {
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 Date/time arrival at hospital",
-                        "y": [ "4.27 Discharged on a thienopyridine inhibitor", "4.31 Discharged on TIcagrelor (v10.3 Dataset)", "4.05 Discharged on beta blocker", 
-                              "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker", "4.07 Discharged on statin", "4.08 Discharged on aspirin"], 
-                        "yaggregates": [ "count", "count" ,"count", "count", "count", "count"], 
+                        "y": [ "1.02 Patient case record number", "2.02 Method of admission"], 
+                        "yaggregates": [ "count", "count"], 
                         "xType": "t",
-                        "yType": [ "q", "q", "q", "q", "q", "q"],
-                        "yfilters": {"4.27 Discharged on a thienopyridine inhibitor": {"where": "*"}, 
-                                     "4.31 Discharged on TIcagrelor (v10.3 Dataset)": {"where": "*"}, 
-                                     "4.05 Discharged on beta blocker": {"where": "*"}, 
-                                     "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": {"where": "*"}, 
-                                     "4.07 Discharged on statin": {"where": "*"}, 
-                                     "4.08 Discharged on aspirin": {"where": "*"}
-                                      },
+                        "yType": [ "q", "q"],
+                        "yfilters": {"1.02 Patient case record number": {"where": {
+                                            "4.27 Discharged on a thienopyridine inhibitor": "1" ,
+                                            "4.31 Discharged on TIcagrelor (v10.3 Dataset)": "1" ,
+                                            "4.05 Discharged on beta blocker": "1" , 
+                                            "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": "1" ,
+                                            "4.07 Discharged on statin": "1" ,
+                                            "4.08 Discharged on aspirin": "1"      
+                            }}, 
+                           "2.02 Method of admission": {"where": {"4.27 Discharged on a thienopyridine inhibitor": "0" ,
+                                            "4.31 Discharged on TIcagrelor (v10.3 Dataset)": "0" ,
+                                            "4.05 Discharged on beta blocker": "0" , 
+                                            "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": "0" ,
+                                            "4.07 Discharged on statin": "0" ,
+                                            "4.08 Discharged on aspirin": "0"      }}   
+                        }, 
                         "xspan": "year",    
                         "yspan": "unit",  
-                        "ylabel": "Num. Records",                        
+                        "ylabel": "Discharged patients", 
+                        "legend": ["Given", "Not given"],                       
                         "tspan": 3,                           
-                        "granP": [ "unit", "unit", "unit", "unit", "unit", "unit"], 
+                        "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["2.02 Method of admission", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
                         "quantities": [
-                                        {"q":"4.27 Discharged on a thienopyridine inhibitor","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"4.31 Discharged on TIcagrelor (v10.3 Dataset)", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
-                                         {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
+                                        //{"q":"4.27 Discharged on a thienopyridine inhibitor","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        //{"q":"4.31 Discharged on TIcagrelor (v10.3 Dataset)", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
+                                        // {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
                                          {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": [ "4.27 Discharged on a thienopyridine inhibitor", "4.31 Discharged on TIcagrelor (v10.3 Dataset)", "4.05 Discharged on beta blocker", 
-                              "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker", "4.07 Discharged on statin", "4.08 Discharged on aspirin"] }   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": [ "1.02 Patient case record number", "2.02 Method of admission" ] }   // the first element holds the master view's granT                                             
           
                          }
                       

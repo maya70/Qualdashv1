@@ -595,24 +595,25 @@
 								      	.style("font-size", "9pt")
 								      	.style("font-weight", "bold");
 							self.parent.svg.append("text")
+									.attr("id", "missing-text"+viewId)
      						 		.attr("x", 0.9 * legWidth)
      						 		.attr("y", 10)
      						 		.attr("dy", ".35em")
 								      .style("text-anchor", "start")							      
 								      .text(function(d) {  
 								       var numRecs = self.parent.parent.control.getDataLength();
-								       var totalMissing = 0; 
-								       levels.forEach(function(level){
-								       	totalMissing += self.parent.parent.control.getMissing(self.parent.metric, level); 	       	
+								       var totalMissing; 
+								       //levels.forEach(function(level){
+								       	totalMissing = self.parent.parent.control.getMissing(self.parent.metric); 	       	
 								       //totalMissing = 0; 
-								       });  
+								       //});  
 
 								       //var qual = 
 								      	return "Missing "+ totalMissing +" values in " + numRecs + " records" ;  })
 								      	.style("font-size", "9pt")
 								      	.style("font-family", "sans-serif")
 								      	.style("font-weight", "bold");
-
+								      	
      						 // draw legend colored rectangles
 							  self.legend.append("rect")
 							      .attr("x", function(d,i){
