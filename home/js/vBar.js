@@ -644,7 +644,12 @@
 							      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 							      	var descLegend = self.parent.parent.control.getVarDesc(levels[d]);
 
-							      	var name = mssLegend || dictLegend ||  descLegend || levels[d];
+							      	var dataDefs;
+							      	if($Q.ValueDefs[self.audit] && $Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]])							      		
+							      			if($Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]][levels[d]])
+							      				dataDefs = $Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]][levels[d]];
+
+							      	var name = mssLegend || dictLegend ||  descLegend || dataDefs || levels[d];
 							      	
 							      	return name;  })
 							      	.style("font-size", "9pt");
@@ -682,8 +687,12 @@
 												var mssLegend = auditVars["displayVariables"][viewId]["legend"]? auditVars["displayVariables"][viewId]["legend"][idx]: undef;
 										      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][self.dualVarName]: $Q.Minap['variableDict'][self.dualVarName];
 										      	var descLegend = self.parent.parent.control.getVarDesc(self.dualVarName);
+										      	var dataDefs;
+										      	if($Q.ValueDefs[self.audit] && $Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]])							      		
+										      			if($Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]][levels[d]])
+										      				dataDefs = $Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]][levels[d]];
 
-										      	var name = mssLegend || dictLegend ||  descLegend || self.dualVarName;
+										      	var name = mssLegend || dictLegend ||  descLegend || dataDefs || self.dualVarName;
 										      	return name;
 										        	
 									      	  })
@@ -787,8 +796,12 @@
 										      	var mssLegend = auditVars["displayVariables"][viewId]["legend"]? auditVars["displayVariables"][viewId]["legend"][i]: undef;
 										      	var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][levels[d]]: $Q.Minap['variableDict'][levels[d]];
 										      	var descLegend = self.parent.parent.control.getVarDesc(levels[d]);
+										      	var dataDefs;
+										      	if($Q.ValueDefs[self.audit] && $Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]])							      		
+										      			if($Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]][levels[d]])
+										      				dataDefs = $Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]][levels[d]];
 
-										      	var name = mssLegend || dictLegend ||  descLegend || levels[d];
+										      	var name = mssLegend || dictLegend ||  descLegend || dataDefs ||levels[d];
 										      	//var qual = self.parent.parent.control.getQuality(self.parent.metric, levels[d]); 
 										      	//name = name + " (DQ: "+qual +"%)"; 
 										      	return name;
@@ -933,14 +946,19 @@
 							      	//}
 
 							      })
-							      .on("mouseout", function(d){
+							      .on("mouseout", function(d, i){
 							      	div.transition()
 							      		.duration(500)
 							      		.style("opacity", 0);
+							      	var dictEntry = self.dict[(i+1)+""]; 
 							      	var sel = d3.select(this);
 							      	var as = sel.attr("selected");
-							      	if(!as || as=== "false" )
-							      		sel.style("fill", self.palette[d[0]]);
+							      	if(!as || as=== "false" ){
+							      		console.log(self.palette);
+							      		console.log(d[0]);
+							      		console.log(self.palette[d[0]]);
+							      		sel.style("fill", self.palette[dictEntry]);
+							      	}
 							      	self.parent.nohighlightSubs(); 
 							      })
 							      .on("click", function(d,i){

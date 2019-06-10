@@ -224,9 +224,9 @@
 											quantityNames.splice(index,1); 
 									});
 								}
-								else{
-									quantityNames.splice(quantityNames.indexOf(mainQs));
-								}
+								//else{
+								//	quantityNames.splice(quantityNames.indexOf(mainQs));
+								//}
 
 								quantityNames.forEach(function(q, i){
 									var index = mainQs.indexOf(q['q']);

@@ -135,7 +135,7 @@ $Q.Minap = {
                       "der_stemi": "PCI patients", 
                       "der_nstemi": "NSTEMI admissions", 
                       "der_ctbTarget": "CTB Not meeting target",
-                      "der_angioTarget": "DTA Not meeting target",
+                      "der_angioTarget": "DTA meeting target",
                       "der_ctbTargetMet": "Met target",
                       "der_ctb": "Avgerage CTB",
                       "der_bedDays": "Bed Days", 
@@ -281,13 +281,19 @@ $Q.Minap = {
                           {  
                         "metric": "Referral for Cardiac Rehabiliation",
                         "mark": "bar", // should remove this 
+                        "chart": "stacked",
                         "x": "3.06 Date/time arrival at hospital",
-                        "y":  "4.09 Cardiac rehabilitation", 
+                        "y":   ["0", "1", "3", "8", "9"], //"4.09 Cardiac rehabilitation", 
                         "yaggregates": [ "count"], 
                         "xType": "t",
                         "yType": "n",
-                        "yfilters": {"4.09 Cardiac rehabilitation": {"where": "*", "valid": ["0", "1", "3", "8", "9"] }
+                        "yfilters": {"0": {"where": {"4.09 Cardiac rehabilitation": "0"}, "valid": ["1", "3", "8", "9"] },
+                                      "1": {"where": {"4.09 Cardiac rehabilitation": "1"}, "valid": ["0", "3", "8", "9"] },
+                                      "3": {"where": {"4.09 Cardiac rehabilitation": "3"}, "valid": ["1", "0", "8", "9"] },
+                                      "8": {"where": {"4.09 Cardiac rehabilitation": "3"}, "valid": ["1", "0", "8", "9"] },
+                                      "9": {"where": {"4.09 Cardiac rehabilitation": "3"}, "valid": ["1", "0", "8", "9"] }
                                       },
+                        "legend": ["No", "Yes", "Patient declined", "Not indicated", "Unknown"],
                         "xspan": "year",    
                         "yspan": "unit",  
                         "ylabel": "Num. records",                        
@@ -295,14 +301,14 @@ $Q.Minap = {
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["4.09 Cardiac rehabilitation", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
+                        "categories": ["1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
                         "quantities": [
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
-                                         //{"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
+                                         {"q":"der_angioTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "sum"}, 
                                          {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": [ "der_angioTarget", "der_angioNoTarget"] }   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": [ "0", "1", "3", "8", "9"] }   // the first element holds the master view's granT                                             
           
                          }
                       
