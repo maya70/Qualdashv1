@@ -685,8 +685,7 @@
                                  if(isNaN(tta)){
                                     if(! (rec["4.18 Local angio date"] instanceof Date) || (! (rec["3.02 Date/time of call for help"] instanceof Date)))
                                         self.recordMissing(metric, vname , i);
-                                     
-                                        
+                                                                        
                                 }
                                 return (rec["2.01 Initial diagnosis"] !== "1" &&  tta < 360)? 1: 0; 
                             }
@@ -964,6 +963,8 @@
                                         else if( value.constructor === Array){
                                             if(value.indexOf(rec[ckey]) >=0)
                                                 vval = 1; 
+                                            else
+                                                vval = 0; 
                                         }
                                         else {
                                             var val = rec[ckey];
