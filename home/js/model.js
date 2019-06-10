@@ -770,9 +770,9 @@
                                 return new Date(parseInt(year), (parseInt(month)), parseInt(day), 0); 
 
                         },
-                        getTimeHier:function(){
+                        getTimeHier:function(viewId){
                             var self= this;
-                            return self.tHier; 
+                            return self.tHier[viewId]; 
                         },
                         listTimeVar: function(t){
                             var self = this;
@@ -1171,27 +1171,28 @@
                             if(self.checkGranT(varname , displayId)){
                                 if(!self.tHier)
                                     self.tHier= {}; 
-                                
-                                if(!self.tHier[year])
-                                    self.tHier[year] = {}; 
+                                if(!self.tHier[displayId])
+                                    self.tHier[displayId] = {}; 
+                                if(!self.tHier[displayId][year])
+                                    self.tHier[displayId][year] = {}; 
                                 var quar = self.getRecordQuarter(rec);
                                 if(quar === 1){
                                     var m = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
                                     if(m === 12)
                                         console.log(m); 
                                 }
-                                if(!self.tHier[year][quar])
-                                    self.tHier[year][quar] = {};
+                                if(!self.tHier[displayId][year][quar])
+                                    self.tHier[displayId][year][quar] = {};
                                 var mon =  self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
-                                if(!self.tHier[year][quar][mon])
-                                    self.tHier[year][quar][mon] = {};
+                                if(!self.tHier[displayId][year][quar][mon])
+                                    self.tHier[displayId][year][quar][mon] = {};
                                 var week = parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
-                                if(!self.tHier[year][quar][mon][week])
-                                    self.tHier[year][quar][mon][week] = {};
-                                if(!self.tHier[year][quar][mon][week][varname])
-                                    self.tHier[year][quar][mon][week][varname] = qval; 
+                                if(!self.tHier[displayId][year][quar][mon][week])
+                                    self.tHier[displayId][year][quar][mon][week] = {};
+                                if(!self.tHier[displayId][year][quar][mon][week][varname])
+                                    self.tHier[displayId][year][quar][mon][week][varname] = qval; 
                                 else
-                                    self.tHier[year][quar][mon][week][varname] += qval;
+                                    self.tHier[displayId][year][quar][mon][week][varname] += qval;
 
                             }                            
                         },
@@ -1632,8 +1633,12 @@
                                                 
                                                 if(unit === self.unitID){
                                                     // update this view's time hierarchy
-                                                    // //console.log("FOUND "+ year + " " + a_date + " " + d_date); 
-                                                    self.tHier[year][quar][mon][week][varname]++; 
+                                                    var auditVars = (self.audit === 'picanet')? $Q.Picanet["displayVariables"] : $Minap["displayVariables"];
+                                                    for(var v = 0; v < self.dataViews.length; v++){
+                                                       var granT = auditVars[v]['granT']["monthly-annual"];
+                                                        if(granT.indexOf(varname) >= 0)
+                                                            self.tHier[v][year][quar][mon][week][varname]++; 
+                                                    }
                                                 }
                                                 // either way update the slave that will show national average
                                                 //result['slaves']['data']['der_readmit'][month]['national']++; 
@@ -1694,7 +1699,13 @@
                                                         result['dict'][month]["der_readmit"]["data"].push(patientEHR['ids'][aid]);
                                                         result['slaves']['data']['der_readmit'][month]['unit']++; 
                                                         // update the time hierarchy
-                                                        self.tHier[self.year][quar][mon][week]["der_readmit"]++; 
+                                                        //self.tHier[self.year][quar][mon][week]["der_readmit"]++; 
+                                                        var auditVars = (self.audit === 'picanet')? $Q.Picanet["displayVariables"] : $Minap["displayVariables"];
+                                                        for(var v = 0; v < self.dataViews.length; v++){
+                                                           var granT = auditVars[v]['granT']["monthly-annual"];
+                                                            if(granT.indexOf("der_readmit") >= 0)
+                                                                self.tHier[v][year][quar][mon][week]["der_readmit"]++; 
+                                                        }
                                                     }
                                                     // either way update the slave that will show national average
                                                     result['slaves']['data']['der_readmit'][month]['national']++; 

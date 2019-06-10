@@ -128,9 +128,9 @@
 						getYear: function(){
 							return this.dataModel.year; 
 						},
-						getTimeHier: function(){
+						getTimeHier: function(viewId){
 							var self = this;
-							return self.dataModel.getTimeHier(); 
+							return self.dataModel.getTimeHier(viewId); 
 						},
 						prepTimeData: function(tspan, viewId, vname ){
 							var self = this;

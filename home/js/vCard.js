@@ -431,7 +431,7 @@
 						createSlaveT: function(slaves, mainsvgW, drawAreaW, ssvgH, xoffset){
 							var self = this;
 							
-							var tdata = self.parent.control.getTimeHier(); 
+							var tdata = self.parent.control.getTimeHier(self.id); 
 							
 							self.tView = "series";
 							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
