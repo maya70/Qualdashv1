@@ -786,6 +786,7 @@
 								  				.style("stroke-width", 0.5)						  				
 								  				.style("stroke", "none");
 								  	sllabels.append("text")
+
 								  			.attr("x", 6)
 								  			.attr("y", 12)
 										  	  .style("font-size", "9pt")
@@ -814,6 +815,7 @@
      											 .attr("transform", function(d, i) { return "translate("+ 60 +"," + (i*15) + ")"; });
 
      						 	slcounts.append("rect")
+     						 				.attr("class","selection-rect")
      										.attr("width", 40)
 								  				.attr("height", 15)	
 								  				.style("fill", "white")	
@@ -829,6 +831,9 @@
 										  	  .style("font-size", "9pt")
 										  	  .style("font-family", "sans-serif")
 										      .text("0");
+								var div2 = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
 
 								var sltots = sl.selectAll(".vartotal")
 							 					.data(levels)
@@ -837,11 +842,38 @@
      											 .attr("transform", function(d, i) { return "translate("+ (110) +"," + (i*15) + ")"; });
 
      						 	sltots.append("rect")
+     						 				.attr("class","selection-rect")
      										.attr("width", 55)
 								  				.attr("height", 15)	
 								  				.style("fill", "white")	
 								  				.style("stroke-width", 0.5)						  				
-								  				.style("stroke", "none");
+								  				.style("stroke", "none")
+								  				.on("mouseover", function(){
+								  					var msg = "Selected: ";
+								  					 for(var key in self.nsel){
+
+											        	var nrecs = self.nsel[key] || 0; 
+											        	msg += nrecs + " "+ key + "\n";											        	
+											        	//var id = self.levels.indexOf(key); 
+											        	//d3.select("#slcount-"+self.id+"-"+id).text(nrecs);
+											        }		      	
+								       
+								  					div2.transition()
+											      		.duration(200)
+											      		.style("opacity", 0);
+											      	div2 .html(msg)
+											      		.style("left", (d3.event.pageX) + "px")
+											      		.style("top", (d3.event.pageY - 28) + "px")
+											      		.style("height", "100px");
+											      		
+											      	
+								  				})
+								  				.on("mouseout", function(){
+								  					div2.transition()
+											      		.duration(500)
+											      		.style("opacity", 0);
+											      	
+								  				});
 								sltots.append("text")
 											.attr("id", function(d,i){
 												return "sltot-"+viewId+"-"+i; 
@@ -870,7 +902,7 @@
 										      });
 
 
-
+								
 
 							    }
 
@@ -954,9 +986,6 @@
 							      	var sel = d3.select(this);
 							      	var as = sel.attr("selected");
 							      	if(!as || as=== "false" ){
-							      		console.log(self.palette);
-							      		console.log(d[0]);
-							      		console.log(self.palette[d[0]]);
 							      		sel.style("fill", self.palette[dictEntry]);
 							      	}
 							      	self.parent.nohighlightSubs(); 
