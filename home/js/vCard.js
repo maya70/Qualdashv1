@@ -115,6 +115,10 @@
 							//////console.log(catdata);
 							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
 							var tabW = ssvgW/ cats['cats'].length;
+							var div = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
+
 
 							self.ssvg1div =d3.select("#draw-area"+self.id).append("div")
 											.attr("class", "ssvgdiv"+self.id)																						
@@ -162,9 +166,24 @@
 										.on("mouseover", function(d){
 											d3.select(this).select("rect").style("fill", "white");
 											//d3.select(this).style("fill", "white");
+											div.transition()
+									      		.duration(200)
+									      		.style("opacity", 0.8)
+									      		.style("width", "160px")
+									      		.style("height", "70px")
+									      		.style("background-color", "white")
+									      		.style("vertical-align", "center");
+									      	div .html( d + "")
+									      		.style("left", (d3.event.pageX) -28 + "px")
+									      		.style("top", (d3.event.pageY + 28) + "px");
+									      	
 										     
 										})
 										.on("mouseout", function(d){
+											div.transition()
+									      		.duration(500)
+									      		.style("opacity", 0);
+									      	
 											d3.select(this).select("rect").style("fill", function(d){
 												var a = d3.select(this).attr("active");
 												return a === "1"? "white" : "lightgrey"; 

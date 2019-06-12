@@ -284,7 +284,7 @@ $Q.Minap = {
                         "chart": "stacked",
                         "x": "3.06 Date/time arrival at hospital",
                         "y":   ["0", "1", "3", "8", "9"], //"4.09 Cardiac rehabilitation", 
-                        "yaggregates": [ "count"], 
+                        "yaggregates": [ "count", "count", "count", "count", "count"], 
                         "xType": "t",
                         "yType": "n",
                         "yfilters": {"0": {"where": {"4.09 Cardiac rehabilitation": "0"}, "valid": ["1", "3", "8", "9"] },
