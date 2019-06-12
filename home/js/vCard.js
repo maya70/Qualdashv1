@@ -230,6 +230,10 @@
 							var self = this;
 							//////console.log(qdata);
 							var quantityNames = slaves['quants']; 
+							var div = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
+
 							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
 							//exclude quantities that are already included in the main view 
 							var mainQs = self.parent.control.audit === "picanet"? ($Q.Picanet["displayVariables"][self.id]["y"]):
@@ -309,9 +313,25 @@
 										.on("mouseover", function(d){
 											d3.select(this).select("rect").style("fill", "white");
 											//d3.select(this).style("fill", "white");
+											var qname = auditVars["variableDict"][d['q']] || d['q'];
+											div.transition()
+									      		.duration(200)
+									      		.style("opacity", 0.8)
+									      		.style("width", "160px")
+									      		.style("height", "70px")
+									      		.style("background-color", "white")
+									      		.style("vertical-align", "center");
+									      	div .html( qname + "")
+									      		.style("left", (d3.event.pageX) -28 + "px")
+									      		.style("top", (d3.event.pageY + 28) + "px");
+									      	
 										     
 										})
 										.on("mouseout", function(d){
+											div.transition()
+									      		.duration(500)
+									      		.style("opacity", 0);
+									      	
 											d3.select(this).select("rect").style("fill", function(d){
 												var a = d3.select(this).attr("active");
 												return a === "1"? "white" : "lightgrey"; 
@@ -451,7 +471,10 @@
 							var self = this;
 							
 							var tdata = self.parent.control.getTimeHier(self.id); 
-							
+							var div = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
+
 							self.tView = "series";
 							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
 							var span = auditVars['displayVariables'][self.id]['granT'];
@@ -509,12 +532,34 @@
 											self.subVisT.draw(self.id, d , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, self.tView);				
 
 										})
-										.on("mouseover", function(d){
+										.on("mouseover", function(d, i){
 											d3.select(this).select("rect").style("fill", "white");
 											//d3.select(this).style("fill", "white");
+											var undef; 
+							    	var mssLegend = auditVars["displayVariables"][self.id]["legend"]? auditVars["displayVariables"][self.id]["legend"][i]: undef;
+							      	var dictLegend = auditVars['variableDict'][d];
+							      	var descLegend = self.parent.control.getVarDesc(d);
+
+							      	var name = mssLegend || dictLegend ||  descLegend || d;
+							      	
+											div.transition()
+									      		.duration(200)
+									      		.style("opacity", 0.8)
+									      		.style("width", "160px")
+									      		.style("height", "70px")
+									      		.style("background-color", "white")
+									      		.style("vertical-align", "center");
+									      	div .html( name + "")
+									      		.style("left", (d3.event.pageX) -28 + "px")
+									      		.style("top", (d3.event.pageY + 28) + "px");
+									      	
 										     
 										})
 										.on("mouseout", function(d){
+											div.transition()
+									      		.duration(500)
+									      		.style("opacity", 0);
+									      	
 											d3.select(this).select("rect").style("fill", function(d){
 												var a = d3.select(this).attr("active");
 												return a === "1"? "white" : "lightgrey"; 
