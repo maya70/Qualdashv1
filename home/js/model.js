@@ -226,7 +226,7 @@
                                                         self.recordEHR(data[d], d , metric, yearupdated);
                                                         var qobj = self.getQObject(qname, v); 
                                                         if(qobj){
-                                                                var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, 0)) ; 
+                                                                var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, v, 0)) ; 
                                                                 self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
                                                             }
                                                     });
@@ -260,7 +260,7 @@
                                                         self.recordEHR(data[d], d , metric, yearupdated);
                                                         var qobj = self.getQObject(qname, v); 
                                                         if(qobj){
-                                                                var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, 0)) ; 
+                                                                var qval = parseFloat(self.computeVar(d, qname, qobj, data[d],  0, v, 0)) ; 
                                                                 self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
                                                             }
                                                     });
@@ -1458,9 +1458,7 @@
                                             dict[mon][yvar]["value"] += vval;
                                             if(!dict[mon][yvar]["data"])
                                                 dict[mon][yvar]["data"] = [];
-                                            if(vval > 0) dict[mon][yvar]["data"].push(i); 
-
-                                             // check to see if multiple time granularities are needed for y-axis variables                                            
+                                            if(vval > 0) dict[mon][yvar]["data"].push(i);                                         
                                             self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval); 
                                             }    
                                         });
