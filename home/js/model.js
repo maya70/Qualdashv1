@@ -927,7 +927,7 @@
                             var vname;
                             var vval;
                             var isDerived = false; 
-                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][0]: $Q.Minap["displayVariables"][viewId] ;
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId] ;
                             var dateVar = auditVars['x'];
                             var mon = self.stringToMonth(rec[dateVar]);
                             var yfilters =  auditVars['yfilters'][yvar]; 
