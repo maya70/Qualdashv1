@@ -1829,7 +1829,7 @@
                                 // update global derived lookup structure here
                                 for(var key in self.derivedLookup){
                                   if(!self.derivedLookup[key]['updatedOnce']){
-                                    var updatedDictElements = Object.keys(result['dict']['1']);
+                                    var updatedDictElements = Object.keys(result['dict'][Object.keys(result['dict'])[0]]);
                                     var updatedSlaves = Object.keys(result['slaves']['data']);
                                     if(updatedDictElements.indexOf(key) >= 0){
                                         for(var mon in result['dict']){

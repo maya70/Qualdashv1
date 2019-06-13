@@ -73,6 +73,7 @@ $Q.Picanet = {
                                       {"q":"der_unplannedAdm", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],
                         "xType": "t",
                         "yType": ["q", "q"],
+                        "yfilters": {"der_discharge": "*", "der_readmit": "*"} ,
                         "xspan": "year",    
                         "yspan": "unit", 
                         "ylabel": "Num. Records",
@@ -88,6 +89,8 @@ $Q.Picanet = {
                         "chart": "stacked",
                         "x": "addate",
                         "y": ["der_depLevel0", "der_depLevelEC" ,"der_depLevel1", "der_depLevel2", "der_depLevel3", "der_depLevel4", "der_depLevel5", "der_depLevel6"], 
+                        "yfilters": {"der_depLevel0" : "*", "der_depLevelEC": "*" ,"der_depLevel1": "*", "der_depLevel2": "*", 
+                                    "der_depLevel3": "*", "der_depLevel4": "*", "der_depLevel5": "*", "der_depLevel6": "*"} ,
                         "yaggregates": ["count", "count", "count", "count", "count", "count", "count", "count" ], 
                         "xType": ["t", "n"],
                         "yType": "q",  
@@ -145,7 +148,7 @@ $Q.Minap = {
                          {  
                         "metric": "Mortality",                      
                         "mark": "bar", // should remove this 
-                        "chart": "stacked",
+                        "chart": "grouped",
                         "x": "3.06 Date/time arrival at hospital",
                         "y": ["1.02 Patient case record number", "4.04 Death in hospital"], 
                         "yaggregates": ["count", "sum"], 

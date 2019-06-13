@@ -289,7 +289,10 @@
 						      .duration(200)
 						      .delay(function(d, i) { return i * 10; })
 						      .attr("y", function(d, i) { 
-						      	var dictEntry = self.dict[(i+1)+""]; 
+						      	var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
+						      	var dictEntry = self.dict[thisEntry+""]; 
+						      	if(!dictEntry)
+						      		return null; 
 						      	var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
 						      	var prevCatEndsAt = (cat === 0)? 0 : dictEntry[Object.keys(dictEntry)[cat-1]]['value']; 
 						      	//var parent = dictEntry[Object.keys(dictEntry)[cat]]['value']; 
@@ -968,7 +971,11 @@
 													//.style("stroke", self.highlightColor); 
 							
 							      	// find the key for the corresponding data entry
-							      	var dictEntry = self.dict[(i+1)+""]; 
+							      	//var dictEntry = self.dict[(i+1)+""]; 
+							      	var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
+							      	var dictEntry = self.dict[thisEntry+""]; 
+							      	if(!dictEntry)
+							      		return null; 
 						      		var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
 						      		var key = Object.keys(dictEntry)[cat];
 							      	//for(var key in dict[i+1]){
@@ -982,7 +989,11 @@
 							      	div.transition()
 							      		.duration(500)
 							      		.style("opacity", 0);
-							      	var dictEntry = self.dict[(i+1)+""]; 
+							      	//var dictEntry = self.dict[(i+1)+""]; 
+							      	var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
+							      	var dictEntry = self.dict[thisEntry+""]; 
+							      	if(!dictEntry)
+							      		return null; 
 							      	var sel = d3.select(this);
 							      	var as = sel.attr("selected");
 							      	if(!as || as=== "false" ){
@@ -995,7 +1006,11 @@
 							      	if(!selStatus || selStatus === "false"){
 							      		// set selection							      		
 							      		var txt = "Selected: "; 
-							      		var dictEntry = self.dict[(i+1)+""]; 
+							      		//var dictEntry = self.dict[(i+1)+""]; 
+							      		var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
+								      	var dictEntry = self.dict[thisEntry+""]; 
+								      	if(!dictEntry)
+								      		return null; 
 						      			var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
 						      			var key = Object.keys(dictEntry)[cat];
 							      	
@@ -1033,7 +1048,11 @@
 								     else{
 								     	// reset selection
 								     	txt = "Selected: "; 
-								     	var dictEntry = self.dict[(i+1)+""]; 
+								     	//var dictEntry = self.dict[(i+1)+""]; 
+								     	var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
+								      	var dictEntry = self.dict[thisEntry+""]; 
+								      	if(!dictEntry)
+								      		return null; 
 						      			var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
 						      			var key = Object.keys(dictEntry)[cat];
 							      	
