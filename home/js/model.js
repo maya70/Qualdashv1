@@ -681,13 +681,13 @@
                                 return rec["2.01 Initial diagnosis"] === "1" ? 1: 0; 
                             }
                             else if(vname === "angioTarget"){
-                                 var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
+                                 var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
                                  if(isNaN(tta)){
-                                    if(! (rec["4.18 Local angio date"] instanceof Date) || (! (rec["3.02 Date/time of call for help"] instanceof Date)))
+                                    if(! (rec["4.18 Local angio date"] instanceof Date) || (! (rec["3.06 Date/time arrival at hospital"] instanceof Date)))
                                         self.recordMissing(metric, vname , i);
                                                                         
                                 }
-                                return (rec["2.01 Initial diagnosis"] !== "1" &&  tta < 360)? 1: 0; 
+                                return (rec["2.01 Initial diagnosis"] !== "1" &&  tta < 4320)? 1: 0; 
                             }
                             else if(vname === "ctbTarget"){
                                 return (rec["2.01 Initial diagnosis"] === "1" && rec["3.10 Delay before treatment"] !== "0")? 1: 0; 
@@ -703,8 +703,8 @@
                                 return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
                             }
                             else if(vname === "angioNoTarget"){
-                                var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
-                                return (rec["2.01 Initial diagnosis"] !== "1" &&  tta > 360)? 1: 0; 
+                                var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
+                                return (rec["2.01 Initial diagnosis"] !== "1" &&  tta > 4320)? 1: 0; 
                             }
                             else if(vname === "reqEcho"){
                                 var possible = ["1", "2", "3", "4", "5", "9"];
