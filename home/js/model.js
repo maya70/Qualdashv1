@@ -1082,7 +1082,7 @@
                                 self.uniqMissing = uniqMissing;     
                             } */
                             if(self.uniqMissing[varname]) {
-                                var qual = (self.ownrecords - self.uniqMissing[varname])/ self.ownrecords * 100; 
+                                var qual = (self.ownrecords - self.uniqMissing[varname]['value'])/ self.ownrecords * 100; 
                                 return Math.round(qual*10)/10; 
                                }                                                                                         
                             else 
@@ -1118,16 +1118,17 @@
                                     if(self.data[i][key] === "" || self.data[i][key] === "NA" ){
                                         // add a missing entry for key if none already exists
                                         if(!uniqMissing[key])
-                                            uniqMissing[key] = 1;
-                                        else
-                                            uniqMissing[key]++;
+                                            uniqMissing[key] = {'value': 0, 'data':[]};
+                                    
+                                        uniqMissing[key]['value']++;
+                                        uniqMissing[key]['data'].push(i);
                                     }
                                 }
                             }
                             // array sort in descending order of missing values
                             var arr = [];
                             for(var key in uniqMissing){
-                                arr.push({"key": key, "value": uniqMissing[key]});
+                                arr.push({"key": key, "value": uniqMissing[key]['value'], 'data': uniqMissing[key]['data']});
                             }
                             arr.sort(function(a,b){
                                 return parseFloat(b.value) - parseFloat(a.value);
@@ -1136,7 +1137,9 @@
 
                             uniqMissing = {};
                             arr.forEach(function(entry){
-                                uniqMissing[entry['key']] = entry['value'];
+                                uniqMissing[entry['key']] = {}; 
+                                uniqMissing[entry['key']]['value'] = entry['value'];
+                                uniqMissing[entry['key']]['data'] = entry['data']; 
                             });
 
                             self.uniqMissing = uniqMissing; 

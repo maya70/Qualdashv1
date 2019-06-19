@@ -108,10 +108,31 @@
 							var self = this; 
 							return self.vis.istrellis; 
 						},
+						getCatData: function(d, cats){
+							var self = this; 
+							var catdata;
+							var missingLabels = ["missing1", "missing2", "missing3", "missing4"];
+							if(missingLabels.indexOf(d) >= 0){
+								var missing = self.parent.control.getAllMissing(); 
+								var id = parseInt(d[d.length-1])-1;
+								var all = Object.keys(missing); 
+								var start = parseInt(all.length/4 * id); 
+								catdata = {};
+								for(var i=start; i < (start+ all.length/4); i++){
+									var key = all[i]; 
+									catdata[key] = missing[key]['data']; 
+								}
+							}
+							else
+								catdata = cats['data'][d];
+							return catdata; 
+
+						},
 						createSlave1: function(cats, ssvgW, ssvgH, xoffset){
 							var self = this;
 							var cat1 = cats['cats'][0];
-							var catdata = cats['data'][cat1];
+							var catdata = self.getCatData(cat1, cats); //cats['data'][cat1];
+							
 							//////console.log(catdata);
 							var auditVars = self.parent.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
 							var tabW = ssvgW/ cats['cats'].length;
@@ -157,7 +178,7 @@
 												r.style("fill", "white");
 												r.style("stroke", "black");			
 											
-											catdata = cats['data'][d];
+											catdata = self.getCatData(d, cats);  //cats['data'][d];
 											self.state['selectedCat'] = d; 
 											self.subVis1.draw(self.id, d, catdata , self, ssvgW-10, ssvgH-10);
 											self.keepHighlights(); 
@@ -228,7 +249,7 @@
 							
 							if(self.state['selectedCat']){
 								cat1 = self.state['selectedCat'];
-								catdata = cats['data'][cat1];
+								catdata = self.getCatData(cat1, cats); //cats['data'][cat1];
 							}
 							self.subVis1 = new $Q.SubPieChart(self.id, cat1, catdata , self, ssvgW-10, ssvgH-10);
 

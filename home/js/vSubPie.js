@@ -433,13 +433,11 @@
 							      .on("mouseover", function(d){
 							      	var links = self.merge(self.dataLinks[d.data.date]);							      	
 							      	self.parent.highlight(links, viewId);
-								      	//console.log(self.totalNumRecs); 
 								      	//console.log(d.data.number);	
 								      	// update title here
 								      	d3.select(this).select("title").text(function(t){
 								      		var undef; 
-								      		//var datasize = (self.parent.selectionEmpty())? self.totalNumRecs:  Object.keys(self.parent.selection).length;
-								    		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
+								      		var name = $Q.ValueDefs[self.parent.parent.control.audit][dname]?
 													 	$Q.ValueDefs[self.parent.parent.control.audit][dname][d.data.date] : d.data.date;
 											if(name === undef){
 												var dstatus = d.data.date;
@@ -481,7 +479,6 @@
 								      		d3.select(this).attr("selected", "true");
 								      		self.parent.highlight(self.dataLinks[d.data.date], viewId);
 								      		self.localSelection = self.dataLinks[d.data.date]; 
-								      	//console.log(self.totalNumRecs); 
 								      	//console.log(d.data.number);	
 								      	// update title here
 								      	d3.select(this).select("title").text(function(t){

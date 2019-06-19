@@ -145,7 +145,7 @@ $Q.Picanet = {
                         "granP": ["unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
+                        "categories": ["missing1","missing2", "missing3", "missing4"],      
                         "quantities": [
                                         {"q":"unitdisstatus",  "granP":["unit"], "yaggregates": "sum", 
                                          "filters": {"where": { "unitdisstatus":"2" } } },
