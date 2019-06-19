@@ -90,7 +90,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                             "4": "Chest pain cause", 
                             "5": "Other initial diagnosis"
                           },
-                          "2.02 Method of admission": {
+                          "2.39 Admission Method": {
                                 "1": "Direct Emergency",
                                 "2": "Self-presenter",
                                 "3": "Already in Hospital",

@@ -531,7 +531,8 @@
                                         y1Max = d3.max(y01z, function(y) { return d3.max(y, function(d) { return d[1]; }); });
     
                                	self.yMax = y1Max; 
-                           //console.log(self.yMax); 
+                               	self.yMax = self.toggle === "stacked"? y1Max : yMax; 
+                               console.log(self.yMax); 
 
 							if(self.parent.svg && iter === 0){
 							//	d3.selectAll("svg").remove(); 

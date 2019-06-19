@@ -167,7 +167,7 @@ $Q.Minap = {
                         "ehr": "Admissions",
                         "legend": ["Alive", "Deceased"],
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.01 Initial diagnosis", "2.02 Method of admission"],      
+                        "categories": ["2.01 Initial diagnosis", "2.39 Admission Method"],      
                         "quantities": [
                                         //{"q":"1.02 Patient case record number","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
@@ -200,7 +200,7 @@ $Q.Minap = {
                         "ehr": "Admissions",
                         "legend": ["Meeting Target", "Not meeting target"],
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.02 Method of admission", "Patient District Number"],      
+                        "categories": ["2.39 Admission Method", "Patient District Number"],      
                         "quantities": [
                                        // {"q":"2.01 Initial diagnosis","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTargetMet", "granT": "admonth", "granP":["unit"], "yaggregates": "percent"}, 
@@ -228,7 +228,7 @@ $Q.Minap = {
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.02 Method of admission", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
+                        "categories": ["2.39 Admission Method", "1.07 Patient gender", "Patient District Number", "3.10 Delay before treatment"],      
                         "quantities": [
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
@@ -243,11 +243,11 @@ $Q.Minap = {
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 Date/time arrival at hospital",
-                        "y": [ "1.02 Patient case record number", "2.02 Method of admission"], 
+                        "y": [ "1", "2"], 
                         "yaggregates": [ "count", "count"], 
                         "xType": "t",
                         "yType": [ "q", "q"],
-                        "yfilters": {"1.02 Patient case record number": {"where": {
+                        "yfilters": {"1": {"where": {
                                             //"4.27 Discharged on a thienopyridine inhibitor": "1" ,
                                             //"4.31 Discharged on TIcagrelor (v10.3 Dataset)": "1" ,
                                             "P2Y12": "1", 
@@ -256,7 +256,7 @@ $Q.Minap = {
                                             "4.07 Discharged on statin": "1" ,
                                             "4.08 Discharged on aspirin": "1"      
                             }, "valid": ["0", "1", "2", "3", "4", "8", "9"], "operator": "AND"}, 
-                           "2.02 Method of admission": {"where": {
+                           "2": {"where": {
                                             //"4.27 Discharged on a thienopyridine inhibitor": ["0", "2", "3", "4", "8", "9"] ,
                                             //"4.31 Discharged on TIcagrelor (v10.3 Dataset)": ["0", "2", "3", "4", "8", "9"] ,
                                             "P2Y12": "0", 
@@ -281,7 +281,7 @@ $Q.Minap = {
                                         // {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
                                          {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": [ "1.02 Patient case record number", "2.02 Method of admission" ] }   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": [ "1", "2" ] }   // the first element holds the master view's granT                                             
           
                          },
                           {  
@@ -346,7 +346,7 @@ $Q.Minap = {
                         "granP": [ "unit", "unit", "unit", "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": [ "2.02 Method of admission", "Patient District Number", "3.10 Delay before treatment"],      
+                        "categories": [ "2.39 Admission Method", "Patient District Number", "3.10 Delay before treatment"],      
                         "quantities": [
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
