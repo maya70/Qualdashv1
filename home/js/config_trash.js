@@ -40,13 +40,14 @@
                      }, 
                      {  "metric": "Specialty Case Mix",
                         "mark": "bar",
-                        "x": "admonth",
+                        "x": "addate",
                         "y": "eventidscr",
                         "xType": ["t", "n"],
                         "yType": "q",
                         "xspan": "year",    
                         "yspan": "unit", 
-                        "ylabel": "No. Records",                        
+                        "ylabel": "Num. Records",  
+                        "yfilters": {"eventidscr" : "*"},                       
                         "tspan": 3,                        
                         "yaggregates": ["count"],
                         "ehr": "Admissions", 
@@ -59,7 +60,7 @@
                         "granT": {"monthly-annual": ["der_death"]}, 
                         "combinations": ["adtype&der_readmit"]
                      },
-              
+                     
                      {  "metric": "dependency",                        
                         "mark": "bar", // should remove this 
                         "x": "admonth",
