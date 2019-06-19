@@ -129,9 +129,9 @@ $Q.Minap = {
                                                 "text": "Gold Standard Drugs"//"Complications"
                                               }, 
                                               {"value": "Referral for Cardiac Rehabiliation",
-                                               "text": "Referral for Cardiac Rehabiliation"}], 
-                                              //{"value": "Acute use of Aspirin", 
-                                               //"text": "Acute use of Aspirin"}], 
+                                               "text": "Referral for Cardiac Rehabiliation"}, 
+                                               {"value": "Acute use of Aspirin", 
+                                               "text": "Acute use of Aspirin"}], 
     "variableDict": {"1.02 Patient case record number": "Admissions",
                       "der_discharge": "Discharges",
                       "der_readmit": "Readmissions",
@@ -248,15 +248,18 @@ $Q.Minap = {
                         "xType": "t",
                         "yType": [ "q", "q"],
                         "yfilters": {"1.02 Patient case record number": {"where": {
-                                            "4.27 Discharged on a thienopyridine inhibitor": "1" ,
-                                            "4.31 Discharged on TIcagrelor (v10.3 Dataset)": "1" ,
+                                            //"4.27 Discharged on a thienopyridine inhibitor": "1" ,
+                                            //"4.31 Discharged on TIcagrelor (v10.3 Dataset)": "1" ,
+                                            "P2Y12": "1", 
                                             "4.05 Discharged on beta blocker": "1" , 
                                             "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": "1" ,
                                             "4.07 Discharged on statin": "1" ,
                                             "4.08 Discharged on aspirin": "1"      
                             }, "valid": ["0", "1", "2", "3", "4", "8", "9"], "operator": "AND"}, 
-                           "2.02 Method of admission": {"where": {"4.27 Discharged on a thienopyridine inhibitor": ["0", "2", "3", "4", "8", "9"] ,
-                                            "4.31 Discharged on TIcagrelor (v10.3 Dataset)": ["0", "2", "3", "4", "8", "9"] ,
+                           "2.02 Method of admission": {"where": {
+                                            //"4.27 Discharged on a thienopyridine inhibitor": ["0", "2", "3", "4", "8", "9"] ,
+                                            //"4.31 Discharged on TIcagrelor (v10.3 Dataset)": ["0", "2", "3", "4", "8", "9"] ,
+                                            "P2Y12": "0", 
                                             "4.05 Discharged on beta blocker": ["0", "2", "3", "4", "8", "9"] , 
                                             "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": ["0", "2", "3", "4", "8", "9"] ,
                                             "4.07 Discharged on statin": ["0", "2", "3", "4", "8", "9"] ,
@@ -271,7 +274,7 @@ $Q.Minap = {
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["4.05 Discharged on beta blocker", "4.07 Discharged on statin", "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker", "4.27 Discharged on a thienopyridine inhibitor"],      
+                        "categories": ["P2Y12", "4.05 Discharged on beta blocker", "4.07 Discharged on statin", "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker", "4.27 Discharged on a thienopyridine inhibitor"],      
                         "quantities": [
                                         //{"q":"4.27 Discharged on a thienopyridine inhibitor","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"4.31 Discharged on TIcagrelor (v10.3 Dataset)", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
@@ -313,7 +316,47 @@ $Q.Minap = {
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": [ "0", "1", "3", "8", "9"] }   // the first element holds the master view's granT                                             
           
+                         },
+                          {  
+                        "metric": "Accute Use of Aspirin",
+                        "mark": "bar", // should remove this 
+                        "chart": "stacked",
+                        "x": "3.06 Date/time arrival at hospital",
+                        "y":   ["1", "2", "3", "4", "8"], //"4.09 Cardiac rehabilitation", 
+                        "yaggregates": [ "count", "count", "count", "count", "count"], 
+                        "xType": "t",
+                        "yType": "n",
+                        "yfilters": {"1": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "1",}, "valid": ["1","2" ,"3", "4", "8"] },
+                                      "2": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "2"}, "valid": [ "1","2", "3" ,"4" ,"8"] },
+                                      "3": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "3"}, "valid": [ "1","2", "3" ,"4" ,"8"] },
+                                      "4": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "4"}, "valid": [ "1","2", "3" ,"4" ,"8"] },
+                                      "8": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "8"}, "valid": [ "1","2", "3" ,"4" ,"8"] },
+
+                                      },
+                        "legend": ["Already on drug", 
+                                  "Given out of hospital",
+                                  "Given after arrival in hospital",
+                                  "Contraindicated", 
+                                  "Not given"
+                                  ],
+                        "xspan": "year",    
+                        "yspan": "unit",  
+                        "ylabel": "Num. records",                        
+                        "tspan": 3,                           
+                        "granP": [ "unit", "unit", "unit", "unit", "unit"], 
+                        "ehr": "Admissions",
+                        /** Slave Tasks spec begin here **/ 
+                        "categories": [ "2.02 Method of admission", "Patient District Number", "3.10 Delay before treatment"],      
+                        "quantities": [
+                                        //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
+                                         {"q":"der_angioTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "sum"}, 
+                                         {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": [ "1", "2", "3", "4", "8"] }   // the first element holds the master view's granT                                             
+          
                          }
+                      
                       
                                                 ]
 };

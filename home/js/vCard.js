@@ -166,6 +166,13 @@
 										.on("mouseover", function(d){
 											d3.select(this).select("rect").style("fill", "white");
 											//d3.select(this).style("fill", "white");
+											//var mssLegend = auditVars["displayVariables"][self.id]["legend"]? auditVars["displayVariables"][self.id]["legend"][i]: undef;
+							      			var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][d]: $Q.Minap['variableDict'][d];
+							      			var descLegend = self.parent.control.getVarDesc(d);
+
+							      			var name = dictLegend ||  descLegend || d;
+							      	
+
 											div.transition()
 									      		.duration(200)
 									      		.style("opacity", 0.8)
@@ -173,7 +180,7 @@
 									      		.style("height", "70px")
 									      		.style("background-color", "white")
 									      		.style("vertical-align", "center");
-									      	div .html( d + "")
+									      	div .html( name + "")
 									      		.style("left", (d3.event.pageX) -28 + "px")
 									      		.style("top", (d3.event.pageY + 28) + "px");
 									      	
@@ -481,7 +488,7 @@
 							// filter tspan to remove the first time granularity, which is already displayed in the main view
 							//var index = tspan.indexOf("monthly");
 							var tspan = Object.keys(span);
-							//tspan.splice(0, 1);
+							var numtabs = span[tspan[0]].length; 
 							
 							self.ssvgtdiv =d3.select("#draw-area"+self.id).append("div")	
 											.attr("id", "ssvgtdiv"+self.id)																					
@@ -502,7 +509,7 @@
 											.attr("height", ssvgH);	
 																			
 							
-							var tabW = mainsvgW/ tspan.length;
+							var tabW = mainsvgW/ numtabs * 1.5;
 							
 							var tabs = self.ssvgt.selectAll(".sttabs"+self.id)
 										.data(span[tspan[0]])
@@ -598,7 +605,7 @@
 							      	var name = mssLegend || dictLegend ||  descLegend || d;
 							      	
 							    	return name; })
-							    .style("font", "8px sans-serif")
+							    .style("font", "10px sans-serif")
 							     .style("text-anchor", "bottom");
 
 							self.state['selectedTime'] = span[tspan[0]][0];

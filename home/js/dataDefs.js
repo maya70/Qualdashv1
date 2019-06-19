@@ -47,8 +47,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                                             "5": "ICU or PICU or NICU",
                                             "6": "Ward",
                                             "7": "Missing DataDef",
-                                            "8": "Missing DataDef",
-
+                                            "8": "Missing DataDef"
                                             },
                             "unitdisdest": {"1": "PICU",
                                             "2": "NICU",

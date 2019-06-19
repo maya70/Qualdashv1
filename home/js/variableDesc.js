@@ -551,4 +551,7 @@ $Q.variableDesc = {
   }
 ], 
 
-"minap": []};
+"minap": [{"Name": "P2Y12", 
+           "Description": "P2Y_12 Inhibitors (thienopyridine or ticagrelor)"
+          }
+]};

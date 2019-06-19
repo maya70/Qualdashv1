@@ -105,7 +105,11 @@
                                          for(var i=0; i < self.data.length; i++){
                                             self.data[i]["1.02 Patient case record number"] = ""+self.data[i]["1.02 Patient case record number"];                                            
                                         }                                    
-                                       
+                                       self.variableDesc = {};
+                                            $Q.variableDesc["minap"].forEach(function(v){
+                                                self.variableDesc[v['Name']] = v['Description'];
+                                            }); 
+
                                         for(var display = 0; display < self.displayVariables.length; display++)
                                         {
 

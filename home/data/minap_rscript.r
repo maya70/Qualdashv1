@@ -23,7 +23,7 @@ df <- as.data.frame(allDates)
 colnames(df) <- colnames(madmission)
 dateFields <- df[which(df==TRUE)]
 
-#TODO: unify date formats to ISO format here
+# Unify date formats to ISO format 
 for(col in colnames(madmission)){
     if(col %in% colnames(dateFields)){
     	vector <- madmission[col]
@@ -32,6 +32,13 @@ for(col in colnames(madmission)){
 
     }
 }
+
+# Derived columns
+v427 <- madmission$`4.27 Discharged on a thienopyridine inhibitor` == 1
+v431 <- madmission$`4.31 Discharged on TIcagrelor (v10.3 Dataset)` == 1
+madmission$P2Y12 <- as.numeric(v431 | v427)
+
+
 
  # break it into separate files for individual years
  # and store the new files in the MINAP admissions folder under documnt root 
