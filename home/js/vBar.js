@@ -807,8 +807,6 @@
 										      				dataDefs = $Q.ValueDefs[self.audit][auditVars["displayVariables"][viewId]["y"]][levels[d]];
 
 										      	var name = mssLegend || dictLegend ||  descLegend || dataDefs ||levels[d];
-										      	//var qual = self.parent.parent.control.getQuality(self.parent.metric, levels[d]); 
-										      	//name = name + " (DQ: "+qual +"%)"; 
 										      	return name;
 										       });
 

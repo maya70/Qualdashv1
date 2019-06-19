@@ -934,7 +934,9 @@
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId] ;
                             var dateVar = auditVars['x'];
                             var mon = self.stringToMonth(rec[dateVar]);
-                            var yfilters =  auditVars['yfilters'][yvar]; 
+                            var yfilters =  auditVars['yfilters'][yvar];
+                            if(displayObj['filters'])   // only applies to subviews
+                               yfilters =  displayObj['filters'];
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][sid] : displayObj["yaggregates"] ;
                             var metric = displayObj["metric"];
 
@@ -1027,8 +1029,6 @@
                             
                                     if(!self.missing[metric][yvar])
                                         self.missing[metric][yvar] = 1;
-                                    //if(!self.missing[yvar][dateVar])
-                                    //    self.missing[yvar][dateVar] = 1; 
                                     else 
                                         self.missing[metric][yvar]++; 
                                 }
@@ -1070,7 +1070,7 @@
                         },
                         getQuality: function(varname){
                             var self = this;
-                            if(self.uniqMissing){
+                            /*if(!self.uniqMissing){
                                 var uniqMissing = {};
                                 for(var metric in self.missing ){
                                     for(var key in self.missing[metric]){
@@ -1080,7 +1080,7 @@
                                     }
                                 }
                                 self.uniqMissing = uniqMissing;     
-                            } 
+                            } */
                             if(self.uniqMissing[varname]) {
                                 var qual = (self.ownrecords - self.uniqMissing[varname])/ self.ownrecords * 100; 
                                 return Math.round(qual*10)/10; 
@@ -1113,6 +1113,32 @@
                                     }
                                 }
                             }
+                            for(var i = 0; i < self.data.length; i++){
+                                for(var key in self.data[i]){
+                                    if(self.data[i][key] === "" || self.data[i][key] === "NA" ){
+                                        // add a missing entry for key if none already exists
+                                        if(!uniqMissing[key])
+                                            uniqMissing[key] = 1;
+                                        else
+                                            uniqMissing[key]++;
+                                    }
+                                }
+                            }
+                            // array sort in descending order of missing values
+                            var arr = [];
+                            for(var key in uniqMissing){
+                                arr.push({"key": key, "value": uniqMissing[key]});
+                            }
+                            arr.sort(function(a,b){
+                                return parseFloat(b.value) - parseFloat(a.value);
+                            });
+                            arr.sort(); 
+
+                            uniqMissing = {};
+                            arr.forEach(function(entry){
+                                uniqMissing[entry['key']] = entry['value'];
+                            });
+
                             self.uniqMissing = uniqMissing; 
                             return uniqMissing;
                         },

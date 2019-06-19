@@ -147,9 +147,9 @@ $Q.Picanet = {
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
                         "quantities": [
-                                        {"q":"der_death", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"eventidscr", "granT": "admonth", "granP":["unit"], "yaggregates": "count" },
-                                        {"q":"der_missing", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                                        {"q":"unitdisstatus",  "granP":["unit"], "yaggregates": "sum", 
+                                         "filters": {"where": { "unitdisstatus":"2" } } },
+                                        {"q":"eventidscr",  "granP":["unit"], "yaggregates": "count" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["der_missing"]}   // the first element holds the master view's granT                                             
           
