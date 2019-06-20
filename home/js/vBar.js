@@ -488,6 +488,7 @@
 								self.levels = levels; 
 								var undef;
 								var auditVars = self.audit === "picanet"? $Q.Picanet : $Q.Minap; 
+								var ordinalScale = auditVars['displayVariables'][viewId]['yType'] === "o"? 1 : 0; 
 								self.toggle = auditVars["displayVariables"][viewId]["chart"]; 
 								if(trellis)
 									console.log("this is a trellis view");
@@ -573,9 +574,10 @@
 							var margin = {top: 65, right: 10, bottom: 80, left: self.leftMargin};							
 							var width = svgw - margin.left - margin.right; 
 							var height = svgh - margin.top - margin.bottom;
+							var cscale = (ordinalScale === 1)? $Q.ordinalColors: $Q.colors ; 
 							var color = d3.scaleOrdinal()
 							    .domain(d3.range(levels.length))
-							    .range($Q.colors);
+							    .range(cscale);
 							
 							   //console.log(width); 
 							 
@@ -759,6 +761,11 @@
 								      				self.parent.nohighlightSubs(); 
 								     				d3.selectAll(".slcount-"+self.id).text("0");
 								     				d3.select("#slbut-"+self.id).style("fill", "grey");
+								     				self.parent.parent.control.updateSessionLog({'type': 'clear' , 
+															'owner': 'bar' , 
+															'params': {'metric': self.parent.metric}
+														});
+												
 								 				});
 								 slbut.append("rect")
 								  				.attr("width", 60)
@@ -776,7 +783,30 @@
 								  	  .style("fill", "grey")
 								      .text("Clear");
 
+								/* var slscroll = sl.append("g").attr("transform", "translate(100,2)")
+								 				.on("click", function(){
+								 					d3.selectAll(".sellegend").each(function(du){
+								 						var curY = d3.select(this).attr("y");
+								 						console.log(du.y);
+								 					});
+								 				});
+								  slscroll.append("rect")
+								  				.attr("width", 20)
+								  				.attr("height", 15)	
+								  				.style("fill", "red")	
+								  				.style("stroke-width", 0.5)
+								  				.style("rx", 2)						  				
+								  				.style("stroke", "black");
+								  slscroll.append("text")
+								  	.attr("id", "slscroll-"+viewId)
+								  	.attr("x", 10)
+								  	.attr("y", 12)
+								  	  .style("font-size", "9pt")
+								  	  .style("font-weight", "bold")
+								  	  .style("fill", "grey")
+								      .text("V");
 
+								 */
 
 								 var sllabels = sl.selectAll(".varname")
 								 				.data(color.domain())
@@ -817,7 +847,7 @@
      											 .attr("transform", function(d, i) { return "translate("+ 60 +"," + (i*15) + ")"; });
 
      						 	slcounts.append("rect")
-     						 				.attr("class","selection-rect")
+     						 				.attr("class","sellegend")
      										.attr("width", 40)
 								  				.attr("height", 15)	
 								  				.style("fill", "white")	
@@ -844,7 +874,7 @@
      											 .attr("transform", function(d, i) { return "translate("+ (110) +"," + (i*15) + ")"; });
 
      						 	sltots.append("rect")
-     						 				.attr("class","selection-rect")
+     						 				.attr("class","sellegend")
      										.attr("width", 55)
 								  				.attr("height", 15)	
 								  				.style("fill", "white")	
@@ -1039,6 +1069,12 @@
 							      	key = Object.keys(dictEntry)[cat];
 							      	//for(var key in dict[i+1]){
 							      	//	if(dict[i+1][key]['value'] === (d[1] - d[0]))
+
+							      	self.parent.parent.control.updateSessionLog({'type': 'select' , 
+											'owner': 'bar' , 
+											'params': {'metric': self.parent.metric, 'variable': key}
+										});
+								
 							      			self.parent.highlightSubs(key, dict[i+1][key]['data'], (i+1), 1);
 							      			//console.log(dict[i+1][key]['data']); 
 							      	//}

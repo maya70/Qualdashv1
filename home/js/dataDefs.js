@@ -174,3 +174,12 @@ $Q.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct
 "#b15928"];*/
 
 $Q.colors = [ "#a6cee3", "#1f78b4" , "#4daf4a", "#f781bf", "#999999", "#a65628", "#e41a1c", "#ffff33", "#984ea3", "#ff7f00"];
+$Q.ordinalColors = ["#f7fcf0",
+"#e0f3db",
+"#ccebc5",
+"#a8ddb5",
+"#7bccc4",
+"#4eb3d3",
+"#2b8cbe",
+"#0868ac",
+"#084081"];

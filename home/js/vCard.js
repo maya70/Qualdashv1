@@ -897,7 +897,11 @@
 						    downloadLink.click();
 						    document.body.removeChild(downloadLink);
 
-
+						    self.parent.control.updateSessionLog({'type': 'save' , 
+											'owner': 'card' , 
+											'params': {'filename': name}
+										});
+								
 
 						},
 						createHeader: function(container, viewId){
@@ -1042,6 +1046,11 @@
 
 																		}
 														  			} 
+														  			self.parent.control.updateSessionLog({'type': 'tableExport' , 
+																			'owner': 'card' , 
+																			'params': {'metric': self.metric}
+																		});
+								
 							
 												});
 									

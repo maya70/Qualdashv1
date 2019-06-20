@@ -308,6 +308,12 @@
 								          //  return;
 								        //}
 								    });
+
+								    self.control.updateSessionLog({'type': 'changeTabs' , 
+																			'owner': 'categorical subview' , 
+																			'params': {'metric': self.getMetricById(viewId), 'selection': outcats}
+																		});
+								
 								}
 								else
 									alert("[Invalid action] Please select at least one and at most five variables.");
@@ -339,6 +345,11 @@
 							          //  return;
 							        //}
 							    });
+							     self.control.updateSessionLog({'type': 'changeTabs' , 
+																			'owner': 'quantitative subview' , 
+																			'params': {'metric': self.getMetricById(viewId), 'selection': outQs}
+																		});
+								
 							}
 							else
 								alert("[Invalid action] Please select at least one and at most five variables."); 
@@ -458,6 +469,11 @@
 							$(document).on('change', '#time-sel'+viewId, function(){
 									//console.log(this.value);
 									self.cards[viewId].updateTimeView(this.value); 
+									self.control.updateSessionLog({'type': 'toggleView' , 
+																			'owner': 'history subview' , 
+																			'params': {'metric': self.getMetricById(viewId), 'selection': this.value}
+																		});
+								
 							});
 							
 							$(':not(#anything)').on('click', function (e) {
