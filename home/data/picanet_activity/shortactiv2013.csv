@@ -1,0 +1,2340 @@
+"","eventidscr","addate","hrggroup","unplannedextubation","invventet","invventtt","intubation","ventiliationstatus","avsjet","avsosc","siteidscr"
+"1",906,"2013-09-25","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"2",3913,"2013-10-11","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"3",6241,"2013-07-29","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"4",6241,"2013-07-29","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"5",7633,"2013-01-16","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"6",7716,"2013-07-10","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"7",8079,"2013-04-14","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"8",9831,"2013-12-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"9",10165,"2013-02-25","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"10",10165,"2013-02-25","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"11",10165,"2013-02-25","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"12",11296,"2013-08-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"13",11296,"2013-08-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"14",12940,"2013-07-25","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"15",14553,"2013-11-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"16",14553,"2013-11-15","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"17",16059,"2013-08-08","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"18",16059,"2013-08-08","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"19",16071,"2013-10-11","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"20",16532,"2013-09-27","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"21",17232,"2013-11-06","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"22",17375,"2013-05-17","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"23",17375,"2013-05-17","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"24",17375,"2013-05-17","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"25",17492,"2013-06-19","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"26",18711,"2013-04-24","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"27",18711,"2013-04-24","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"28",19074,"2013-12-08","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"29",20375,"2013-09-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"30",20375,"2013-09-18","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"31",22443,"2013-02-16","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"32",23074,"2013-12-17","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"33",23074,"2013-12-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"34",23212,"2013-08-15","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"35",23212,"2013-08-15","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"36",23539,"2013-10-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"37",23869,"2013-03-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"38",23869,"2013-03-01","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"39",25145,"2013-11-08","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"40",25145,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"41",26467,"2013-12-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"42",26467,"2013-12-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"43",27517,"2013-12-27","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"44",27517,"2013-12-27","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"45",27750,"2013-02-22","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"46",27944,"2013-03-05","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"47",27944,"2013-03-05","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"48",28182,"2013-04-08","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"49",28182,"2013-04-08","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"50",28715,"2013-03-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"51",28715,"2013-03-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"52",28715,"2013-03-24","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"53",28798,"2013-04-09","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"54",28798,"2013-04-09","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"55",29749,"2013-08-08","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"56",29749,"2013-08-08","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"57",30625,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"58",30625,"2013-09-10","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"59",30640,"2013-07-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"60",31863,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"61",31863,"2013-03-21","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"62",35069,"2013-10-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"63",35671,"2013-05-06","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"64",35671,"2013-05-06","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"65",36479,"2013-09-15","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"66",36479,"2013-09-15","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"67",37871,"2013-08-20","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"68",37871,"2013-08-20","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"69",38121,"2013-07-31","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"70",38121,"2013-07-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"71",39296,"2013-08-26","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"72",39296,"2013-08-26","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"73",40284,"2013-03-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"74",40284,"2013-03-16","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"75",41235,"2013-05-29","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"76",41235,"2013-05-29","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"77",43059,"2013-12-05","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"78",43914,"2013-12-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"79",43914,"2013-12-02","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"80",45907,"2013-02-07","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"81",45907,"2013-02-07","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"82",46522,"2013-12-28","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"83",46522,"2013-12-28","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"84",47412,"2013-02-10","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"85",47412,"2013-02-10","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"86",49905,"2013-08-31","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"87",49905,"2013-08-31","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"88",49905,"2013-08-31","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"89",49905,"2013-08-31","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"90",52273,"2013-10-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"91",53201,"2013-06-01","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"92",54142,"2013-05-27","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"93",54142,"2013-05-27","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"94",54152,"2013-09-08","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"95",54152,"2013-09-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"96",54666,"2013-08-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"97",54666,"2013-08-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"98",54666,"2013-08-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"99",54666,"2013-08-06","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"100",55335,"2013-07-24","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"101",55335,"2013-07-24","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"102",55335,"2013-07-24","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"103",55335,"2013-07-24","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"104",55335,"2013-07-24","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"105",55527,"2013-08-28","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"106",55527,"2013-08-28","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"107",55582,"2013-06-06","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"108",55582,"2013-06-06","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"109",56116,"2013-07-16","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"110",56785,"2013-08-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"111",56785,"2013-08-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"112",56800,"2013-01-25","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"113",56800,"2013-01-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"114",57314,"2013-09-04","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"115",57314,"2013-09-04","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"116",58348,"2013-09-20","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"117",58348,"2013-09-20","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"118",58771,"2013-07-26","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"119",58771,"2013-07-26","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"120",58771,"2013-07-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"121",58877,"2013-11-19","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"122",58877,"2013-11-19","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"123",61348,"2013-03-23","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"124",61545,"2013-01-31","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"125",61545,"2013-01-31","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"126",62044,"2013-04-10","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"127",62510,"2013-05-03","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"128",62510,"2013-05-03","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"129",62525,"2013-06-11","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"130",63486,"2013-02-19","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"131",64666,"2013-09-09","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"132",64666,"2013-09-09","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"133",64697,"2013-06-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"134",64697,"2013-06-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"135",66713,"2013-08-23","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"136",66713,"2013-08-23","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"137",67336,"2013-02-09","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"138",67336,"2013-02-09","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"139",67336,"2013-02-09","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"140",67336,"2013-02-09","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"141",67336,"2013-02-09","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"142",69925,"2013-10-13","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"143",69925,"2013-10-13","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"144",69925,"2013-10-13","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"145",70569,"2013-05-01","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"146",70569,"2013-05-01","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"147",70569,"2013-05-01","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"148",71638,"2013-09-19","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"149",71638,"2013-09-19","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"150",72404,"2013-08-01","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"151",72426,"2013-08-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"152",72763,"2013-11-19","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"153",72763,"2013-11-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"154",75084,"2013-04-29","High Dependency Advanced",NA,0,0,NA,"Invasive only",0,0,194281
+"155",75084,"2013-04-29","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"156",75411,"2013-10-15","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"157",75411,"2013-10-15","Enhanced Care",NA,0,0,1,"Neither",0,0,194281
+"158",76799,"2013-12-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"159",76799,"2013-12-20","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"160",76802,"2013-12-08","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"161",76802,"2013-12-08","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"162",76802,"2013-12-08","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"163",77062,"2013-05-15","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"164",77062,"2013-05-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"165",77586,"2013-07-27","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"166",80657,"2013-01-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"167",80657,"2013-01-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"168",80657,"2013-01-18","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"169",80657,"2013-01-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"170",80657,"2013-01-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"171",81395,"2013-07-17","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"172",83029,"2013-01-16","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"173",83029,"2013-01-16","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"174",83029,"2013-01-16","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"175",83029,"2013-01-16","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"176",83029,"2013-01-16","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"177",83029,"2013-01-16","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"178",83029,"2013-01-16","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"179",83029,"2013-01-16","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"180",83029,"2013-01-16","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"181",83671,"2013-03-02","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"182",84049,"2013-10-01","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"183",84049,"2013-10-01","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"184",86150,"2013-07-23","High Dependency Advanced",NA,0,0,NA,"Invasive only",0,0,194281
+"185",86150,"2013-07-23","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"186",86998,"2013-01-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"187",86998,"2013-01-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"188",88661,"2013-04-17","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"189",88661,"2013-04-17","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"190",89365,"2013-11-21","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"191",90337,"2013-04-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"192",90337,"2013-04-10","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"193",90337,"2013-04-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"194",90856,"2013-12-13","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"195",90856,"2013-12-13","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"196",92020,"2013-08-06","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"197",92020,"2013-08-06","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"198",92020,"2013-08-06","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"199",92101,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"200",92101,"2013-03-15","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"201",92101,"2013-03-15","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"202",92349,"2013-01-27","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"203",92349,"2013-01-27","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"204",92349,"2013-01-27","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"205",92349,"2013-01-27","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"206",92349,"2013-01-27","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"207",92349,"2013-01-27","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"208",92349,"2013-01-27","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"209",92349,"2013-01-27","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"210",92684,"2013-08-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"211",92684,"2013-08-01","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"212",93465,"2013-06-04","Intensive Care - ECMO/ECLS",NA,1,0,2,"Both",0,0,194281
+"213",93465,"2013-06-04","Intensive Care - ECMO/ECLS",NA,1,0,2,"Both",0,0,194281
+"214",94971,"2013-10-09","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"215",95109,"2013-03-12","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"216",95109,"2013-03-12","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"217",95109,"2013-03-12","High Dependency Advanced",NA,1,0,2,"Non-invasive only",0,0,194281
+"218",95579,"2013-02-20","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"219",95579,"2013-02-20","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"220",96001,"2013-03-08","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"221",96001,"2013-03-08","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"222",96006,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"223",96006,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"224",97163,"2013-04-11",NA,NA,NA,NA,1,"Neither",NA,NA,194281
+"225",97330,"2013-06-22","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"226",97330,"2013-06-22","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"227",98471,"2013-04-21","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"228",98471,"2013-04-21","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"229",100420,"2013-03-13","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"230",100420,"2013-03-13","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"231",100420,"2013-03-13","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"232",100961,"2013-06-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"233",100961,"2013-06-22","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"234",100961,"2013-06-22","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"235",102255,"2013-07-19","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"236",102255,"2013-07-19","Enhanced Care",NA,0,0,1,"Neither",0,0,194281
+"237",102255,"2013-07-19","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"238",103206,"2013-01-04","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"239",103206,"2013-01-04","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"240",103233,"2013-02-10","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"241",103233,"2013-02-10","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"242",103233,"2013-02-10","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"243",103233,"2013-02-10","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"244",103233,"2013-02-10","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"245",104292,"2013-11-07","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"246",104292,"2013-11-07","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"247",105309,"2013-10-16","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"248",105309,"2013-10-16","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"249",105309,"2013-10-16","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"250",106553,"2013-09-27","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"251",106553,"2013-09-27","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"252",106553,"2013-09-27","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"253",106553,"2013-09-27","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"254",106553,"2013-09-27","Enhanced Care",NA,0,0,2,"Non-invasive only",0,0,194281
+"255",107240,"2013-04-26","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"256",107529,"2013-08-20","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"257",107728,"2013-07-13","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"258",108906,"2013-06-25","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"259",108906,"2013-06-25","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"260",109347,"2013-10-21","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"261",109347,"2013-10-21","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"262",109347,"2013-10-21","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"263",109402,"2013-08-23","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"264",109402,"2013-08-23","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"265",109961,"2013-04-27","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"266",111696,"2013-03-28","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"267",111696,"2013-03-28","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"268",111696,"2013-03-28","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"269",111783,"2013-06-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"270",111783,"2013-06-28","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"271",111783,"2013-06-28","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"272",111915,"2013-01-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"273",111915,"2013-01-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"274",111915,"2013-01-02","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"275",111915,"2013-01-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"276",111915,"2013-01-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"277",112626,"2013-10-25","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"278",112626,"2013-10-25","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"279",112626,"2013-10-25","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"280",112626,"2013-10-25","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"281",114142,"2013-12-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"282",114142,"2013-12-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"283",114142,"2013-12-09","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"284",114154,"2013-02-02","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"285",114154,"2013-02-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"286",114154,"2013-02-02","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"287",114449,"2013-01-09","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"288",114449,"2013-01-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"289",114851,"2013-12-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"290",114851,"2013-12-10","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"291",114851,"2013-12-10","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"292",115791,"2013-03-31","High Dependency",NA,1,0,1,"Both",0,0,194281
+"293",115791,"2013-03-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"294",115791,"2013-03-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"295",115791,"2013-03-31","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"296",115849,"2013-01-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"297",115849,"2013-01-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"298",116039,"2013-10-01","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"299",116039,"2013-10-01","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"300",116251,"2013-01-10","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"301",116251,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"302",117039,"2013-03-27","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"303",117039,"2013-03-27","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"304",117039,"2013-03-27","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"305",117039,"2013-03-27","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"306",117929,"2013-04-07","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"307",117929,"2013-04-07","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"308",117929,"2013-04-07","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"309",117929,"2013-04-07","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"310",117929,"2013-04-07","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"311",118241,"2013-05-30","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"312",118241,"2013-05-30","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"313",118959,"2013-10-27","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"314",118959,"2013-10-27","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"315",118959,"2013-10-27","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"316",119535,"2013-02-02","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"317",119535,"2013-02-02","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"318",119535,"2013-02-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"319",119535,"2013-02-02","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"320",119535,"2013-02-02","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"321",119535,"2013-02-02","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"322",121750,"2013-07-25","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"323",121750,"2013-07-25","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"324",124754,"2013-12-17","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"325",124754,"2013-12-17","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"326",124754,"2013-12-17","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"327",126517,"2013-03-12","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"328",126517,"2013-03-12","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"329",129924,"2013-11-01","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"330",130027,"2013-07-05","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"331",130027,"2013-07-05","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"332",130027,"2013-07-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"333",130158,"2013-05-15","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"334",130245,"2013-03-15","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"335",130245,"2013-03-15","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"336",130567,"2013-08-02","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"337",130567,"2013-08-02","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"338",130567,"2013-08-02","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"339",130567,"2013-08-02","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"340",130567,"2013-08-02","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"341",130964,"2013-03-18","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"342",130964,"2013-03-18","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"343",130964,"2013-03-18","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"344",130964,"2013-03-18","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"345",131059,"2013-12-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"346",131059,"2013-12-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"347",131059,"2013-12-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"348",131059,"2013-12-13","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"349",131151,"2013-02-05","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"350",131151,"2013-02-05","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"351",131581,"2013-03-01","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"352",131581,"2013-03-01","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"353",131581,"2013-03-01","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"354",131581,"2013-03-01","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"355",131854,"2013-04-22","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"356",133185,"2013-04-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"357",133185,"2013-04-12","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"358",133185,"2013-04-12","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"359",133185,"2013-04-12","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"360",134025,"2013-02-25","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"361",134025,"2013-02-25","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"362",134025,"2013-02-25","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"363",134711,"2013-03-30","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"364",134711,"2013-03-30","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"365",134711,"2013-03-30","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"366",134711,"2013-03-30","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"367",134711,"2013-03-30","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"368",134711,"2013-03-30","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"369",134711,"2013-03-30","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"370",134711,"2013-03-30","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"371",135330,"2013-11-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"372",135330,"2013-11-19","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"373",135330,"2013-11-19","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"374",136261,"2013-01-18","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"375",136717,"2013-07-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"376",136717,"2013-07-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"377",136717,"2013-07-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"378",136717,"2013-07-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"379",136717,"2013-07-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"380",137585,"2013-05-30","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"381",137585,"2013-05-30","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"382",137585,"2013-05-30","High Dependency",NA,0,0,1,"Both",0,0,194281
+"383",137585,"2013-05-30","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"384",137585,"2013-05-30","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"385",137585,"2013-05-30","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"386",137585,"2013-05-30","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"387",137585,"2013-05-30","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"388",137667,"2013-05-06","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"389",137667,"2013-05-06","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"390",137667,"2013-05-06","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"391",138825,"2013-03-29","High Dependency",NA,0,0,NA,"Non-invasive only",0,0,194281
+"392",138825,"2013-03-29","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"393",138923,"2013-10-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"394",138923,"2013-10-12","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"395",138923,"2013-10-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"396",138923,"2013-10-12","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"397",139118,"2013-04-30","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"398",139118,"2013-04-30","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"399",139531,"2013-07-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"400",139531,"2013-07-02","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"401",139531,"2013-07-02","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"402",139639,"2013-12-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"403",139639,"2013-12-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"404",139639,"2013-12-07","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"405",139639,"2013-12-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"406",139639,"2013-12-07","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"407",139639,"2013-12-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"408",139714,"2013-08-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"409",139714,"2013-08-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"410",139714,"2013-08-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"411",139714,"2013-08-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"412",139714,"2013-08-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"413",139714,"2013-08-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"414",139714,"2013-08-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"415",139714,"2013-08-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"416",139714,"2013-08-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"417",139714,"2013-08-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"418",139714,"2013-08-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"419",139714,"2013-08-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"420",139852,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"421",139852,"2013-05-31","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"422",140630,"2013-07-19","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"423",140630,"2013-07-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"424",141050,"2013-06-20","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"425",142079,"2013-01-31","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"426",142305,"2013-02-15","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"427",142305,"2013-02-15","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"428",144272,"2013-02-14","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"429",144272,"2013-02-14","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"430",144272,"2013-02-14","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"431",144272,"2013-02-14","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"432",144272,"2013-02-14","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"433",144272,"2013-02-14","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"434",144633,"2013-05-26","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"435",144633,"2013-05-26","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"436",144633,"2013-05-26","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"437",148233,"2013-02-21","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"438",148233,"2013-02-21","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"439",148233,"2013-02-21","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"440",148233,"2013-02-21","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"441",148233,"2013-02-21","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"442",148517,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"443",148517,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"444",148517,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"445",148517,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"446",148517,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"447",148517,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"448",149320,"2013-06-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"449",149320,"2013-06-25","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"450",149320,"2013-06-25","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"451",149320,"2013-06-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"452",149320,"2013-06-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"453",149320,"2013-06-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"454",149320,"2013-06-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"455",149320,"2013-06-25","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"456",149420,"2013-07-25",NA,NA,NA,NA,2,"Neither",NA,NA,194281
+"457",150653,"2013-04-17","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"458",150653,"2013-04-17","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"459",150653,"2013-04-17","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"460",151494,"2013-11-28","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"461",151494,"2013-11-28","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"462",152277,"2013-10-11","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"463",153756,"2013-01-17","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"464",153756,"2013-01-17","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"465",153756,"2013-01-17","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"466",153756,"2013-01-17","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"467",153756,"2013-01-17","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"468",153756,"2013-01-17","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"469",153832,"2013-06-13","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"470",154254,"2013-08-04","Enhanced Care",NA,0,0,1,"Non-invasive only",0,0,194281
+"471",154254,"2013-08-04","High Dependency",NA,0,0,1,"Non-invasive only",0,0,194281
+"472",154254,"2013-08-04","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"473",155403,"2013-08-25","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"474",155403,"2013-08-25","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"475",156034,"2013-02-24","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"476",156034,"2013-02-24","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"477",156034,"2013-02-24","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"478",156034,"2013-02-24","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"479",156034,"2013-02-24","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"480",156034,"2013-02-24","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"481",157840,"2013-01-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"482",157840,"2013-01-05","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"483",158958,"2013-01-14","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"484",158958,"2013-01-14","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"485",159221,"2013-02-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"486",159221,"2013-02-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"487",159221,"2013-02-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"488",159221,"2013-02-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"489",159689,"2013-06-09","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"490",159689,"2013-06-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"491",159941,"2013-01-15","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"492",159941,"2013-01-15","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"493",160264,"2013-10-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"494",160264,"2013-10-20","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"495",160264,"2013-10-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"496",161145,"2013-07-30","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"497",161145,"2013-07-30","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"498",161475,"2013-12-06","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"499",161475,"2013-12-06","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"500",161475,"2013-12-06","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"501",161475,"2013-12-06","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"502",165630,"2013-02-23","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"503",165630,"2013-02-23","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"504",166804,"2013-08-17","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"505",168817,"2013-12-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"506",168817,"2013-12-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"507",169943,"2013-08-09","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"508",169943,"2013-08-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"509",170030,"2013-01-12","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"510",170030,"2013-01-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"511",170030,"2013-01-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"512",170030,"2013-01-12","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"513",170030,"2013-01-12","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"514",170030,"2013-01-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"515",171887,"2013-07-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"516",171887,"2013-07-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"517",171966,"2013-03-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"518",171966,"2013-03-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"519",171966,"2013-03-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"520",172152,"2013-08-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"521",172152,"2013-08-07","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"522",172920,"2013-03-02","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"523",172920,"2013-03-02","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"524",172920,"2013-03-02","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"525",172920,"2013-03-02","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"526",172920,"2013-03-02","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"527",172920,"2013-03-02","High Dependency",NA,0,0,1,"Both",0,0,194281
+"528",172920,"2013-03-02","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"529",172920,"2013-03-02","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"530",172920,"2013-03-02","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"531",172920,"2013-03-02","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"532",173642,"2013-06-21","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"533",173642,"2013-06-21","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"534",173642,"2013-06-21","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"535",173642,"2013-06-21","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"536",173642,"2013-06-21","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"537",174420,"2013-08-02","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"538",174420,"2013-08-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"539",174420,"2013-08-02","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"540",174420,"2013-08-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"541",174420,"2013-08-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"542",175001,"2013-10-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"543",175001,"2013-10-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"544",175001,"2013-10-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"545",175001,"2013-10-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"546",175001,"2013-10-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"547",175247,"2013-05-30","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"548",175247,"2013-05-30","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"549",175247,"2013-05-30","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"550",175610,"2013-08-11","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"551",176708,"2013-05-02","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"552",176708,"2013-05-02","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"553",176708,"2013-05-02","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"554",177863,"2013-05-08","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"555",177863,"2013-05-08","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"556",177884,"2013-07-08","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"557",177884,"2013-07-08","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"558",177884,"2013-07-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"559",178417,"2013-01-06","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"560",178417,"2013-01-06","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"561",178417,"2013-01-06","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"562",178417,"2013-01-06","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"563",178678,"2013-08-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"564",178678,"2013-08-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"565",178678,"2013-08-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"566",178824,"2013-09-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"567",178824,"2013-09-22","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"568",178824,"2013-09-22","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"569",178824,"2013-09-22","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"570",178824,"2013-09-22","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"571",180859,"2013-12-01","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"572",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"573",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"574",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"575",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"576",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"577",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"578",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"579",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"580",180859,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"581",181480,"2013-04-23","Intensive Care - ECMO/ECLS",NA,0,0,2,"Non-invasive only",0,0,194281
+"582",181480,"2013-04-23","Intensive Care - ECMO/ECLS",NA,0,0,2,"Non-invasive only",0,0,194281
+"583",181480,"2013-04-23","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"584",182958,"2013-12-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"585",182958,"2013-12-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"586",182958,"2013-12-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"587",184738,"2013-07-03","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"588",184738,"2013-07-03","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"589",184738,"2013-07-03","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"590",184764,"2013-12-02","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"591",185934,"2013-07-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"592",185934,"2013-07-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"593",185934,"2013-07-08","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"594",185934,"2013-07-08","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"595",185934,"2013-07-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"596",185934,"2013-07-08","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"597",185934,"2013-07-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"598",185934,"2013-07-08","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"599",185934,"2013-07-08","High Dependency",NA,0,0,1,"Both",0,0,194281
+"600",185934,"2013-07-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"601",185934,"2013-07-08","High Dependency",NA,0,0,1,"Both",0,0,194281
+"602",185934,"2013-07-08","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"603",187409,"2013-03-04","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"604",187409,"2013-03-04","High Dependency",NA,0,0,NA,"Non-invasive only",0,0,194281
+"605",187409,"2013-03-04","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"606",188016,"2013-02-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"607",188016,"2013-02-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"608",188016,"2013-02-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"609",188016,"2013-02-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"610",188016,"2013-02-01","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"611",188016,"2013-02-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"612",188016,"2013-02-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"613",188016,"2013-02-01","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"614",188016,"2013-02-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"615",188016,"2013-02-01","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"616",188016,"2013-02-01","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"617",188016,"2013-02-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"618",188016,"2013-02-01","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"619",188016,"2013-02-01","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"620",188754,"2013-02-22","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"621",188754,"2013-02-22","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"622",188754,"2013-02-22","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"623",188754,"2013-02-22","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"624",190432,"2013-01-17","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"625",190432,"2013-01-17","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"626",192868,"2013-06-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"627",192868,"2013-06-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"628",192898,"2013-06-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"629",192898,"2013-06-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"630",192898,"2013-06-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"631",192898,"2013-06-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"632",192898,"2013-06-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"633",192898,"2013-06-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"634",192898,"2013-06-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"635",194141,"2013-07-13","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"636",194141,"2013-07-13","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"637",194141,"2013-07-13","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"638",194141,"2013-07-13","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"639",194141,"2013-07-13","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"640",194141,"2013-07-13","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"641",194141,"2013-07-13","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"642",196122,"2013-11-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"643",196122,"2013-11-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"644",196122,"2013-11-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"645",196122,"2013-11-11","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"646",196122,"2013-11-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"647",196122,"2013-11-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"648",196122,"2013-11-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"649",196122,"2013-11-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"650",198420,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"651",198420,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"652",199868,"2013-06-12","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"653",199868,"2013-06-12","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"654",200843,"2013-05-13","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"655",200843,"2013-05-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"656",203368,"2013-08-19","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"657",203368,"2013-08-19","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"658",204102,"2013-08-21","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"659",204102,"2013-08-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"660",204102,"2013-08-21","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"661",204102,"2013-08-21","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"662",204102,"2013-08-21","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"663",204670,"2013-09-21","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"664",205159,"2013-04-28","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"665",205159,"2013-04-28","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"666",205416,"2013-07-23","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"667",205416,"2013-07-23","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"668",205416,"2013-07-23","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"669",207587,"2013-06-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"670",209060,"2013-12-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"671",209060,"2013-12-22","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"672",209060,"2013-12-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"673",209060,"2013-12-22","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"674",209060,"2013-12-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"675",209160,"2013-02-10","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"676",210866,"2013-06-18","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"677",210866,"2013-06-18","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"678",210866,"2013-06-18","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"679",212223,"2013-02-01","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"680",212223,"2013-02-01","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"681",212341,"2013-07-02","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"682",212341,"2013-07-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"683",212341,"2013-07-02","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"684",212795,"2013-07-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"685",212795,"2013-07-06","High Dependency",NA,0,0,1,"Both",0,0,194281
+"686",212795,"2013-07-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"687",212795,"2013-07-06","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"688",212795,"2013-07-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"689",212795,"2013-07-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"690",212795,"2013-07-06","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"691",213453,"2013-05-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"692",213453,"2013-05-16","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"693",213453,"2013-05-16","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"694",213453,"2013-05-16","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"695",213453,"2013-05-16","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"696",213453,"2013-05-16","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"697",214060,"2013-06-03","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"698",214557,"2013-01-10","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"699",214557,"2013-01-10","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"700",214557,"2013-01-10","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"701",214557,"2013-01-10","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"702",214557,"2013-01-10","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"703",216680,"2013-12-03","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"704",216680,"2013-12-03","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"705",216680,"2013-12-03","Intensive Care Basic",NA,0,0,1,"Both",0,0,194281
+"706",216680,"2013-12-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"707",216680,"2013-12-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"708",216680,"2013-12-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"709",216680,"2013-12-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"710",217351,"2013-04-07","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"711",217351,"2013-04-07","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"712",217351,"2013-04-07","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"713",217351,"2013-04-07","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"714",217351,"2013-04-07","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",0,0,194281
+"715",217351,"2013-04-07","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"716",217423,"2013-03-11","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"717",217423,"2013-03-11","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"718",217423,"2013-03-11","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"719",217423,"2013-03-11","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"720",217423,"2013-03-11","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"721",219770,"2013-02-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"722",219770,"2013-02-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"723",219770,"2013-02-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"724",219770,"2013-02-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"725",219770,"2013-02-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"726",222987,"2013-03-30","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"727",222987,"2013-03-30","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"728",222987,"2013-03-30","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"729",222987,"2013-03-30","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"730",225707,"2013-08-12","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"731",228671,"2013-10-22","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"732",231753,"2013-12-13","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"733",231753,"2013-12-13","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"734",231753,"2013-12-13","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"735",232797,"2013-01-13","High Dependency",NA,0,0,1,"Non-invasive only",0,0,194281
+"736",232797,"2013-01-13","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"737",234340,"2013-01-15","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"738",234340,"2013-01-15","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"739",234340,"2013-01-15","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"740",234340,"2013-01-15","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"741",234340,"2013-01-15","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"742",234509,"2013-05-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"743",234509,"2013-05-26","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"744",234509,"2013-05-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"745",234509,"2013-05-26","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"746",234509,"2013-05-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"747",234509,"2013-05-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"748",234509,"2013-05-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"749",234509,"2013-05-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"750",234723,"2013-08-19","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"751",234723,"2013-08-19","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"752",234723,"2013-08-19","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"753",235347,"2013-05-10","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"754",236172,"2013-05-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"755",236172,"2013-05-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"756",236172,"2013-05-12","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"757",236172,"2013-05-12","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"758",236177,"2013-09-05","Enhanced Care",NA,0,0,1,"Neither",0,0,194281
+"759",236177,"2013-09-05","Enhanced Care",NA,0,0,1,"Neither",0,0,194281
+"760",236177,"2013-09-05","Enhanced Care",NA,0,0,1,"Neither",0,0,194281
+"761",236177,"2013-09-05","Enhanced Care",NA,0,0,1,"Neither",0,0,194281
+"762",236177,"2013-09-05","Enhanced Care",NA,0,0,1,"Neither",0,0,194281
+"763",237846,"2013-07-03","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"764",237846,"2013-07-03","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"765",237846,"2013-07-03","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"766",237846,"2013-07-03","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"767",237846,"2013-07-03","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"768",237846,"2013-07-03","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"769",238160,"2013-02-19","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"770",238160,"2013-02-19","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"771",238300,"2013-06-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"772",238300,"2013-06-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"773",238300,"2013-06-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"774",238300,"2013-06-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"775",239124,"2013-04-23","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"776",239124,"2013-04-23","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"777",239124,"2013-04-23","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"778",239124,"2013-04-23","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"779",239124,"2013-04-23","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"780",239124,"2013-04-23","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"781",239124,"2013-04-23","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"782",239124,"2013-04-23","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"783",239124,"2013-04-23","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"784",239124,"2013-04-23","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"785",239124,"2013-04-23","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"786",239124,"2013-04-23","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"787",242428,"2013-07-25","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"788",242428,"2013-07-25","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"789",244036,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"790",244036,"2013-03-07","High Dependency",NA,1,0,1,"Invasive only",0,0,194281
+"791",244036,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"792",244036,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"793",244036,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"794",245258,"2013-02-17","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"795",245258,"2013-02-17","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"796",245258,"2013-02-17","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"797",245500,"2013-04-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"798",245500,"2013-04-15","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"799",245500,"2013-04-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"800",245500,"2013-04-15","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"801",245500,"2013-04-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"802",246266,"2013-02-25","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"803",246266,"2013-02-25","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"804",249761,"2013-03-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"805",250000,"2013-10-01","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"806",250000,"2013-10-01","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"807",250000,"2013-10-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"808",250000,"2013-10-01","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"809",251430,"2013-10-30","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"810",251430,"2013-10-30","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"811",254537,"2013-11-21","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"812",254537,"2013-11-21","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"813",254563,"2013-01-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"814",254563,"2013-01-19","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"815",254563,"2013-01-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"816",254563,"2013-01-19","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"817",255379,"2013-07-05","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"818",255379,"2013-07-05","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"819",255435,"2013-09-02","High Dependency Advanced",NA,1,0,2,"Neither",0,0,194281
+"820",255435,"2013-09-02","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"821",255435,"2013-09-02","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"822",257007,"2013-02-12","Intensive Care Basic",NA,0,0,1,"Invasive only",0,0,194281
+"823",257007,"2013-02-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"824",257007,"2013-02-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"825",257007,"2013-02-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"826",257007,"2013-02-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"827",257007,"2013-02-12","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"828",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,0,194281
+"829",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"830",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"831",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"832",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"833",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"834",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,0,194281
+"835",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"836",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"837",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"838",258578,"2013-10-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"839",259040,"2013-02-28","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"840",260890,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"841",260890,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"842",260890,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"843",260890,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"844",260890,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"845",260890,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"846",261125,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"847",261125,"2013-03-06","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"848",262377,"2013-04-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"849",262377,"2013-04-13","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"850",262520,"2013-12-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"851",262520,"2013-12-11","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"852",262520,"2013-12-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"853",263156,"2013-07-06","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"854",263156,"2013-07-06","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"855",263274,"2013-05-24","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"856",264660,"2013-01-29","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"857",264660,"2013-01-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"858",264660,"2013-01-29","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"859",264660,"2013-01-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"860",264660,"2013-01-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"861",264891,"2013-11-30","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"862",264891,"2013-11-30","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"863",264891,"2013-11-30","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"864",265223,"2013-02-28","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"865",265223,"2013-02-28","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"866",265223,"2013-02-28","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"867",265223,"2013-02-28","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"868",265223,"2013-02-28","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"869",265223,"2013-02-28","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"870",268006,"2013-05-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"871",268006,"2013-05-08","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"872",268006,"2013-05-08","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"873",268006,"2013-05-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"874",268006,"2013-05-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"875",268006,"2013-05-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"876",268006,"2013-05-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"877",268006,"2013-05-08","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"878",268006,"2013-05-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"879",268006,"2013-05-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"880",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"881",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"882",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"883",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"884",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"885",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"886",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"887",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"888",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"889",268328,"2013-08-10","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"890",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"891",268328,"2013-08-10","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"892",268593,"2013-11-17","Intensive Care Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"893",268593,"2013-11-17","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"894",268593,"2013-11-17","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"895",268593,"2013-11-17","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"896",268593,"2013-11-17","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"897",268593,"2013-11-17","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"898",268593,"2013-11-17","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"899",268593,"2013-11-17","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"900",268593,"2013-11-17","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"901",269678,"2013-09-02","Unable to Group",NA,1,0,1,"Invasive only",0,0,194281
+"902",269678,"2013-09-02","Unable to Group",NA,1,0,1,"Invasive only",0,0,194281
+"903",269678,"2013-09-02","Unable to Group",NA,0,0,1,"Invasive only",0,0,194281
+"904",269678,"2013-09-02","Unable to Group",NA,1,0,1,"Invasive only",0,0,194281
+"905",269678,"2013-09-02","Unable to Group",NA,1,0,1,"Invasive only",0,0,194281
+"906",269678,"2013-09-02","Unable to Group",NA,1,0,1,"Invasive only",0,0,194281
+"907",269678,"2013-09-02","Unable to Group",NA,1,0,1,"Invasive only",0,0,194281
+"908",269678,"2013-09-02","Unable to Group",NA,1,0,1,"Invasive only",0,0,194281
+"909",269678,"2013-09-02","Unable to Group",NA,1,0,1,"Invasive only",0,0,194281
+"910",270850,"2013-08-20","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"911",270850,"2013-08-20","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"912",270850,"2013-08-20","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"913",270850,"2013-08-20","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"914",270911,"2013-04-22","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"915",270911,"2013-04-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"916",270911,"2013-04-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"917",270911,"2013-04-22","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"918",271899,"2013-02-09","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"919",271899,"2013-02-09","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"920",271899,"2013-02-09","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"921",271899,"2013-02-09","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"922",271899,"2013-02-09","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"923",271899,"2013-02-09","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"924",271899,"2013-02-09","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"925",271899,"2013-02-09","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"926",271899,"2013-02-09","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"927",271899,"2013-02-09","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"928",271899,"2013-02-09","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"929",271899,"2013-02-09","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"930",272934,"2013-04-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"931",274217,"2013-09-26","High Dependency",NA,0,0,9,"Invasive only",0,0,194281
+"932",274217,"2013-09-26","Intensive Care Basic",NA,1,0,9,"Invasive only",0,0,194281
+"933",274217,"2013-09-26","High Dependency",NA,0,0,9,"Invasive only",0,0,194281
+"934",274217,"2013-09-26","High Dependency",NA,0,0,9,"Invasive only",0,0,194281
+"935",274217,"2013-09-26","Intensive Care Basic",NA,1,0,9,"Invasive only",0,0,194281
+"936",274403,"2013-01-10","High Dependency",NA,0,0,1,"Non-invasive only",0,0,194281
+"937",274403,"2013-01-10","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"938",276493,"2013-09-15","High Dependency",NA,0,0,9,"Invasive only",0,0,194281
+"939",276493,"2013-09-15","Intensive Care Basic",NA,1,0,9,"Invasive only",0,0,194281
+"940",276493,"2013-09-15","Intensive Care Basic",NA,1,0,9,"Invasive only",0,0,194281
+"941",276493,"2013-09-15","Intensive Care Basic",NA,1,0,9,"Invasive only",0,0,194281
+"942",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"943",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"944",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"945",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"946",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"947",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"948",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"949",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"950",277035,"2013-01-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"951",278922,"2013-11-29","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"952",278922,"2013-11-29","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"953",279014,"2013-05-24","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"954",279014,"2013-05-24","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"955",279879,"2013-10-11","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"956",279879,"2013-10-11","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"957",279882,"2013-12-11","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"958",279882,"2013-12-11","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"959",280547,"2013-10-30","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"960",280547,"2013-10-30","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"961",280547,"2013-10-30","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"962",281356,"2013-04-26","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"963",281356,"2013-04-26","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"964",282179,"2013-02-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"965",282179,"2013-02-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"966",282179,"2013-02-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"967",282179,"2013-02-13","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"968",282179,"2013-02-13","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"969",286070,"2013-07-20","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"970",286070,"2013-07-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"971",286070,"2013-07-20","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"972",286070,"2013-07-20","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"973",286086,"2013-11-01","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"974",286086,"2013-11-01","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"975",286086,"2013-11-01","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"976",291207,"2013-01-04","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"977",291207,"2013-01-04","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"978",293258,"2013-12-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"979",293258,"2013-12-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"980",293258,"2013-12-17","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"981",294837,"2013-01-27","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"982",295517,"2013-06-30","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"983",295517,"2013-06-30","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"984",295866,"2013-12-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"985",295866,"2013-12-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"986",295866,"2013-12-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"987",295866,"2013-12-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"988",295866,"2013-12-19","Intensive Care Basic",NA,1,1,1,"Invasive only",0,0,194281
+"989",295866,"2013-12-19","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"990",297286,"2013-07-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"991",297286,"2013-07-22","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"992",300490,"2013-09-06","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"993",300874,"2013-03-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"994",300874,"2013-03-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"995",300874,"2013-03-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"996",300874,"2013-03-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"997",300874,"2013-03-01","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"998",300874,"2013-03-01","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"999",300874,"2013-03-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1000",300874,"2013-03-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1001",302995,"2013-03-20","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1002",302995,"2013-03-20","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1003",303883,"2013-10-31","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1004",304386,"2013-10-26","High Dependency",NA,0,0,NA,"Non-invasive only",0,0,194281
+"1005",304386,"2013-10-26","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"1006",305137,"2013-11-13","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1007",305137,"2013-11-13","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1008",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1009",305137,"2013-11-13","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1010",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1011",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1012",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1013",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1014",305137,"2013-11-13","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1015",305137,"2013-11-13","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1016",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1017",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1018",305137,"2013-11-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1019",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1020",305137,"2013-11-13","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1021",305137,"2013-11-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1022",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1023",305137,"2013-11-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1024",305137,"2013-11-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1025",310676,"2013-12-13","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1026",310676,"2013-12-13","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1027",310676,"2013-12-13","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1028",311394,"2013-04-28","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1029",311394,"2013-04-28","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1030",311996,"2013-05-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1031",311996,"2013-05-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1032",311996,"2013-05-14","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1033",311996,"2013-05-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1034",311996,"2013-05-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1035",311996,"2013-05-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1036",311996,"2013-05-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1037",311996,"2013-05-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1038",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1039",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1040",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1041",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1042",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1043",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1044",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1045",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1046",315873,"2013-08-01","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1047",315873,"2013-08-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1048",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1049",315873,"2013-08-01","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1050",315873,"2013-08-01","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1051",316299,"2013-05-10","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"1052",316299,"2013-05-10","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"1053",316762,"2013-10-10","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"1054",316762,"2013-10-10","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1055",316762,"2013-10-10","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1056",316762,"2013-10-10","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1057",316762,"2013-10-10","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1058",316762,"2013-10-10","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"1059",316762,"2013-10-10","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1060",317216,"2013-12-22","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"1061",317216,"2013-12-22","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"1062",317216,"2013-12-22","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"1063",318926,"2013-08-23","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1064",318926,"2013-08-23","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1065",318926,"2013-08-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1066",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1067",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1068",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1069",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1070",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1071",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1072",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1073",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1074",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1075",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1076",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1077",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1078",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1079",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1080",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1081",319921,"2013-11-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1082",321927,"2013-06-07","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1083",321927,"2013-06-07","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1084",327112,"2013-01-06","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1085",327112,"2013-01-06","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1086",327112,"2013-01-06","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1087",328370,"2013-05-31","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1088",328370,"2013-05-31","Intensive Care Advanced",NA,1,0,1,"Both",0,0,194281
+"1089",328370,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1090",328370,"2013-05-31","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1091",328370,"2013-05-31","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1092",328370,"2013-05-31","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1093",328370,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1094",328370,"2013-05-31","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1095",328370,"2013-05-31","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1096",328370,"2013-05-31","Intensive Care Advanced",NA,1,0,1,"Both",0,0,194281
+"1097",328370,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1098",328370,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1099",328370,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1100",328370,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1101",328370,"2013-05-31","Intensive Care Advanced",NA,1,0,1,"Both",0,0,194281
+"1102",328370,"2013-05-31","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1103",328370,"2013-05-31","Intensive Care Advanced",NA,1,0,1,"Both",0,0,194281
+"1104",328370,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1105",328370,"2013-05-31","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1106",328370,"2013-05-31","Intensive Care Advanced",NA,1,0,1,"Both",0,0,194281
+"1107",328370,"2013-05-31","Intensive Care Advanced",NA,1,0,1,"Both",0,0,194281
+"1108",328370,"2013-05-31","Intensive Care Advanced",NA,1,0,1,"Both",0,0,194281
+"1109",328370,"2013-05-31","Intensive Care Advanced",NA,1,0,1,"Both",0,0,194281
+"1110",328867,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1111",328867,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1112",328867,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1113",328867,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1114",328867,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1115",328867,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1116",328867,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1117",328867,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1118",328867,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1119",328867,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1120",328867,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1121",328867,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1122",328867,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1123",328867,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1124",328867,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1125",330537,"2013-05-22","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1126",330537,"2013-05-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1127",330537,"2013-05-22","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1128",330537,"2013-05-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1129",330537,"2013-05-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1130",331492,"2013-01-03","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"1131",331492,"2013-01-03","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"1132",331492,"2013-01-03","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1133",331492,"2013-01-03","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1134",331492,"2013-01-03","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1135",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1136",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1137",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1138",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1139",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1140",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1141",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1142",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1143",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1144",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1145",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1146",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1147",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1148",332361,"2013-06-26","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1149",332747,"2013-12-30","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1150",332747,"2013-12-30","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1151",332747,"2013-12-30","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1152",333052,"2013-04-14","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1153",333052,"2013-04-14","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1154",333052,"2013-04-14","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1155",333052,"2013-04-14","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1156",333936,"2013-05-23","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1157",333936,"2013-05-23","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1158",334124,"2013-02-20","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"1159",334124,"2013-02-20","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"1160",334124,"2013-02-20","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"1161",334124,"2013-02-20","High Dependency Advanced",NA,0,0,1,"Non-invasive only",0,0,194281
+"1162",334443,"2013-12-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1163",334443,"2013-12-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1164",334443,"2013-12-14","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1165",334612,"2013-10-18","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1166",334612,"2013-10-18","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1167",334612,"2013-10-18","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1168",334612,"2013-10-18","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1169",334612,"2013-10-18","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1170",334612,"2013-10-18","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1171",334612,"2013-10-18","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1172",335815,"2013-09-11","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1173",335815,"2013-09-11","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1174",335815,"2013-09-11","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1175",335815,"2013-09-11","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1176",335815,"2013-09-11","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1177",335815,"2013-09-11","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1178",335815,"2013-09-11","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1179",335815,"2013-09-11","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1180",335815,"2013-09-11","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1181",335815,"2013-09-11","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1182",335815,"2013-09-11","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1183",335815,"2013-09-11","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1184",335815,"2013-09-11","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1185",335815,"2013-09-11","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1186",337784,"2013-04-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1187",337784,"2013-04-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1188",337784,"2013-04-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1189",337784,"2013-04-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1190",337784,"2013-04-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1191",338661,"2013-01-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1192",338661,"2013-01-02","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1193",338661,"2013-01-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1194",338661,"2013-01-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1195",338661,"2013-01-02","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1196",339662,"2013-12-19","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1197",339662,"2013-12-19","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1198",339662,"2013-12-19","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1199",339662,"2013-12-19","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1200",339662,"2013-12-19","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1201",344719,"2013-12-30","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1202",344719,"2013-12-30","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1203",344719,"2013-12-30","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1204",346532,"2013-04-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1205",346532,"2013-04-16","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1206",346532,"2013-04-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1207",347134,"2013-08-02","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"1208",347134,"2013-08-02","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"1209",347134,"2013-08-02","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"1210",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1211",347673,"2013-06-14","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1212",347673,"2013-06-14","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1213",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1214",347673,"2013-06-14","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1215",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1216",347673,"2013-06-14","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1217",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1218",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1219",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1220",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1221",347673,"2013-06-14","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1222",347673,"2013-06-14","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1223",347673,"2013-06-14","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1224",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1225",347673,"2013-06-14","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1226",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1227",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1228",347673,"2013-06-14","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1229",350822,"2013-06-21","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1230",352563,"2013-10-03","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1231",352563,"2013-10-03","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1232",356952,"2013-05-09","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1233",356952,"2013-05-09","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1234",357496,"2013-12-31","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1235",357496,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1236",357496,"2013-12-31","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1237",357496,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1238",357496,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1239",357788,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1240",357788,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1241",357788,"2013-02-28","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1242",357788,"2013-02-28","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1243",357788,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1244",357788,"2013-02-28","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1245",357788,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1246",357788,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1247",357788,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1248",357788,"2013-02-28","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1249",357788,"2013-02-28","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1250",357788,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1251",358251,"2013-07-17","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1252",358251,"2013-07-17","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1253",358251,"2013-07-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1254",358251,"2013-07-17","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1255",358251,"2013-07-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1256",359037,"2013-11-08","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1257",359037,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1258",359966,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1259",359966,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1260",359966,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1261",359966,"2013-03-07","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1262",359966,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1263",359966,"2013-03-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1264",361155,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1265",361155,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1266",361155,"2013-03-21","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1267",361155,"2013-03-21","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1268",361155,"2013-03-21","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1269",361516,"2013-10-24","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1270",361516,"2013-10-24","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1271",361516,"2013-10-24","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1272",361516,"2013-10-24","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1273",361516,"2013-10-24","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1274",361516,"2013-10-24","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1275",361516,"2013-10-24","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1276",361516,"2013-10-24","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1277",361516,"2013-10-24","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1278",364874,"2013-07-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1279",364874,"2013-07-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1280",364874,"2013-07-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1281",369480,"2013-01-22","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1282",369480,"2013-01-22","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1283",369480,"2013-01-22","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1284",371557,"2013-08-07","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1285",375273,"2013-12-01","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"1286",375273,"2013-12-01","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"1287",375273,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1288",375273,"2013-12-01","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1289",375273,"2013-12-01","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1290",381069,"2013-09-09","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1291",381069,"2013-09-09","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1292",381069,"2013-09-09","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1293",381069,"2013-09-09","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1294",381069,"2013-09-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1295",381069,"2013-09-09","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1296",381069,"2013-09-09","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1297",381069,"2013-09-09","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1298",381069,"2013-09-09","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1299",382227,"2013-08-24","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1300",382227,"2013-08-24","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1301",386510,"2013-05-17","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1302",386510,"2013-05-17","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1303",386510,"2013-05-17","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1304",386510,"2013-05-17","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1305",386510,"2013-05-17","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1306",386510,"2013-05-17","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1307",386510,"2013-05-17","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1308",386510,"2013-05-17","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1309",386510,"2013-05-17","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1310",386510,"2013-05-17","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1311",386510,"2013-05-17","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1312",386510,"2013-05-17","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1313",392634,"2013-12-02","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"1314",392634,"2013-12-02","Enhanced Care",NA,0,0,2,"Non-invasive only",0,0,194281
+"1315",392634,"2013-12-02","Enhanced Care",NA,0,0,2,"Non-invasive only",0,0,194281
+"1316",392926,"2013-05-29","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1317",392926,"2013-05-29","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1318",396676,"2013-04-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1319",396676,"2013-04-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1320",396676,"2013-04-07","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1321",396676,"2013-04-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1322",396676,"2013-04-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1323",396676,"2013-04-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1324",396676,"2013-04-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1325",396676,"2013-04-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1326",396822,"2013-12-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1327",396822,"2013-12-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1328",396822,"2013-12-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1329",396822,"2013-12-05","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1330",396822,"2013-12-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1331",396822,"2013-12-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1332",396822,"2013-12-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1333",396822,"2013-12-05","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1334",396822,"2013-12-05","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1335",396822,"2013-12-05","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1336",399678,"2013-10-24","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1337",399678,"2013-10-24","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1338",399678,"2013-10-24","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1339",400274,"2013-07-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1340",400274,"2013-07-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1341",400274,"2013-07-19","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1342",400274,"2013-07-19","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1343",400274,"2013-07-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1344",400274,"2013-07-19","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1345",400274,"2013-07-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1346",400274,"2013-07-19","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1347",400274,"2013-07-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1348",400274,"2013-07-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1349",400274,"2013-07-19","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1350",400274,"2013-07-19","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1351",400274,"2013-07-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1352",403943,"2013-02-04","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"1353",403943,"2013-02-04","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1354",406076,"2013-10-13","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"1355",406076,"2013-10-13","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1356",406076,"2013-10-13","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1357",406487,"2013-07-05","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1358",406487,"2013-07-05","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1359",406487,"2013-07-05","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1360",406487,"2013-07-05","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1361",407550,"2013-12-07","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1362",407550,"2013-12-07","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1363",407550,"2013-12-07","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1364",407550,"2013-12-07","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1365",407688,"2013-07-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1366",407688,"2013-07-22","High Dependency Advanced",NA,0,0,1,"Invasive only",1,0,194281
+"1367",407688,"2013-07-22","High Dependency Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1368",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1369",409907,"2013-06-14","Enhanced Care",NA,0,0,NA,"Both",0,0,194281
+"1370",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1371",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1372",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1373",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1374",409907,"2013-06-14","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"1375",409907,"2013-06-14","Enhanced Care",NA,0,0,NA,"Both",0,0,194281
+"1376",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1377",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1378",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1379",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1380",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1381",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1382",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1383",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1384",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1385",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1386",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1387",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1388",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1389",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1390",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1391",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1392",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1393",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1394",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1395",409907,"2013-06-14","Intensive Care Basic",NA,0,0,NA,"Both",0,0,194281
+"1396",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1397",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1398",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1399",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1400",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1401",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1402",409907,"2013-06-14","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"1403",409907,"2013-06-14","Intensive Care Advanced",NA,1,0,NA,"Both",0,0,194281
+"1404",410795,"2013-04-02","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1405",410795,"2013-04-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1406",410795,"2013-04-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1407",410795,"2013-04-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1408",410795,"2013-04-02","Intensive Care Basic",NA,1,1,1,"Invasive only",0,0,194281
+"1409",410795,"2013-04-02","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1410",410795,"2013-04-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1411",410795,"2013-04-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1412",410795,"2013-04-02","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1413",410795,"2013-04-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1414",410795,"2013-04-02","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1415",410795,"2013-04-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1416",413910,"2013-09-24","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1417",413910,"2013-09-24","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1418",413910,"2013-09-24","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1419",413910,"2013-09-24","High Dependency",NA,0,0,2,"Both",0,0,194281
+"1420",413910,"2013-09-24","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1421",413910,"2013-09-24","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1422",413910,"2013-09-24","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1423",413910,"2013-09-24","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1424",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1425",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1426",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1427",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1428",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1429",415637,"2013-01-23","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1430",415637,"2013-01-23","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1431",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1432",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1433",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1434",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1435",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1436",415637,"2013-01-23","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1437",415637,"2013-01-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1438",415637,"2013-01-23","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1439",415637,"2013-01-23","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1440",420122,"2013-09-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1441",420122,"2013-09-07","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1442",422971,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1443",422971,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1444",422971,"2013-01-10","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1445",426093,"2013-10-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1446",426093,"2013-10-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1447",426093,"2013-10-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1448",426093,"2013-10-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1449",426093,"2013-10-08","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1450",426093,"2013-10-08","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1451",426093,"2013-10-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1452",426234,"2013-11-25","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1453",426234,"2013-11-25","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1454",427848,"2013-12-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1455",427848,"2013-12-24","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1456",429780,"2013-10-24","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1457",429780,"2013-10-24","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1458",429780,"2013-10-24","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1459",429780,"2013-10-24","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1460",431482,"2013-01-31","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"1461",431482,"2013-01-31","High Dependency",NA,0,0,NA,"Non-invasive only",0,0,194281
+"1462",431482,"2013-01-31","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"1463",434245,"2013-05-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1464",434245,"2013-05-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1465",434245,"2013-05-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1466",434245,"2013-05-15","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1467",434245,"2013-05-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1468",434245,"2013-05-15","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1469",434245,"2013-05-15","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1470",435595,"2013-02-02","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1471",435595,"2013-02-02","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1472",435595,"2013-02-02","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1473",436094,"2013-02-05","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1474",436094,"2013-02-05","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1475",436094,"2013-02-05","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1476",436094,"2013-02-05","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1477",436094,"2013-02-05","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1478",436094,"2013-02-05","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1479",436094,"2013-02-05","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1480",436094,"2013-02-05","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1481",436094,"2013-02-05","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1482",436648,"2013-04-02","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1483",436648,"2013-04-02","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1484",439484,"2013-10-16","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1485",439484,"2013-10-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1486",439484,"2013-10-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1487",439484,"2013-10-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1488",439484,"2013-10-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1489",439484,"2013-10-16","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1490",439484,"2013-10-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1491",441050,"2013-03-15","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"1492",441785,"2013-02-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1493",441785,"2013-02-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1494",441785,"2013-02-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1495",441785,"2013-02-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1496",441785,"2013-02-18","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1497",443312,"2013-11-22","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"1498",443312,"2013-11-22","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1499",443312,"2013-11-22","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"1500",443312,"2013-11-22","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"1501",443312,"2013-11-22","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1502",443312,"2013-11-22","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"1503",443312,"2013-11-22","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1504",443312,"2013-11-22","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1505",443312,"2013-11-22","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"1506",443312,"2013-11-22","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1507",445217,"2013-06-26","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1508",445217,"2013-06-26","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1509",445217,"2013-06-26","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1510",445217,"2013-06-26","Intensive Care Basic",NA,1,1,2,"Both",0,0,194281
+"1511",445217,"2013-06-26","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1512",445217,"2013-06-26","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1513",445217,"2013-06-26","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1514",445217,"2013-06-26","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1515",445217,"2013-06-26","Intensive Care Basic",NA,0,1,2,"Both",0,0,194281
+"1516",445883,"2013-12-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1517",445883,"2013-12-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1518",445883,"2013-12-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1519",445883,"2013-12-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1520",445883,"2013-12-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1521",445883,"2013-12-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1522",445883,"2013-12-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1523",445883,"2013-12-13","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1524",445883,"2013-12-13","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1525",445883,"2013-12-13","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1526",446295,"2013-12-06","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"1527",446295,"2013-12-06","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"1528",446295,"2013-12-06","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1529",446295,"2013-12-06","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"1530",446563,"2013-10-03","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1531",446563,"2013-10-03","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1532",446563,"2013-10-03","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1533",446563,"2013-10-03","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1534",446563,"2013-10-03","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1535",448546,"2013-02-26","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1536",448546,"2013-02-26","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1537",448546,"2013-02-26","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1538",448546,"2013-02-26","Intensive Care Advanced",NA,1,0,2,"Invasive only",1,1,194281
+"1539",448546,"2013-02-26","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",1,1,194281
+"1540",448546,"2013-02-26","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1541",448546,"2013-02-26","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1542",448546,"2013-02-26","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1543",448546,"2013-02-26","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",1,1,194281
+"1544",448546,"2013-02-26","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1545",448546,"2013-02-26","Intensive Care Basic Enhanced",NA,1,0,2,"Invasive only",1,0,194281
+"1546",448604,"2013-12-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1547",448604,"2013-12-15","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1548",448604,"2013-12-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1549",448604,"2013-12-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1550",448604,"2013-12-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1551",448604,"2013-12-15","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1552",448790,"2013-12-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1553",448790,"2013-12-19","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1554",448790,"2013-12-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1555",448790,"2013-12-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1556",448790,"2013-12-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1557",448790,"2013-12-19","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1558",450439,"2013-12-30","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1559",450439,"2013-12-30","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"1560",450439,"2013-12-30","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1561",450825,"2013-12-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1562",450825,"2013-12-19","High Dependency",NA,0,0,2,"Both",0,0,194281
+"1563",450825,"2013-12-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1564",450825,"2013-12-19","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1565",450825,"2013-12-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1566",450825,"2013-12-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1567",450825,"2013-12-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1568",450825,"2013-12-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1569",450825,"2013-12-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1570",450825,"2013-12-19","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1571",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1572",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1573",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1574",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1575",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1576",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1577",453401,"2013-05-06","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1578",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1579",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1580",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1581",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1582",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1583",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1584",453401,"2013-05-06","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1585",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1586",453401,"2013-05-06","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1587",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1588",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1589",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1590",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1591",457240,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1592",457240,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1593",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1594",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1595",457240,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1596",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1597",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1598",457240,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1599",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1600",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1601",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1602",469059,"2013-06-04","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1603",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1604",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1605",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1606",469059,"2013-06-04","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1607",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1608",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1609",469059,"2013-06-04","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1610",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1611",469059,"2013-06-04","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1612",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1613",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1614",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1615",469059,"2013-06-04","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1616",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1617",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1618",469059,"2013-06-04","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1619",469071,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1620",469071,"2013-11-08","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1621",469071,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1622",469071,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1623",469071,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1624",469071,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1625",469071,"2013-11-08","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1626",469071,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1627",469071,"2013-11-08","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1628",469071,"2013-11-08","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1629",469071,"2013-11-08","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1630",470357,"2013-04-14","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"1631",470357,"2013-04-14","High Dependency",NA,0,0,1,"Neither",0,0,194281
+"1632",470799,"2013-03-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1633",470799,"2013-03-13","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1634",470799,"2013-03-13","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1635",475399,"2013-09-10","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1636",475399,"2013-09-10","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1637",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1638",475399,"2013-09-10","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1639",475399,"2013-09-10","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1640",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1641",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1642",475399,"2013-09-10","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1643",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1644",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1645",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1646",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1647",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1648",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1649",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1650",475399,"2013-09-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1651",475399,"2013-09-10","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"1652",475399,"2013-09-10","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1653",475399,"2013-09-10","High Dependency Advanced",NA,1,0,1,"Both",0,0,194281
+"1654",476140,"2013-12-19","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1655",476140,"2013-12-19","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"1656",476140,"2013-12-19","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1657",476140,"2013-12-19","Enhanced Care",NA,0,0,NA,"Invasive only",0,0,194281
+"1658",476479,"2013-02-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1659",476479,"2013-02-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1660",476479,"2013-02-22","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1661",476479,"2013-02-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1662",476479,"2013-02-22","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1663",476479,"2013-02-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1664",476479,"2013-02-22","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1665",476938,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1666",476938,"2013-12-31","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1667",476938,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1668",476938,"2013-12-31","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1669",476938,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1670",476938,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1671",476938,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1672",476938,"2013-12-31","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1673",482128,"2013-10-21","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1674",482128,"2013-10-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1675",482128,"2013-10-21","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1676",482128,"2013-10-21","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1677",490437,"2013-05-15","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1678",490437,"2013-05-15","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1679",490437,"2013-05-15","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1680",490437,"2013-05-15","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1681",493671,"2013-08-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1682",493671,"2013-08-07","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1683",493671,"2013-08-07","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1684",493671,"2013-08-07","Intensive Care Basic Enhanced",NA,0,1,1,"Both",0,0,194281
+"1685",493671,"2013-08-07","Intensive Care Basic",NA,0,1,1,"Both",0,0,194281
+"1686",493671,"2013-08-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1687",493673,"2013-04-02","High Dependency",NA,0,0,NA,"Neither",0,0,194281
+"1688",493673,"2013-04-02","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"1689",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1690",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1691",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1692",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1693",502264,"2013-12-23","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1694",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1695",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1696",502264,"2013-12-23","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"1697",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1698",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1699",502264,"2013-12-23","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"1700",502264,"2013-12-23","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1701",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1702",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1703",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1704",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1705",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1706",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1707",502264,"2013-12-23","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"1708",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1709",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1710",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1711",502264,"2013-12-23","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"1712",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1713",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1714",502264,"2013-12-23","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1715",503875,"2013-10-05","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1716",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1717",503875,"2013-10-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1718",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1719",503875,"2013-10-05","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1720",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1721",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1722",503875,"2013-10-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1723",503875,"2013-10-05","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1724",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1725",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1726",503875,"2013-10-05","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1727",503875,"2013-10-05","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1728",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1729",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1730",503875,"2013-10-05","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1731",503875,"2013-10-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1732",503875,"2013-10-05","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1733",503875,"2013-10-05","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1734",503956,"2013-04-02","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"1735",503956,"2013-04-02","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"1736",503956,"2013-04-02","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1737",503956,"2013-04-02","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1738",505399,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1739",505399,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1740",505399,"2013-09-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1741",505399,"2013-09-20","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1742",506261,"2013-07-17","High Dependency Advanced",NA,0,0,1,"Neither",0,0,194281
+"1743",509969,"2013-02-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1744",509969,"2013-02-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1745",509969,"2013-02-10","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1746",509969,"2013-02-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1747",509969,"2013-02-10","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1748",512063,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1749",512063,"2013-02-11","Enhanced Care",NA,0,0,NA,"Invasive only",0,0,194281
+"1750",512063,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1751",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1752",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1753",512343,"2013-11-03","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1754",512343,"2013-11-03","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"1755",512343,"2013-11-03","Enhanced Care",NA,0,0,1,"Both",0,0,194281
+"1756",512343,"2013-11-03","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1757",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1758",512343,"2013-11-03","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1759",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1760",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1761",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1762",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1763",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1764",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1765",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1766",512343,"2013-11-03","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1767",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1768",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1769",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1770",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1771",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1772",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1773",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1774",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1775",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1776",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1777",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1778",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1779",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1780",512343,"2013-11-03","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1781",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1782",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1783",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1784",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1785",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1786",512343,"2013-11-03","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1787",512343,"2013-11-03","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1788",512623,"2013-06-11","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1789",512623,"2013-06-11","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1790",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1791",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1792",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1793",513365,"2013-03-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1794",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1795",513365,"2013-03-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1796",513365,"2013-03-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1797",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1798",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1799",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1800",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1801",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1802",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1803",513365,"2013-03-15","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1804",516956,"2013-04-26","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1805",516956,"2013-04-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1806",516956,"2013-04-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1807",516956,"2013-04-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1808",518147,"2013-12-28","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1809",518147,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1810",518147,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1811",518147,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1812",518147,"2013-12-28","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1813",518147,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1814",518147,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1815",518147,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1816",518161,"2013-01-22","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1817",518161,"2013-01-22","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"1818",518161,"2013-01-22","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1819",522962,"2013-11-06","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"1820",522962,"2013-11-06","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"1821",522962,"2013-11-06","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"1822",522962,"2013-11-06","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"1823",522962,"2013-11-06","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"1824",522962,"2013-11-06","High Dependency",NA,0,0,2,"Invasive only",0,0,194281
+"1825",523476,"2013-09-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1826",523476,"2013-09-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1827",523476,"2013-09-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1828",523476,"2013-09-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1829",523476,"2013-09-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1830",523476,"2013-09-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1831",523476,"2013-09-09","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1832",528701,"2013-06-19","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1833",528701,"2013-06-19","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1834",529561,"2013-05-16","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1835",529561,"2013-05-16","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1836",529561,"2013-05-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1837",529561,"2013-05-16","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1838",529561,"2013-05-16","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1839",529561,"2013-05-16","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1840",529561,"2013-05-16","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1841",529561,"2013-05-16","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1842",532743,"2013-10-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1843",532743,"2013-10-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1844",532743,"2013-10-26","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1845",532743,"2013-10-26","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1846",532743,"2013-10-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1847",532743,"2013-10-26","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1848",532743,"2013-10-26","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1849",532743,"2013-10-26","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1850",532743,"2013-10-26","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1851",534184,"2013-03-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1852",534184,"2013-03-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1853",534184,"2013-03-17","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1854",534184,"2013-03-17","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1855",536667,"2013-05-01","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"1856",536667,"2013-05-01","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"1857",536667,"2013-05-01","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"1858",536667,"2013-05-01","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"1859",537711,"2013-09-11","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"1860",537711,"2013-09-11","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"1861",537711,"2013-09-11","High Dependency Advanced",NA,0,0,NA,"Neither",0,0,194281
+"1862",540928,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1863",540928,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1864",540928,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1865",540928,"2013-08-29","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1866",540928,"2013-08-29","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1867",540928,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1868",540928,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1869",540928,"2013-08-29","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1870",543106,"2013-02-28","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1871",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1872",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1873",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1874",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1875",543106,"2013-02-28","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1876",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1877",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1878",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1879",543106,"2013-02-28","Intensive Care Advanced",NA,1,0,1,"Invasive only",1,1,194281
+"1880",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1881",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1882",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1883",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1884",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1885",543106,"2013-02-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1886",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1887",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1888",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1889",543106,"2013-02-28","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1890",543106,"2013-02-28","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",1,1,194281
+"1891",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1892",543453,"2013-03-08","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1893",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1894",543453,"2013-03-08","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1895",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1896",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1897",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1898",543453,"2013-03-08","Intensive Care Basic",NA,1,1,1,"Invasive only",0,0,194281
+"1899",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1900",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1901",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1902",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1903",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1904",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1905",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1906",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1907",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1908",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1909",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1910",543453,"2013-03-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"1911",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1912",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1913",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1914",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1915",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1916",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1917",543453,"2013-03-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1918",544248,"2013-10-15","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"1919",544248,"2013-10-15","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"1920",544248,"2013-10-15","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"1921",544248,"2013-10-15","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"1922",549880,"2013-05-10","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1923",549880,"2013-05-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1924",549880,"2013-05-10","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1925",549880,"2013-05-10","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1926",549880,"2013-05-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1927",549880,"2013-05-10","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1928",551603,"2013-05-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1929",551603,"2013-05-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1930",551603,"2013-05-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1931",551603,"2013-05-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1932",551603,"2013-05-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1933",551603,"2013-05-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1934",551603,"2013-05-02","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1935",551603,"2013-05-02","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1936",554727,"2013-01-31","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1937",554727,"2013-01-31","Enhanced Care",NA,0,0,NA,"Invasive only",0,0,194281
+"1938",554727,"2013-01-31","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1939",554727,"2013-01-31","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1940",554727,"2013-01-31","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1941",556557,"2013-09-04","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1942",556557,"2013-09-04","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1943",556557,"2013-09-04","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1944",556557,"2013-09-04","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1945",556557,"2013-09-04","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1946",556557,"2013-09-04","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1947",556557,"2013-09-04","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1948",556557,"2013-09-04","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1949",556557,"2013-09-04","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1950",557997,"2013-08-24","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1951",557997,"2013-08-24","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1952",557997,"2013-08-24","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1953",557997,"2013-08-24","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1954",557997,"2013-08-24","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1955",557997,"2013-08-24","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1956",557997,"2013-08-24","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1957",557997,"2013-08-24","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"1958",557997,"2013-08-24","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1959",557997,"2013-08-24","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"1960",570046,"2013-12-12","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"1961",570046,"2013-12-12","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"1962",570441,"2013-12-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1963",570441,"2013-12-15","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1964",570441,"2013-12-15","Enhanced Care",NA,1,0,1,"Invasive only",0,0,194281
+"1965",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1966",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1967",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1968",571041,"2013-03-17","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1969",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1970",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1971",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1972",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1973",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1974",571041,"2013-03-17","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"1975",571041,"2013-03-17","Intensive Care Basic",NA,0,0,2,"Both",0,0,194281
+"1976",571041,"2013-03-17","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1977",577900,"2013-08-08","Intensive Care Basic Enhanced",NA,1,0,NA,"Invasive only",0,0,194281
+"1978",577900,"2013-08-08","Intensive Care Basic Enhanced",NA,1,0,NA,"Invasive only",0,0,194281
+"1979",577900,"2013-08-08","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1980",577900,"2013-08-08","High Dependency Advanced",NA,0,0,NA,"Invasive only",0,0,194281
+"1981",577900,"2013-08-08","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"1982",577900,"2013-08-08","Intensive Care Basic Enhanced",NA,1,0,NA,"Invasive only",0,0,194281
+"1983",580823,"2013-02-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1984",580823,"2013-02-05","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1985",580823,"2013-02-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1986",580823,"2013-02-05","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"1987",580823,"2013-02-05","High Dependency",NA,0,0,1,"Both",0,0,194281
+"1988",580823,"2013-02-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"1989",581666,"2013-03-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1990",581666,"2013-03-05","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"1991",581666,"2013-03-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1992",581666,"2013-03-05","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"1993",586180,"2013-07-11","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1994",586180,"2013-07-11","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"1995",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1996",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1997",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1998",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"1999",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2000",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2001",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2002",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2003",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2004",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2005",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2006",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2007",586798,"2013-12-29","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"2008",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2009",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2010",586798,"2013-12-29","Intensive Care Basic Enhanced",NA,1,0,2,"Both",1,0,194281
+"2011",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2012",586798,"2013-12-29","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"2013",586798,"2013-12-29","Intensive Care Advanced",NA,1,0,2,"Both",1,0,194281
+"2014",586798,"2013-12-29","Intensive Care Basic Enhanced",NA,1,0,2,"Both",0,0,194281
+"2015",586798,"2013-12-29","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2016",586798,"2013-12-29","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"2017",586798,"2013-12-29","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"2018",586798,"2013-12-29","Intensive Care Basic",NA,0,0,2,"Both",0,0,194281
+"2019",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2020",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2021",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2022",586954,"2013-04-05","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2023",586954,"2013-04-05","High Dependency",NA,0,0,1,"Both",0,0,194281
+"2024",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2025",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2026",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2027",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2028",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2029",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2030",586954,"2013-04-05","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2031",596660,"2013-07-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2032",596660,"2013-07-11","Intensive Care Basic Enhanced",NA,1,0,2,"Both",0,0,194281
+"2033",596660,"2013-07-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2034",596660,"2013-07-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2035",596660,"2013-07-11","Intensive Care Basic Enhanced",NA,1,0,2,"Both",0,0,194281
+"2036",596660,"2013-07-11","Intensive Care Basic Enhanced",NA,1,0,2,"Both",0,0,194281
+"2037",596660,"2013-07-11","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"2038",596660,"2013-07-11","Intensive Care Basic Enhanced",NA,1,0,2,"Both",0,0,194281
+"2039",596828,"2013-07-10","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2040",596828,"2013-07-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2041",596828,"2013-07-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2042",596828,"2013-07-10","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2043",596828,"2013-07-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2044",596828,"2013-07-10","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2045",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2046",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2047",598610,"2013-09-14","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2048",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2049",598610,"2013-09-14","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"2050",598610,"2013-09-14","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2051",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2052",598610,"2013-09-14","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2053",598610,"2013-09-14","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2054",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2055",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2056",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2057",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2058",598610,"2013-09-14","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"2059",598610,"2013-09-14","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"2060",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2061",598610,"2013-09-14","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"2062",598610,"2013-09-14","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"2063",598610,"2013-09-14","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2064",598610,"2013-09-14","High Dependency",NA,0,0,2,"Neither",0,0,194281
+"2065",599048,"2013-10-12","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2066",604095,"2013-01-18","High Dependency",NA,0,0,9,"Neither",0,0,194281
+"2067",605342,"2013-04-20","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2068",605342,"2013-04-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2069",605342,"2013-04-20","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2070",605342,"2013-04-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2071",605342,"2013-04-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2072",605342,"2013-04-20","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2073",605342,"2013-04-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2074",605342,"2013-04-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2075",605342,"2013-04-20","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2076",607977,"2013-10-27","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"2077",607977,"2013-10-27","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"2078",607977,"2013-10-27","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"2079",607977,"2013-10-27","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"2080",607977,"2013-10-27","High Dependency Advanced",NA,0,0,NA,"Non-invasive only",0,0,194281
+"2081",607977,"2013-10-27","High Dependency",NA,0,0,NA,"Non-invasive only",0,0,194281
+"2082",607977,"2013-10-27","High Dependency",NA,0,0,NA,"Non-invasive only",0,0,194281
+"2083",616035,"2013-03-21","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"2084",616035,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2085",616035,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2086",616035,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2087",616035,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2088",616035,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2089",616035,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2090",616035,"2013-03-21","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"2091",616035,"2013-03-21","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2092",619904,"2013-11-23","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2093",619904,"2013-11-23","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2094",619904,"2013-11-23","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2095",622484,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2096",622484,"2013-04-18","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2097",622484,"2013-04-18","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2098",622489,"2013-02-14","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"2099",622489,"2013-02-14","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"2100",622489,"2013-02-14","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2101",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2102",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2103",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2104",623481,"2013-07-21","Intensive Care Basic",NA,1,1,2,"Both",0,0,194281
+"2105",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2106",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2107",623481,"2013-07-21","Enhanced Care",NA,0,0,2,"Both",0,0,194281
+"2108",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2109",623481,"2013-07-21","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"2110",623481,"2013-07-21","Intensive Care Advanced",NA,1,0,2,"Both",0,0,194281
+"2111",623481,"2013-07-21","Intensive Care Advanced",NA,1,0,2,"Both",0,0,194281
+"2112",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2113",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2114",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2115",623481,"2013-07-21","Intensive Care Advanced",NA,1,0,2,"Both",0,0,194281
+"2116",623481,"2013-07-21","Intensive Care Advanced",NA,1,0,2,"Both",0,0,194281
+"2117",623481,"2013-07-21","Enhanced Care",NA,0,0,2,"Both",0,0,194281
+"2118",623481,"2013-07-21","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2119",623481,"2013-07-21","Intensive Care Advanced",NA,1,0,2,"Both",0,0,194281
+"2120",623481,"2013-07-21","Intensive Care Advanced",NA,1,0,2,"Both",0,0,194281
+"2121",623481,"2013-07-21","Intensive Care Advanced",NA,1,0,2,"Both",0,0,194281
+"2122",623481,"2013-07-21","Intensive Care Advanced",NA,1,0,2,"Both",0,0,194281
+"2123",625467,"2013-06-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2124",625467,"2013-06-22","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2125",625467,"2013-06-22","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2126",625467,"2013-06-22","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2127",625467,"2013-06-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2128",625467,"2013-06-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2129",625467,"2013-06-22","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2130",625467,"2013-06-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2131",625467,"2013-06-22","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2132",625467,"2013-06-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2133",625467,"2013-06-22","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2134",638261,"2013-09-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2135",638261,"2013-09-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2136",638261,"2013-09-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2137",638261,"2013-09-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2138",638261,"2013-09-18","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2139",638261,"2013-09-18","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2140",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2141",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2142",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2143",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2144",647180,"2013-11-03","High Dependency Advanced",NA,0,0,2,"Invasive only",0,0,194281
+"2145",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2146",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2147",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2148",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2149",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2150",647180,"2013-11-03","Intensive Care Advanced",NA,1,0,2,"Invasive only",0,0,194281
+"2151",650262,"2013-05-03","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2152",650262,"2013-05-03","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2153",650262,"2013-05-03","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2154",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2155",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2156",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2157",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2158",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2159",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2160",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2161",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2162",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2163",651311,"2013-03-06","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2164",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2165",651311,"2013-03-06","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2166",651311,"2013-03-06","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2167",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2168",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2169",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2170",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2171",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2172",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2173",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2174",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2175",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2176",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2177",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2178",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2179",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2180",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2181",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2182",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2183",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2184",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2185",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2186",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2187",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2188",652991,"2013-03-25","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2189",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2190",652991,"2013-03-25","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2191",665398,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2192",665398,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2193",665398,"2013-01-24","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"2194",665398,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2195",665398,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2196",665398,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2197",669570,"2013-07-27","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2198",669570,"2013-07-27","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2199",669570,"2013-07-27","High Dependency Advanced",NA,0,0,2,"Neither",0,0,194281
+"2200",671856,"2013-05-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2201",671856,"2013-05-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2202",671856,"2013-05-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2203",671856,"2013-05-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2204",671856,"2013-05-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2205",671856,"2013-05-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2206",671856,"2013-05-20","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"2207",671856,"2013-05-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2208",671856,"2013-05-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2209",671856,"2013-05-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2210",671856,"2013-05-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2211",671856,"2013-05-20","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"2212",671856,"2013-05-20","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"2213",671856,"2013-05-20","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"2214",671856,"2013-05-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2215",671856,"2013-05-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2216",671856,"2013-05-20","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2217",671856,"2013-05-20","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2218",676576,"2013-05-24","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2219",676576,"2013-05-24","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2220",679776,"2013-12-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2221",679776,"2013-12-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2222",679776,"2013-12-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2223",679776,"2013-12-26","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2224",679776,"2013-12-26","High Dependency Advanced",NA,0,0,2,"Both",0,0,194281
+"2225",686469,"2013-01-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2226",686469,"2013-01-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2227",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2228",686469,"2013-01-07","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"2229",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2230",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2231",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2232",686469,"2013-01-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2233",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2234",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2235",686469,"2013-01-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2236",686469,"2013-01-07","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"2237",686469,"2013-01-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2238",686469,"2013-01-07","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"2239",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2240",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2241",686469,"2013-01-07","High Dependency Advanced",NA,0,0,1,"Both",0,0,194281
+"2242",686469,"2013-01-07","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"2243",686469,"2013-01-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2244",686469,"2013-01-07","Intensive Care Basic Enhanced",NA,1,0,1,"Both",0,0,194281
+"2245",686469,"2013-01-07","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2246",686583,"2013-12-13","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"2247",686583,"2013-12-13","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"2248",686583,"2013-12-13","High Dependency",NA,0,0,2,"Non-invasive only",0,0,194281
+"2249",686583,"2013-12-13","Intensive Care Basic",NA,0,1,2,"Non-invasive only",0,0,194281
+"2250",686583,"2013-12-13","Intensive Care Basic",NA,0,1,2,"Non-invasive only",0,0,194281
+"2251",686583,"2013-12-13","Intensive Care Basic",NA,0,1,2,"Non-invasive only",0,0,194281
+"2252",696492,"2013-01-25","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2253",696492,"2013-01-25","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2254",707040,"2013-08-08","High Dependency",NA,0,0,1,"Invasive only",0,0,194281
+"2255",707040,"2013-08-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2256",707040,"2013-08-08","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"2257",707040,"2013-08-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2258",707040,"2013-08-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2259",707040,"2013-08-08","Intensive Care Basic Enhanced",NA,1,0,1,"Invasive only",0,0,194281
+"2260",707040,"2013-08-08","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2261",707040,"2013-08-08","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2262",707040,"2013-08-08","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281
+"2263",709388,"2013-05-27","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2264",709388,"2013-05-27","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2265",709388,"2013-05-27","Enhanced Care",NA,0,0,2,"Neither",0,0,194281
+"2266",713474,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2267",713474,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2268",713474,"2013-12-28","High Dependency",NA,0,0,1,"Both",0,0,194281
+"2269",713474,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2270",713474,"2013-12-28","Intensive Care Basic",NA,1,0,1,"Both",0,0,194281
+"2271",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2272",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2273",713950,"2013-02-11","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"2274",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2275",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2276",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2277",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2278",713950,"2013-02-11","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"2279",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2280",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2281",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2282",713950,"2013-02-11","High Dependency",NA,0,0,NA,"Both",0,0,194281
+"2283",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2284",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2285",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2286",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2287",713950,"2013-02-11","Intensive Care Basic",NA,1,0,NA,"Both",0,0,194281
+"2288",713950,"2013-02-11","High Dependency Advanced",NA,0,0,NA,"Both",0,0,194281
+"2289",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2290",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2291",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2292",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2293",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2294",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2295",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2296",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2297",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2298",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2299",745529,"2013-03-21","Intensive Care Basic",NA,0,1,2,"Invasive only",0,0,194281
+"2300",745697,"2013-02-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"2301",745697,"2013-02-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"2302",745697,"2013-02-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"2303",745697,"2013-02-11","Intensive Care Basic",NA,1,0,2,"Invasive only",0,0,194281
+"2304",745697,"2013-02-11","Enhanced Care",NA,0,0,2,"Invasive only",0,0,194281
+"2305",749558,"2013-11-09","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"2306",749558,"2013-11-09","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"2307",749558,"2013-11-09","Enhanced Care",NA,0,0,NA,"Neither",0,0,194281
+"2308",756849,"2013-08-20","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2309",756849,"2013-08-20","High Dependency Advanced",NA,0,0,NA,"Invasive only",0,0,194281
+"2310",756849,"2013-08-20","Enhanced Care",NA,0,0,NA,"Invasive only",0,0,194281
+"2311",756849,"2013-08-20","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2312",757539,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2313",757539,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2314",757539,"2013-01-24","High Dependency",NA,0,0,NA,"Invasive only",0,0,194281
+"2315",757539,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2316",757539,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2317",757539,"2013-01-24","Intensive Care Basic",NA,1,0,NA,"Invasive only",0,0,194281
+"2318",758397,"2013-06-15","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"2319",758397,"2013-06-15","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"2320",758397,"2013-06-15","High Dependency Advanced",NA,0,0,2,"Non-invasive only",0,0,194281
+"2321",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2322",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2323",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2324",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2325",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2326",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2327",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2328",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2329",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2330",776702,"2013-04-11","Intensive Care Basic",NA,1,0,2,"Both",0,0,194281
+"2331",777053,"2013-11-04","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"2332",777053,"2013-11-04","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2333",777053,"2013-11-04","Enhanced Care",NA,0,0,1,"Invasive only",0,0,194281
+"2334",777053,"2013-11-04","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2335",777053,"2013-11-04","High Dependency Advanced",NA,0,0,1,"Invasive only",0,0,194281
+"2336",777053,"2013-11-04","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2337",777053,"2013-11-04","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2338",777053,"2013-11-04","Intensive Care Advanced",NA,1,0,1,"Invasive only",0,0,194281
+"2339",777053,"2013-11-04","Intensive Care Basic",NA,1,0,1,"Invasive only",0,0,194281

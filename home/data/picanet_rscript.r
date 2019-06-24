@@ -5,9 +5,9 @@
  
  # Change the unit ID to match your unit
  unitID <- "194281" 
- source_file_path <- "C:/Users/Mai/Dropbox/Leeds/Qualdash related/Data/"
- dest_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_admission/"
- dest_activity_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_activity/"
+ source_file_path <- "C:/Users/scsmel/Dropbox/Leeds/Qualdash related/Data/"
+ dest_file_path <- "C:/Bitnami/wampstack-7.1.13-1/apache2/htdocs/Qualdashv1/home/data/picanet_admission/"
+ dest_activity_path <- "C:/Bitnami/wampstack-7.1.13-1/apache2/htdocs/Qualdashv1/home/data/picanet_activity/"
  audit_filename <- "admission.csv"
  
  source = paste(source_file_path, audit_filename, sep='')
@@ -42,7 +42,7 @@ yfn = paste(dest_file_path ,'avail_years.csv', sep='' )
 
 for(year in unique(df$adyear)){
    # read the admission records for the current year alone
-   fn = paste(source_file_path, 'activity/', gsub(' ','', year), '.csv', sep='' )
+   fn = paste(dest_file_path, gsub(' ','', year), '.csv', sep='' )
    cur_adm <- read.csv(fn)
    # merge the activity file
    M <- merge(cur_adm, activity, by=c('eventidscr'), all.x=T)
