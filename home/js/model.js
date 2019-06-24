@@ -600,7 +600,8 @@
                                         }
                                     });
                                 }
-                                return countDep; 
+                                //return countDep; 
+                                return 0;
 
                             }
                             else if(self.audit === "picanet" && vname==="depLevelEC"){
@@ -613,7 +614,8 @@
                                         }
                                     });
                                 }
-                                return countDep; 
+                                //return countDep; 
+                                return 0; 
 
                             }
                             else if(self.audit === "picanet" && vname==="depLevel1"){
@@ -626,7 +628,8 @@
                                         }
                                     });
                                 }
-                                return countDep; 
+                                //return countDep; 
+                                return 0; 
                             }
                             else if(self.audit === "picanet" && vname==="depLevel2"){
                                 var countDep = 0; 
@@ -638,7 +641,8 @@
                                         }
                                     });
                                 }
-                                return countDep; 
+                                //return countDep; 
+                                return 0; 
 
                             }
                             else if(self.audit === "picanet" && vname==="depLevel3"){
@@ -651,7 +655,8 @@
                                         }
                                     });
                                 }
-                                return countDep; 
+                                //return countDep; 
+                                return 0; 
 
                             }
                             else if(self.audit === "picanet" && vname==="depLevel4"){
@@ -664,7 +669,8 @@
                                         }
                                     });
                                 }
-                                return countDep; 
+                                //return countDep; 
+                                return 0; 
 
                             }
                             else if(self.audit === "picanet" && vname==="depLevel5"){
@@ -677,7 +683,8 @@
                                         }
                                     });
                                 }
-                                return countDep; 
+                                //return countDep; 
+                                return 0; 
 
                             }
                             else if(self.audit === "picanet" && vname==="depLevel6"){
@@ -690,7 +697,8 @@
                                         }
                                     });
                                 }
-                                return countDep; 
+                                //return countDep; 
+                                return 0; 
 
                             }
                             else if(vname === "invalid" && self.audit === "picanet"){
@@ -1772,15 +1780,77 @@
                                 }
                               //  return result;
                             } // if(metric === "48h Readmission")
-                            /*else if(metric === "Bed Days and Extubation"){
-                                //console.log(dict);
-                                //console.log(self.excessDays);
-                                for(var key in dict){
-                                   if(self.excessDays[key])
-                                    for(var kk in self.excessDays[key])
-                                       result['dict'][key]['der_bedDays']['value'] += self.excessDays[key][kk][0];
+                            else if(metric === "dependency"){
+                                console.log("Handle all Dependency in a postprocess");
+                                console.log(self.activityIndex);
+                                for(var recId in self.activityIndex){
+                                    var recs = self.activityIndex[recId]; 
+                                    recs.forEach(function(rec){
+                                        var mon = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                        var activity = rec["hrggroup"]; 
+                                        switch(activity){
+                                            case 'Unable to Group':{
+                                                result['dict'][mon]['der_depLevel0']['value']++;
+                                                if(result['dict'][mon]['der_depLevel0']['data'].indexOf(parseInt(recId))<0)
+                                                    result['dict'][mon]['der_depLevel0']['data'].push(parseInt(recId));
+                                                break;
+                                            }
+                                            case 'Enhanced Care': {
+                                                result['dict'][mon]['der_depLevelEC']['value']++;
+                                                if(result['dict'][mon]['der_depLevelEC']['data'].indexOf(parseInt(recId))<0)
+                                                    result['dict'][mon]['der_depLevelEC']['data'].push(parseInt(recId));
+                                                break; 
+                                            }
+                                            case 'High Dependency': {
+                                                result['dict'][mon]['der_depLevel1']['value']++;
+                                                if(result['dict'][mon]['der_depLevel1']['data'].indexOf(parseInt(recId))<0)
+                                                    result['dict'][mon]['der_depLevel1']['data'].push(parseInt(recId));
+
+                                                break;
+                                            }
+                                            case 'High Dependency Advanced': {
+                                                result['dict'][mon]['der_depLevel2']['value']++;
+                                                if(result['dict'][mon]['der_depLevel2']['data'].indexOf(parseInt(recId))<0)
+                                                    result['dict'][mon]['der_depLevel2']['data'].push(parseInt(recId));
+
+                                                break;
+                                            }
+                                            case 'Intensive Care Basic': {
+                                                result['dict'][mon]['der_depLevel3']['value']++;
+                                                if(result['dict'][mon]['der_depLevel3']['data'].indexOf(parseInt(recId))<0)
+                                                    result['dict'][mon]['der_depLevel3']['data'].push(parseInt(recId));
+                                                break;
+                                            }
+                                            case 'Intensive Care Basic Enhanced': {
+                                                result['dict'][mon]['der_depLevel4']['value']++;
+                                                if(result['dict'][mon]['der_depLevel4']['data'].indexOf(parseInt(recId))<0)
+                                                    result['dict'][mon]['der_depLevel4']['data'].push(parseInt(recId));
+                                                break; 
+                                            }
+                                            case 'Intensive Care Advanced': {
+                                                result['dict'][mon]['der_depLevel5']['value']++;
+                                                if(result['dict'][mon]['der_depLevel5']['data'].indexOf(parseInt(recId))<0)
+                                                    result['dict'][mon]['der_depLevel5']['data'].push(parseInt(recId));
+
+                                                break;
+                                            }
+                                            case 'Intensive Care Advanced Enhanced':{
+                                                result['dict'][mon]['der_depLevel6']['value']++;
+                                                if(result['dict'][mon]['der_depLevel6']['data'].indexOf(parseInt(recId))<0)
+                                                    result['dict'][mon]['der_depLevel6']['data'].push(parseInt(recId));
+
+                                                break; 
+                                            }
+                                            default: {  // default to AND
+                                                break;
+                                            }
+
+                                        }
+
+                                    });
                                 }
-                            }*/
+                                
+                            }
                             else{
                                 //console.log(result);
                                 // postprocess for bed days (if we're counting them in a main view)

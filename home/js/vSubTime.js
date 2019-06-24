@@ -387,6 +387,7 @@ self.svg.append("g")
   .attr("fill", "#000");
   //.text("Total values");
 
+   
   var legend = self.svg.append("g")
   				.attr("class", "time-legend")
   				.attr("transform", "translate("+ (width-margin) + ", 10)");
