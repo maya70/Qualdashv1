@@ -220,25 +220,45 @@
                                     d3.csv(fpath+year+".csv", function(data){                                        
                                         ////console.log("Loading History");
                                         var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]]; 
-                                        for(var d = 0; d < data.length; d++){
-                                            // load historical data for this unit only unless required otherwise
-                                            if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
-                                                for(var v = 0; v < self.dataViews.length; v++){
-                                                    var Qs = self.getTimeQs(v); 
-                                                    var metric = self.dataViews[v]['metric'];
-                                                    Qs.forEach(function(qname){ 
-                                                        self.recordEHR(data[d], d , metric, yearupdated);
-                                                        var qobj = self.getQObject(qname, v); 
-                                                        if(qobj){
-                                                                var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, v, 0)) ; 
-                                                                self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
-                                                            }
-                                                    });
+
+                                        d3.csv("./data/picanet_activity/shortactiv"+yearupdated+".csv", function(error, extra){                                                                         
+                                            
+                                            if (error) {
+                                                    alert("WARNING: No historic activity data available"); 
+                                                }
+                                            if(extra)
+                                            {
+                                                // update activityIndex with historic data
+                                             for(var ex=0; ex < extra.length; ex++){
+                                                if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID){
+                                                    if(!self.activityIndex[extra[ex]["eventidscr"]])
+                                                        self.activityIndex[extra[ex]["eventidscr"]] = [];
+                                                    self.activityIndex[extra[ex]["eventidscr"]].push(extra[ex]);
+                                                    }
+                                                }
+                                            console.log(self.activityIndex); 
+                                            }
+
+                                            for(var d = 0; d < data.length; d++){
+                                                data[d]["EVENTID"] = ""+data[d]["eventidscr"];  
+                                                // load historical data for this unit only unless required otherwise
+                                                if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                                    for(var v = 0; v < self.dataViews.length; v++){
+                                                        var Qs = self.getTimeQs(v); 
+                                                        var metric = self.dataViews[v]['metric'];
+                                                        Qs.forEach(function(qname){ 
+                                                            self.recordEHR(data[d], d , metric, yearupdated);
+                                                            var qobj = self.getQObject(qname, v); 
+                                                            if(qobj){
+                                                                    var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, v, 0)) ; 
+                                                                    self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
+                                                                }
+                                                        });
+                                                    }
                                                 }
                                             }
-                                        }
-                                        self.postProcessHistory(yearupdated, "der_readmit" ); 
-                                       
+                                            self.postProcessHistory(yearupdated, "der_readmit" ); 
+                                       });
 
                                     });
                                 } 
