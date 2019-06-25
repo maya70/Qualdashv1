@@ -437,8 +437,7 @@
                             for(var key in slaves['data']){
                                 if(!self.slaves[viewId]['data'][key])
                                     self.slaves[viewId]['data'][key] = slaves['data'][key];
-                                //if(self.derivedLookup[key]) // if derived value take the postprocessed version of it
-                                  //  self.slaves[viewId]['data'][key] = self.derivedLookup[key];
+                                
                             }        
 
                             self.control.updateDataViews(viewId, self.slaves);
@@ -450,6 +449,15 @@
                         getRecordById: function(recId){
                             var self = this;
                             return self.data[recId]; 
+                        },
+                        getRecordByEventId: function(id){
+                            var self = this;
+                            var rec; 
+                            for(var i=0; i < self.data.length; i++){
+                                if(self.data[i]["EVENTID"] === id)
+                                    return i; 
+                            }
+                            return null; 
                         },
                         metaRecByFieldName: function(vname){
                             var self = this;
@@ -597,8 +605,10 @@
                                     active.forEach(function(a,i){
                                         if(a["hrggroup"] === "Unable to Group"){
                                             countDep++;
+                                            return 1; 
                                         }
                                     });
+
                                 }
                                 //return countDep; 
                                 return 0;
@@ -611,6 +621,7 @@
                                     active.forEach(function(a,i){
                                         if(a["hrggroup"] === "Enhanced Care"){
                                             countDep++;
+                                            return 1; 
                                         }
                                     });
                                 }
@@ -625,6 +636,7 @@
                                     active.forEach(function(a,i){
                                         if(a["hrggroup"] === "High Dependency"){
                                             countDep++;
+                                            return 1; 
                                         }
                                     });
                                 }
@@ -638,6 +650,7 @@
                                     active.forEach(function(a,i){
                                         if(a["hrggroup"] === "High Dependency Advanced"){
                                             countDep++;
+                                            return 1; 
                                         }
                                     });
                                 }
@@ -652,6 +665,7 @@
                                     active.forEach(function(a,i){
                                         if(a["hrggroup"] === "Intensive Care Basic"){
                                             countDep++;
+                                            return 1; 
                                         }
                                     });
                                 }
@@ -666,6 +680,7 @@
                                     active.forEach(function(a,i){
                                         if(a["hrggroup"] === "Intensive Care Basic Enhanced"){
                                             countDep++;
+                                            return 1; 
                                         }
                                     });
                                 }
@@ -680,6 +695,7 @@
                                     active.forEach(function(a,i){
                                         if(a["hrggroup"] === "Intensive Care Advanced"){
                                             countDep++;
+                                            return 1; 
                                         }
                                     });
                                 }
@@ -694,6 +710,7 @@
                                     active.forEach(function(a,i){
                                         if(a["hrggroup"] === "Intensive Care Advanced Enhanced"){
                                             countDep++;
+                                            return 1; 
                                         }
                                     });
                                 }
@@ -1412,8 +1429,8 @@
                             /// For variables that require a post-process:
                              // 1. Update the master data structure:                              
                             
-                                //var postData = self.postProcess(dict, slaves, metric, self.observedDeathsNational, displayObj);
-                                var postData = self.postProcess(dict, slaves, metric, displayObj);
+                                
+                                var postData = self.postProcess(dict, slaves, metric, displayObj, displayId);
                                 dict = postData? postData['dict']: dict;
                                 slaves =postData? postData['slaves']: slaves;
                                 self.slaves[displayId] = slaves; 
@@ -1435,6 +1452,9 @@
                             var self = this;
                             var found = 0; 
                             self.dicts[viewId] = dict;
+                            if(viewId === 3)
+                                console.log("HERE"); 
+
                             var displayVar = Object.keys(dict[Object.keys(dict)[0]]);
                             displayVar.forEach(function(yvar){
                                 if(dict[mon] && dict[mon][yvar] && dict[mon][yvar]["data"].indexOf(i) >= 0)
@@ -1590,8 +1610,7 @@
                              // 1. Update the master data structure:                              
                             //if(metric === "48h Readmission"){
                                 //self.observedDeathsNational = observedDeathsNational; 
-                                //var postData = self.postProcess(dict, slaves, metric, observedDeathsNational, displayObj);
-                                var postData = self.postProcess(dict, slaves, metric, displayObj);
+                                var postData = self.postProcess(dict, slaves, metric, displayObj, displayId);
                                 dict = postData? postData['dict']: dict;
                                 slaves = postData? postData['slaves']: slaves;
                                 //console.log(slaves);                                 
@@ -1713,8 +1732,10 @@
                                    
                                  }
                             }
+
+                            
                         },
-                        postProcess: function(dict, slaves, metric, displayObj){
+                        postProcess: function(dict, slaves, metric, displayObj, displayId){
                             var self = this;
                             var result = {};
                             result['dict'] = dict;
@@ -1781,63 +1802,85 @@
                               //  return result;
                             } // if(metric === "48h Readmission")
                             else if(metric === "dependency"){
-                                console.log("Handle all Dependency in a postprocess");
-                                console.log(self.activityIndex);
+                                
                                 for(var recId in self.activityIndex){
                                     var recs = self.activityIndex[recId]; 
+                                    var i = self.getRecordByEventId(recId); 
+
                                     recs.forEach(function(rec){
                                         var mon = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
                                         var activity = rec["hrggroup"]; 
                                         switch(activity){
                                             case 'Unable to Group':{
                                                 result['dict'][mon]['der_depLevel0']['value']++;
-                                                if(result['dict'][mon]['der_depLevel0']['data'].indexOf(parseInt(recId))<0)
-                                                    result['dict'][mon]['der_depLevel0']['data'].push(parseInt(recId));
+                                                if(result['dict'][mon]['der_depLevel0']['data'].indexOf(i)<0)
+                                                    result['dict'][mon]['der_depLevel0']['data'].push(i);
+
+                                                if(result['slaves']['data']['der_depLevel0'] && result['slaves']['data']['der_depLevel0'][mon] )
+                                                     result['slaves']['data']['der_depLevel0'][mon]['data'].push(i);
                                                 break;
                                             }
                                             case 'Enhanced Care': {
                                                 result['dict'][mon]['der_depLevelEC']['value']++;
-                                                if(result['dict'][mon]['der_depLevelEC']['data'].indexOf(parseInt(recId))<0)
-                                                    result['dict'][mon]['der_depLevelEC']['data'].push(parseInt(recId));
+                                                if(result['dict'][mon]['der_depLevelEC']['data'].indexOf(i)<0)
+                                                    result['dict'][mon]['der_depLevelEC']['data'].push(i);
+
+                                                if(result['slaves']['data']['der_depLevelEC'] && result['slaves']['data']['der_depLevelEC'][mon] )
+                                                     result['slaves']['data']['der_depLevelEC'][mon]['data'].push(i);
                                                 break; 
                                             }
                                             case 'High Dependency': {
                                                 result['dict'][mon]['der_depLevel1']['value']++;
-                                                if(result['dict'][mon]['der_depLevel1']['data'].indexOf(parseInt(recId))<0)
-                                                    result['dict'][mon]['der_depLevel1']['data'].push(parseInt(recId));
+                                                if(result['dict'][mon]['der_depLevel1']['data'].indexOf(i)<0)
+                                                    result['dict'][mon]['der_depLevel1']['data'].push(i);
+                                                if(result['slaves']['data']['der_depLevel1'] && result['slaves']['data']['der_depLevel1'][mon] )
+                                                     result['slaves']['data']['der_depLevel1'][mon]['data'].push(i);
 
                                                 break;
                                             }
                                             case 'High Dependency Advanced': {
                                                 result['dict'][mon]['der_depLevel2']['value']++;
-                                                if(result['dict'][mon]['der_depLevel2']['data'].indexOf(parseInt(recId))<0)
-                                                    result['dict'][mon]['der_depLevel2']['data'].push(parseInt(recId));
+                                                if(result['dict'][mon]['der_depLevel2']['data'].indexOf(i)<0)
+                                                    result['dict'][mon]['der_depLevel2']['data'].push(i);
+                                                if(result['slaves']['data']['der_depLevel2'] && result['slaves']['data']['der_depLevel2'][mon] )
+                                                     result['slaves']['data']['der_depLevel2'][mon]['data'].push(i);
 
                                                 break;
                                             }
                                             case 'Intensive Care Basic': {
                                                 result['dict'][mon]['der_depLevel3']['value']++;
-                                                if(result['dict'][mon]['der_depLevel3']['data'].indexOf(parseInt(recId))<0)
-                                                    result['dict'][mon]['der_depLevel3']['data'].push(parseInt(recId));
+                                                if(result['dict'][mon]['der_depLevel3']['data'].indexOf(i)<0)
+                                                    result['dict'][mon]['der_depLevel3']['data'].push(i);
+                                                if(result['slaves']['data']['der_depLevel3'] && result['slaves']['data']['der_depLevel3'][mon] )
+                                                     result['slaves']['data']['der_depLevel3'][mon]['data'].push(i);
                                                 break;
                                             }
                                             case 'Intensive Care Basic Enhanced': {
                                                 result['dict'][mon]['der_depLevel4']['value']++;
-                                                if(result['dict'][mon]['der_depLevel4']['data'].indexOf(parseInt(recId))<0)
-                                                    result['dict'][mon]['der_depLevel4']['data'].push(parseInt(recId));
+                                                if(result['dict'][mon]['der_depLevel4']['data'].indexOf(i)<0)
+                                                    result['dict'][mon]['der_depLevel4']['data'].push(i);
+                                                if(result['slaves']['data']['der_depLevel4'] && result['slaves']['data']['der_depLevel4'][mon] )
+                                                     result['slaves']['data']['der_depLevel4'][mon]['data'].push(i);
                                                 break; 
                                             }
                                             case 'Intensive Care Advanced': {
                                                 result['dict'][mon]['der_depLevel5']['value']++;
-                                                if(result['dict'][mon]['der_depLevel5']['data'].indexOf(parseInt(recId))<0)
-                                                    result['dict'][mon]['der_depLevel5']['data'].push(parseInt(recId));
+                                                if(result['dict'][mon]['der_depLevel5']['data'].indexOf(i)<0)
+                                                    result['dict'][mon]['der_depLevel5']['data'].push(i);
+
+                                                if(result['slaves']['data']['der_depLevel5'] && result['slaves']['data']['der_depLevel5'][mon] )
+                                                     result['slaves']['data']['der_depLevel5'][mon]['data'].push(i);
 
                                                 break;
                                             }
                                             case 'Intensive Care Advanced Enhanced':{
                                                 result['dict'][mon]['der_depLevel6']['value']++;
-                                                if(result['dict'][mon]['der_depLevel6']['data'].indexOf(parseInt(recId))<0)
-                                                    result['dict'][mon]['der_depLevel6']['data'].push(parseInt(recId));
+                                                if(result['dict'][mon]['der_depLevel6']['data'].indexOf(i)<0){
+                                                    result['dict'][mon]['der_depLevel6']['data'].push(i);
+
+                                                }
+                                                if(result['slaves']['data']['der_depLevel6'] && result['slaves']['data']['der_depLevel6'][mon] )
+                                                     result['slaves']['data']['der_depLevel6'][mon]['data'].push(i);
 
                                                 break; 
                                             }
@@ -1845,7 +1888,51 @@
                                                 break;
                                             }
 
+                                             
+
                                         }
+                                        result['slaves']['cats'].forEach(function(cat){
+                                                    // get the current rec's level of this categorical
+                                                    var lev = self.data[i][cat];
+                                                    if(! result['slaves']['data'][cat])
+                                                         result['slaves']['data'][cat] = {};
+                                                    if(! result['slaves']['data'][cat][lev])  result['slaves']['data'][cat][lev] = [];
+                                                    if(self.recordIncluded(result['dict'], mon, i, displayId)) result['slaves']['data'][cat][lev].push(i);  
+                                                 });
+
+                                        result['slaves']['quants'].forEach(function(quant, sid){
+                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                                    var qval = parseFloat(self.computeVar(i, quant['q'], quant, self.data[i], sid, displayId)) ; 
+                                                   
+                                                    if(!result['slaves']['data'][quant['q']])
+                                                        result['slaves']['data'][quant['q']] = {}; 
+                                                    if(!result['slaves']['data'][quant['q']][mon])
+                                                        result['slaves']['data'][quant['q']][mon] =  {};
+                                                    if(!result['slaves']['data'][quant['q']][mon])
+                                                        result['slaves']['data'][quant['q']][mon] = {};
+                                                    if(!result['slaves']['data'][quant['q']][mon]['unit'] && self.recordIncluded(result['dict'], mon, i, displayId))
+                                                        result['slaves']['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                                    else if(self.recordIncluded(result['dict'], mon, i, displayId))
+                                                        result['slaves']['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                                    
+                                                    
+                                                    if(!result['slaves']['data'][quant['q']][mon]['data'])
+                                                        result['slaves']['data'][quant['q']][mon]['data'] = [];
+                                                    
+                                                    if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(result['dict'], mon, i, displayId) )
+                                                        result['slaves']['data'][quant['q']][mon]['data'].push(i);
+
+                                                    //keeping national computations the same for now
+                                                    if(!result['slaves']['data'][quant['q']][mon]['national'])
+                                                                slaves['data'][quant['q']][mon]['national'] = qval;            
+                                                    else
+                                                        result['slaves']['data'][quant['q']][mon]['national'] += qval;
+                                                      
+                                                    
+                                                    }
+
+                                                 });
+
 
                                     });
                                 }
@@ -1853,13 +1940,13 @@
                             }
                             else{
                                 //console.log(result);
-                                // postprocess for bed days (if we're counting them in a main view)
+                                
                                 for(var key in dict){
                                    if(result['dict'][key]['der_bedDays'] && self.excessDays[key])
                                     for(var kk in self.excessDays[key])
                                        result['dict'][key]['der_bedDays']['value'] += self.excessDays[key][kk];
                                 }
-                                // postprocess for bed days (if we're counting them in a subview)
+                                
                                 for(var key in dict){
                                    if(result['slaves']['data']['der_bedDays'] && self.excessDays[key])
                                     for(var kk in self.excessDays[key])
