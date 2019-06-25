@@ -9,12 +9,12 @@ $Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
                           "dischargeStatusVar": "unitdisstatus"
                           }, 
                "minap": {
-                          "patientIdVar": "1.02 Patient case record number", 
-                          "unitIdVar": "1.01 Hospital identifier",
-                          "admissionDateVar": "3.06 Date/time arrival at hospital",
+                          "patientIdVar": "1.02 HospitalNumber", 
+                          "unitIdVar": "1.01 Hospital",
+                          "admissionDateVar": "3.06 ArrivalAtHospital",
                           "yearVar": "adyear",
-                          "dischargeDateVar": "4.01 Date of discharge",
-                          "dischargeStatusVar": "4.16 Discharge destination"
+                          "dischargeDateVar": "4.01 DischargeDate",
+                          "dischargeStatusVar": "4.16 ModeOfDischarge"
                         } };
 $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery", 
                                        "2":"Unplanned-following surgery",
@@ -63,19 +63,19 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                                             }, 
                             "unplannedextubation": {"1": "yes", "0": "no"}
                             },
-                "minap":{ "1.07 Patient gender": {
+                "minap":{ "1.07 Gender": {
                               "0": "Not known",
                               "1": "Male",
                               "2": "Female", 
                               "9": "Not specified"  
                               },
-                          "1.09 Patient admin status": {
+                          "1.09 PatientStatus": {
                             "1": "NHS",
                             "2": "Private", 
                             "3": "Amenity", 
                             "9": "Unknown" 
                           },
-                          "1.13 Patient ethnicity": {
+                          "1.13 EthnicGroupV9": {
                             "1": "White", 
                             "2": "Black", 
                             "3": "Asian", 
@@ -84,13 +84,13 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                             "8": "Other", 
                             "9": "Unknown"
                           },
-                          "2.01 Initial diagnosis": {
+                          "2.01 AdmissionDiagnosis": {
                             "1": "Definite myocardial infarction",
                             "3": "Acute coronary syndrome", 
                             "4": "Chest pain cause", 
                             "5": "Other initial diagnosis"
                           },
-                          "2.39 Admission Method": {
+                          "2.39 AdmissionMethod": {
                                 "1": "Direct Emergency",
                                 "2": "Self-presenter",
                                 "3": "Already in Hospital",
@@ -99,7 +99,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                                 "6": "Other",
                                 "9": "Unknown"
                           },
-                          "4.05 Discharged on beta blocker": {
+                          "4.05 Betablocker": {
                             "0": "No",
                             "1": "Yes",
                             "2": "Contraindicated",
@@ -108,7 +108,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                             "8": "Not indicated",
                             "9": "Unknown"
                           },
-                          "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker":{
+                          "4.06 ACEInhibitor":{
                             "0": "No",
                             "1": "Yes",
                             "2": "Contraindicated",
@@ -117,7 +117,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                             "8": "Not indicated",
                             "9": "Unknown"
                           },
-                          "4.07 Discharged on statin": {
+                          "4.07 Statin": {
                             "0": "No",
                             "1": "Yes",
                             "2": "Contraindicated",
@@ -126,7 +126,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                             "8": "Not indicated",
                             "9": "Unknown"
                           },
-                          "4.08 Discharged on aspirin": {
+                          "4.08 AspirinSecondary": {
                             "0": "No",
                             "1": "Yes",
                             "2": "Contraindicated",
@@ -135,7 +135,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                             "8": "Not indicated",
                             "9": "Unknown"
                           },
-                          "4.27 Discharged on a thienopyridine inhibitor": {
+                          "4.27 DischargedOnThieno": {
                             "0": "No",
                             "1": "Yes",
                             "2": "Contraindicated",
@@ -144,7 +144,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                             "8": "Not indicated",
                             "9": "Unknown"
                           },
-                          "4.31 Discharged on TIcagrelor (v10.3 Dataset)": {
+                          "4.31 DischargedOnTicagrelor": {
                             "0": "No",
                             "1": "Yes",
                             "2": "Contraindicated",
@@ -153,7 +153,7 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                             "8": "Not indicated",
                             "9": "Unknown"
                           },
-                          "4.09 Cardiac rehabilitation": {
+                          "4.09 CardiacRehabilitation": {
                             "0": "No",
                             "1": "Yes",
                             "3": "Patient declined",

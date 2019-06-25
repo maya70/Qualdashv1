@@ -100,7 +100,7 @@
                                 d3.csv("./data/minap_admission/"+self.year+".csv", function(data){
                                         ////console.log(data); 
                                         self.data = data;   
-                                        self.unitID = data[0]['1.01 Hospital identifier'];                                  
+                                        //self.unitID = data[0]['1.01 Hospital identifier'];                                  
                                         ////////console.log(displayVar);
                                          for(var i=0; i < self.data.length; i++){
                                             self.data[i]["1.02 Patient case record number"] = ""+self.data[i]["1.02 Patient case record number"];                                            
@@ -146,7 +146,7 @@
                                 
                                 d3.csv("./data/picanet_admission/"+self.year+".csv", function(err, data){                                      
                                         self.data = data;  
-                                        self.unitID = data[0]['siteidscr'];
+                                        //self.unitID = data[0]['siteidscr'];
                                         if(err)
                                             alert("QualDash cannot find the necessary Picanet admission file(s)");
                                         for(var i=0; i < self.data.length; i++){
@@ -161,7 +161,9 @@
                                             if(extra)
                                             {
                                              for(var ex=0; ex < extra.length; ex++){
-                                                if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID){
+                                                //if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID)
+                                                if(true)
+                                                {
                                                     if(!self.activityIndex[extra[ex]["eventidscr"]])
                                                         self.activityIndex[extra[ex]["eventidscr"]] = [];
                                                     self.activityIndex[extra[ex]["eventidscr"]].push(extra[ex]);
@@ -230,7 +232,9 @@
                                             {
                                                 // update activityIndex with historic data
                                              for(var ex=0; ex < extra.length; ex++){
-                                                if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID){
+                                                //if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID)
+                                                if(true)
+                                                {
                                                     if(!self.activityIndex[extra[ex]["eventidscr"]])
                                                         self.activityIndex[extra[ex]["eventidscr"]] = [];
                                                     self.activityIndex[extra[ex]["eventidscr"]].push(extra[ex]);
@@ -242,7 +246,9 @@
                                             for(var d = 0; d < data.length; d++){
                                                 data[d]["EVENTID"] = ""+data[d]["eventidscr"];  
                                                 // load historical data for this unit only unless required otherwise
-                                                if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                                //if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                                if(true)
+                                                {
                                                     for(var v = 0; v < self.dataViews.length; v++){
                                                         var Qs = self.getTimeQs(v); 
                                                         var metric = self.dataViews[v]['metric'];
@@ -276,7 +282,8 @@
                                         var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]] || self.stringToDate(data[0][[$Q.DataDefs[self.audit]["admissionDateVar"]]]).getYear()+1900; 
                                         for(var d = 0; d < data.length; d++){
                                             // load historical data for this unit only unless required otherwise
-                                            if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                            //if(data[d][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                            if(true) {
                                                 for(var v = 0; v < self.dataViews.length; v++){
                                                     var Qs = self.getTimeQs(v); 
                                                     var metric = self.dataViews[v]['metric'];
@@ -345,7 +352,9 @@
                             for(var i=0; i < self.data.length; i++){
                                 var mon = self.stringToMonth(self.data[i][dateVar]);
                                 // setup data aggregates for slave categories (this unit only)
-                                if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                //if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                if(true)
+                                {
                                         slaves['cats'].forEach(function(cat){
                                             // get the current rec's level of this categorical
                                             var lev = self.data[i][cat];
@@ -395,7 +404,8 @@
                                 // setup data aggregates for slave categories (this unit only)
                                 
                                 slaves['quants'].forEach(function(quant, sid){
-                                    if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                   // if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                   if(true) {
                                             var qval = parseFloat(self.computeVar(i, quant['q'], quant, self.data[i], sid, viewId)) ; 
                                             var mon = self.stringToMonth(self.data[i][dateVar]);
 
@@ -406,15 +416,16 @@
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
                                             if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(self.dicts[viewId], mon, i, viewId))
-                                                slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                                slaves['data'][quant['q']][mon]['unit'] =  qval; //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
                                             else if(self.recordIncluded(self.dicts[viewId], mon, i, viewId))
-                                                slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                                slaves['data'][quant['q']][mon]['unit'] += qval; //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                             
                                             
                                             if(!slaves['data'][quant['q']][mon]['data'])
                                                 slaves['data'][quant['q']][mon]['data'] = [];
                                             
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(self.dicts[viewId], mon, i, viewId) )
+                                            //if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(self.dicts[viewId], mon, i, viewId) )
+                                            if(self.recordIncluded(self.dicts[viewId], mon, i, viewId))
                                                 slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             //keeping national computations the same for now
@@ -555,7 +566,8 @@
                                          var lastDay = new Date(self.year, (m+1), 0); //self.stringToDate("1/"+(m+1)+"/"+self.year).getTime();
                                          span = Math.round(Math.abs(lastDay.getTime() - firstDay.getTime())/one_day);
                                         }
-                                        if(rec[$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                        //if(rec[$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                        if(true)
                                             {                                           
                                             if(!self.excessDays[m])
                                                 self.excessDays[m] = {};
@@ -727,37 +739,37 @@
                                 return count; 
                             }
                             else if(vname === "stemi"){
-                                return rec["2.01 Initial diagnosis"] === "1" ? 1: 0; 
+                                return rec["2.01 AdmissionDiagnosis"] === "1" ? 1: 0; 
                             }
                             else if(vname === "angioTarget"){
-                                 var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
+                                 var tta = (self.stringToDate(rec["4.18 LocalAngioDate"], 1) - self.stringToDate(rec["3.06 ArrivalAtHospital"], 1))/60000;
                                  if(isNaN(tta)){
-                                    if(! (rec["4.18 Local angio date"] instanceof Date) || (! (rec["3.06 Date/time arrival at hospital"] instanceof Date)))
+                                    if(! (rec["4.18 LocalAngioDate"] instanceof Date) || (! (rec["3.06 ArrivalAtHospital"] instanceof Date)))
                                         self.recordMissing(metric, vname , i);
                                                                         
                                 }
-                                return (rec["2.01 Initial diagnosis"] !== "1" &&  tta < 4320)? 1: 0; 
+                                return (rec["2.01 AdmissionDiagnosis"] !== "1" &&  tta < 4320)? 1: 0; 
                             }
                             else if(vname === "ctbTarget"){
-                                return (rec["2.01 Initial diagnosis"] === "1" && rec["3.10 Delay before treatment"] !== "0")? 1: 0; 
+                                return (rec["2.01 AdmissionDiagnosis"] === "1" && rec["3.10 JustifiedDelay"] !== "0")? 1: 0; 
                             }
                             else if(vname === "ctbTargetMet"){
-                                return (rec["2.01 Initial diagnosis"] === "1" && rec["3.10 Delay before treatment"] === "0")? 1: 0; 
+                                return (rec["2.01 AdmissionDiagnosis"] === "1" && rec["3.10 JustifiedDelay"] === "0")? 1: 0; 
                             }
                             else if(vname === "ctb"){
-                                return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.02 Date/time of call for help"], 1))/60000;
+                                return (self.stringToDate(rec["3.09 ReperfusionTreatment"], 1) - self.stringToDate(rec["3.02 CallforHelp"], 1))/60000;
                             }
                             else if(vname === "dtb"){
-                                var dtb = (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
-                                return (self.stringToDate(rec["3.09 Date/time of reperfusion treatment"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
+                                var dtb = (self.stringToDate(rec["3.09 ReperfusionTreatment"], 1) - self.stringToDate(rec["3.06 ArrivalAtHospital"], 1))/60000;
+                                return (self.stringToDate(rec["3.09 ReperfusionTreatment"], 1) - self.stringToDate(rec["3.06 ArrivalAtHospital"], 1))/60000;
                             }
                             else if(vname === "angioNoTarget"){
-                                var tta = (self.stringToDate(rec["4.18 Local angio date"], 1) - self.stringToDate(rec["3.06 Date/time arrival at hospital"], 1))/60000;
-                                return (rec["2.01 Initial diagnosis"] !== "1" &&  tta > 4320)? 1: 0; 
+                                var tta = (self.stringToDate(rec["4.18 LocalAngioDate"], 1) - self.stringToDate(rec["3.06 ArrivalAtHospital"], 1))/60000;
+                                return (rec["2.01 AdmissionDiagnosis"] !== "1" &&  tta > 4320)? 1: 0; 
                             }
                             else if(vname === "reqEcho"){
                                 var possible = ["1", "2", "3", "4", "5", "9"];
-                                return (rec["2.01 Initial diagnosis"] === "1"  && rec["2.03 ECG determining treatment"] === 1 && possible.indexOf(rec["2.36 Site of infarction"])>=0)? 1: 0; 
+                                return (rec["2.01 AdmissionDiagnosis"] === "1"  && rec["2.03 ECGDeterminingTreatment"] === 1 && possible.indexOf(rec["2.36 InfarctionSite"])>=0)? 1: 0; 
                             }
                             else if(vname === "missing" && self.audit === "picanet"){
                                 var count = 0;
@@ -1328,7 +1340,8 @@
                             var ownrecords = 0;  // keep a count of this unit's records
                             for(var i=0; i < self.data.length; i++){
                                 var mon = self.stringToMonth(self.data[i][dateVar]);
-                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                               // if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                if(true){
                                     self.recordEHR(self.data[i], i, metric);                                
                                     ownrecords++; 
                                 }
@@ -1337,7 +1350,8 @@
                                         //var vname;
                                         var vval = self.computeVarSingle(group, cat, displayVar, displayObj, self.data[i], id, i);
                                         // select yspan items
-                                        if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                        //if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                        if(true)
                                             {
                                             
                                             // update x-bin                                                       
@@ -1375,7 +1389,9 @@
                                 levels = groups; 
 
                                 // setup data aggregates for slave categories (this unit only)
-                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                //if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                if(true)
+                                {
                                         slaves['cats'].forEach(function(cat){
                                             // get the current rec's level of this categorical
                                             var lev = self.data[i][cat];
@@ -1407,15 +1423,15 @@
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
                                             if(!slaves['data'][quant['q']][mon]['unit'])
-                                                slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                                slaves['data'][quant['q']][mon]['unit'] =  qval; //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
                                             else
-                                                slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                                slaves['data'][quant['q']][mon]['unit'] +=  qval; //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                             
                                             
                                             if(!slaves['data'][quant['q']][mon]['data'])
                                                 slaves['data'][quant['q']][mon]['data'] = [];
                                             
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                            //if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                                 slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             
@@ -1514,7 +1530,10 @@
                                var mon = self.stringToMonth(self.data[i][dateVar]);
                                var vval; 
 
-                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                
+                                //if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                if(true)
+                                {
                                     self.recordEHR(self.data[i], i, metric);                                
                                     ownrecords++; 
                                 }
@@ -1530,7 +1549,8 @@
                                                 observedDeathsNational[self.data[i][dateVar]] += vval;                                                 
                                             }*/
                                         // select yspan items
-                                        if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                        //if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                        if(true)
                                             {
                                             
                                             // update x-bin                                                       
@@ -1548,7 +1568,9 @@
                                 levels = displayVar; 
 
                                 // setup data aggregates for slave categories (this unit only)
-                                if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                //if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                if(true)
+                                {
                                     slaves['cats'].forEach(function(cat){
                                         // get the current rec's level of this categorical
                                         var lev = self.data[i][cat];
@@ -1581,17 +1603,18 @@
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
                                             if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(dict, mon, i, displayId))
-                                                slaves['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
-                                                                                                            (quant['yaggregates']==="count"? 1: qval) : 0;                                               
+                                                slaves['data'][quant['q']][mon]['unit'] = //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
+                                                                                                            (quant['yaggregates']==="count"? 1: qval);                                               
                                             else if(self.recordIncluded(dict, mon, i, displayId))
-                                                slaves['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
-                                                                                                            (quant['yaggregates']==="count"? 1: qval) : 0;
+                                                slaves['data'][quant['q']][mon]['unit'] += //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
+                                                                                                            (quant['yaggregates']==="count"? 1: qval); //: 0;
                                             
 
                                             if(!slaves['data'][quant['q']][mon]['data'])
                                                 slaves['data'][quant['q']][mon]['data'] = [];
                                             
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(dict, mon, i, displayId))
+                                           // if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(dict, mon, i, displayId))
+                                           if(self.recordIncluded(dict, mon, i, displayId))
                                                 slaves['data'][quant['q']][mon]['data'].push(i);
 
                                             // check if we need nultiple time granularities for this
@@ -1684,7 +1707,7 @@
                                 var adm = patientEHR["admissionsT"];
                                 var disc = patientEHR["dischargesT"];
                                 var one_hour=1000*60*60;  // in ms
-                                //var index_a = adm.indexOf(self.data[i]["3.06 Date/time arrival at hospital"]);
+                                //var index_a = adm.indexOf(self.data[i]["3.06 ArrivalAtHospital"]);
                                 if(adm.length <= 1)  // this patient was only admitted once
                                     continue;
 
@@ -1710,7 +1733,9 @@
                                                 //parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
                                                 var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
                                                 
-                                                if(unit === self.unitID){
+                                                //if(unit === self.unitID)
+                                                if(true)
+                                                {
                                                     // update this view's time hierarchy
                                                     var auditVars = (self.audit === 'picanet')? $Q.Picanet["displayVariables"] : $Minap["displayVariables"];
                                                     for(var v = 0; v < self.dataViews.length; v++){
@@ -1733,7 +1758,7 @@
                                  }
                             }
 
-                            
+
                         },
                         postProcess: function(dict, slaves, metric, displayObj, displayId){
                             var self = this;
@@ -1748,7 +1773,7 @@
                                     var disc = patientEHR["dischargesT"];
                                     var one_hour=1000*60*60;  // in ms
                                    
-                                    //var index_a = adm.indexOf(self.data[i]["3.06 Date/time arrival at hospital"]);
+                                    //var index_a = adm.indexOf(self.data[i]["3.06 ArrivalAtHospital"]);
                                     if(adm.length <= 1)  // this patient was only admitted once
                                         continue;
 
@@ -1774,7 +1799,9 @@
                                                     //parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
                                                     if(isNaN(mon))
                                                         self.recordMissing(metric, "der_readmit", aid); 
-                                                    if(unit === self.unitID){
+                                                    //if(unit === self.unitID)
+                                                    if(true)
+                                                    {
                                                         // update this view's master dict
                                                         result['dict'][month]["der_readmit"]["value"]++;
                                                         result['dict'][month]["der_readmit"]["data"].push(patientEHR['ids'][aid]);
@@ -1901,7 +1928,9 @@
                                                  });
 
                                         result['slaves']['quants'].forEach(function(quant, sid){
-                                            if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID ){
+                                            //if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
+                                            if(true)
+                                            {
                                                     var qval = parseFloat(self.computeVar(i, quant['q'], quant, self.data[i], sid, displayId)) ; 
                                                    
                                                     if(!result['slaves']['data'][quant['q']])
@@ -1911,15 +1940,16 @@
                                                     if(!result['slaves']['data'][quant['q']][mon])
                                                         result['slaves']['data'][quant['q']][mon] = {};
                                                     if(!result['slaves']['data'][quant['q']][mon]['unit'] && self.recordIncluded(result['dict'], mon, i, displayId))
-                                                        result['slaves']['data'][quant['q']][mon]['unit'] = (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
+                                                        result['slaves']['data'][quant['q']][mon]['unit'] =  qval; //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;                                               
                                                     else if(self.recordIncluded(result['dict'], mon, i, displayId))
-                                                        result['slaves']['data'][quant['q']][mon]['unit'] += (self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
+                                                        result['slaves']['data'][quant['q']][mon]['unit'] +=  qval; //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? qval : 0;
                                                     
                                                     
                                                     if(!result['slaves']['data'][quant['q']][mon]['data'])
                                                         result['slaves']['data'][quant['q']][mon]['data'] = [];
                                                     
-                                                    if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(result['dict'], mon, i, displayId) )
+                                                    //if(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID && self.recordIncluded(result['dict'], mon, i, displayId) )
+                                                    if(self.recordIncluded(result['dict'], mon, i, displayId))
                                                         result['slaves']['data'][quant['q']][mon]['data'].push(i);
 
                                                     //keeping national computations the same for now
