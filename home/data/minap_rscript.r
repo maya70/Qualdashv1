@@ -3,17 +3,17 @@
  library(lubridate)
  library(parsedate)
 
- source_file_path <- "C:/Users/Mai/Dropbox/Leeds/Qualdash related/Data/"
- dest_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/minap_admission/"
- dateFormat <- "%d-%m-%y %H:%M"
- #dateFormat <- "%d/%m/%Y %H:%M"
+ source_file_path <- "C:/Users/scsmel/Dropbox/Leeds/Qualdash related/Data/"
+ dest_file_path <- "C:/Bitnami/wampstack-7.1.13-1/apache2/htdocs/Qualdashv1/home/data/minap_admission/"
+ #dateFormat <- "%d-%m-%y %H:%M"
+ dateFormat <- "%d/%m/%Y %H:%M"
  audit_filename <- "minap_dummy.csv"
  
  source = paste(source_file_path, audit_filename, sep='')
  madmission <- read_csv(source)
 
  # get years in data
- admdate <- as.Date(madmission$`3.06 Date/time arrival at hospital`, format=dateFormat)
+ admdate <- as.Date(madmission$`3.06 ArrivalAtHospital`, format=dateFormat)
  adyear <- year(admdate)
  madmission <- cbind(madmission, adyear)
 
@@ -34,8 +34,8 @@ for(col in colnames(madmission)){
 }
 
 # Derived columns
-v427 <- madmission$`4.27 Discharged on a thienopyridine inhibitor` == 1
-v431 <- madmission$`4.31 Discharged on TIcagrelor (v10.3 Dataset)` == 1
+v427 <- madmission$`4.27 DischargedOnThieno` == 1
+v431 <- madmission$`4.31 DischargedOnTicagrelor` == 1
 madmission$P2Y12 <- as.numeric(v431 | v427)
 
 

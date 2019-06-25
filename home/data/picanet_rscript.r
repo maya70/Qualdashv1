@@ -18,11 +18,11 @@
  admission <- subset(admission, siteidscr == unitID)
  # break it into separate files for individual years
  # and store the new files in the picanet folder under documnt root 
- for(year in unique(admission$adyear)){
-     tmp = subset(admission, adyear == year)     
-     fn = paste(dest_file_path, gsub(' ','', year), '.csv', sep='' )
-     write.csv(tmp, fn, row.names = FALSE)
- }
+ #for(year in unique(admission$adyear)){
+  #   tmp = subset(admission, adyear == year)     
+  #   fn = paste(dest_file_path, gsub(' ','', year), '.csv', sep='' )
+  #  write.csv(tmp, fn, row.names = FALSE)
+ #}
 
 yfn = paste(dest_file_path ,'avail_years.csv', sep='' )
  write.csv(unique(df$adyear), yfn, row.names = FALSE)
@@ -50,6 +50,21 @@ for(year in unique(df$adyear)){
    # select only relevant columns for QualDash
     d = data.frame(M$eventidscr, M$addate, M$hrggroup, M$unplannedextubation, M$invventet, M$invventtt, M$intubation, M$ventilationstatus, M$avsjet, M$avsosc, M$siteidscr)
     colnames(d) <- c('eventidscr', 'addate', 'hrggroup', 'unplannedextubation', 'invventet', 'invventtt', 'intubation', 'ventiliationstatus', 'avsjet', 'avsosc', 'siteidscr')
+
+    for(level in unique(d$hrggroup)){
+      admission[, toString(level) ] <- 0
+    }
+
+    for(row in 1:nrow(d)){
+       id <- d$eventidscr[row] 
+       level <- d$hrggroup[row]
+       lev <- toString(level[1])
+       admission[which(admission$eventidscr == id), lev] <- 1 + admission[which(admission$eventidscr == id), lev]
+       
+       }
+     tmp = subset(admission, adyear == year)     
+     fn = paste(dest_file_path, gsub(' ','', year), '.csv', sep='' )
+     write.csv(tmp, fn, row.names = FALSE)
 
     fn = paste(dest_activity_path, 'shortactiv' , gsub(' ','', year), '.csv', sep='' )
     write.csv(d, fn)
