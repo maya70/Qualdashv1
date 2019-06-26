@@ -152,25 +152,7 @@
                                         for(var i=0; i < self.data.length; i++){
                                             self.data[i]["EVENTID"] = ""+self.data[i]["eventidscr"];                                            
                                         }                                    
-                                        d3.csv("./data/picanet_activity/shortactiv"+self.year+".csv", function(error, extra){                                                                         
-                                            
-                                            if (error) {
-                                                    alert("WARNING: No activity data available"); 
-                                                }
-                                            self.activityIndex = {};
-                                            if(extra)
-                                            {
-                                             for(var ex=0; ex < extra.length; ex++){
-                                                //if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID)
-                                                if(true)
-                                                {
-                                                    if(!self.activityIndex[extra[ex]["eventidscr"]])
-                                                        self.activityIndex[extra[ex]["eventidscr"]] = [];
-                                                    self.activityIndex[extra[ex]["eventidscr"]].push(extra[ex]);
-                                                }
-                                            }
-                                            //console.log(self.activityIndex); 
-                                            }
+                                      
                                             // populate the global variable descriptions
                                             self.variableDesc = {};
                                             $Q.variableDesc["picanet"].forEach(function(v){
@@ -184,7 +166,7 @@
                                             ////console.log(self.dataViews);
                                             self.loadHistory();
                                             self.control.dataReady(self.dataViews, self.data); 
-                                        });
+                                       
                                     });
                                 });
                             },
@@ -223,25 +205,8 @@
                                         ////console.log("Loading History");
                                         var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]]; 
 
-                                        d3.csv("./data/picanet_activity/shortactiv"+yearupdated+".csv", function(error, extra){                                                                         
+                                         
                                             
-                                            if (error) {
-                                                    alert("WARNING: No historic activity data available"); 
-                                                }
-                                            if(extra)
-                                            {
-                                                // update activityIndex with historic data
-                                             for(var ex=0; ex < extra.length; ex++){
-                                                //if(extra[ex][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID)
-                                                if(true)
-                                                {
-                                                    if(!self.activityIndex[extra[ex]["eventidscr"]])
-                                                        self.activityIndex[extra[ex]["eventidscr"]] = [];
-                                                    self.activityIndex[extra[ex]["eventidscr"]].push(extra[ex]);
-                                                    }
-                                                }
-                                            console.log(self.activityIndex); 
-                                            }
 
                                             for(var d = 0; d < data.length; d++){
                                                 data[d]["EVENTID"] = ""+data[d]["eventidscr"];  
@@ -264,7 +229,7 @@
                                                 }
                                             }
                                             self.postProcessHistory(yearupdated, "der_readmit" ); 
-                                       });
+                                       
 
                                     });
                                 } 
