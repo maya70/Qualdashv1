@@ -109,15 +109,16 @@ $Q.Picanet = {
                                         {"q":"der_bedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
                         "granT": {"monthly-annual": ["der_bedDays"]}, 
                         "combinations": ["adtype&der_readmit"]
-                     }, 
+                     },
                      {  "metric": "dependency",                        
                         "mark": "bar",                         
                         "chart": "stacked",
                         "x": "addate",
-                        "y": ["der_depLevel0", "der_depLevelEC" ,"der_depLevel1", "der_depLevel2", "der_depLevel3", "der_depLevel4", "der_depLevel5", "der_depLevel6"], 
-                        "yfilters": {"der_depLevel0" : "*", "der_depLevelEC": "*" ,"der_depLevel1": "*", "der_depLevel2": "*", 
-                                    "der_depLevel3": "*", "der_depLevel4": "*", "der_depLevel5": "*", "der_depLevel6": "*"} ,
-                        "yaggregates": ["count", "count", "count", "count", "count", "count", "count", "count" ], 
+                        "y": ["Enhanced Care", "High Dependency" ,"High Dependency Advanced", "Intensive Care Basic", "Intensive Care Basic Enhanced", "Intensive Care Advanced", "Intensive Care Advanced Enhanced"], 
+                        "yfilters": {"Enhanced Care" : {"where":"*"}, "High Dependency": {"where":"*"} ,"High Dependency Advanced": {"where":"*"}, 
+                                      "Intensive Care Basic": {"where":"*"}, 
+                                    "Intensive Care Basic Enhanced": {"where":"*"}, "Intensive Care Advanced": {"where":"*"}, "Intensive Care Advanced Enhanced": {"where":"*"}} ,
+                        "yaggregates": ["sum", "sum", "sum", "sum", "sum", "sum", "sum", "sum" ], 
                         "xType": "t",
                         "yType": "o",  
                         "xspan": "year",    
@@ -127,11 +128,11 @@ $Q.Picanet = {
                         "granP": ["unit"], 
                         "ehr": "Admissions",                        
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [ {"q":"der_depLevel2", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"der_depLevel3", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                        "quantities": [ {"q":"Enhanced Care", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"High Dependency", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["der_depLevel2", "der_depLevel3"]}   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": ["High Dependency", "High Dependency Advanced"]}   // the first element holds the master view's granT                                             
           
                      },
                       {
