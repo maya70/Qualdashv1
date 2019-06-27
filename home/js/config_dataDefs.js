@@ -1,12 +1,12 @@
-$Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
-                          "monthVar": "admonth", 
-                          "weekVar": "adweek",
-                          "yearVar": "adyear",
-                          "patientIdVar": "pidscr", 
-                          "unitIdVar": "siteidscr",
-                          "admissionDateVar": "addate",
-                          "dischargeDateVar": "unitdisdate",
-                          "dischargeStatusVar": "unitdisstatus"
+$Q.DataDefs = {"picanet": {"secondaryKey": "EventID",
+                          "monthVar": "AdMonth", 
+                          "weekVar": "AdWeek",
+                          "yearVar": "AdYear",
+                          "patientIdVar": "PatientID", 
+                          "unitIdVar": "PictuOrg",
+                          "admissionDateVar": "AdDate",
+                          "dischargeDateVar": "UnitDisDate",
+                          "dischargeStatusVar": "UnitDisStatus"
                           }, 
                "minap": {
                           "patientIdVar": "1.02 HospitalNumber", 
@@ -16,16 +16,16 @@ $Q.DataDefs = {"picanet": {"secondaryKey": "eventidscr",
                           "dischargeDateVar": "4.01 DischargeDate",
                           "dischargeStatusVar": "4.16 ModeOfDischarge"
                         } };
-$Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery", 
+$Q.ValueDefs = {"picanet": {"AdType": {"1":"Planned-following surgery", 
                                        "2":"Unplanned-following surgery",
                                        "3":"Planned-Other",
                                        "4":"Unplanned", 
                                        "9":"N/K"
                                       },
-                            "unitdisstatus": {"1": "alive",
+                            "UnitDisStatus": {"1": "alive",
                                               "2": "deceased"},
                             "sex": {"1":"male", "2": "female"},
-                            "ethnic": {"A": "White British", 
+                            "Ethnic": {"A": "White British", 
                                         "B": "White Irish",
                                         "C": "White other",
                                         "D": "Mixed White and Black Carribean", 
@@ -59,8 +59,18 @@ $Q.ValueDefs = {"picanet": {"adtype": {"1":"Planned-following surgery",
                                             "8": "Normal residence",
                                             "9": "Hospice",
                                             "99": "Unknown"
-
                                             }, 
+                            "PrimReason":{"0": "None of the below",
+                                          "1":  "Asthma",
+                                          "2":  "Bronchitis",
+                                          "3":  "Croup",
+                                          "4":  "Obstructive sleep apnoea",
+                                          "5":  "Diabetic Ketoacidosis",
+                                          "6":  "Recovery fro surgery",
+                                          "7":  "Seizure disorder",
+                                          "9":  "N/K"
+
+                                          },
                             "unplannedextubation": {"1": "yes", "0": "no"}
                             },
                 "minap":{ "1.07 Gender": {

@@ -86,7 +86,7 @@ $Q.variableDesc = {
     "Description": "Other ethnic origin"
   },
   {
-    "Name": "ADDATE",
+    "Name": "adDate",
     "Description": "Date of admission to your unit"
   },
   {

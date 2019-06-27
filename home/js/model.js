@@ -444,6 +444,7 @@
                         },
                         setDerivedValue: function(viewId, recId, vname, value){
                             var self = this; 
+                            var isDerived = false;
                             var auditVars = self.audit === "picanet"? $Q.Picanet["displayVariables"][viewId] : $Q.Minap["displayVariables"][viewId];  
                             if(!self.metaDict[vname]){
                                 auditVars["quantities"].forEach(function(qobj){
@@ -452,8 +453,14 @@
                                         if(!self.metaRecByFieldName(vname))
                                             self.meta.push({"fieldName":vname , "fieldType": "q"});                                     
                                     }
-                                });                                
-                            self.data[recId][vname] = value; 
+                                });   
+                             if(vname.indexOf("_") >= 0 ){
+                                var strs = vname.split("_");
+                                if(strs[0] === "der")
+                                    isDerived = true;
+                                }
+                            if(isDerived)                             
+                                self.data[recId][vname] = value; 
                             }
                             
                         },
@@ -1574,7 +1581,7 @@
                                                 //var year = adrec[$Q.DataDefs[self.audit]["yearVar"]];
                                                 var quar = self.getRecordQuarter(adrec);
                                                 //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
-                                                var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
+                                                var mon = parseInt(self.stringToMonth(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]]));
                                                 var week = parseInt(self.stringToDate(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
                                                 //parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
                                                 var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
@@ -1636,11 +1643,11 @@
                                                     // find corresponding entry in dict
                                                     // assuming dict is organized by months
                                                     // find the months of this readmission event
-                                                    var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
+                                                    var month = parseInt(self.stringToMonth(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]])); //adrec[$Q.DataDefs[self.audit]["monthVar"]];
                                                     var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
                                                     var quar = self.getRecordQuarter(adrec);
                                                     //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
-                                                    var mon = parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
+                                                    var mon = parseInt(self.stringToMonth(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]])); //parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
                                                     var week = parseInt(self.stringToDate(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
                                                     //parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
                                                     if(isNaN(mon))

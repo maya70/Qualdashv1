@@ -13,16 +13,16 @@ $Q.Picanet = {
                     {"value": "data_quality",
                      "text": "Data Quality"}
                     ], 
-"variableDict": {"primarydiagnosisgroup": "Diagnosis",
+"variableDict": {"PrimReason": "Diagnosis",
                  "unplannedextubation": "Unplanned Extubation", 
-                 "unitdisstatus": "Deaths",
+                 "UnitDisStatus": "Deaths",
                  "missing1": "Group 1: fields containint missing values",
                  "missing2": "Group 2: fields containint missing values",
                  "missing3": "Group 3: fields containint missing values",
                  "missing4": "Group 4: fields containint missing values",
                   "adtype": "Ad. type",
                   "sex": "Gender",
-                  "eventidscr": "Admissions",
+                  "EventID": "Admissions",
                   "der_death": "Deaths in unit",
                   "der_smr": "SMR",
                   "der_discharge": "Discharges",
@@ -47,12 +47,12 @@ $Q.Picanet = {
                         "mark": "bar", 
                         "chart": "grouped", 
                         "colorScale": "categorical",
-                        "x": "addate",
-                        "y": ["eventidscr", "unitdisstatus", "der_smr"], 
+                        "x": "AdDate",
+                        "y": ["EventID", "UnitDisStatus", "der_smr"], 
                         "legend": ["Admissions", "Deaths in unit"],
                         "yaggregates": ["count", "count", "runningAvg"], 
-                        "yfilters": {"eventidscr": {"where": "*"},      
-                                     "unitdisstatus":{"where":{ "unitdisstatus": "2" }, "valid":["1", "9"], "countexisting": {"unitdisdate":""}}
+                        "yfilters": {"EventID": {"where": "*"},      
+                                     "UnitDisStatus":{"where":{ "UnitDisStatus": "2" }, "valid":["1", "9"]}
                                      },                                                
                         "xType": "t",
                         "yType": ["q", "q", "q"],  
@@ -64,21 +64,23 @@ $Q.Picanet = {
                         "ehr": "Admissions",
               
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["primarydiagnosisgroup","adtype", "ethnic"],      
-                        "quantities": [{"q":"pim3_s","granT": "addate", "granP":["unit"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["eventidscr", "unitdisstatus"] }   // the first element holds the master view's granT                                             
+                        "categories": ["PrimReason","AdType", "Ethnic"],      
+                        "quantities": [{"q":"pim3_s","granT": "AdDate", "granP":["unit"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": ["EventID", "UnitDisStatus"] }   // the first element holds the master view's granT                                             
           
                      },
                      {  "metric": "48h Readmission",
                         "mark": "bar",
-                        "x": "addate",
-                        "y": ["der_discharge", "der_readmit"],
-                        "categories": ["sourcead", "careareaad", "unitdisdest", "primarydiagnosisgroup"], 
+                        "x": "AdDate",
+                        "y": ["UnitDisStatus", "der_readmit"],
+                        "categories": ["SourceAd", "CareAreaAd", "UnitDisDest"], 
                         "quantities": [{"q":"der_readmit", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
                                       {"q":"der_unplannedAdm", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],
                         "xType": "t",
                         "yType": ["q", "q"],
-                        "yfilters": {"der_discharge": "*", "der_readmit": "*"} ,
+                        "legend": ["Discharged", "Readmitted"],
+                        "yfilters": {"UnitDisStatus": {"where": {"UnitDisStatus": "1"} }, 
+                                      "der_readmit": {"where":"*"}} ,
                         "xspan": "year",    
                         "yspan": "unit", 
                         "ylabel": "Num. Records",
@@ -86,12 +88,12 @@ $Q.Picanet = {
                         "yaggregates": ["count", "count"],
                         "ehr": "Admissions",
                         "granP": ["unit", "unit"], 
-                        "granT": {"monthly-annual": ["der_readmit"]}, 
-                        "combinations": ["adtype&der_readmit"]
+                        "granT": {"monthly-annual": ["der_readmit"]}
+                        
                      },
-                     {  "metric": "Bed Days and Extubation",
+                      {  "metric": "Bed Days and Extubation",
                         "mark": "bar",
-                        "x": "addate",
+                        "x": "AdDate",
                         "y":["der_bedDays", "der_invVentDays"],
                         "yfilters": {"der_bedDays" : "*", 
                                     "der_invVentDays": "*"}, 
@@ -109,16 +111,17 @@ $Q.Picanet = {
                                         {"q":"der_bedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
                         "granT": {"monthly-annual": ["der_bedDays"]}, 
                         "combinations": ["adtype&der_readmit"]
-                     },
-                     {  "metric": "dependency",                        
+                     }, 
+                      {  "metric": "dependency",                        
                         "mark": "bar",                         
                         "chart": "stacked",
-                        "x": "addate",
-                        "y": ["Enhanced Care", "High Dependency" ,"High Dependency Advanced", "Intensive Care Basic", "Intensive Care Basic Enhanced", "Intensive Care Advanced", "Intensive Care Advanced Enhanced"], 
-                        "yfilters": {"Enhanced Care" : {"where":"*"}, "High Dependency": {"where":"*"} ,"High Dependency Advanced": {"where":"*"}, 
-                                      "Intensive Care Basic": {"where":"*"}, 
-                                    "Intensive Care Basic Enhanced": {"where":"*"}, "Intensive Care Advanced": {"where":"*"}, "Intensive Care Advanced Enhanced": {"where":"*"}} ,
+                        "x": "AdDate",
+                        "y": ["XB09Z", "XB07Z" ,"XB06Z", "XB05Z", "XB04Z", "XB03Z", "XB02Z", "XB01Z"], 
+                        "yfilters": {"XB09Z" : {"where":"*"}, "XB07Z": {"where":"*"} ,"XB06Z": {"where":"*"}, 
+                                      "XB05Z": {"where":"*"}, 
+                                    "XB04Z": {"where":"*"}, "XB03Z": {"where":"*"}, "XB02Z": {"where":"*"}, "XB01Z": {"where":"*"} } ,
                         "yaggregates": ["sum", "sum", "sum", "sum", "sum", "sum", "sum", "sum" ], 
+                        "legend": ["Enhanced Care", "High Dependency" ,"High Dependency Advanced", "Intensive Care Basic", "Intensive Care Basic Enhanced", "Intensive Care Advanced", "Intensive Care Advanced Enhanced", "Intensive Care ECMO/ECLS"],
                         "xType": "t",
                         "yType": "o",  
                         "xspan": "year",    
@@ -128,17 +131,17 @@ $Q.Picanet = {
                         "granP": ["unit"], 
                         "ehr": "Admissions",                        
                         "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
-                        "quantities": [ {"q":"Enhanced Care", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"High Dependency", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                        "quantities": [ {"q":"XB09Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"XB07Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["High Dependency", "High Dependency Advanced"]}   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": ["XB09Z", "XB07Z"]}   // the first element holds the master view's granT                                             
           
                      },
                       {
                       "metric": "Data Quality",
                       "mark": "bar", // should remove this 
-                        "x": "addate",
+                        "x": "AdDate",
                         "y": ["der_missing", "der_invalid"], 
                         "yfilters": {"der_missing" : "*", 
                                     "der_invalid": "*"}, 
@@ -155,9 +158,9 @@ $Q.Picanet = {
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["missing1","missing2", "missing3", "missing4"],      
                         "quantities": [
-                                        {"q":"unitdisstatus",  "granP":["unit"], "yaggregates": "sum", 
-                                         "filters": {"where": { "unitdisstatus":"2" } } },
-                                        {"q":"eventidscr",  "granP":["unit"], "yaggregates": "count" }
+                                        {"q":"UnitDisStatus",  "granP":["unit"], "yaggregates": "sum", 
+                                         "filters": {"where": { "UnitDisStatus":"2" } } },
+                                        {"q":"EventID",  "granP":["unit"], "yaggregates": "count" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["der_missing"]}   // the first element holds the master view's granT                                             
           
