@@ -15,7 +15,7 @@
  
  # read raw admission data from its current location
  admission <- read_csv(source)
- admission <- subset(admission, siteidscr == unitID)
+ admission <- subset(admission, PicuOrg == unitID)
  # break it into separate files for individual years
  # and store the new files in the picanet folder under documnt root 
  #for(year in unique(admission$adyear)){
@@ -24,8 +24,12 @@
   #  write.csv(tmp, fn, row.names = FALSE)
  #}
 
+ admdate <- as.Date(admission$adDate, format=dateFormat)
+ adyear <- year(admdate)
+ admission <- cbind(admission, adyear)
+
 yfn = paste(dest_file_path ,'avail_years.csv', sep='' )
- write.csv(unique(df$adyear), yfn, row.names = FALSE)
+ write.csv(unique(admission$adyear), yfn, row.names = FALSE)
 
 
  # read raw activity data
@@ -33,9 +37,9 @@ yfn = paste(dest_file_path ,'avail_years.csv', sep='' )
   activity <- read_csv(source)
 
   # split activity file by year of admission
-  myvars <- c("adyear", "eventidscr")
+  myvars <- c("adyear", "EventID")
   newdata <- admission[myvars]
-  df <- merge(newdata, activity, by='eventidscr')
+  df <- merge(newdata, activity, by='EventID')
   
  # get the latest year in your data
  #maxyear <- max(admission$adyear, na.rm = TRUE)
@@ -45,21 +49,21 @@ for(year in unique(df$adyear)){
    fn = paste(dest_file_path, gsub(' ','', year), '.csv', sep='' )
    cur_adm <- read.csv(fn)
    # merge the activity file
-   M <- merge(cur_adm, activity, by=c('eventidscr'), all.x=T)
+   M <- merge(cur_adm, activity, by=c('EventID'), all.x=T)
 
    # select only relevant columns for QualDash
-    d = data.frame(M$eventidscr, M$addate, M$hrggroup, M$unplannedextubation, M$invventet, M$invventtt, M$intubation, M$ventilationstatus, M$avsjet, M$avsosc, M$siteidscr)
-    colnames(d) <- c('eventidscr', 'addate', 'hrggroup', 'unplannedextubation', 'invventet', 'invventtt', 'intubation', 'ventiliationstatus', 'avsjet', 'avsosc', 'siteidscr')
+    d = data.frame(M$EventID, M$adDate, M$PccHrg, M$UnplannedExtubation, M$InvVent, M$Intubation, M$ventilationstatus, M$PicuOrg)
+    colnames(d) <- c('EventID', 'adDate', 'hrggroup', 'UnplannedExtubation', 'InvVent', 'Intubation', 'VentiliationStatus', 'PicuOrg')
 
     for(level in unique(d$hrggroup)){
       admission[, toString(level) ] <- 0
     }
 
     for(row in 1:nrow(d)){
-       id <- d$eventidscr[row] 
+       id <- d$EventID[row] 
        level <- d$hrggroup[row]
        lev <- toString(level[1])
-       admission[which(admission$eventidscr == id), lev] <- 1 + admission[which(admission$eventidscr == id), lev]
+       admission[which(admission$EventID == id), lev] <- 1 + admission[which(admission$EventID == id), lev]
        
        }
      tmp = subset(admission, adyear == year)     
