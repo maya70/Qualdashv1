@@ -607,10 +607,10 @@
      						 		.attr("dy", ".35em")
 								      .style("text-anchor", "start")							      
 								      .text(function(d) {  
-								       var numRecs = self.parent.parent.control.getDataLength();
+								       var numRecs = self.parent.parent.control.getDataLength(viewId);
 								       var totalMissing; 
 								       //levels.forEach(function(level){
-								       	totalMissing = self.parent.parent.control.getMissing(self.parent.metric); 	       	
+								       	totalMissing = self.parent.parent.control.getMissing(self.parent.metric, viewId); 	       	
 								       //totalMissing = 0; 
 								       //});  
 
@@ -662,7 +662,7 @@
 
 
 							    if(numValues > 2){
-							    	margin.top = 20 * Math.ceil(numValues/2);
+							    	margin.top = 20 * (Math.ceil(numValues/2)+1);
 							    	height = svgh - margin.top - margin.bottom;
 							     }	
 							     // y-axis labels
@@ -1009,7 +1009,7 @@
 						      		var key = Object.keys(dictEntry)[cat];
 							      	//for(var key in dict[i+1]){
 							      	//	if(dict[i+1][key]['value'] === (d[1] - d[0]))
-							      	self.parent.highlightSubs(key, dict[i+1][key]['data'], (i+1));
+							      	self.parent.highlightSubs(key, dictEntry[key]['data'], thisEntry);
 							      			//console.log(dict[i+1][key]['data']); 
 							      	//}
 
@@ -1045,7 +1045,7 @@
 							      	
 								      	//for(var key in dict[i+1]){								      		
 								      	//	if(dict[i+1][key]['value'] === (d[1] - d[0])){
-								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 1); 
+								      				self.parent.updateSelection(key, dictEntry[key]['data'], 1); 
 								      				if(!self.nsel[key])
 										        		self.nsel[key] = 0; 
 										        	self.nsel[key] +=  dictEntry[key]['value'];  //d[1] - d[0]; 							
@@ -1075,7 +1075,7 @@
 											'params': {'metric': self.parent.metric, 'variable': key}
 										});
 								
-							      			self.parent.highlightSubs(key, dict[i+1][key]['data'], (i+1), 1);
+							      			self.parent.highlightSubs(key, dictEntry[key]['data'], thisEntry, 1);
 							      			//console.log(dict[i+1][key]['data']); 
 							      	//}
 
@@ -1093,7 +1093,7 @@
 							      	
 								     	//for(var key in dict[i+1]){
 								      	//	if(dict[i+1][key]['value'] === (d[1] - d[0])){
-								      				self.parent.updateSelection(key, dict[i+1][key]['data'], 0, 0, 1); 
+								      				self.parent.updateSelection(key, dictEntry[key]['data'], 0, 0, 1); 
 								      				self.nsel[key] -= d[1] - d[0];
 								      	//		} 
 								      	//}

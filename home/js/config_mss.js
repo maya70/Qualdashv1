@@ -48,14 +48,15 @@ $Q.Picanet = {
                         "chart": "grouped", 
                         "colorScale": "categorical",
                         "x": "AdDate",
-                        "y": ["EventID", "UnitDisStatus", "der_smr"], 
-                        "legend": ["Admissions", "Deaths in unit"],
-                        "yaggregates": ["count", "count", "runningAvg"], 
-                        "yfilters": {"EventID": {"where": "*"},      
-                                     "UnitDisStatus":{"where":{ "UnitDisStatus": "2" }, "valid":["1", "9"]}
+                        "y": ["EventID", "UnitDisStatus"], 
+                        "legend": ["Alive Admissions", "Deaths in unit"],
+                        "yaggregates": ["count", "count"], 
+                        "yfilters": {"EventID": {"where":{ "UnitDisStatus": "1" }, "valid":["1", "2"]},      
+                                     "UnitDisStatus":{"where":{ "UnitDisStatus": "2" }, "valid":["1", "2"]}
+                                     
                                      },                                                
                         "xType": "t",
-                        "yType": ["q", "q", "q"],  
+                        "yType": ["q", "q"],  
                         "xspan": "year",    
                         "yspan": "unit",  
                         "ylabel": "Num. Records",                        
@@ -65,7 +66,7 @@ $Q.Picanet = {
               
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["PrimReason","AdType", "Ethnic"],      
-                        "quantities": [{"q":"pim3_s","granT": "AdDate", "granP":["unit"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                                                                   
+                        "quantities": [{"q":"PIM3","granT": "AdDate", "granP":["unit"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["EventID", "UnitDisStatus"] }   // the first element holds the master view's granT                                             
           
                      },
@@ -75,7 +76,7 @@ $Q.Picanet = {
                         "y": ["UnitDisStatus", "der_readmit"],
                         "categories": ["SourceAd", "CareAreaAd", "UnitDisDest"], 
                         "quantities": [{"q":"der_readmit", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
-                                      {"q":"der_unplannedAdm", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],
+                                      {"q":"AdType", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum", "filters": {"where": { "AdType": ["2", "4"] } } }],
                         "xType": "t",
                         "yType": ["q", "q"],
                         "legend": ["Discharged", "Readmitted"],
@@ -88,15 +89,15 @@ $Q.Picanet = {
                         "yaggregates": ["count", "count"],
                         "ehr": "Admissions",
                         "granP": ["unit", "unit"], 
-                        "granT": {"monthly-annual": ["der_readmit"]}
+                        "granT": {"monthly-annual": ["UnitDisStatus", "der_readmit"]}
                         
                      },
                       {  "metric": "Bed Days and Extubation",
                         "mark": "bar",
                         "x": "AdDate",
-                        "y":["der_bedDays", "der_invVentDays"],
-                        "yfilters": {"der_bedDays" : "*", 
-                                    "der_invVentDays": "*"}, 
+                        "y":["der_bedDays", "InvVentDay"],
+                        "yfilters": {"der_bedDays" : {"where":"*"}, 
+                                    "InvVentDay": {"where":"*"}}, 
                         "xType": "t",
                         "yType": ["q", "q"], 
                         "xspan": "year",    
@@ -106,10 +107,10 @@ $Q.Picanet = {
                         "yaggregates": ["sum", "sum", "sum"],
                         "ehr": "Admissions", 
                         "granP": ["unit", "unit", "unit"], 
-                        "categories": ["unplannedextubation"], 
+                        "categories": ["InvVent"], 
                         "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
                                         {"q":"der_bedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
-                        "granT": {"monthly-annual": ["der_bedDays"]}, 
+                        "granT": {"monthly-annual": ["der_bedDays", "InvVentDay"]}, 
                         "combinations": ["adtype&der_readmit"]
                      }, 
                       {  "metric": "dependency",                        
@@ -130,7 +131,7 @@ $Q.Picanet = {
                         "tspan": 3,                           
                         "granP": ["unit"], 
                         "ehr": "Admissions",                        
-                        "categories": ["primarydiagnosisgroup","adtype", "sex", "ethnic"],      
+                        "categories": ["PrimReason","AdType", "Sex", "Ethnic"],      
                         "quantities": [ {"q":"XB09Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"XB07Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
@@ -200,7 +201,7 @@ $Q.Minap = {
                       "der_ctbTargetMet": "Met target",
                       "der_ctb": "Avgerage CTB",
                       "der_bedDays": "Bed Days", 
-                      "der_dtb": "Door-to-Balloon"
+                      "dtb": "Door-to-Balloon"
                       }, 
     "displayVariables": [
                          {  
@@ -210,10 +211,10 @@ $Q.Minap = {
                         "x": "3.06 ArrivalAtHospital",
                         "y": ["1.02 HospitalNumber", "4.04 DeathInHospital"], 
                         "yaggregates": ["count", "sum"], 
-                        "yfilters": {"1.02 HospitalNumber": {"where": {"4.04 DeathInHospital":"0"},
-                                                                         "valid": ["1"]}, 
-                                     "4.04 DeathInHospital": {"where": {"4.04 DeathInHospital": "1"}, 
-                                                                "valid": ["0"]}
+                        "yfilters": {"1.02 HospitalNumber": {"where": {"4.04 DeathInHospital":"0. No"},
+                                                                         "valid": ["1. From MI", "3. Other non cardiac related cause", "4. Other cardiac cause"]}, 
+                                     "4.04 DeathInHospital": {"where": {"4.04 DeathInHospital": ["1. From MI", "3. Other non cardiac related cause", "4. Other cardiac cause"]}, 
+                                                                "valid": ["0. No"]}
                                       },
                         "xType": "t",
                         "yType": ["q", "q"],  
@@ -240,13 +241,78 @@ $Q.Minap = {
                         "x": "3.06 ArrivalAtHospital",
                         "y": [ "1.02 HospitalNumber", "2.01 AdmissionDiagnosis"], 
                         "yaggregates": ["count", "count"], 
-                        "yfilters": {"1.02 HospitalNumber": {"where": {"2.01 AdmissionDiagnosis": "1", 
-                                                                                  "3.10 JustifiedDelay": "0" },
-                                                                          "operator": "AND"
+                        "yfilters": {"1.02 HospitalNumber": {"where": {"2.01 AdmissionDiagnosis": "1. Definite myocardial infarction", 
+                                                                        "3.10 JustifiedDelay": "0. No" },
+                                                                          "operator": "AND", 
+                                                                          "valid": [ // for first criterion
+                                                                                    "1. Definite myocardial infarction", 
+                                                                                    "3. Acute Coronary Syndrome",
+                                                                                    "4. Chest pain ? cause",
+                                                                                    "5. Other initial diagnosis",
+                                                                                    // for second criterion
+                                                                                    "0. No", 
+                                                                                    "1. Definite myocardial infarction", 
+                                                                                    "2. Clinical concern about recent cerebrovascular event or surgery", 
+                                                                                    "3. Delay obtaining consent",
+                                                                                    "4. Initial ECG ineligible",
+                                                                                    "5. Cardiac arrest",
+                                                                                    "6. Obtaining consent for therapeutic trial",
+                                                                                    "7. Hospital administrative failure",
+                                                                                    "8. Ambulance procedural delay",
+                                                                                    "9. Other",
+                                                                                    "10. Ambulance 12 lead ECG not diagnostic of STEMI",
+                                                                                    "11. Consideration of primary PCI",
+                                                                                    "12. Ambulance administrative delay",
+                                                                                    "13. Cath lab access delayed", 
+                                                                                    "14. Delay in activating cath lab team",
+                                                                                    "15. Pre-PCI complication",
+                                                                                    "16. Equipment failure",
+                                                                                    "17. Convalescent STEMI"  ]
                                                                                   },
-                                     "2.01 AdmissionDiagnosis": {"where": { "2.01 AdmissionDiagnosis":  "1",
-                                                                          "3.10 JustifiedDelay": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17"]}, 
-                                                                "operator": "AND"        }
+                                     "2.01 AdmissionDiagnosis": {"where": { "2.01 AdmissionDiagnosis":  "1. Definite myocardial infarction",
+                                                                          "3.10 JustifiedDelay": [ 
+                                                                                    "1. Definite myocardial infarction", 
+                                                                                    "2. Clinical concern about recent cerebrovascular event or surgery", 
+                                                                                    "3. Delay obtaining consent",
+                                                                                    "4. Initial ECG ineligible",
+                                                                                    "5. Cardiac arrest",
+                                                                                    "6. Obtaining consent for therapeutic trial",
+                                                                                    "7. Hospital administrative failure",
+                                                                                    "8. Ambulance procedural delay",
+                                                                                    "9. Other",
+                                                                                    "10. Ambulance 12 lead ECG not diagnostic of STEMI",
+                                                                                    "11. Consideration of primary PCI",
+                                                                                    "12. Ambulance administrative delay",
+                                                                                    "13. Cath lab access delayed", 
+                                                                                    "14. Delay in activating cath lab team",
+                                                                                    "15. Pre-PCI complication",
+                                                                                    "16. Equipment failure",
+                                                                                    "17. Convalescent STEMI"  ]}, 
+                                                                "operator": "AND",  "valid": [// for first criterion
+                                                                                    "1. Definite myocardial infarction", 
+                                                                                    "3. Acute Coronary Syndrome",
+                                                                                    "4. Chest pain ? cause",
+                                                                                    "5. Other initial diagnosis",
+                                                                                    // for second criterion
+                                                                                    "0. No", 
+                                                                                    "1. Definite myocardial infarction", 
+                                                                                    "2. Clinical concern about recent cerebrovascular event or surgery", 
+                                                                                    "3. Delay obtaining consent",
+                                                                                    "4. Initial ECG ineligible",
+                                                                                    "5. Cardiac arrest",
+                                                                                    "6. Obtaining consent for therapeutic trial",
+                                                                                    "7. Hospital administrative failure",
+                                                                                    "8. Ambulance procedural delay",
+                                                                                    "9. Other",
+                                                                                    "10. Ambulance 12 lead ECG not diagnostic of STEMI",
+                                                                                    "11. Consideration of primary PCI",
+                                                                                    "12. Ambulance administrative delay",
+                                                                                    "13. Cath lab access delayed", 
+                                                                                    "14. Delay in activating cath lab team",
+                                                                                    "15. Pre-PCI complication",
+                                                                                    "16. Equipment failure",
+                                                                                    "17. Convalescent STEMI"  ]
+                                                                                }
                                       },
                         "xType": "t",
                         "yType": ["q", "q"],  
@@ -258,11 +324,9 @@ $Q.Minap = {
                         "ehr": "Admissions",
                         "legend": ["Meeting Target", "Not meeting target"],
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.39 AdmissionMethod"],      
+                        "categories": ["3.10 JustifiedDelay", "2.39 AdmissionMethod"],      
                         "quantities": [
-                                       // {"q":"2.01 AdmissionDiagnosis","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        //{"q":"der_ctbTargetMet", "granT": "admonth", "granP":["unit"], "yaggregates": "percent"}, 
-                                         {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ],                                                               
                         "granT": {"monthly-annual": [ "1.02 HospitalNumber", "2.01 AdmissionDiagnosis"] }             
           
@@ -271,26 +335,54 @@ $Q.Minap = {
                         "metric": "Door-to-Angio (NSTEMI Only)",
                         "mark": "bar", // should remove this 
                         "x": "3.06 ArrivalAtHospital",
-                        "y": [ "der_angioTarget", "der_angioNoTarget"], 
-                        "yaggregates": [ "count", "count"], 
-                        "legend": ["Meeting Target", "Not meeting target"],
+                        "y": [ "dtaTarget", "dtaNoTarget", "missing"], 
+                        "yaggregates": [ "count", "count", "count"], 
+                        "legend": ["Meeting Target", "Not meeting target", "NA"],
                         "xType": "t",
-                        "yType": [ "q", "q"],
-                        "yfilters": {"der_angioTarget": {"where": "*"}, 
-                                     "der_angioNoTarget": {"where": "*"}
+                        "yType": [ "q", "q", "q"],
+                        "yfilters": {"dtaTarget": {"where": {"dtaTarget": "1", "2.01 AdmissionDiagnosis":[
+                                                                                    "3. Acute Coronary Syndrome",
+                                                                                    "4. Chest pain ? cause",
+                                                                                    "5. Other initial diagnosis"
+                                                                                    ] }, 
+                                                     "operator": "AND"
+                                                     /*"valid": ["0", "1", "1. Definite myocardial infarction", 
+                                                                                    "3. Acute Coronary Syndrome",
+                                                                                    "4. Chest pain ? cause",
+                                                                                    "5. Other initial diagnosis"
+                                                                                    ]*/
+                                                      }, 
+                                     "dtaNoTarget": {"where": {"dtaTarget": "0", "2.01 AdmissionDiagnosis":[
+                                                                                    "3. Acute Coronary Syndrome",
+                                                                                    "4. Chest pain ? cause",
+                                                                                    "5. Other initial diagnosis"
+                                                                                    ] }, 
+                                                        "operator": "AND"
+                                                        /*"valid": ["0", "1", "1. Definite myocardial infarction", 
+                                                                                    "3. Acute Coronary Syndrome",
+                                                                                    "4. Chest pain ? cause",
+                                                                                    "5. Other initial diagnosis"
+                                                                                    ]*/
+                                                                                },
+                                      "missing": {"where": {"dtaTarget": "NA", "2.01 AdmissionDiagnosis":[
+                                                                                    "3. Acute Coronary Syndrome",
+                                                                                    "4. Chest pain ? cause",
+                                                                                    "5. Other initial diagnosis"
+                                                                                    ]}, "operator": "AND"}
+
                                       },
                         "xspan": "year",    
                         "yspan": "unit",  
                         "ylabel": "NSTEMI Admissions",                        
                         "tspan": 3,                           
-                        "granP": [ "unit", "unit"], 
+                        "granP": [ "unit", "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["2.39 AdmissionMethod", "1.07 Gender", "3.10 JustifiedDelay"],      
                         "quantities": [
-                                         {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"dta", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": [ "der_angioTarget", "der_angioNoTarget"] }   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": [ "dtaTarget", "dtaNoTarget"] }   // the first element holds the master view's granT                                             
           
                          },
                          {  
@@ -303,23 +395,23 @@ $Q.Minap = {
                         "xType": "t",
                         "yType": [ "q", "q"],
                         "yfilters": {"1": {"where": {
-                                            //"4.27 DischargedOnThieno": "1" ,
-                                            //"4.31 Discharged on TIcagrelor (v10.3 Dataset)": "1" ,
                                             "P2Y12": "1", 
-                                            "4.05 Betablocker": "1" , 
-                                            "4.06 ACEInhibitor": "1" ,
-                                            "4.07 Statin": "1" ,
-                                            "4.08 AspirinSecondary": "1"      
-                            }, "valid": ["0", "1", "2", "3", "4", "8", "9"], "operator": "AND"}, 
+                                            "4.05 Betablocker": "1. Yes" , 
+                                            "4.06 ACEInhibitor": "1. Yes" ,
+                                            "4.07 Statin": "1. Yes" ,
+                                            "4.08 AspirinSecondary": "1. Yes"      
+                            }, 
+                            "valid": ["0", "1", "0. No", "1. Yes" , "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"], 
+                            "operator": "AND"}, 
                            "2": {"where": {
                                             //"4.27 DischargedOnThieno": ["0", "2", "3", "4", "8", "9"] ,
                                             //"4.31 Discharged on TIcagrelor (v10.3 Dataset)": ["0", "2", "3", "4", "8", "9"] ,
                                             "P2Y12": "0", 
-                                            "4.05 Betablocker": ["0", "2", "3", "4", "8", "9"] , 
-                                            "4.06 ACEInhibitor": ["0", "2", "3", "4", "8", "9"] ,
-                                            "4.07 Statin": ["0", "2", "3", "4", "8", "9"] ,
-                                            "4.08 AspirinSecondary": ["0", "2", "3", "4", "8", "9"]     },
-                                          "valid": ["0","1", "2", "3", "4", "8", "9"], "operator":"OR"}   
+                                            "4.05 Betablocker": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] , 
+                                            "4.06 ACEInhibitor": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
+                                            "4.07 Statin": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
+                                            "4.08 AspirinSecondary": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"]     },
+                                          "valid": ["0. No", "1. Yes" ,"4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"], "operator":"OR"}   
                         }, 
                         "xspan": "year",    
                         "yspan": "unit",  
@@ -334,7 +426,7 @@ $Q.Minap = {
                                         //{"q":"4.27 DischargedOnThieno","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"4.31 Discharged on TIcagrelor (v10.3 Dataset)", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
                                         // {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
-                                         {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": [ "1", "2" ] }   // the first element holds the master view's granT                                             
           
@@ -348,11 +440,11 @@ $Q.Minap = {
                         "yaggregates": [ "count", "count", "count", "count", "count"], 
                         "xType": "t",
                         "yType": "n",
-                        "yfilters": {"0": {"where": {"4.09 CardiacRehabilitation": "0"}, "valid": ["1", "3", "8", "9"] },
-                                      "1": {"where": {"4.09 CardiacRehabilitation": "1"}, "valid": ["0", "3", "8", "9"] },
-                                      "3": {"where": {"4.09 CardiacRehabilitation": "3"}, "valid": ["1", "0", "8", "9"] },
-                                      "8": {"where": {"4.09 CardiacRehabilitation": "3"}, "valid": ["1", "0", "8", "9"] },
-                                      "9": {"where": {"4.09 CardiacRehabilitation": "3"}, "valid": ["1", "0", "8", "9"] }
+                        "yfilters": {"0": {"where": {"4.09 CardiacRehabilitation": "0. No"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
+                                      "1": {"where": {"4.09 CardiacRehabilitation": "1. Yes"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
+                                      "3": {"where": {"4.09 CardiacRehabilitation": "3. Patient declined"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
+                                      "8": {"where": {"4.09 CardiacRehabilitation": "8. Not indicated"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
+                                      "9": {"where": {"4.09 CardiacRehabilitation": "9"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] }
                                       },
                         "legend": ["No", "Yes", "Patient declined", "Not indicated", "Unknown"],
                         "xspan": "year",    
@@ -367,7 +459,7 @@ $Q.Minap = {
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
                                          {"q":"der_angioTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "sum"}, 
-                                         {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": [ "0", "1", "3", "8", "9"] }   // the first element holds the master view's granT                                             
           
@@ -381,11 +473,26 @@ $Q.Minap = {
                         "yaggregates": [ "count", "count", "count", "count", "count"], 
                         "xType": "t",
                         "yType": "n",
-                        "yfilters": {"1": {"where": {"2.04 Aspirin": "1",}, "valid": ["1","2" ,"3", "4", "8"] },
-                                      "2": {"where": {"2.04 Aspirin": "2"}, "valid": [ "1","2", "3" ,"4" ,"8"] },
-                                      "3": {"where": {"2.04 Aspirin": "3"}, "valid": [ "1","2", "3" ,"4" ,"8"] },
-                                      "4": {"where": {"2.04 Aspirin": "4"}, "valid": [ "1","2", "3" ,"4" ,"8"] },
-                                      "8": {"where": {"2.04 Aspirin": "8"}, "valid": [ "1","2", "3" ,"4" ,"8"] },
+                        "yfilters": {"1": {"where": {"2.04 Aspirin": "1. Already on aspirin/antiplatelet drug"}, "valid": ["1. Already on aspirin/antiplatelet drug",                    
+                                                                                       "2. Aspirin/antiplatelet drug given out of hospital",          
+                                                                                       "3. Aspirin/antiplatelet drug given after arrival in hospital",
+                                                                                       "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
+                                      "2": {"where": {"2.04 Aspirin": "2. Aspirin/antiplatelet drug given out of hospital"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
+                                                                                       "2. Aspirin/antiplatelet drug given out of hospital",          
+                                                                                       "3. Aspirin/antiplatelet drug given after arrival in hospital",
+                                                                                       "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
+                                      "3": {"where": {"2.04 Aspirin": "3. Aspirin/antiplatelet drug given after arrival in hospital"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
+                                                                                       "2. Aspirin/antiplatelet drug given out of hospital",          
+                                                                                       "3. Aspirin/antiplatelet drug given after arrival in hospital",
+                                                                                       "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
+                                      "4": {"where": {"2.04 Aspirin": "4. Aspirin/antiplatelet contraindicated"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
+                                                                                       "2. Aspirin/antiplatelet drug given out of hospital",          
+                                                                                       "3. Aspirin/antiplatelet drug given after arrival in hospital",
+                                                                                       "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
+                                      "8": {"where": {"2.04 Aspirin": "8. Not given"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
+                                                                                       "2. Aspirin/antiplatelet drug given out of hospital",          
+                                                                                       "3. Aspirin/antiplatelet drug given after arrival in hospital",
+                                                                                       "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
 
                                       },
                         "legend": ["Already on drug", 
@@ -406,7 +513,7 @@ $Q.Minap = {
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
                                          {"q":"der_angioTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "sum"}, 
-                                         {"q":"der_dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": [ "1", "2", "3", "4", "8"] }   // the first element holds the master view's granT                                             
           

@@ -203,15 +203,15 @@
 							console.log(value); 
 							self.dataModel.updateMetrics(viewId, value); 
 						},
-						getMissing: function(metric, varname){
-							return this.dataModel.getMissing(metric, varname); 
+						getMissing: function(metric, viewId){
+							return this.dataModel.getMissing(metric, viewId); 
 						},
 						getAllMissing: function(){
 							return this.dataModel.getAllMissing(); 
 						},
-						getDataLength: function(){
+						getDataLength: function(viewId){
 							var self = this; 
-							return self.dataModel.getDataLength(); 
+							return self.dataModel.getDataLength(viewId); 
 						},
 						getRecordById: function(recId){
 							return this.dataModel.getRecordById(recId); 

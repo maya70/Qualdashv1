@@ -6,7 +6,7 @@
  source_file_path <- "C:/Users/scsmel/Dropbox/Leeds/Qualdash related/Data/"
  dest_file_path <- "C:/Bitnami/wampstack-7.1.13-1/apache2/htdocs/Qualdashv1/home/data/minap_admission/"
  #dateFormat <- "%d-%m-%y %H:%M"
- dateFormat <- "%d/%m/%Y %H:%M"
+ dateFormat <- "%Y-%m-%d %H:%M:%S"
  audit_filename <- "minap_dummy.csv"
  
  source = paste(source_file_path, audit_filename, sep='')
@@ -18,7 +18,8 @@
  madmission <- cbind(madmission, adyear)
 
 # Select all columns with Date data type
-allDates <- lapply(madmission, function(x) !all(is.na(as.Date(as.character(x),format=dateFormat))))
+
+allDates <- lapply(madmission, function(x) !all(is.na(as.Date(as.character(x), format =dateFormat))))
 df <- as.data.frame(allDates)
 colnames(df) <- colnames(madmission)
 dateFields <- df[which(df==TRUE)]
@@ -33,10 +34,38 @@ for(col in colnames(madmission)){
     }
 }
 
+
+# Add other formats 
+dateFormat <- "%d/%m/%Y"
+otherDates <- lapply(madmission, function(x) !all(is.na(as.Date(as.character(x), format = dateFormat))))
+df2 <- as.data.frame(otherDates)
+colnames(df2) <- colnames(madmission)
+dateFields2 <- df2[which(df2==TRUE)]
+
+# Unify date formats to ISO format 
+for(col in colnames(madmission)){
+    if(col %in% colnames(dateFields2)){
+    	vector <- madmission[col]
+    	temp <- lapply(vector, function(x) as.POSIXlt(x, format=dateFormat))
+    	madmission[col] <- temp
+
+    }
+}
+
+
 # Derived columns
-v427 <- madmission$`4.27 DischargedOnThieno` == 1
-v431 <- madmission$`4.31 DischargedOnTicagrelor` == 1
+v427 <- madmission$`4.27 DischargedOnThieno` == '1. Yes'
+v431 <- madmission$`4.31 DischargedOnTicagrelor` == '1. Yes'
 madmission$P2Y12 <- as.numeric(v431 | v427)
+
+dtb <- madmission$`3.09 ReperfusionTreatment` - madmission$`3.06 ArrivalAtHospital`
+madmission$dtb <- as.numeric(dtb)
+
+dta <- madmission$`4.18 LocalAngioDate` - madmission$`3.06 ArrivalAtHospital`
+madmission$dta <- as.numeric(dta)
+dtaH <- as.numeric(dta) / 60
+madmission$dtaTarget <- as.numeric(dtaH < 72.0)
+madmission$dtaNoTarget <- as.numeric(dtaH > 72.0)
 
 
 

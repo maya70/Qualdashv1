@@ -466,6 +466,10 @@
                         },
                         recordMissing: function(metric, vname, i){
                             var self = this;
+                            var undef;
+                            if(metric === undef)
+                                console.log(undef); 
+
                             var availMetrics = self.audit==='picanet'? $Q.Picanet["availMetrics"] : $Q.Minap["availMetrics"];
                             var metricKey;
                             availMetrics.forEach(function(entry){
@@ -487,9 +491,9 @@
 
                            
                             if(vname === "smr" && self.audit === "picanet"){
-                                if(isNaN(rec["pim3_s"]))
+                                if(isNaN(rec["PIM3"]))
                                     self.recordMissing(metric, "der_"+vname, i);
-                                return rec["pim3_s"]; 
+                                return rec["PIM3"]; 
                             }
                             else if(vname === "discharge"){
                                 if((rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "1" && self.audit === "picanet") || 
@@ -506,20 +510,31 @@
                                     return 0; 
                                 }
                             else if(vname === "bedDays"){
+                                if(i===56){
+                                    var t = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement);
+                                    
+                                    t = self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]], timeElement);
+                                    //console.log(t);
+                                }
+                                 var t = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement);
+                                   // console.log(t);
+
                                 if(!self.excessDays)  // record bed days for additional months if the 
                                         self.excessDays = {};  // admission and discharge are not in the same month
                                 var timeElement = self.audit === "picanet"? 0 : 1; 
                                 var one_day = 1000*60*60*24;  
-                                var d1 = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement).getTime(),
+                                var d1 = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement).getDate(),
                                     m1 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]);
-                                var d2 = self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]], timeElement).getTime(),
+                                var d2 = self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]], timeElement).getDate(),
                                     m2 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
 
                                 if(isNaN(d1) || isNaN(d2))
                                     self.recordMissing(metric, "der_"+vname, i);   
 
-                                var dayCount = Math.ceil(Math.abs(d1 - d2)/one_day*10)/10;   
-
+                                //var dayCount = Math.ceil(Math.abs(d1 - d2)/one_day*10)/10;  
+                                var dayCount = Math.ceil(Math.abs(d1 - d2));  
+                                if(dayCount < 1) dayCount = 1;  
+                                
                                 if(m1 !== m2){
                                     // toss days to the following months (after admission month)
                                     for(var m= m2+1; m <= m1; m++){ 
@@ -530,13 +545,16 @@
                                             var lastDayPrevMon = new Date(self.year, (m-1), 0);
                                             var disDate = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement); 
                                             var ss = disDate - lastDayPrevMon; 
-                                            span = Math.ceil(Math.abs(d1 - lastDayPrevMon.getTime())/one_day);     
+                                            //span = Math.ceil(Math.abs(d1 - lastDayPrevMon.getTime())/one_day);     
+                                            var firstDay = new Date(self.year, (m-1), 1);
+                                            span = Math.ceil(Math.abs(d1 - firstDay.getDate() + 1));
                                         }
                                         else{
                                             // patient was in hospital throughout this whole month
-                                         var firstDay = new Date(self.year, m, 0); //self.stringToDate("1/"+m+"/"+self.year).getTime();
-                                         var lastDay = new Date(self.year, (m+1), 0); //self.stringToDate("1/"+(m+1)+"/"+self.year).getTime();
-                                         span = Math.round(Math.abs(lastDay.getTime() - firstDay.getTime())/one_day);
+                                         var firstDay = new Date(self.year, (m-1), 1); //self.stringToDate("1/"+m+"/"+self.year).getTime();
+                                         var lastDay = new Date(self.year, (m), 0); //self.stringToDate("1/"+(m+1)+"/"+self.year).getTime();
+                                         //span = Math.round(Math.abs(lastDay.getTime() - firstDay.getTime())/one_day);
+                                         span = Math.round(Math.abs(lastDay.getDate() - firstDay.getDate()));
                                         }
                                         //if(rec[$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                         if(true)
@@ -551,7 +569,8 @@
                                     }                                    
                                     // record bed days from admission day to the end of admission month only
                                     var dd = new Date(self.year, m2, 0);
-                                    dayCount = Math.ceil(Math.abs(dd.getTime() - d2)/one_day);
+                                    //dayCount = Math.ceil(Math.abs(dd.getTime() - d2)/one_day);
+                                    dayCount = Math.ceil(Math.abs(dd.getDate() - d2));
                                 }
                                 
                                 return dayCount;
@@ -659,7 +678,12 @@
                         */
                         stringToDate: function(str, timeElement){
                             var self = this;
+                            var undef;
                             var time, timeParts, hour, minute, second;
+                            if(str.length > 11)
+                                timeElement = 1;
+                            else 
+                                timeElement = undef; 
                             
                             var strings = str.split(" ");
                             var date = strings[0];
@@ -680,7 +704,7 @@
                             if(timeElement)
                                 return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z"); 
                             else
-                                return new Date(parseInt(year), (parseInt(month)), parseInt(day), 0); 
+                                return new Date(parseInt(year), (parseInt(month)-1), parseInt(day), 0); 
 
                         },
                         getTimeHier:function(viewId){
@@ -848,7 +872,7 @@
                             if(displayObj['filters'])   // only applies to subviews
                                yfilters =  displayObj['filters'];
                             var yaggregates = (displayObj["yaggregates"].constructor === Array)? displayObj["yaggregates"][sid] : displayObj["yaggregates"] ;
-                            var metric = displayObj["metric"];
+                            var metric = displayObj["metric"] || auditVars['metric'];
 
                             if(yvar.indexOf("_") >= 0 ){
                                 var strs = yvar.split("_");
@@ -874,7 +898,7 @@
                                         var value = criterion[ckey];
                                         if(rec[ckey] === value){
                                             vval = 1; //(yaggregates === "count")? 1 : value; 
-                                            //return vval;
+                                            //return vval;                                            
                                         }
                                         else if( value.constructor === Array){
                                             if(value.indexOf(rec[ckey]) >=0)
@@ -974,9 +998,16 @@
                             return vval; 
 
                         },
-                        getDataLength: function(){
+                        getDataLength: function(viewId){
                             var self = this;
-                            return self.ownrecords; 
+                            //return self.ownrecords; 
+                            var totalRecs = 0; 
+                            for(var key in self.dicts[viewId]){
+                                for(var kk in self.dicts[viewId][key]){
+                                    totalRecs += self.dicts[viewId][key][kk]['value'];
+                                }
+                            }
+                            return totalRecs; 
                         },
                         getQuality: function(varname){
                             var self = this;
@@ -999,10 +1030,19 @@
                                 return 100; 
                         
                         },
-                        getMissing: function(metric, varname){
+                        getMissing: function(metric, viewId){
                             var self = this; 
                             
-                            if(self.missing[metric]){
+                            if(self.dicts[viewId][Object.keys(self.dicts[viewId])[0]]['missing']){
+                                var totalMissing = 0; 
+                                for (var key in self.dicts[viewId]){
+                                    totalMissing += self.dicts[viewId][key]['missing']['value'];
+                                }
+                                return totalMissing; 
+                            }
+                            
+                       
+                           else if(self.missing[metric]){
                                 var totalMissing = 0; 
                                 for(var key in self.missing[metric]){
                                     totalMissing += self.missing[metric][key].length; 
@@ -1016,13 +1056,14 @@
                         getAllMissing: function(){
                             var self = this;
                             var uniqMissing = {};
+                            /*
                             for(var metric in self.missing ){
                                 for(var key in self.missing[metric]){
                                     if(!uniqMissing[key]){
-                                        uniqMissing[key] = self.missing[metric][key];
+                                        uniqMissing[key] = {'value': self.missing[metric][key].length , 'data': self.missing[metric][key]}; 
                                     }
                                 }
-                            }
+                            }*/
                             for(var i = 0; i < self.data.length; i++){
                                 for(var key in self.data[i]){
                                     if(self.data[i][key] === "" || self.data[i][key] === "NA" ){
@@ -1321,8 +1362,6 @@
                             var self = this;
                             var found = 0; 
                             self.dicts[viewId] = dict;
-                            if(viewId === 3)
-                                console.log("HERE"); 
 
                             var displayVar = Object.keys(dict[Object.keys(dict)[0]]);
                             displayVar.forEach(function(yvar){
@@ -1374,7 +1413,10 @@
                             // one big for loop fits all
                             var ownrecords = 0;  // keep a count of this unit's records
                             //var observedDeathsNational = {}; 
-                           
+                            
+                            if(displayId === 1)
+                                console.log(dict);
+
                             for(var i=0; i < self.data.length; i++){
                                 /**
                                  * handle multiple quantitative variables
@@ -1383,7 +1425,9 @@
                                var mon = self.stringToMonth(self.data[i][dateVar]);
                                var vval; 
 
-                                
+                                if(displayId === 1 && mon === 1 && i === 100)
+                                    console.log(dict);
+                            
                                 //if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                 if(true)
                                 {
@@ -1395,14 +1439,6 @@
                                         //var vname;
                                         vval = parseFloat(self.computeVar(i, yvar, displayObj, self.data[i], id, displayId, 1));
                                         self.setDerivedValue(displayId, i, yvar, vval);
-                                        /*if(yvar === "der_death"){
-                                            if(!observedDeathsNational[self.data[i][dateVar]])
-                                                observedDeathsNational[self.data[i][dateVar]] = vval; 
-                                            else
-                                                observedDeathsNational[self.data[i][dateVar]] += vval;                                                 
-                                            }*/
-                                        // select yspan items
-                                        //if(displayObj["yspan"] === "unit" && self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                         if(true)
                                             {
                                             
@@ -1414,9 +1450,10 @@
                                                 dict[mon][yvar]["data"] = [];
                                             if(vval > 0) dict[mon][yvar]["data"].push(i);                                         
                                             self.updateTimeHierarchy(self.year, yvar, displayId, self.data[i], vval); 
-                                            }    
+                                            }
                                         });
 
+                                        
                                 // setup fake categories and levels for main bar chart (or other vis)                                
                                 levels = displayVar; 
 
@@ -1572,8 +1609,9 @@
                                             var adt = a_date.getTime(),
                                                 ddt = d_date.getTime(); 
                                             var diff = Math.round((adt-ddt)/one_hour);
-                                            if(diff >=0 && diff < 48 && (aid !== did)){
-
+                                            
+                                            if(diff >=0 && diff <= 48 && (aid !== did)){
+                                            //if(aid !== did){
                                                 var adrec = patientEHR['data'][aid];
                                                 // find corresponding entry in dict
                                                 // assuming dict is organized by months
@@ -1638,7 +1676,8 @@
                                                 var adt = a_date.getTime(),
                                                     ddt = d_date.getTime(); 
                                                 var diff = Math.round((adt-ddt)/one_hour);
-                                                if(diff >=0 && diff < 48 && (aid !== did)){
+                                                if(diff >=0 && diff <= 48 && (aid !== did)){
+                                                //if(aid !== did){
                                                     var adrec = patientEHR['data'][aid];
                                                     // find corresponding entry in dict
                                                     // assuming dict is organized by months
@@ -1685,13 +1724,21 @@
                             else{
                                 //console.log(result);
                                 
+                                
+                                
                                 for(var key in dict){
+                                    if(result['dict'][key]['der_bedDays'])
+                                    console.log(result);
+
                                    if(result['dict'][key]['der_bedDays'] && self.excessDays[key])
                                     for(var kk in self.excessDays[key])
                                        result['dict'][key]['der_bedDays']['value'] += self.excessDays[key][kk];
                                 }
                                 
                                 for(var key in dict){
+                                    if(result['slaves']['data']['der_bedDays'])
+                                    console.log(result);
+
                                    if(result['slaves']['data']['der_bedDays'] && self.excessDays[key])
                                     for(var kk in self.excessDays[key])
                                        result['slaves']['data']['der_bedDays'][key]['unit'] += self.excessDays[key][kk];
