@@ -676,7 +676,7 @@
                         /** Utility function that converts dates from the MINAP-specified format dd/mm/yyyy hh:mm
                         *   to an ISO-friendly Date() object
                         */
-                        stringToDate: function(str, timeElement){
+                        stringToDate: function(str, timeElement, check){
                             var self = this;
                             var undef;
                             var time, timeParts, hour, minute, second;
@@ -701,6 +701,9 @@
                                 second = timeParts[1];   
                             }
                             
+                            if(check && year !== self.year)
+                                return undef; 
+
                             if(timeElement)
                                 return new Date(year + "-" + month + "-" + day + "T"+ hour + ":"+ minute+":"+ second +"Z"); 
                             else
@@ -868,6 +871,11 @@
                             var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId] ;
                             var dateVar = auditVars['x'];
                             var mon = self.stringToMonth(rec[dateVar]);
+                            var year = self.stringToDate(rec[dateVar], 1, 1);
+
+                            if(!year)
+                                return 0; 
+
                             var yfilters =  auditVars['yfilters'][yvar];
                             if(displayObj['filters'])   // only applies to subviews
                                yfilters =  displayObj['filters'];
@@ -1730,7 +1738,7 @@
                                     if(result['dict'][key]['der_bedDays'])
                                     console.log(result);
 
-                                   if(result['dict'][key]['der_bedDays'] && self.excessDays[key])
+                                   if(result['dict'][key]['der_bedDays'] && self.excessDays && self.excessDays[key])
                                     for(var kk in self.excessDays[key])
                                        result['dict'][key]['der_bedDays']['value'] += self.excessDays[key][kk];
                                 }
@@ -1739,7 +1747,7 @@
                                     if(result['slaves']['data']['der_bedDays'])
                                     console.log(result);
 
-                                   if(result['slaves']['data']['der_bedDays'] && self.excessDays[key])
+                                   if(result['slaves']['data']['der_bedDays'] && self.excessDays && self.excessDays[key])
                                     for(var kk in self.excessDays[key])
                                        result['slaves']['data']['der_bedDays'][key]['unit'] += self.excessDays[key][kk];
                                 }

@@ -72,7 +72,7 @@ $Q.Picanet = {
                      },
                      {  "metric": "48h Readmission",
                         "mark": "bar",
-                        "x": "AdDate",
+                        "x": "UnitDisDate",
                         "y": ["UnitDisStatus", "der_readmit"],
                         "categories": ["SourceAd", "CareAreaAd", "UnitDisDest"], 
                         "quantities": [{"q":"der_readmit", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
