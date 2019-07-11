@@ -206,6 +206,9 @@
 						getMissing: function(metric, viewId){
 							return this.dataModel.getMissing(metric, viewId); 
 						},
+						getMissingSub: function(metric, subkey){
+							return this.dataModel.getMissingSub(metric, subkey);
+						},
 						getAllMissing: function(){
 							return this.dataModel.getAllMissing(); 
 						},

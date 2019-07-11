@@ -1,16 +1,16 @@
 $Q.Picanet = {
-  "availMetrics": [{"value": "mortality", 
+  "availMetrics": [{"value": "Mortality", 
                     "text": "Mortality"},
-                    {"value": "derived_readmission", 
+                    {"value": "48h Readmission", 
                       "text": "48h Readmission"}, 
-                    {"value": "bed_days", 
+                    {"value": "Bed Days and Extubation", 
                     "text": "Bed Days and Extubation"},
                     //{"value": "case_mix", 
                     //"text": "Specialty Case Mix"},
-                    {"value": "dependency", 
+                    {"value": "Dependency", 
                       "text": "Dependency"
                     },
-                    {"value": "data_quality",
+                    {"value": "Data Quality",
                      "text": "Data Quality"}
                     ], 
 "variableDict": {"PrimReason": "Diagnosis",
@@ -108,7 +108,7 @@ $Q.Picanet = {
                         "ehr": "Admissions", 
                         "granP": ["unit", "unit", "unit"], 
                         "categories": ["InvVent"], 
-                        "quantities": [{"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
+                        "quantities": [{"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
                                         {"q":"der_bedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
                         "granT": {"monthly-annual": ["der_bedDays", "InvVentDay"]}, 
                         "combinations": ["adtype&der_readmit"]
@@ -134,7 +134,7 @@ $Q.Picanet = {
                         "categories": ["PrimReason","AdType", "Sex", "Ethnic"],      
                         "quantities": [ {"q":"XB09Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"XB07Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"pim3_s", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
+                                        {"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["XB09Z", "XB07Z"]}   // the first element holds the master view's granT                                             
           

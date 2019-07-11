@@ -186,6 +186,37 @@
 							      .attr("class", "y axis")
 							      .call(d3.axisLeft(y).ticks(5,"s"))
 							      .attr("transform", "translate("+0+","+ 0+")");
+
+							g.append("text")
+							     	  .attr("class", "ylabel")
+								      .attr("transform", "rotate(-90)")
+								      .attr("y", 0-margin.left*0.75)
+								      .attr("x",0 - (height/5) - margin.top )
+								      .attr("dy", "1em")
+								      .style("text-anchor", "middle")
+								      .style("font-size", "9pt")
+								      .text(function(){
+								      	var mss = self.parent.getMSS();
+								      	// find the yaggregate rule of the corresponding variable
+								      	var agg = "";
+								      	for(var i=0; i< mss['quantities'].length; i++)
+								      		if(mss['quantities'][i]['q'] === vname)
+								      			agg = mss['quantities'][i]['yaggregates'];
+								      	return agg;
+								      });   
+							
+							g.append("text")
+							     	  .attr("class", "missing-legend")								      
+								      .attr("y", -15)
+								      .attr("x", width/2 )
+								      .attr("dy", "1em")
+								      .style("text-anchor", "middle")
+								      .style("font-size", "9pt")
+								      .text(function(){
+								      	var txt = "Missing: ";
+								      	var num = self.parent.getMissingSub(vname); 
+								      	return txt + num;
+								      });   
 							
 							g.selectAll(".bar")
 							    .data(data)

@@ -1039,8 +1039,10 @@
                         
                         },
                         getMissing: function(metric, viewId){
+                            // calculate missingness for variables in main view only of this QualCard
                             var self = this; 
-                            
+                            var mainKeys = Object.keys(self.dicts[viewId][Object.keys(self.dicts[viewId])[0]]);
+
                             if(self.dicts[viewId][Object.keys(self.dicts[viewId])[0]]['missing']){
                                 var totalMissing = 0; 
                                 for (var key in self.dicts[viewId]){
@@ -1053,7 +1055,8 @@
                            else if(self.missing[metric]){
                                 var totalMissing = 0; 
                                 for(var key in self.missing[metric]){
-                                    totalMissing += self.missing[metric][key].length; 
+                                    if(mainKeys.indexOf(key) >=0)
+                                        totalMissing += self.missing[metric][key]; 
                                 }
                                 return totalMissing; 
                             } // && self.missing[metric][varname])                                    
@@ -1061,6 +1064,22 @@
                             else 
                                 return 0; 
                         },
+                        getMissingSub: function(metric, subkey){
+                            // calculate missingness for variables in main view only of this QualCard
+                            var self = this; 
+                            if(self.missing[metric]){
+                                var totalMissing = 0; 
+                                for(var key in self.missing[metric]){
+                                    if(key === subkey)
+                                        totalMissing += self.missing[metric][key]; 
+                                }
+                                return totalMissing; 
+                            } // && self.missing[metric][varname])                                    
+                              
+                            else 
+                                return 0; 
+                        },
+
                         getAllMissing: function(){
                             var self = this;
                             var uniqMissing = {};

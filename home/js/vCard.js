@@ -1276,6 +1276,21 @@
 						getAuditInfo: function(){
 							return this.parent.control.audit; 
 						},
+						getMSS: function(){
+							var self = this;
+							var audit = self.getAuditInfo();
+							var auditVars = (audit === "picanet")? $Q.Picanet : $Q.Minap; 
+							return auditVars["displayVariables"][self.id];
+
+						},
+						getMissingSub: function(vname){
+							var self = this;
+							var audit = self.getAuditInfo();
+							var auditVars = (audit === "picanet")? $Q.Picanet : $Q.Minap; 
+							var metric = auditVars["displayVariables"][self.id]["metric"];
+
+							return self.parent.control.getMissingSub(metric, vname);
+						},
 						getChartType: function(dataView){
 							var self = this; 
 							////////console.log(dataView); 
