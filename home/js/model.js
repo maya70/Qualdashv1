@@ -1000,14 +1000,14 @@
                         },
                         getDataLength: function(viewId){
                             var self = this;
-                            //return self.ownrecords; 
-                            var totalRecs = 0; 
+                            return self.ownrecords; 
+                            /*var totalRecs = 0; 
                             for(var key in self.dicts[viewId]){
                                 for(var kk in self.dicts[viewId][key]){
                                     totalRecs += self.dicts[viewId][key][kk]['value'];
                                 }
                             }
-                            return totalRecs; 
+                            return totalRecs; */
                         },
                         getQuality: function(varname){
                             var self = this;
