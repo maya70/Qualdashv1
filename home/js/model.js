@@ -133,7 +133,7 @@
                                 for(var k=0; k < meta.length; k++){
                                     if(meta[k]['COLUMN_NAME'] !== ""){
                                         var metaEntry = {}; 
-                                        metaEntry['fieldName'] = meta[k]['COLUMN_NAME'].toLowerCase();
+                                        metaEntry['fieldName'] = meta[k]['COLUMN_NAME'];
                                         metaEntry['fieldType'] = (meta[k]['DATA_TYPE'] === "decimal")? "q" :
                                                                     (( meta[k]['DATA_TYPE'] === "smallint" )?"o" : 
                                                                         ((meta[k]['DATA_TYPE'] === "nvarchar" || meta[k]['DATA_TYPE'] === "varchar" || meta[k]['DATA_TYPE'] === "bit" || meta[k]['DATA_TYPE'] === "int")? "n" : "t"));
