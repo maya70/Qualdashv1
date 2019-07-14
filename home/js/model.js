@@ -221,7 +221,7 @@
                                                             self.recordEHR(data[d], d , metric, yearupdated);
                                                             var qobj = self.getQObject(qname, v); 
                                                             if(qobj){
-                                                                    var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, v, 0)) ; 
+                                                                    var qval = parseFloat(self.computeVar(d, qname, qobj, data[d], 0, v, 0)) ;                                                                                                         
                                                                     self.updateTimeHierarchy(yearupdated, qname, v, data[d], qval);
                                                                 }
                                                         });
@@ -863,7 +863,7 @@
                             var comps = auditVars['displayVariables'][viewId]['combinations'];
                             return comps;
                         },*/
-                        computeVar: function(i, yvar, displayObj, rec, sid, viewId, mainview){
+                        computeVar: function(i, yvar, displayObj, rec, sid, viewId, mainview, yearCheck){
                             var self = this;
                             var vname;
                             var vval;
@@ -873,7 +873,7 @@
                             var mon = self.stringToMonth(rec[dateVar]);
                             var year = self.stringToDate(rec[dateVar], 1, 1);
 
-                            if(!year)
+                            if(!year && yearCheck)
                                 return 0; 
 
                             var yfilters =  auditVars['yfilters'][yvar];
@@ -1330,6 +1330,7 @@
                                             subYlength = 2; 
                                             var qval = parseFloat(self.computeVar(i, quant['q'], quant, self.data[i], sid, displayId)) ; 
 
+
                                             if(!slaves['data'][quant['q']])
                                                 slaves['data'][quant['q']] = {}; 
                                             if(!slaves['data'][quant['q']][mon])
@@ -1464,7 +1465,8 @@
                                 // the main dict will hold aggregates for all variables assigned to y-axis                                    
                                 displayVar.forEach(function(yvar, id){
                                         //var vname;
-                                        vval = parseFloat(self.computeVar(i, yvar, displayObj, self.data[i], id, displayId, 1));
+                                        vval = parseFloat(self.computeVar(i, yvar, displayObj, self.data[i], id, displayId, 1, 1));
+                                                                        
                                         self.setDerivedValue(displayId, i, yvar, vval);
                                         if(true)
                                             {
@@ -1505,6 +1507,7 @@
                                         if(quant['granP'].constructor == Array || quant['granP'] === "national"){
                                             subYlength = 2; 
                                             var qval = parseFloat(self.computeVar(i, quant['q'], quant, self.data[i], sid, displayId)) ; 
+
                                             self.setDerivedValue(displayId, i, quant['q'], qval);
                                             if(!slaves['data'][quant['q']])
                                                 slaves['data'][quant['q']] = {}; 
