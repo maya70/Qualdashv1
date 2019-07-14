@@ -4,21 +4,38 @@
 
  
  # Change the unit ID to match your unit
- unitID <- "194281" 
  source_file_path <- "C:/Users/Mai/Dropbox/Leeds/Qualdash related/Data/"
  dest_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_admission/"
  dest_activity_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_activity/"
  audit_filename <- "admission.csv"
- dateFormat <- "%d-%m-%y %H:%M"
- #dateFormat <- "%d/%m/%Y %H:%M"
- 
+ #dateFormat <- "%d-%m-%y %H:%M"
+ dateFormat <- "%d/%m/%Y %H:%M:%S"
  
  source = paste(source_file_path, audit_filename, sep='')
-
- 
  # read raw admission data from its current location
  admission <- read_csv(source)
- admission <- subset(admission, PicuOrg == unitID)
+ #admission <- subset(admission, PicuOrg == unitID)
+
+# get years in data
+ admdate <- as.Date(paste(admission$AdDate), dateFormat)
+ adyear <- year(admdate)
+ admission <- cbind(admission, adyear)
+
+allDates <- lapply(admission, function(x) !all(is.na(as.Date(as.character(x), format =dateFormat))))
+df <- as.data.frame(allDates)
+colnames(df) <- colnames(admission)
+dateFields <- df[which(df==TRUE)]
+
+# Unify date formats to ISO format 
+for(col in colnames(admission)){
+    if(col %in% colnames(dateFields)){
+         vector <- admission[col]
+         temp <- lapply(vector, function(x) as.POSIXlt(x, format=dateFormat))
+         admission[col] <- temp
+         
+     }
+ }
+
  # break it into separate files for individual years
  # and store the new files in the picanet folder under documnt root 
  for(year in unique(admission$adyear)){
@@ -27,11 +44,11 @@
     write.csv(tmp, fn, row.names = FALSE)
  }
 
- admdate <- as.Date(paste(admission$AdDate), "%m/%d/%Y") 
- adyear <- year(admdate)
- admission <- cbind(admission, adyear)
+ #admdate <- as.Date(paste(admission$AdDate), "%m/%d/%Y") 
+ #adyear <- year(admdate)
+ #admission <- cbind(admission, adyear)
 
-yfn = paste(dest_file_path ,'avail_years.csv', sep='' )
+ yfn = paste(dest_file_path ,'avail_years.csv', sep='' )
  write.csv(unique(admission$adyear), yfn, row.names = FALSE)
 
 
@@ -78,7 +95,7 @@ for(year in unique(df$adyear)){
 }
 
  # read the activity records for the latest year alone
-#fn = paste('C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_activity/', gsub(' ','', maxyear), '.csv', sep='' )
-# latest_activ <- read.csv(fn)
+ # fn = paste('C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_activity/', gsub(' ','', maxyear), '.csv', sep='' )
+ # latest_activ <- read.csv(fn)
 
  
