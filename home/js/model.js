@@ -1056,7 +1056,7 @@
                                 var totalMissing = 0; 
                                 for(var key in self.missing[metric]){
                                     if(mainKeys.indexOf(key) >=0)
-                                        totalMissing += self.missing[metric][key]; 
+                                        totalMissing += parseInt(self.missing[metric][key].length); 
                                 }
                                 return totalMissing; 
                             } // && self.missing[metric][varname])                                    
