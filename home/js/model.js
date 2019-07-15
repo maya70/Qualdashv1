@@ -1056,7 +1056,10 @@
                                 var totalMissing = 0; 
                                 for(var key in self.missing[metric]){
                                     if(mainKeys.indexOf(key) >=0)
-                                        totalMissing += parseInt(self.missing[metric][key].length); 
+                                        if(self.missing[metric][key].constructor === Array)
+                                            totalMissing += parseInt(self.missing[metric][key].length); 
+                                        else 
+                                            totalMissing = 1; 
                                 }
                                 return totalMissing; 
                             } // && self.missing[metric][varname])                                    
@@ -1071,7 +1074,10 @@
                                 var totalMissing = 0; 
                                 for(var key in self.missing[metric]){
                                     if(key === subkey)
-                                        totalMissing += self.missing[metric][key]; 
+                                        if(self.missing[metric][key].constructor === Array)
+                                            totalMissing += self.missing[metric][key].length; 
+                                        else
+                                            return 1; 
                                 }
                                 return totalMissing; 
                             } // && self.missing[metric][varname])                                    
