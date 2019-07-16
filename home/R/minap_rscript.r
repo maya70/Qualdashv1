@@ -13,7 +13,7 @@
  madmission <- read_csv(source)
 
  # get years in data
- admdate <- as.Date(madmission$`3.06 ArrivalAtHospital`, format=dateFormat)
+ admdate <- as.Date(madmission$`Arrival at hospital`, format=dateFormat)
  adyear <- year(admdate)
  madmission <- cbind(madmission, adyear)
 
@@ -54,14 +54,14 @@ for(col in colnames(madmission)){
 
 
 # Derived columns
-v427 <- madmission$`4.27 DischargedOnThieno` == '1. Yes'
+v427 <- madmission$`Thienopyridine_inhibitor_disch` == '1. Yes'
 v431 <- madmission$`4.31 DischargedOnTicagrelor` == '1. Yes'
 madmission$P2Y12 <- as.numeric(v431 | v427)
 
-dtb <- madmission$`3.09 ReperfusionTreatment` - madmission$`3.06 ArrivalAtHospital`
+dtb <- madmission$`3.09 ReperfusionTreatment` - madmission$`Arrival at hospital`
 madmission$dtb <- as.numeric(dtb)
 
-dta <- madmission$`4.18 LocalAngioDate` - madmission$`3.06 ArrivalAtHospital`
+dta <- madmission$`4.18 LocalAngioDate` - madmission$`Arrival at hospital`
 madmission$dta <- as.numeric(dta)
 dtaH <- as.numeric(dta) / 60
 madmission$dtaTarget <- as.numeric(dtaH < 72.0)
