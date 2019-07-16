@@ -191,7 +191,7 @@ $Q.Minap = {
                          "text": "Referral for Cardiac Rehabiliation"}, 
                          {"value": "Acute use of Aspirin", 
                          "text": "Acute use of Aspirin"}], 
-    "variableDict": {"1.02 Patient case record number": "Admissions",
+    "variableDict": {"NHS number": "Admissions",
                       "der_discharge": "Discharges",
                       "der_readmit": "Readmissions",
                       "der_stemi": "PCI patients", 
@@ -208,12 +208,12 @@ $Q.Minap = {
                         "metric": "Mortality",                      
                         "mark": "bar", // should remove this 
                         "chart": "grouped",
-                        "x": "3.06 Date/time arrival at hospital",
-                        "y": ["1.02 Patient case record number", "4.04 Death in hospital"], 
+                        "x": "Arrival at hospital",
+                        "y": ["NHS number", "Death in hospital"], 
                         "yaggregates": ["count", "sum"], 
-                        "yfilters": {"1.02 Patient case record number": {"where": {"4.04 Death in hospital":"0. No"},
+                        "yfilters": {"NHS number": {"where": {"Death in hospital":"0. No"},
                                                                          "valid": ["1. From MI", "3. Other non cardiac related cause", "4. Other cardiac cause"]}, 
-                                     "4.04 Death in hospital": {"where": {"4.04 Death in hospital": ["1. From MI", "3. Other non cardiac related cause", "4. Other cardiac cause"]}, 
+                                     "Death in hospital": {"where": {"Death in hospital": ["1. From MI", "3. Other non cardiac related cause", "4. Other cardiac cause"]}, 
                                                                 "valid": ["0. No"]}
                                       },
                         "xType": "t",
@@ -226,23 +226,23 @@ $Q.Minap = {
                         "ehr": "Admissions",
                         "legend": ["Alive", "Deceased"],
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.01 Initial diagnosis", "2.02 Method of admission"],      
+                        "categories": ["Admission diagnosis", "Method of Admission"],      
                         "quantities": [
-                                        //{"q":"1.02 Patient case record number","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        //{"q":"NHS number","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["1.02 Patient case record number", "4.04 Death in hospital"] }   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": ["NHS number", "Death in hospital"] }   // the first element holds the master view's granT                                             
           
                         },
                         {  
                         "metric": "Call-to-Balloon (STEMI Only)",                      
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
-                        "x": "3.06 Date/time arrival at hospital",
-                        "y": [ "1.02 Patient case record number", "2.01 Initial diagnosis"], 
+                        "x": "Arrival at hospital",
+                        "y": [ "NHS number", "Admission diagnosis"], 
                         "yaggregates": ["count", "count"], 
-                        "yfilters": {"1.02 Patient case record number": {"where": {"2.01 Initial diagnosis": "1. Definite myocardial infarction", 
-                                                                        "3.10 Delay before treatment": "0. No" },
+                        "yfilters": {"NHS number": {"where": {"Admission diagnosis": "1. Definite myocardial infarction", 
+                                                                        "Justified Delay": "0. No" },
                                                                           "operator": "AND", 
                                                                           "valid": [ // for first criterion
                                                                                     "1. Definite myocardial infarction", 
@@ -269,8 +269,8 @@ $Q.Minap = {
                                                                                     "16. Equipment failure",
                                                                                     "17. Convalescent STEMI"  ]
                                                                                   },
-                                     "2.01 Initial diagnosis": {"where": { "2.01 Initial diagnosis":  "1. Definite myocardial infarction",
-                                                                          "3.10 Delay before treatment": [ 
+                                     "Admission diagnosis": {"where": { "Admission diagnosis":  "1. Definite myocardial infarction",
+                                                                          "Justified Delay": [ 
                                                                                     "1. Definite myocardial infarction", 
                                                                                     "2. Clinical concern about recent cerebrovascular event or surgery", 
                                                                                     "3. Delay obtaining consent",
@@ -324,23 +324,23 @@ $Q.Minap = {
                         "ehr": "Admissions",
                         "legend": ["Meeting Target", "Not meeting target"],
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["3.10 Delay before treatment", "2.02 Method of admission"],      
+                        "categories": ["Justified Delay", "Method of Admission"],      
                         "quantities": [
                                          {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ],                                                               
-                        "granT": {"monthly-annual": [ "1.02 Patient case record number", "2.01 Initial diagnosis"] }             
+                        "granT": {"monthly-annual": [ "NHS number", "Admission diagnosis"] }             
           
                         },
                          {  
                         "metric": "Door-to-Angio (NSTEMI Only)",
                         "mark": "bar", // should remove this 
-                        "x": "3.06 Date/time arrival at hospital",
+                        "x": "Arrival at hospital",
                         "y": [ "dtaTarget", "dtaNoTarget", "missing"], 
                         "yaggregates": [ "count", "count", "count"], 
                         "legend": ["Meeting Target", "Not meeting target", "NA"],
                         "xType": "t",
                         "yType": [ "q", "q", "q"],
-                        "yfilters": {"dtaTarget": {"where": {"dtaTarget": "1", "2.01 Initial diagnosis":[
+                        "yfilters": {"dtaTarget": {"where": {"dtaTarget": "1", "Admission diagnosis":[
                                                                                     "3. Acute Coronary Syndrome",
                                                                                     "4. Chest pain ? cause",
                                                                                     "5. Other initial diagnosis"
@@ -352,7 +352,7 @@ $Q.Minap = {
                                                                                     "5. Other initial diagnosis"
                                                                                     ]*/
                                                       }, 
-                                     "dtaNoTarget": {"where": {"dtaTarget": "0", "2.01 Initial diagnosis":[
+                                     "dtaNoTarget": {"where": {"dtaTarget": "0", "Admission diagnosis":[
                                                                                     "3. Acute Coronary Syndrome",
                                                                                     "4. Chest pain ? cause",
                                                                                     "5. Other initial diagnosis"
@@ -364,7 +364,7 @@ $Q.Minap = {
                                                                                     "5. Other initial diagnosis"
                                                                                     ]*/
                                                                                 },
-                                      "missing": {"where": {"dtaTarget": "NA", "2.01 Initial diagnosis":[
+                                      "missing": {"where": {"dtaTarget": "NA", "Admission diagnosis":[
                                                                                     "3. Acute Coronary Syndrome",
                                                                                     "4. Chest pain ? cause",
                                                                                     "5. Other initial diagnosis"
@@ -378,7 +378,7 @@ $Q.Minap = {
                         "granP": [ "unit", "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.02 Method of admission", "1.07 Patient gender", "3.10 Delay before treatment"],      
+                        "categories": ["Method of Admission", "Gender", "Justified Delay"],      
                         "quantities": [
                                          {"q":"dta", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
@@ -389,28 +389,28 @@ $Q.Minap = {
                         "metric": "Gold Standard Drugs",
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
-                        "x": "3.06 Date/time arrival at hospital",
+                        "x": "Arrival at hospital",
                         "y": [ "1", "2"], 
                         "yaggregates": [ "count", "count"], 
                         "xType": "t",
                         "yType": [ "q", "q"],
                         "yfilters": {"1": {"where": {
                                             "P2Y12": "1", 
-                                            "4.05 Discharged on beta blocker": "1. Yes" , 
-                                            "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": "1. Yes" ,
-                                            "4.07 Discharged on statin": "1. Yes" ,
-                                            "4.08 Discharged on aspirin": "1. Yes"      
+                                            "Beta blocker": "1. Yes" , 
+                                            "Angiotensin II Blocker": "1. Yes" ,
+                                            "Statin": "1. Yes" ,
+                                            "Aspirin or other anti-platelet drug": "1. Yes"      
                             }, 
                             "valid": ["0", "1", "0. No", "1. Yes" , "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"], 
                             "operator": "AND"}, 
                            "2": {"where": {
-                                            //"4.27 Discharged on a thienopyridine inhibitor": ["0", "2", "3", "4", "8", "9"] ,
+                                            //"Thienopyridine_inhibitor_disch": ["0", "2", "3", "4", "8", "9"] ,
                                             //"4.31 Discharged on TIcagrelor (v10.3 Dataset)": ["0", "2", "3", "4", "8", "9"] ,
                                             "P2Y12": "0", 
-                                            "4.05 Discharged on beta blocker": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] , 
-                                            "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
-                                            "4.07 Discharged on statin": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
-                                            "4.08 Discharged on aspirin": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"]     },
+                                            "Beta blocker": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] , 
+                                            "Angiotensin II Blocker": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
+                                            "Statin": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
+                                            "Aspirin or other anti-platelet drug": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"]     },
                                           "valid": ["0. No", "1. Yes" ,"4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"], "operator":"OR"}   
                         }, 
                         "xspan": "year",    
@@ -421,9 +421,9 @@ $Q.Minap = {
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["P2Y12", "4.05 Discharged on beta blocker", "4.07 Discharged on statin", "4.06 Angiotensin converting enzyme inhibitor or angiotensin receptor blocker", "4.27 Discharged on a thienopyridine inhibitor"],      
+                        "categories": ["P2Y12", "Beta blocker", "Statin", "Angiotensin II Blocker", "Thienopyridine_inhibitor_disch"],      
                         "quantities": [
-                                        //{"q":"4.27 Discharged on a thienopyridine inhibitor","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
+                                        //{"q":"Thienopyridine_inhibitor_disch","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"4.31 Discharged on TIcagrelor (v10.3 Dataset)", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
                                         // {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
                                          {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
@@ -435,16 +435,16 @@ $Q.Minap = {
                         "metric": "Referral for Cardiac Rehabiliation",
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
-                        "x": "3.06 Date/time arrival at hospital",
-                        "y":   ["0", "1", "3", "8", "9"], //"4.09 Cardiac rehabilitation", 
+                        "x": "Arrival at hospital",
+                        "y":   ["0", "1", "3", "8", "9"], //"Cardiac rehabilitation", 
                         "yaggregates": [ "count", "count", "count", "count", "count"], 
                         "xType": "t",
                         "yType": "n",
-                        "yfilters": {"0": {"where": {"4.09 Cardiac rehabilitation": "0. No"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
-                                      "1": {"where": {"4.09 Cardiac rehabilitation": "1. Yes"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
-                                      "3": {"where": {"4.09 Cardiac rehabilitation": "3. Patient declined"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
-                                      "8": {"where": {"4.09 Cardiac rehabilitation": "8. Not indicated"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
-                                      "9": {"where": {"4.09 Cardiac rehabilitation": "9"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] }
+                        "yfilters": {"0": {"where": {"Cardiac rehabilitation": "0. No"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
+                                      "1": {"where": {"Cardiac rehabilitation": "1. Yes"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
+                                      "3": {"where": {"Cardiac rehabilitation": "3. Patient declined"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
+                                      "8": {"where": {"Cardiac rehabilitation": "8. Not indicated"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] },
+                                      "9": {"where": {"Cardiac rehabilitation": "9"}, "valid": ["0. No", "1. Yes", "3. Patient declined", "8. Not indicated"] }
                                       },
                         "legend": ["No", "Yes", "Patient declined", "Not indicated", "Unknown"],
                         "xspan": "year",    
@@ -454,7 +454,7 @@ $Q.Minap = {
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["1.07 Patient gender", "3.10 Delay before treatment"],      
+                        "categories": ["Gender", "Justified Delay"],      
                         "quantities": [
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
@@ -468,28 +468,28 @@ $Q.Minap = {
                         "metric": "Accute Use of Aspirin",
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
-                        "x": "3.06 Date/time arrival at hospital",
-                        "y":   ["1", "2", "3", "4", "8"], //"4.09 Cardiac rehabilitation", 
+                        "x": "Arrival at hospital",
+                        "y":   ["1", "2", "3", "4", "8"], //"Cardiac rehabilitation", 
                         "yaggregates": [ "count", "count", "count", "count", "count"], 
                         "xType": "t",
                         "yType": "n",
-                        "yfilters": {"1": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "1. Already on aspirin/antiplatelet drug"}, "valid": ["1. Already on aspirin/antiplatelet drug",                    
+                        "yfilters": {"1": {"where": {"Did the patient receive aspirin during admission?": "1. Already on aspirin/antiplatelet drug"}, "valid": ["1. Already on aspirin/antiplatelet drug",                    
                                                                                        "2. Aspirin/antiplatelet drug given out of hospital",          
                                                                                        "3. Aspirin/antiplatelet drug given after arrival in hospital",
                                                                                        "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
-                                      "2": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "2. Aspirin/antiplatelet drug given out of hospital"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
+                                      "2": {"where": {"Did the patient receive aspirin during admission?": "2. Aspirin/antiplatelet drug given out of hospital"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
                                                                                        "2. Aspirin/antiplatelet drug given out of hospital",          
                                                                                        "3. Aspirin/antiplatelet drug given after arrival in hospital",
                                                                                        "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
-                                      "3": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "3. Aspirin/antiplatelet drug given after arrival in hospital"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
+                                      "3": {"where": {"Did the patient receive aspirin during admission?": "3. Aspirin/antiplatelet drug given after arrival in hospital"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
                                                                                        "2. Aspirin/antiplatelet drug given out of hospital",          
                                                                                        "3. Aspirin/antiplatelet drug given after arrival in hospital",
                                                                                        "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
-                                      "4": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "4. Aspirin/antiplatelet contraindicated"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
+                                      "4": {"where": {"Did the patient receive aspirin during admission?": "4. Aspirin/antiplatelet contraindicated"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
                                                                                        "2. Aspirin/antiplatelet drug given out of hospital",          
                                                                                        "3. Aspirin/antiplatelet drug given after arrival in hospital",
                                                                                        "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
-                                      "8": {"where": {"2.04 Where was aspirin/other antiplatelet given?": "8. Not given"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
+                                      "8": {"where": {"Did the patient receive aspirin during admission?": "8. Not given"}, "valid": [ "1. Already on aspirin/antiplatelet drug",                    
                                                                                        "2. Aspirin/antiplatelet drug given out of hospital",          
                                                                                        "3. Aspirin/antiplatelet drug given after arrival in hospital",
                                                                                        "4. Aspirin/antiplatelet contraindicated", "8. Not given" ] },
@@ -508,7 +508,7 @@ $Q.Minap = {
                         "granP": [ "unit", "unit", "unit", "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": [ "2.02 Method of admission", "3.10 Delay before treatment"],      
+                        "categories": [ "Method of Admission", "Justified Delay"],      
                         "quantities": [
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
