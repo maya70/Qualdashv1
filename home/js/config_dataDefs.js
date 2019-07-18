@@ -3,7 +3,7 @@ $Q.DataDefs = {"picanet": {"secondaryKey": "EventID",
                           "weekVar": "AdWeek",
                           "yearVar": "AdYear",
                           "patientIdVar": "PatientID", 
-                          "unitIdVar": "PictuOrg",
+                          "unitIdVar": "PicuOrg",
                           "admissionDateVar": "AdDate",
                           "dischargeDateVar": "UnitDisDate",
                           "dischargeStatusVar": "UnitDisStatus"
