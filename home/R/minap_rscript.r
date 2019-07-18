@@ -2,16 +2,17 @@
  library(lubridate)
  library(parsedate)
 
- source_file_path <- "C:/Bitnami/wampstack-7.1.29-0/apache2/htdocs/qualdash/home/data/"
- dest_file_path <- "C:/Bitnami/wampstack-7.1.29-0/apache2/htdocs/qualdash/home/data/minap_admission/"
- dateFormat <- '%d/%m/%Y %H:%M'
- audit_filename <- "Ami-1-4-16 - 31-3-19.csv"
+     source_file_path <- "G:/CIO Team/QualDash/"
+     dest_file_path <- "G:/CIO Team/QualDash/minap_admission/"
+     #dateFormat <- "%d-%m-%y %H:%M"
+     dateFormat <- "%d/%m/%Y %H:%M"
+     audit_filename <- "24062019 MINAPWithHeaders3Years.csv"
  
  source = paste(source_file_path, audit_filename, sep='')
  madmission <- read_csv(source)
 
  # get years in data
- admdate <- as.Date(madmission$`3.06 Date/time arrival at hospital`, format=dateFormat)
+ admdate <- as.Date(madmission$`3.06 ArrivalAtHospital`, format=dateFormat)
  adyear <- year(admdate)
  madmission <- cbind(madmission, adyear)
 
@@ -52,15 +53,19 @@ for(col in colnames(madmission)){
 
 
 # Derived columns
-v427 <- madmission$`4.27 Discharged on a thienopyridine inhibitor` == '1. Yes'
-v431 <- madmission$`4.31 Discharged on TIcagrelor (v10.3 Dataset)` == '1. Yes'
+v427 <- madmission$`4.27 DischargedOnThieno` == '1. Yes'
+v431 <- madmission$`4.27 DischargedOnThieno` == '1. Yes'
 
 madmission$P2Y12 <- as.numeric(v431 | v427)
 
-dtb <- madmission$`3.09 Date/time of reperfusion treatment` - madmission$`3.06 Date/time arrival at hospital`
+#TODO: update the following lines with the right field names 
+arr <- as.Date(madmission$`3.06 Date/time arrival at hospital`, format="%d/%m/%Y %H:%M")
+rep <- as.Date(madmission$`3.09 Date/time of reperfusion treatment`, format = dateFormat)
+dtb <- rep - arr
 madmission$dtb <- as.numeric(dtb)
 
-dta <- madmission$`4.18 Local angio date` - madmission$`3.06 Date/time arrival at hospital`
+angio <- as.Date(madmission$`4.18 Local angio date`, format = dateFormat)
+dta <-  angio - arr
 madmission$dta <- as.numeric(dta)
 dtaH <- as.numeric(dta) / 60
 madmission$dtaTarget <- as.numeric(dtaH < 72.0)
