@@ -3,3 +3,10 @@ home/data/
 home/data/minap_admission
 home/data/picanet_activity
 home/data/picanet_admission
+home/php/session-Err.txt
+home/php/session-logs.txt
+home/php/session_counter.txt
+home/js/config_mss.js
+home/js/config_dataDefs.js
+home/R/picanet_rscript.r
+home/R/minap_rscript.r
