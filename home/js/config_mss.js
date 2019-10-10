@@ -334,6 +334,7 @@ $Q.Minap = {
                          {  
                         "metric": "Door-to-Angio (NSTEMI Only)",
                         "mark": "bar", // should remove this 
+                        "chart": "stacked",
                         "x": "3.06 ArrivalAtHospital",
                         "y": [ "dtaTarget", "dtaNoTarget", "missing"], 
                         "yaggregates": [ "count", "count", "count"], 
