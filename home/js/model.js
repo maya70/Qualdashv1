@@ -485,7 +485,7 @@
                             if(self.missing[metric][vname].indexOf(i) <0)
                                 self.missing[metric][vname].push(i); 
                         },
-                        getDerivedValue: function(vname, rec, mainview, metric, i){
+                        getDerivedValue: function(vname, rec, mainview, metric, i, yfilters){
                             var self = this;
                             //TODO: use callbacks for variable rules instead of this exhaustive branching
 
@@ -509,24 +509,31 @@
                             else if(vname === "readmit"){
                                     return 0; 
                                 }
-                            else if(vname === "bedDays"){
-                                if(i===56){
-                                    var t = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement);
-                                    
-                                    t = self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]], timeElement);
-                                    //console.log(t);
-                                }
-                                 var t = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement);
+                            
+
+                            //else if(vname === "bedDays"|| vname === "ventDays"){
+                            else if(vname.indexOf('span') >=0){
+                                 //var t = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement);
                                    // console.log(t);
+                                var startVar = yfilters['where']['start'];
+                                var endVar = yfilters['where']['end'];
 
                                 if(!self.excessDays)  // record bed days for additional months if the 
                                         self.excessDays = {};  // admission and discharge are not in the same month
+                                if(!self.excessDays[vname])
+                                    self.excessDays[vname] = {};
                                 var timeElement = self.audit === "picanet"? 0 : 1; 
                                 var one_day = 1000*60*60*24;  
-                                var d1 = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement).getDate(),
+
+                                var d1 = self.stringToDate(rec[endVar], timeElement).getDate(),
+                                    m1 = self.stringToMonth(rec[endVar]);
+                                var d2 = self.stringToDate(rec[startVar], timeElement).getDate(),
+                                    m2 = self.stringToMonth(rec[startVar]);
+
+                               /* var d1 = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement).getDate(),
                                     m1 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]]);
                                 var d2 = self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]], timeElement).getDate(),
-                                    m2 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                    m2 = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);*/
 
                                 if(isNaN(d1) || isNaN(d2))
                                     self.recordMissing(metric, "der_"+vname, i);   
@@ -543,7 +550,7 @@
                                         // did discharge happen in this month?                                        
                                         if(m === m1){
                                             var lastDayPrevMon = new Date(self.year, (m-1), 0);
-                                            var disDate = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement); 
+                                            var disDate = self.stringToDate(rec[endVar], timeElement); 
                                             var ss = disDate - lastDayPrevMon; 
                                             //span = Math.ceil(Math.abs(d1 - lastDayPrevMon.getTime())/one_day);     
                                             var firstDay = new Date(self.year, (m-1), 1);
@@ -559,10 +566,10 @@
                                         //if(rec[$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )
                                         if(true)
                                             {                                           
-                                            if(!self.excessDays[m])
-                                                self.excessDays[m] = {};
-                                            if(!self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]])
-                                                self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]] =  span; //[];
+                                            if(!self.excessDays[vname][m])
+                                                self.excessDays[vname][m] = {};
+                                            if(!self.excessDays[vname][m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]])
+                                                self.excessDays[vname][m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]] =  span; //[];
                                             //self.excessDays[m][rec[$Q.DataDefs[self.audit]["patientIdVar"]]].push(span); 
                                             }
 
@@ -980,7 +987,7 @@
                                 var strs = yvar.split("_");
                                 var rule = strs[0]; 
                                 vname = strs[1];
-                                var derval = self.getDerivedValue(vname, rec, mainview, metric, i);                                
+                                var derval = self.getDerivedValue(vname, rec, mainview, metric, i, yfilters);                                
                                 vval = (yaggregates === "count")? ((derval>0)? 1: 0) 
                                             : derval; 
                                 if(vval>0) {
@@ -1160,7 +1167,7 @@
                                 var strs = yvar.split("_");
                                 var rule = strs[0]; 
                                 vname = strs[1];
-                                var derval = self.getDerivedValue(vname, rec, mainview, metric, i);
+                                var derval = self.getDerivedValue(vname, rec, mainview, metric, i, yfilters);
                                 if(!displayObj)
                                    {//console.log(yvar);
                                     //console.log(rec);
@@ -1760,24 +1767,37 @@
                             else{
                                 //console.log(result);
                                 
-                                
+
                                 
                                 for(var key in dict){
-                                    if(result['dict'][key]['der_bedDays'])
-                                    console.log(result);
+                                   for(var kk in result['dict'][key]){
+                                    if(kk.indexOf('span') >=0){
+                                        var plainName = kk.split('_')[1]; 
+                                        if(result['dict'][key][kk] && self.excessDays && self.excessDays[plainName] && self.excessDays[plainName][key])
+                                            for(var kkk in self.excessDays[plainName][key])
+                                                result['dict'][key][kk]['value'] += self.excessDays[plainName][key][kkk];
 
-                                   if(result['dict'][key]['der_bedDays'] && self.excessDays && self.excessDays[key])
-                                    for(var kk in self.excessDays[key])
-                                       result['dict'][key]['der_bedDays']['value'] += self.excessDays[key][kk];
+                                    }
+                                   }  
+                                   /*if(result['dict'][key]['der_spanbedDays'] && self.excessDays && self.excessDays['spanbedDays'] && self.excessDays['spanbedDays'][key])
+                                    for(var kk in self.excessDays['spanbedDays'][key])
+                                       result['dict'][key]['der_spanbedDays']['value'] += self.excessDays['spanbedDays'][key][kk];
+
+                                   if(result['dict'][key]['der_spanventDays'] && self.excessDays && self.excessDays['spanventDays'] && self.excessDays['spanventDays'][key])
+                                    for(var kk in self.excessDays['spanventDays'][key])
+                                       result['dict'][key]['der_spanventDays']['value'] += self.excessDays['spanventDays'][key][kk];
+                                   */
                                 }
                                 
                                 for(var key in dict){
-                                    if(result['slaves']['data']['der_bedDays'])
-                                    console.log(result);
+                                    
+                                   if(result['slaves']['data']['der_spanbedDays'] && self.excessDays && self.excessDays['spanbedDays'] &&self.excessDays['spanbedDays'][key])
+                                    for(var kk in self.excessDays['spanbedDays'][key])
+                                       result['slaves']['data']['der_spanbedDays'][key]['unit'] += self.excessDays['spanbedDays'][key][kk];
 
-                                   if(result['slaves']['data']['der_bedDays'] && self.excessDays && self.excessDays[key])
-                                    for(var kk in self.excessDays[key])
-                                       result['slaves']['data']['der_bedDays'][key]['unit'] += self.excessDays[key][kk];
+                                   if(result['slaves']['data']['der_spanventDays'] && self.excessDays && self.excessDays['spanventDays'] &&self.excessDays['spanventDays'][key])
+                                    for(var kk in self.excessDays['spanventDays'][key])
+                                       result['slaves']['data']['der_spanventDays'][key]['unit'] += self.excessDays['spanventDays'][key][kk];
                                 }
                                 
                                 // calculate averages (if any)

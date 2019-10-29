@@ -1,17 +1,20 @@
 $Q.Picanet = {
-  "availMetrics": [{"value": "Mortality", 
-                    "text": "Mortality"},
+  "availMetrics": [{"value": "Mortality by month of admission", 
+                    "text": "Mortality by month of admission"},
                     {"value": "48h Readmission", 
                       "text": "48h Readmission"}, 
-                    {"value": "Bed Days and Extubation", 
-                    "text": "Bed Days and Extubation"},
+                    {"value": "Bed Days and Ventilation", 
+                    "text": "Bed Days and Ventilation"},
                     //{"value": "case_mix", 
                     //"text": "Specialty Case Mix"},
                     {"value": "Dependency", 
                       "text": "Dependency"
                     },
-                    {"value": "Data Quality",
-                     "text": "Data Quality"}
+                    {"value": "Dependency (contd')", 
+                      "text": "Dependency (contd')"
+                    },
+                    {"value": "Ventilation days by admission month",
+                     "text": "Ventilation days by admission month"}
                     ], 
 "variableDict": {"PrimReason": "Diagnosis",
                  "unplannedextubation": "Unplanned Extubation", 
@@ -28,7 +31,7 @@ $Q.Picanet = {
                   "der_discharge": "Discharges",
                   "der_readmit": "Readmissions",
                   "ethnic": "Ethnic",
-                  "der_bedDays": "Bed Days",
+                  "der_spanbedDays": "Bed Days",
                   "der_invVentDays": "Invasive Ventil.", 
                   "der_noninvVentDays": "Noninvasive Ventil.",
                   "der_missing": "Missing", 
@@ -43,7 +46,7 @@ $Q.Picanet = {
                   "der_depLevel5": "IC Advanced",
                   "der_depLevel6": "IC Advanced Enhanced"
                 },
-"displayVariables": [{  "metric": "Mortality",
+"displayVariables": [{  "metric": "Mortality by month of admission",
                         "mark": "bar", 
                         "chart": "grouped", 
                         "colorScale": "categorical",
@@ -72,6 +75,7 @@ $Q.Picanet = {
                      },
                      {  "metric": "48h Readmission",
                         "mark": "bar",
+                        "chart": "stacked", 
                         "x": "UnitDisDate",
                         "y": ["UnitDisStatus", "der_readmit"],
                         "categories": ["SourceAd", "CareAreaAd", "UnitDisDest"], 
@@ -92,14 +96,15 @@ $Q.Picanet = {
                         "granT": {"monthly-annual": ["UnitDisStatus", "der_readmit"]}
                         
                      },
-                      {  "metric": "Bed Days and Extubation",
+                      {  "metric": "Bed Days and Ventilation",
                         "mark": "bar",
+                        "chart": "stacked",
                         "x": "AdDate",
-                        "y":["der_bedDays", "InvVentDay"],
-                        "yfilters": {"der_bedDays" : {"where":"*"}, 
-                                    "InvVentDay": {"where":"*"}}, 
+                        "y":["der_spanbedDays", "der_spanventDays"],
+                        "yfilters": {"der_spanbedDays" : {"where":{"start": "AdDate", "end": "UnitDisDate"}}, 
+                                    "der_spanventDays": {"where":{"start": "AdDate", "end": "UnitDisDate"}}}, 
                         "xType": "t",
-                        "yType": ["q", "q"], 
+                        "yType": ["t", "q"], 
                         "xspan": "year",    
                         "yspan": "unit", 
                         "ylabel": "Num. Days",
@@ -109,20 +114,20 @@ $Q.Picanet = {
                         "granP": ["unit", "unit", "unit"], 
                         "categories": ["InvVent"], 
                         "quantities": [{"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
-                                        {"q":"der_bedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
-                        "granT": {"monthly-annual": ["der_bedDays", "InvVentDay"]}, 
+                                        {"q":"der_spanbedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
+                        "granT": {"monthly-annual": ["der_spanbedDays", "der_ventDays"]}, 
                         "combinations": ["adtype&der_readmit"]
                      }, 
                       {  "metric": "dependency",                        
                         "mark": "bar",                         
                         "chart": "stacked",
                         "x": "AdDate",
-                        "y": ["XB09Z", "XB07Z" ,"XB06Z", "XB05Z", "XB04Z", "XB03Z", "XB02Z", "XB01Z"], 
+                        "y": ["XB09Z", "XB07Z" ,"XB06Z", "XB05Z"], 
                         "yfilters": {"XB09Z" : {"where":"*"}, "XB07Z": {"where":"*"} ,"XB06Z": {"where":"*"}, 
-                                      "XB05Z": {"where":"*"}, 
-                                    "XB04Z": {"where":"*"}, "XB03Z": {"where":"*"}, "XB02Z": {"where":"*"}, "XB01Z": {"where":"*"} } ,
-                        "yaggregates": ["sum", "sum", "sum", "sum", "sum", "sum", "sum", "sum" ], 
-                        "legend": ["Enhanced Care", "High Dependency" ,"High Dependency Advanced", "Intensive Care Basic", "Intensive Care Basic Enhanced", "Intensive Care Advanced", "Intensive Care Advanced Enhanced", "Intensive Care ECMO/ECLS"],
+                                      "XB05Z": {"where":"*"}
+                                     } ,
+                        "yaggregates": ["sum", "sum", "sum", "sum" ], 
+                        "legend": ["Enhanced Care", "High Dependency" ,"High Dependency Advanced", "Intensive Care Basic"],
                         "xType": "t",
                         "yType": "o",  
                         "xspan": "year",    
@@ -136,34 +141,59 @@ $Q.Picanet = {
                                         {"q":"XB07Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["XB09Z", "XB07Z"]}   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": ["XB09Z", "XB07Z","XB06Z", "XB05Z"]}   // the first element holds the master view's granT                                             
+          
+                     },
+                      {  "metric": "Dependency (contd')",                        
+                        "mark": "bar",                         
+                        "chart": "stacked",
+                        "x": "AdDate",
+                        "y": [ "XB04Z", "XB03Z", "XB02Z", "XB01Z"], 
+                        "yfilters": {"XB04Z": {"where":"*"}, "XB03Z": {"where":"*"}, "XB02Z": {"where":"*"}, "XB01Z": {"where":"*"} } ,
+                        "yaggregates": [ "sum", "sum", "sum", "sum" ], 
+                        "legend": ["Intensive Care Basic Enhanced", "Intensive Care Advanced", "Intensive Care Advanced Enhanced", "Intensive Care ECMO/ECLS"],
+                        "xType": "t",
+                        "yType": "o",  
+                        "xspan": "year",    
+                        "yspan": "unit", 
+                        "ylabel": "Activity", 
+                        "tspan": 3,                           
+                        "granP": ["unit"], 
+                        "ehr": "Admissions",                        
+                        "categories": ["PrimReason","AdType", "Sex", "Ethnic"],      
+                        "quantities": [ {"q":"XB09Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"XB07Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
+                                       ], // from tasks with a single quantitative variable                                                                   
+                        "granT": {"monthly-annual": ["XB04Z", "XB03Z", "XB02Z", "XB01Z"]}   // the first element holds the master view's granT                                             
           
                      },
                       {
-                      "metric": "Data Quality",
-                      "mark": "bar", // should remove this 
+                      "metric": "Ventilation days by admission month",
+                      "mark": "bar",                         
+                      "chart": "stacked",
                         "x": "AdDate",
-                        "y": ["der_missing", "der_invalid"], 
-                        "yfilters": {"der_missing" : "*", 
-                                    "der_invalid": "*"}, 
+                        "y": ["InvVentDay", "NonInvVentDay"], 
+                        "yfilters": {"InvVentDay" : {"where": "*"}, 
+                                    "NonInvVentDay": {"where": "*"}}, 
                         "yaggregates": ["sum", "sum"], 
-                        "legend": ["Missing values", ""],
+                        "legend": ["Invasive ventilation days", "Noninvasive ventilation days"],
                         "xType": "t",
                         "yType": ["q", "q"],  
                         "xspan": "year",    
                         "yspan": "unit", 
-                        "ylabel": "Num. Values",                         
+                        "ylabel": "Num. Days",                         
                         "tspan": 3,                           
                         "granP": ["unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["missing1","missing2", "missing3", "missing4"],      
+                        "categories": ["PrimReason","AdType", "Sex"],      
                         "quantities": [
                                         {"q":"UnitDisStatus",  "granP":["unit"], "yaggregates": "sum", 
                                          "filters": {"where": { "UnitDisStatus":"2" } } },
                                         {"q":"EventID",  "granP":["unit"], "yaggregates": "count" }
                                        ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["der_missing"]}   // the first element holds the master view's granT                                             
+                        "granT": {"monthly-annual": ["InvVentDay", "NonInvVentDay"]}   // the first element holds the master view's granT                                             
           
                      }
                        
@@ -175,7 +205,7 @@ $Q.Picanet = {
 
 $Q.Minap = {
     "availMetrics": [{"value": "4.04 DeathInHospital", 
-                        "text": "Mortality"},
+                        "text": "Mortality by month of admission"},
                         //{"value": "derived_readmission", 
                          // "text": "48h Readmission"}, 
                         {"value": "Delay from Call for Help to Reperfusion Treatment", 
@@ -200,12 +230,12 @@ $Q.Minap = {
                       "der_angioTarget": "DTA meeting target",
                       "der_ctbTargetMet": "Met target",
                       "der_ctb": "Avgerage CTB",
-                      "der_bedDays": "Bed Days", 
+                      "der_spanbedDays": "Bed Days", 
                       "dtb": "Door-to-Balloon"
                       }, 
     "displayVariables": [
                          {  
-                        "metric": "Mortality",                      
+                        "metric": "Mortality by month of admission",                      
                         "mark": "bar", // should remove this 
                         "chart": "grouped",
                         "x": "3.06 ArrivalAtHospital",
@@ -229,7 +259,7 @@ $Q.Minap = {
                         "categories": ["2.01 AdmissionDiagnosis", "2.39 AdmissionMethod"],      
                         "quantities": [
                                         //{"q":"1.02 HospitalNumber","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                                        {"q":"der_spanbedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["1.02 HospitalNumber", "4.04 DeathInHospital"] }   // the first element holds the master view's granT                                             
           
