@@ -62,11 +62,11 @@ $Q.ValueDefs = {"picanet": {"AdType": {"1":"Planned-following surgery",
                                             }, 
                             "PrimReason":{"0": "None of the below",
                                           "1":  "Asthma",
-                                          "2":  "Bronchitis",
+                                          "2":  "Bronchiolitis",
                                           "3":  "Croup",
                                           "4":  "Obstructive sleep apnoea",
                                           "5":  "Diabetic Ketoacidosis",
-                                          "6":  "Recovery fro surgery",
+                                          "6":  "Recovery from surgery",
                                           "7":  "Seizure disorder",
                                           "9":  "N/K"
 
