@@ -525,9 +525,9 @@
                                 var timeElement = self.audit === "picanet"? 0 : 1; 
                                 var one_day = 1000*60*60*24;  
 
-                                var d1 = self.stringToDate(rec[endVar], timeElement).getDate(),
+                                var d1 = self.stringToDate(rec[endVar], (rec[endVar].indexOf(":")>=0) ).getDate(),
                                     m1 = self.stringToMonth(rec[endVar]);
-                                var d2 = self.stringToDate(rec[startVar], timeElement).getDate(),
+                                var d2 = self.stringToDate(rec[startVar], (rec[startVar].indexOf(":")>=0)).getDate(),
                                     m2 = self.stringToMonth(rec[startVar]);
 
                                /* var d1 = self.stringToDate(rec[$Q.DataDefs[self.audit]["dischargeDateVar"]], timeElement).getDate(),
