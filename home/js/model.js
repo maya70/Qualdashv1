@@ -442,6 +442,62 @@
                                     return true; 
                             }
                         },
+						getExcess: function(vname, recId, month, viewId){
+							var self = this;
+							console.log(vname);
+							console.log(recId); 
+							console.log(month); 
+							console.log(self.data[recId]); 
+							var rec = self.data[recId];
+							var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId] ;
+                            var yfilters =  auditVars['yfilters'][vname];
+							var startVar = yfilters['where']['start'];
+                            var endVar = yfilters['where']['end'];
+
+							var timeElement = self.audit === "picanet"? 0 : 1; 
+							var one_day = 1000*60*60*24;  
+
+							var d1 = self.stringToDate(rec[endVar], (rec[endVar].indexOf(":")>=0) ).getDate(),
+								m1 = self.stringToMonth(rec[endVar]);
+							var d2 = self.stringToDate(rec[startVar], (rec[startVar].indexOf(":")>=0)).getDate(),
+								m2 = self.stringToMonth(rec[startVar]);
+
+						  
+							//var dayCount = Math.ceil(Math.abs(d1 - d2)/one_day*10)/10;  
+							var dayCount = Math.ceil(Math.abs(d1 - d2));  
+							if(dayCount < 1) dayCount = 1;  
+                                
+                                if(m1 !== m2){
+                                    // toss days to the following months (after admission month)
+                                    for(var m= m2+1; m <= m1; m++){ 
+                                        var span =0; 
+
+                                        // did discharge happen in this month?                                        
+                                        if(m === m1){
+                                            var lastDayPrevMon = new Date(self.year, (m-1), 0);
+                                            var disDate = self.stringToDate(rec[endVar], timeElement); 
+                                            var ss = disDate - lastDayPrevMon; 
+                                            //span = Math.ceil(Math.abs(d1 - lastDayPrevMon.getTime())/one_day);     
+                                            var firstDay = new Date(self.year, (m-1), 1);
+                                            span = Math.ceil(Math.abs(d1 - firstDay.getDate() + 1));
+                                        }
+                                        else{
+                                            // patient was in hospital throughout this whole month
+                                         var firstDay = new Date(self.year, (m-1), 1); //self.stringToDate("1/"+m+"/"+self.year).getTime();
+                                         var lastDay = new Date(self.year, (m), 0); //self.stringToDate("1/"+(m+1)+"/"+self.year).getTime();
+                                         //span = Math.round(Math.abs(lastDay.getTime() - firstDay.getTime())/one_day);
+                                         span = Math.round(Math.abs(lastDay.getDate() - firstDay.getDate()));
+                                        }
+                              
+                                    }                                    
+                                    // record bed days from admission day to the end of admission month only
+                                    var dd = new Date(self.year, m2, 0);
+                                    //dayCount = Math.ceil(Math.abs(dd.getTime() - d2)/one_day);
+                                    dayCount = Math.ceil(Math.abs(dd.getDate() - d2));
+                                }   
+							return dayCount; 
+							
+						},
                         setDerivedValue: function(viewId, recId, vname, value){
                             var self = this; 
                             var isDerived = false;

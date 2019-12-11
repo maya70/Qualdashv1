@@ -222,6 +222,9 @@
 						getEHR: function(){
 							return this.dataModel.getEHR(); 
 						},
+						getExcess: function(vname, recId, month, viewId) {
+							return this.dataModel.getExcess(vname, recId, month, viewId);
+						},
 						refreshGrid: function(){
 							var self = this;
 							self.mainView.refreshGrid(); 

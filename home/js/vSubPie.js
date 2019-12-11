@@ -57,12 +57,19 @@
 										dataLinks[key][kk]['parent'] = 0; 
 
 										for(var i=0; i < parentData[key][kk]['data'].length; i++){
-											dataLinks[key][kk]['parent'] += (rule==="count")? 1: 
-																			parseInt(parent.parent.control.getRecordById(parentData[key][kk]['data'][i])[kk]); 
+											var addedVal = parseInt(parent.parent.control.getRecordById(parentData[key][kk]['data'][i])[kk]); 
+											//if(kk.indexOf('der_span') >=0 ){
+												//	addedVal = self.parent.parent.control.getExcess(kk, parentData[key][kk]['data'][i], key, parent.id );
+											// }
+											dataLinks[key][kk]['parent'] += (rule==="count")? 1: addedVal;
+																			
 											if(self.foundMatch(parentData[key][kk]['data'][i], cat, data)){
 												dataLinks[key][kk]['data'].push(parentData[key][kk]['data'][i]);
-												dataLinks[key][kk]['value'] += (rule==="count")? 1: 
-																			parseInt(parent.parent.control.getRecordById(parentData[key][kk]['data'][i])[kk]); 
+												dataLinks[key][kk]['value'] += (rule==="count")? 1: addedVal;
+																			
+											
+											
+											
 											}
 										}
 									}
@@ -431,8 +438,15 @@
 							      	 color(d.data.date))							      
 							      .attr("stroke", "white")
 							      .on("mouseover", function(d){
-							      	var links = self.merge(self.dataLinks[d.data.date]);							      	
-							      	self.parent.highlight(links, viewId);
+							      	var links = self.merge(self.dataLinks[d.data.date]);	
+									var lkeys = Object.keys(links[Object.keys(links)[0]]);
+									var spanFound = 0; 
+									lkeys.forEach(function(lk){
+										if(lk.indexOf("der_span") >= 0)
+											spanFound = 1; 
+									});
+									if(spanFound === 0)
+										self.parent.highlight(links, viewId);
 								      	//console.log(d.data.number);	
 								      	// update title here
 								      	d3.select(this).select("title").text(function(t){
