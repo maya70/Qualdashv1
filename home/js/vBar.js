@@ -170,6 +170,7 @@
 							
 							      
 						},
+
 						shadeCatBar: function(dict, viewId){
 							var self = this; 
 							var undef;
@@ -480,6 +481,32 @@
 							//self.drawCatBar(viewId, self.dict, self.cat[viewId], self.levels, 0); 
 							//drawCatBar(displayId, data, cat, levels,0);
 						},
+						updateDualAxis: function(g){
+							var self = this; 
+							//var colorRange = ['#d7191c', '#fdae61', '#ffffbf', '#a6d96a', '#1a9641'] //['#ffffcc', '#a1dab4', '#41b6c4', '#2c7fb8', '#253494']
+							var colorRange = ["red", "yellow"]; 
+							var lcolor = d3.scaleLinear().range(colorRange).domain([1, 2]);
+							
+							var linearGradient = g.append("defs")
+							            .append("linearGradient")
+							            .attr("id", "linear-gradient")
+							            .attr("gradientTransform", "rotate(90)");
+
+							        
+							        linearGradient.append("stop")
+							            .attr("offset", "0%")
+							            .attr("stop-color", lcolor(1));
+
+							        
+							        linearGradient.append("stop")
+							            .attr("offset", "100%")
+							            .attr("stop-color", lcolor(2));
+							
+													  
+							d3.select("#vline"+self.id)
+								.style("stroke", "url(#linear-gradient)"); 
+
+						},
 						drawCatBar: function(viewId, dict, cat, levels, iter, trellis){
 							var self = this; 
 								self.dict = dict;
@@ -709,7 +736,7 @@
 												.attr("y1", 20 * Math.ceil(numValues/2)+20)
 												.attr("y2", 20 * Math.ceil(numValues/2)+20)
 												.style("stroke", "brown");
-
+									
 								}
 
 								 // x-axis labels
@@ -1184,7 +1211,8 @@
 							      		.attr("class", "line")
 							      		.attr("id", "vline"+self.id)
 							      		.attr("d", valueLine)
-							      		.style("stroke", "brown"); 
+							      		.style("stroke", "black")
+							      		.style("fill", "none"); 
 
 							      	g.append("text")
 							     	  .attr("class", "ylabel")
@@ -1209,18 +1237,23 @@
 							      		.style("stroke", "red")
 							      		.style("fill", "none"); */
 
-var circleOpacity = '0.85';
+								var circleOpacity = '0.85';
 								var circleOpacityOnLineHover = "0.25"
 								var circleRadius = 3;
 								var circleRadiusHover = 6;
 
 var duration = 250;
-							      	
+var colorRange = ["yellow", "red"]; 
+var lcolor = d3.scaleLinear().range(colorRange).domain([0.7, 1.0]);
+							
+self.updateDualAxis(g);					      	
   g.selectAll("circle")
   .data(self.dualData).enter()
   .append("g")
   .attr("class", "circle")  
   .on("mouseover", function(d) {
+  	  var xoffset = d3.select(this).select("circle").attr("cx");
+  	  console.log(xoffset); 
       d3.select(this)     
         .style("cursor", "pointer")
         .append("text")
@@ -1230,8 +1263,16 @@ var duration = 250;
         })
         .style("font-family", "sans-serif")
         .style("fill", "brown")
-        .attr("x", d => xdscale(d.date) + 5)
-        .attr("y", d => ydscale(d.value) - 10);
+        .attr("x", function(d){
+        	//console.log(xdscale(d.date)); 
+        	//return xdscale(d.date) + 5;
+        	return parseInt(xoffset) + 5; 
+        })
+        .attr("y", function(d){
+        	return ydscale(d.value) + 15; 
+        });
+        //.attr("x", d => xdscale(d.date) + 5)
+        //.attr("y", d => ydscale(d.value) - 5);
     })
   .on("mouseout", function(d) {
       d3.select(this)
@@ -1245,7 +1286,9 @@ var duration = 250;
   .attr("cy", d => ydscale(d.value))
   .attr("r", circleRadius)
   .style('opacity', 1)
-  .style("fill", "brown")
+  .style("fill", function(d){
+  	return lcolor(d.value); 
+  })
   .on("mouseover", function(d) {
         d3.select(this)
           .transition()
@@ -1558,11 +1601,12 @@ var duration = 250;
 							      		.attr("id", "vline"+self.id)
 							      		.attr("d", valueLine)
 							      		.attr("transform", "translate("+margin.left+","+margin.top+")")
-							      		.style("stroke", "brown"); 
+							      		.style("stroke", "brown")
+							      		.style("fill", "none"); 
 							      	self.svg.selectAll("circle")
 							      		.attr("cx", d=> xdscale(d.date) )
 							      		.attr("cy", d=> ydscale(d.value));
-
+							     self.updateDualAxis(self.svg); 
 							}
 							if(self.cat) self.changed(x, y, self.id); 
 							else{

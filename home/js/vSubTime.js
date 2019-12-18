@@ -2,7 +2,7 @@
 	'use strict'
 	$Q.SubTimeChart = $Q.defineClass(
 					null, 
-					function SubTimeChart(viewId,vname ,span, data, parent, svgw, svgh, viewType){
+					function SubTimeChart(viewId,vname ,span, data, parent, svgw, svgh, viewType, palette){
 						var self = this;	
 						self.monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
 												"Sep", "Oct", "Nov", "Dec" ];
@@ -235,7 +235,8 @@ var yScale = d3.scaleLinear()
   .range([height-margin-20, 0]);
 
 var color = d3.scaleSequential(d3.interpolateViridis); //d3.scaleOrdinal(d3.schemeCategory10);
-color.domain([0,4]);
+
+color.domain([1,4]);
 
 /* Add SVG */
 							if(self.svg){								
@@ -287,8 +288,9 @@ lines.selectAll('.line-group')
   .attr('d', d => line(d.values))
   .style('stroke', (d, i) => color(i))
   .style('opacity', lineOpacity)
+  .style('fill', 'none')
   .style("stroke-dasharray", function(d,i) {
-  	return ("3," + (i*2));})
+  	return ("3," + ((2-i)*2));})
   .on("mouseover", function(d) {
 
       d3.selectAll('.line')
@@ -321,7 +323,10 @@ lines.selectAll('.line-group')
 lines.selectAll("circle-group")
   .data(self.data).enter()
   .append("g")
-  .style("fill", (d, i) => color(i))
+  //.style("fill", (d, i) => color(i))
+  .style("fill", (d, i) => self.palette[vname])
+  .style("stroke", "black")
+  .style("opacity", 1.0)
   .selectAll("circle")
   .data(d => d.values).enter()
   .append("g")
@@ -399,7 +404,7 @@ self.svg.append("g")
   			.attr("y1", i*20)
   			.attr("y2", i*20)
   			.style('stroke', color(i))  			
-  			.style("stroke-dasharray",("3," + (i*2)));
+  			.style("stroke-dasharray",("3," + ((2-i)*2)));
 
   	legend.append("text")
   			.attr("x", 12)

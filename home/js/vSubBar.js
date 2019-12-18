@@ -119,7 +119,7 @@
 							      	div.transition()
 							      		.duration(200)
 							      		.style("opacity", 0.9);
-							      	div .html((d.date) + "<br/>" + (d.number+ ""))
+							      	div .html((d.date) + "<br/>" + (Math.round(d.number*1000)/1000+ ""))
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	d3.select(this).style("fill", self.highlightColor);
@@ -184,7 +184,8 @@
 
 							g.append("g")
 							      .attr("class", "y axis")
-							      .call(d3.axisLeft(y).ticks(5,"s"))
+							      .call(d3.axisLeft(y).ticks(5,"s").tickFormat(function (d)
+							      							{return  d < 1.0? d3.format(".3f")(d) : d3.format(".1f")(d);}))
 							      .attr("transform", "translate("+0+","+ 0+")");
 
 							g.append("text")
@@ -202,7 +203,7 @@
 								      	for(var i=0; i< mss['quantities'].length; i++)
 								      		if(mss['quantities'][i]['q'] === vname)
 								      			agg = mss['quantities'][i]['yaggregates'];
-								      	return agg;
+								      	//return agg;
 								      });   
 							
 							g.append("text")
@@ -234,7 +235,7 @@
 							      	div.transition()
 							      		.duration(200)
 							      		.style("opacity", 0.9);
-							      	div .html(self.months[(parseInt(d.date)-1)] + "<br/>" + (Math.round(d.number*10)/10+ ""))
+							      	div .html(self.months[(parseInt(d.date)-1)] + "<br/>" + (Math.round(d.number*1000)/1000+ ""))
 							      		.style("left", (d3.event.pageX) + "px")
 							      		.style("top", (d3.event.pageY - 28) + "px");
 							      	d3.select(this).style("fill", self.highlightColor);

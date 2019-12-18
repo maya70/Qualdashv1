@@ -1,6 +1,6 @@
 $Q.Picanet = {
-  "availMetrics": [{"value": "Mortality by month of admission", 
-                    "text": "Mortality by month of admission"},
+  "availMetrics": [{"value": "Mortality and Alive Discharges", 
+                    "text": "Mortality and Alive Discharges"},
                     {"value": "48h Readmission", 
                       "text": "48h Readmission"}, 
                     {"value": "Bed Days and Ventilation", 
@@ -46,14 +46,14 @@ $Q.Picanet = {
                   "der_depLevel5": "IC Advanced",
                   "der_depLevel6": "IC Advanced Enhanced"
                 },
-"displayVariables": [{  "metric": "Mortality by month of admission",
+"displayVariables": [{  "metric": "Mortality and Alive Discharges",
                         "mark": "bar", 
-                        "chart": "grouped", 
+                        "chart": "stacked", 
                         "colorScale": "categorical",
-                        "x": "AdDate",
-                        "y": ["EventID", "UnitDisStatus", "der_smr"], 
-                        "legend": ["Alive Admissions", "Deaths in unit", "SMR"],
-                        "yaggregates": ["count", "count", "runningAvg"], 
+                        "x": "UnitDisDate",
+                        "y": ["EventID", "UnitDisStatus", "SMR"], 
+                        "legend": ["Alive Discharges", "Deaths in unit", "SMR"],
+                        "yaggregates": ["count", "count", "average"], 
                         "yfilters": {"EventID": {"where":{ "UnitDisStatus": "1" }, "valid":["1", "2"]},      
                                      "UnitDisStatus":{"where":{ "UnitDisStatus": "2" }, "valid":["1", "2"]}
                                      
@@ -69,7 +69,7 @@ $Q.Picanet = {
               
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["PrimReasonDescription","AdTypeDescription", "Ethnic"],      
-                        "quantities": [{"q":"PIM3","granT": "AdDate", "granP":["unit"], "yaggregates": "sum" }], // from tasks with a single quantitative variable                                                                   
+                        "quantities": [{"q":"PIM3","granT": "AdDate", "granP":["unit"], "yaggregates": "average" }], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["EventID", "UnitDisStatus"] }   // the first element holds the master view's granT                                             
           
                      },
@@ -112,7 +112,7 @@ $Q.Picanet = {
                         "yaggregates": ["sum", "sum", "sum"],
                         "ehr": "Admissions", 
                         "granP": ["unit", "unit", "unit"], 
-                        "categories": ["InvVent"], 
+                        "categories": ["InvVent", "UnplannedExtubation"], 
                         "quantities": [{"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
                                         {"q":"der_spanbedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
                         "granT": {"monthly-annual": ["der_spanbedDays", "der_spanventDays"]}, 

@@ -4,14 +4,21 @@ library(lubridate)
 
 library(parsedate)
 
+library(ems)
 
 
 #source_file_path <-"//iqdvmappp01its/qualdash/home/data/source/"
-source_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/source/"
+#source_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/source/"
+source_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/source/"
+
 #dest_file_path <- "//iqdvmappp01its/qualdash/home/data/picanet_admission/"
-dest_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/picanet_admission/"
+#dest_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/picanet_admission/"
+dest_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_admission/"
+
 #dest_activity_path <- "//iqdvmappp01its/qualdash/home/data/picanet_activity/"
-dest_activity_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/picanet_activity/"
+#dest_activity_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/picanet_activity/"
+dest_activity_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_activity/"
+
 audit_filename <- "admission.csv"
 
 #dateFormat <- "%d-%m-%y %H:%M"
@@ -57,6 +64,8 @@ for(col in colnames(admission)){
 
 # break it into seperate files for individual years
   # and store the new files in the picanet folder 
+# THIS FILE WRITE IS REDUNDANT BUT KEPT FOR NOW BECAUSE IT IS USED IN A SUBSEQUENT READ 
+# SHOULD BE DEPRACATED 
 for(year in unique(admission$adyear)){
   tmp = subset(admission, adyear == year)     
   fn = paste(dest_file_path, gsub(' ','', year), '.csv', sep='' )
@@ -96,7 +105,8 @@ M <- merge(admission, activity, by=c('EventID'), all.x=T)
   # select only relevant columns for QualDash
   d = data.frame(M$EventID, M$ActivityDate , M$AdDate,   M$ActivityDate, M$PccHrg, M$InvVentET, M$InvVentTT)
   colnames(d) <- c('EventID', 'ActivityDate' , 'adDate', 'invVentStart', 'hrggroup', 'InvVentET', 'InvVentTT')
-  ventEvt <- d$InvVentET | d$InvVentTT
+  logicaldf <- data.frame(InvVentET= as.logical(d$InvVentET), InvVentTT= as.logical(d$InvVentTT))
+  ventEvt <- Reduce('|', logicaldf)
   
 id <- d$EventID
 row <- 1
@@ -134,8 +144,6 @@ while( row  < nrow(d)){
 	row <- row + 1
   #otherwise this is a new patient with ventilation event, in which case the loop iterates with the current row 
 }
-#admission$invVentStart <- lapply(admission$invVentStart, function(x) as.POSIXlt(x, format=dateFormat))
-#admission$invVentEnd <- lapply(admission$invVentEnd, function(x) as.POSIXlt(x, format=dateFormat))
 
 ###########################################
 
@@ -164,7 +172,21 @@ for(year in unique(df$adyear)){
     }
     
   
-  tmp = subset(admission, adyear == year)     
+  tmp = subset(admission, adyear == year)   
+  tmp = cbind(tmp, SMR=0)
+  
+  # add incremental SMR calculation for each month in this year
+  sorted <- sort(unique(tmp$AdMonth))
+  for(m in sorted){
+    # accumulate from the first month up to the current month
+    tmpMonths <- tmp[tmp$AdMonth %in% 1:m, ]
+    tmpMonths$death <- tmpMonths$UnitDisStatus - 1
+    smr <- SMR(tmpMonths$death, tmpMonths$PIM3)
+    tmp[which(tmp$AdMonth == m), 'SMR'] <- smr['SMR']
+  }
+  
+  
+  
   fn = paste(dest_file_path, gsub(' ','', year), '.csv', sep='' )
   write.csv(tmp, fn, row.names = FALSE)
   

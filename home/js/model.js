@@ -546,12 +546,13 @@
                             //TODO: use callbacks for variable rules instead of this exhaustive branching
 
                            
-                            if(vname === "smr" && self.audit === "picanet"){
+                            /*if(vname === "smr" && self.audit === "picanet"){
                                 if(isNaN(rec["PIM3"]))
                                     self.recordMissing(metric, "der_"+vname, i);
                                 return rec["PIM3"]; 
                             }
-                            else if(vname === "discharge"){
+                            else */
+                            if(vname === "discharge"){
                                 if((rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] === "1" && self.audit === "picanet") || 
                                     (rec[$Q.DataDefs[self.audit]["dischargeStatusVar"]] !== "4" && self.audit === "minap") )
                                     return 1;
