@@ -1028,6 +1028,10 @@
 						},
 						createHeader: function(container, viewId){
 							var self = this; 
+							var div2 = d3.select("body").append("div")	
+									    .attr("class", "tooltip")				
+									    .style("opacity", 0);
+
 							var header = container.append("div")
 									.attr("id", "header"+viewId)
 									.attr("class", "form-inline")
@@ -1061,7 +1065,28 @@
 												.text("["+ self.year + "] "+ self.parent.availMetrics[viewId]['text'])
 													.style("font-weight", "bold")
 													.style("font-family", "sans-serif")
-													.style("font-size", "11pt");
+													.style("font-size", "11pt")
+												.on("mouseover", function(d){
+													div2.transition()
+											      		.duration(200)
+											      		.style("opacity", 0.9)
+											      		.style("width", "160px")
+											      		.style("height", "70px")
+											      		.style("background-color", "white")
+											      		.style("margin-left", "20px")
+											      		.style("text-align", "left")
+											      		.style("vertical-align", "middle");
+											      	div2 .html("X-axis: " + "<br>" + "Last recorded incident: ")
+											      		.style("left", (d3.event.pageX) -28 + "px")
+											      		.style("top", (d3.event.pageY + 28) + "px");
+											      	
+												})
+												.on("mouseout", function(d){
+													div2.transition()
+										      		.duration(500)
+										      		.style("opacity", 0);
+										      	
+												});
 												/*.on("change", function(d){													
 													////////console.log(this.value);													
 													self.parent.control.updateMetrics(viewId, this.value); 											
