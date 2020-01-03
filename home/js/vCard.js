@@ -1032,6 +1032,7 @@
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
 
+						    var cardInfo = self.parent.control.getCardInfo(viewId); 
 							var header = container.append("div")
 									.attr("id", "header"+viewId)
 									.attr("class", "form-inline")
@@ -1069,16 +1070,26 @@
 												.on("mouseover", function(d){
 													div2.transition()
 											      		.duration(200)
-											      		.style("opacity", 0.9)
-											      		.style("width", "160px")
-											      		.style("height", "70px")
-											      		.style("background-color", "white")
-											      		.style("margin-left", "20px")
+											      		.style("opacity", 0.99)
+											      		.style("width", "360px")
+											      		.style("height", "270px")
+											      		.style("background-color", "#0feae8")											      													      		
 											      		.style("text-align", "left")
-											      		.style("vertical-align", "middle");
-											      	div2 .html("X-axis: " + "<br>" + "Last recorded incident: ")
-											      		.style("left", (d3.event.pageX) -28 + "px")
-											      		.style("top", (d3.event.pageY + 28) + "px");
+											      		.style("padding-left", "10px")			
+											      		.style("padding-right", "10px")											      		
+											      		.style("padding-top", "30px")
+											      		.style("font-size", "13pt");
+											      	if(cardInfo['event']){
+												      	div2 .html("Card description: <pre> " + cardInfo['desc'] + "</pre><br>" + "Last recorded incident: "+ "<br>" +
+												      					"<pre> Event name: "+ cardInfo['event']['desc'] +" <br> Event date: " + cardInfo['last']+ " </pre>" + "<br>")
+												      		.style("left", (d3.event.pageX) -58 + "px")
+												      		.style("top", (d3.event.pageY + 8) + "px");
+											      	}
+											      	else{
+											      		div2 .html("Card description: <pre> " + cardInfo['desc'] + "</pre><br>" )
+											      		.style("left", (d3.event.pageX) -58 + "px")
+											      		.style("top", (d3.event.pageY + 8) + "px");
+											      	}
 											      	
 												})
 												.on("mouseout", function(d){

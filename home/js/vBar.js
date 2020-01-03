@@ -371,7 +371,15 @@
 							      .call(d3.axisBottom(x))									
 									.selectAll("text")	
 										.text(function(d){
-											return $Q.months[d-1]; 
+											
+											if(d.indexOf("-") < 0)
+												return $Q.months[d-1]; 
+											else{
+												var strings = d.split("-");
+												var y = strings[1];
+												var m = strings[0];
+												return $Q.months[m-1] + "" + y.substring(2,4); 
+											}
 										})	
 								        .style("text-anchor", "end")
 								        .attr("dx", "-.8em")
@@ -1030,6 +1038,12 @@
 							      	//var dictEntry = self.dict[(i+1)+""]; 
 							      	var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
 							      	var dictEntry = self.dict[thisEntry+""]; 
+							      	var first = Object.keys(self.dict)[0];
+							      	if(first.indexOf("-") >=0){
+							      		var curKey = Object.keys(self.dict)[i];
+							      		dictEntry = self.dict[curKey]; 
+							      	}
+							      	
 							      	if(!dictEntry)
 							      		return null; 
 						      		var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
@@ -1048,6 +1062,11 @@
 							      	//var dictEntry = self.dict[(i+1)+""]; 
 							      	var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
 							      	var dictEntry = self.dict[thisEntry+""]; 
+							      	var first = Object.keys(self.dict)[0];
+							      	if(first.indexOf("-") >=0){
+							      		var curKey = Object.keys(self.dict)[i];
+							      		dictEntry = self.dict[curKey]; 
+							      	}
 							      	if(!dictEntry)
 							      		return null; 
 							      	var sel = d3.select(this);
@@ -1065,6 +1084,12 @@
 							      		//var dictEntry = self.dict[(i+1)+""]; 
 							      		var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
 								      	var dictEntry = self.dict[thisEntry+""]; 
+								      	var first = Object.keys(self.dict)[0];
+								      	if(first.indexOf("-") >=0){
+								      		var curKey = Object.keys(self.dict)[i];
+								      		dictEntry = self.dict[curKey]; 
+								      	}
+							      	
 								      	if(!dictEntry)
 								      		return null; 
 						      			var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
@@ -1113,6 +1138,12 @@
 								     	//var dictEntry = self.dict[(i+1)+""]; 
 								     	var thisEntry = parseInt(Object.keys(self.dict)[0]) + i; 
 								      	var dictEntry = self.dict[thisEntry+""]; 
+								      	var first = Object.keys(self.dict)[0];
+								      	if(first.indexOf("-") >=0){
+								      		var curKey = Object.keys(self.dict)[i];
+								      		dictEntry = self.dict[curKey]; 
+								      	}
+							      	
 								      	if(!dictEntry)
 								      		return null; 
 						      			var cat = parseInt(d3.select(this).attr("id").split("-")[1]); 
@@ -1158,7 +1189,14 @@
 								    .call(d3.axisBottom(x))
 									.selectAll("text")	
 										.text(function(d){
-											return $Q.months[d-1]; 
+											if(d.indexOf("-") < 0)
+												return $Q.months[d-1]; 
+											else{
+												var strings = d.split("-");
+												var y = strings[1];
+												var m = strings[0];
+												return $Q.months[m-1] + "" + y.substring(2,4); 
+											}
 										})
 								        .style("text-anchor", "end")
 								        .attr("dx", "-.8em")
@@ -1550,7 +1588,14 @@ self.updateDualAxis(g);
 							      .call(d3.axisBottom(x))
 									.selectAll("text")	
 									.text(function(d){
-											return $Q.months[d-1]; 
+											if(d.indexOf("-") < 0)
+												return $Q.months[d-1]; 
+											else{
+												var strings = d.split("-");
+												var y = strings[1];
+												var m = strings[0];
+												return $Q.months[m-1] + "" + y.substring(2,4); 
+											}
 										})
 								        .style("text-anchor", "end")
 								        .attr("dx", "-.8em")

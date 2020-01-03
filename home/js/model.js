@@ -191,6 +191,117 @@
                             }
                             return Qs; 
                         },
+                        getCardInfo: function(viewId){
+                            var self = this; 
+                            var auditVars; 
+                            var info = {};
+                            
+                            if(self.control.audit === "picanet")
+                                auditVars = $Q.Picanet['displayVariables'][viewId];
+                            else
+                                auditVars = $Q.Minap['displayVariables'][viewId]; 
+
+                            info['desc'] = auditVars['desc'];
+                            info['event'] = auditVars['event']; 
+                            info['last'] = new Date(2000, 1, 1, 0, 0, 0, 0);
+                            if(info['event']){
+                                var  evtName = info['event']['name'];
+
+                                for(var i=0; i < self.data.length; i++){                                    
+                                    var vv = self.data[i][evtName]; 
+                                    var yfilters = auditVars['yfilters'][evtName];
+                                    if(yfilters){
+                                        var includeRec = self.applyCriterion(yfilters, self.data[i] );
+                                        if(includeRec){
+                                            // update the last event here
+                                            var evtDate = new Date(self.data[i][info['event']['date']]);  
+                                            if(info['last'] < evtDate ){
+                                                info['last'] = evtDate;
+                                                info['id'] = self.data[i][info['event']['id']];                                            
+                                            }
+
+                                        }
+                                    }
+                                }
+                            }
+                            //console.log(info); 
+                            return info; 
+                        },
+                        applyCriterion: function(yfilters, rec){
+                            var self = this;
+                            var criterion = yfilters['where']; 
+                            if(criterion === "*"){
+                                 return true; 
+                                }
+                            else{
+                                var count = 0; 
+                                var arrvals = [];
+                                var vval; 
+
+                                for(var ckey in criterion){
+                                    count++;
+                                    var value = criterion[ckey];
+                                    if(rec[ckey] === value){
+                                        vval = 1;                                              
+                                    }
+                                    else if( value.constructor === Array){
+                                        if(value.indexOf(rec[ckey]) >=0)
+                                            vval = 1;
+                                        else
+                                            vval = 0; 
+                                    }
+                                    else {
+                                        vval = 0; 
+                                    }
+                                   arrvals.push(vval);
+                                }
+                                if(yfilters['operator']){
+                                    var res; 
+                                    switch(yfilters['operator']){
+                                        case 'AND':{
+                                            res = 1; 
+                                            arrvals.forEach(function(v){
+                                                if(v === 0){
+                                                    res = 0;                                                         
+                                                }
+                                            });
+                                            break;
+                                        }
+                                        case 'OR': {
+                                            res = 0; 
+                                            arrvals.forEach(function(v){
+                                                if(v === 1){
+                                                    res = 1;                                                        
+                                                }
+                                            });
+                                            break; 
+                                        }
+                                        default: {  // default to AND
+                                            res = 1; 
+                                            arrvals.forEach(function(v){
+                                                if(v === 0){
+                                                    res = 0; 
+                                                                                              
+                                                }
+                                            });
+                                            break;
+                                        }
+
+                                    }
+                                    vval = res; 
+                                }
+                                else{ // default to AND
+                                   vval = arrvals[0]; 
+                                }
+                                if(vval)
+                                    return true;
+                                else
+                                    return false; 
+                                
+
+                            }
+
+                        },
                         loadHistory: function(){
                             var self = this;
                             var tspan, fpath; 
@@ -200,13 +311,11 @@
                                 fpath = "./data/picanet_admission/";
 
                                 for(var i=1; i < tspan; i++){                                    
-                                    var year = parseInt(self.year)-i;                                 
+                                    var year = parseInt(self.year)-i;  
                                     d3.csv(fpath+year+".csv", function(data){                                        
                                         ////console.log("Loading History");
                                         var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]]; 
-
-                                         
-                                            
+                        
 
                                             for(var d = 0; d < data.length; d++){
                                                 data[d]["EVENTID"] = ""+data[d]["eventidscr"];  
@@ -242,6 +351,12 @@
 
                                 for(var i=1; i < tspan; i++){                                    
                                     var year = parseInt(self.year)-i;                                 
+                                    if(self.year.indexOf("-") >=0){
+                                        //if(i === 1) i =0; 
+                                        //tspan = 4;  
+                                        year = parseInt(self.year.split("-")[1]) - i;                                
+                                    }
+                                    
                                     d3.csv(fpath+year+".csv", function(data){                                        
                                         ////console.log("Loading History");
                                         var yearupdated = data[0][[$Q.DataDefs[self.audit]["yearVar"]]] || self.stringToDate(data[0][[$Q.DataDefs[self.audit]["admissionDateVar"]]]).getYear()+1900; 
@@ -765,7 +880,7 @@
                                 second = timeParts[1];   
                             }
                             
-                            if(check && year !== self.year)
+                            if(check && year !== self.year && (self.year.indexOf("-") < 0))
                                 return undef; 
 
                             if(timeElement)
@@ -1249,33 +1364,35 @@
 
                         },
                         updateTimeHierarchy: function(year, varname, displayId, rec, qval){
-                            var self = this;                             
-                            if(self.checkGranT(varname , displayId)){
-                                if(!self.tHier)
-                                    self.tHier= {}; 
-                                if(!self.tHier[displayId])
-                                    self.tHier[displayId] = {}; 
-                                if(!self.tHier[displayId][year])
-                                    self.tHier[displayId][year] = {}; 
-                                var quar = self.getRecordQuarter(rec);
-                                if(quar === 1){
-                                    var m = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
-                                    if(m === 12)
-                                        console.log(m); 
-                                }
-                                if(!self.tHier[displayId][year][quar])
-                                    self.tHier[displayId][year][quar] = {};
-                                var mon =  self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
-                                if(!self.tHier[displayId][year][quar][mon])
-                                    self.tHier[displayId][year][quar][mon] = {};
-                                var week = parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
-                                if(!self.tHier[displayId][year][quar][mon][week])
-                                    self.tHier[displayId][year][quar][mon][week] = {};
-                                if(!self.tHier[displayId][year][quar][mon][week][varname])
-                                    self.tHier[displayId][year][quar][mon][week][varname] = qval; 
-                                else
-                                    self.tHier[displayId][year][quar][mon][week][varname] += qval;
-
+                            var self = this; 
+                            if(year.indexOf("-") < 0)
+                            {                            
+                                                        if(self.checkGranT(varname , displayId)){
+                                                            if(!self.tHier)
+                                                                self.tHier= {}; 
+                                                            if(!self.tHier[displayId])
+                                                                self.tHier[displayId] = {}; 
+                                                            if(!self.tHier[displayId][year])
+                                                                self.tHier[displayId][year] = {}; 
+                                                            var quar = self.getRecordQuarter(rec);
+                                                            if(quar === 1){
+                                                                var m = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                                                if(m === 12)
+                                                                    console.log(m); 
+                                                            }
+                                                            if(!self.tHier[displayId][year][quar])
+                                                                self.tHier[displayId][year][quar] = {};
+                                                            var mon =  self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                                            if(!self.tHier[displayId][year][quar][mon])
+                                                                self.tHier[displayId][year][quar][mon] = {};
+                                                            var week = parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
+                                                            if(!self.tHier[displayId][year][quar][mon][week])
+                                                                self.tHier[displayId][year][quar][mon][week] = {};
+                                                            if(!self.tHier[displayId][year][quar][mon][week][varname])
+                                                                self.tHier[displayId][year][quar][mon][week][varname] = qval; 
+                                                            else
+                                                                self.tHier[displayId][year][quar][mon][week][varname] += qval;
+                            }
                             }                            
                         },
                         variableInData: function(newvar){
@@ -1489,10 +1606,12 @@
 
                             // define levels of the x-axis
                             var xlevels = d3.map(self.data, function(item){
-                                                var res;
+                                                var res, y;
                                                 //res = (self.audit === "picanet")? item[dateVar] : self.stringToMonth(item[dateVar]);
                                                 res = self.stringToMonth(item[dateVar]);
-                                                return res;
+                                                y = self.stringToDate(item[dateVar]).getYear()+1900;
+                                                //return res;
+                                                return  (self.year.indexOf("-") < 0) ? res : res + "-" + y;
                                                 }).keys();
                             
                             // define record groups for different y variables
@@ -1521,6 +1640,10 @@
                                 **/
                                //var mon = self.audit === "picanet"? self.data[i][dateVar] : self.stringToMonth(self.data[i][dateVar]); 
                                var mon = self.stringToMonth(self.data[i][dateVar]);
+                               if(self.year.indexOf("-") >= 0){
+                                 var y  = self.stringToDate(self.data[i][dateVar]).getYear() + 1900;
+                                 mon = mon + "-" + y; 
+                               }
                                var vval; 
 
                                 if(displayId === 1 && mon === 1 && i === 100)
@@ -1799,7 +1922,7 @@
                                                         result['dict'][month]["der_readmit"]["data"].push(patientEHR['ids'][aid]);
                                                         result['slaves']['data']['der_readmit'][month]['unit']++; 
                                                         // update the time hierarchy
-                                                        //self.tHier[self.year][quar][mon][week]["der_readmit"]++; 
+                                                        
                                                         var auditVars = (self.audit === 'picanet')? $Q.Picanet["displayVariables"] : $Minap["displayVariables"];
                                                         for(var v = 0; v < self.dataViews.length; v++){
                                                            var granT = auditVars[v]['granT']["monthly-annual"];

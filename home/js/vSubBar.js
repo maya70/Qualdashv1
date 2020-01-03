@@ -81,7 +81,16 @@
 							      .call(d3.axisBottom(x))
 									.selectAll("text")	
 										.text(function(d){
-											return $Q.months[d-1] || d; 
+											if(d.indexOf("-") < 0)
+												return $Q.months[d-1] || d; 
+											else
+											{
+												var strings = d.split("-");
+												var y = strings[1];
+												var m = strings[0];
+												return $Q.months[m-1] + "" + y.substring(2,4); 
+												 
+											}
 										})
 								        .style("text-anchor", "end")
 								        .attr("dx", "-.8em")
@@ -175,7 +184,17 @@
 							      .call(d3.axisBottom(x))
 									.selectAll("text")	
 										.text(function(d){
-											return $Q.months[d-1] || d; 
+											if(d.indexOf("-") < 0)
+												return $Q.months[d-1] || d; 
+											else
+											{
+												var strings = d.split("-");
+												var y = strings[1];
+												var m = strings[0];
+												return $Q.months[m-1] + "" + y.substring(2,4); 
+												 
+											}
+
 										})
 								        .style("text-anchor", "end")
 								        .attr("dx", "-.8em")

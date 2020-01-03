@@ -182,7 +182,10 @@
 						},
 						getCardQs: function(viewId){							
 							return this.dataModel.getQs(viewId); 
-						},						
+						},	
+						getCardInfo: function(viewId){
+							return this.dataModel.getCardInfo(viewId);
+						},					
 						updateDataViews: function(viewId, slaves){
 							var self = this;
 							self.mainView.updateDataViews(viewId, slaves);
