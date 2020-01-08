@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.column {
+  float: left;
+  width: 33.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+@media screen and (max-width: 650px) {
+  .column {
+    width: 100%;
+    display: block;
+  }
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  padding: 0 16px;
+}
+
+.container::after, .row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.title {
+  color: grey;
+}
+
+.button {
+  border: none;
+  outline: 0;
+  display: inline-block;
+  padding: 8px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+}
+
+.button:hover {
+  background-color: #555;
+}
+</style>
+</head>
+<body>
+
+<h2>Contact the QualDash Team</h2>
+
+<br>
+
+<div class="row" style="width: 100%">
+  <div class="column">
+    <div class="card">
+      <img src="mai.png" alt="Mai" style="width:100%">
+      <div class="container">
+        <h2>Mai Elshehaly</h2>
+        <p class="title">QualDash Developer</p>
+        <p> For technical enquiries and customization requests. </p>
+        <p>M.H.Elshehaly@leeds.ac.uk</p>
+        <p><button class="button">Contact</button></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="tasha.jpg" alt="Tasha" style="width:100%">
+      <div class="container">
+        <h2>Natasha Alvarado</h2>
+        <p class="title"> QualDash Research Fellow. </p>
+        <p> For questions re. QualDash implementation and site information. </p>
+        <p>N.Alvarado@leeds.ac.uk</p>
+        <p><button class="button">Contact</button></p>
+      </div>
+    </div>
+  </div>
+  <div class="column">
+    <div class="card">
+      <img src="lynn.jpg" alt="Lynn" style="width:100%">
+      <div class="container">
+        <h2>Lynn McVey</h2>
+        <p class="title">QualDash Researcher. </p>
+        <p> For questions re. QualDash implementation and site information. </p>
+        <p>L.McVey@leeds.ac.uk</p>
+        <p><button class="button">Contact</button></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

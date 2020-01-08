@@ -57,10 +57,10 @@ $Q.Minap = {
                                     "id": "1.02 HospitalNumber" }, 
                         "legend": ["Alive", "Deceased"],
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.01 AdmissionDiagnosis", "2.39 AdmissionMethod"],      
+                        "categories": ["2.01 AdmissionDiagnosis", "2.39 AdmissionMethod", "2.22 AdmittingConsultantType"],      
                         "quantities": [
                                         //{"q":"1.02 HospitalNumber","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                                        {"q":"2.22 AdmittingConsultantType", "granT": "admonth", "granP":["unit"], "yaggregates": "" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["1.02 HospitalNumber", "4.04 DeathInHospital"] }   // the first element holds the master view's granT                                             
           

@@ -211,7 +211,7 @@
                                     var vv = self.data[i][evtName]; 
                                     var yfilters = auditVars['yfilters'][evtName];
                                     if(yfilters){
-                                        var includeRec = self.applyCriterion(yfilters, self.data[i] );
+                                        var includeRec = self.applyCriterion(yfilters, self.data[i] );                                        
                                         if(includeRec){
                                             // update the last event here
                                             var evtDate = new Date(self.data[i][info['event']['date']]);  
@@ -337,7 +337,7 @@
                                                     }
                                                 }
                                             }
-                                            self.postProcessHistory(yearupdated, "der_readmit" ); 
+                                            //self.postProcessHistory(yearupdated, "der_readmit" ); 
                                        
 
                                     });
@@ -353,8 +353,8 @@
                                     var year = parseInt(self.year)-i;                                 
                                     if(self.year.indexOf("-") >=0){
                                         //if(i === 1) i =0; 
-                                        //tspan = 4;  
-                                        year = parseInt(self.year.split("-")[1]) - i;                                
+                                        tspan = 4;  
+                                        year = parseInt(self.year.split("-")[1]) +1 - i;                                
                                     }
                                     
                                     d3.csv(fpath+year+".csv", function(data){                                        
@@ -378,7 +378,7 @@
                                                 }
                                             }
                                         }
-                                        self.postProcessHistory(yearupdated, "der_readmit" ); 
+                                        //self.postProcessHistory(yearupdated, "der_readmit" ); 
                                        
                                     });
                                 } 
@@ -545,7 +545,7 @@
                             var self = this;
                             var rec; 
                             for(var i=0; i < self.data.length; i++){
-                                if(self.data[i]["EVENTID"] === id)
+                                if(self.data[i]["EventID"] === id)
                                     return i; 
                             }
                             return null; 
@@ -557,30 +557,30 @@
                                     return true; 
                             }
                         },
-						getExcess: function(vname, recId, month, viewId){
-							var self = this;
-							console.log(vname);
-							console.log(recId); 
-							console.log(month); 
-							console.log(self.data[recId]); 
-							var rec = self.data[recId];
-							var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId] ;
+                        getExcess: function(vname, recId, month, viewId){
+                            var self = this;
+                            console.log(vname);
+                            console.log(recId); 
+                            console.log(month); 
+                            console.log(self.data[recId]); 
+                            var rec = self.data[recId];
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId] ;
                             var yfilters =  auditVars['yfilters'][vname];
-							var startVar = yfilters['where']['start'];
+                            var startVar = yfilters['where']['start'];
                             var endVar = yfilters['where']['end'];
 
-							var timeElement = self.audit === "picanet"? 0 : 1; 
-							var one_day = 1000*60*60*24;  
+                            var timeElement = self.audit === "picanet"? 0 : 1; 
+                            var one_day = 1000*60*60*24;  
 
-							var d1 = self.stringToDate(rec[endVar], (rec[endVar].indexOf(":")>=0) ).getDate(),
-								m1 = self.stringToMonth(rec[endVar]);
-							var d2 = self.stringToDate(rec[startVar], (rec[startVar].indexOf(":")>=0)).getDate(),
-								m2 = self.stringToMonth(rec[startVar]);
+                            var d1 = self.stringToDate(rec[endVar], (rec[endVar].indexOf(":")>=0) ).getDate(),
+                                m1 = self.stringToMonth(rec[endVar]);
+                            var d2 = self.stringToDate(rec[startVar], (rec[startVar].indexOf(":")>=0)).getDate(),
+                                m2 = self.stringToMonth(rec[startVar]);
 
-						  
-							//var dayCount = Math.ceil(Math.abs(d1 - d2)/one_day*10)/10;  
-							var dayCount = Math.ceil(Math.abs(d1 - d2));  
-							if(dayCount < 1) dayCount = 1;  
+                          
+                            //var dayCount = Math.ceil(Math.abs(d1 - d2)/one_day*10)/10;  
+                            var dayCount = Math.ceil(Math.abs(d1 - d2));  
+                            if(dayCount < 1) dayCount = 1;  
                                 
                                 if(m1 !== m2){
                                     // toss days to the following months (after admission month)
@@ -610,9 +610,9 @@
                                     //dayCount = Math.ceil(Math.abs(dd.getTime() - d2)/one_day);
                                     dayCount = Math.ceil(Math.abs(dd.getDate() - d2));
                                 }   
-							return dayCount; 
-							
-						},
+                            return dayCount; 
+                            
+                        },
                         setDerivedValue: function(viewId, recId, vname, value){
                             var self = this; 
                             var isDerived = false;
@@ -1858,9 +1858,7 @@
                                                             self.tHier[v][year][quar][mon][week][varname]++; 
                                                     }
                                                 }
-                                                // either way update the slave that will show national average
-                                                //result['slaves']['data']['der_readmit'][month]['national']++; 
-                                               
+                                                
 
                                             }
 
@@ -1879,73 +1877,6 @@
                             var result = {};
                             result['dict'] = dict;
                             result['slaves'] = slaves;
-                            if(metric === "48h Readmission"){ 
-                                // calculate 48-hour readmissions:
-                                for(var key in self.ehr ){
-                                    var patientEHR = self.ehr[key];
-                                    var adm = patientEHR["admissionsT"];
-                                    var disc = patientEHR["dischargesT"];
-                                    var one_hour=1000*60*60;  // in ms
-                                   
-                                    //var index_a = adm.indexOf(self.data[i]["3.06 ArrivalAtHospital"]);
-                                    if(adm.length <= 1)  // this patient was only admitted once
-                                        continue;
-
-                                    else{
-                                        disc.forEach(function(discharge, did){
-                                            var d_date = self.stringToDate(discharge);
-                                            adm.forEach(function(admission, aid){
-                                                var a_date = self.stringToDate(admission);
-                                                var adt = a_date.getTime(),
-                                                    ddt = d_date.getTime(); 
-                                                var diff = Math.round((adt-ddt)/one_hour);
-                                                if(diff >=0 && diff <= 48 && (aid !== did)){
-                                                //if(aid !== did){
-                                                    var adrec = patientEHR['data'][aid];
-                                                    // find corresponding entry in dict
-                                                    // assuming dict is organized by months
-                                                    // find the months of this readmission event
-                                                    var month = parseInt(self.stringToMonth(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]])); //adrec[$Q.DataDefs[self.audit]["monthVar"]];
-                                                    var unit = adrec[$Q.DataDefs[self.audit]["unitIdVar"]];
-                                                    var quar = self.getRecordQuarter(adrec);
-                                                    //var month = adrec[$Q.DataDefs[self.audit]["monthVar"]];
-                                                    var mon = parseInt(self.stringToMonth(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]])); //parseInt(adrec[$Q.DataDefs[self.audit]["monthVar"]]);
-                                                    var week = parseInt(self.stringToDate(adrec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
-                                                    //parseInt(adrec[$Q.DataDefs[self.audit]["weekVar"]]);
-                                                    if(isNaN(mon))
-                                                        self.recordMissing(metric, "der_readmit", aid); 
-                                                    //if(unit === self.unitID)
-                                                    if(true)
-                                                    {
-                                                        // update this view's master dict
-                                                        result['dict'][month]["der_readmit"]["value"]++;
-                                                        result['dict'][month]["der_readmit"]["data"].push(patientEHR['ids'][aid]);
-                                                        result['slaves']['data']['der_readmit'][month]['unit']++; 
-                                                        // update the time hierarchy
-                                                        
-                                                        var auditVars = (self.audit === 'picanet')? $Q.Picanet["displayVariables"] : $Minap["displayVariables"];
-                                                        for(var v = 0; v < self.dataViews.length; v++){
-                                                           var granT = auditVars[v]['granT']["monthly-annual"];
-                                                            if(granT.indexOf("der_readmit") >= 0)
-                                                                self.tHier[v][year][quar][mon][week]["der_readmit"]++; 
-                                                        }
-                                                    }
-                                                    // either way update the slave that will show national average
-                                                    result['slaves']['data']['der_readmit'][month]['national']++; 
-                                                }
-
-
-                                            });
-                                        });
-                                        
-                                       
-                                     }
-                                }
-                              //  return result;
-                            } // if(metric === "48h Readmission")
-                           
-                            else{
-                                //console.log(result);
                                 
 
                                 
@@ -1959,6 +1890,7 @@
 
                                     }
                                    }  
+                               }
                                    /*if(result['dict'][key]['der_spanbedDays'] && self.excessDays && self.excessDays['spanbedDays'] && self.excessDays['spanbedDays'][key])
                                     for(var kk in self.excessDays['spanbedDays'][key])
                                        result['dict'][key]['der_spanbedDays']['value'] += self.excessDays['spanbedDays'][key][kk];
@@ -1967,7 +1899,7 @@
                                     for(var kk in self.excessDays['spanventDays'][key])
                                        result['dict'][key]['der_spanventDays']['value'] += self.excessDays['spanventDays'][key][kk];
                                    */
-                                }
+                                
                                 
                                 for(var key in dict){
                                     
@@ -2084,7 +2016,7 @@
                                   }
                                 }
                                
-                            } 
+                             
                              return result; 
                         },
                         getRecordQuarter: function(rec){

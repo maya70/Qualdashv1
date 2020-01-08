@@ -178,6 +178,7 @@
 									return d.date; 
 							}));
 							y.domain([0, d3.max(data, function(d){ return d.number; })]);
+
 							g.append("g")
 							      .attr("class", "x axis")
 							      .attr("transform", "translate("+ 0+"," + (height) + ")")
@@ -204,7 +205,7 @@
 							g.append("g")
 							      .attr("class", "y axis")
 							      .call(d3.axisLeft(y).ticks(5,"s").tickFormat(function (d)
-							      							{return  d < 1.0? d3.format(".3f")(d) : d3.format(".1f")(d);}))
+							      							{return  d < 1.0? d3.format(".3f")(d) : ( d >= 1000.0? d3.format(".1s")(d): d3.format(".1f")(d));}))
 							      .attr("transform", "translate("+0+","+ 0+")");
 
 							g.append("text")

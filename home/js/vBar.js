@@ -360,9 +360,14 @@
 							var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), 
 								y = d3.scaleLinear().range([height, 0]).nice(); 
 
+							function custom_sort(a,b){
+                                    return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
+                                }
+
 							x.domain(self.data.map(function(d){
 									return d.date; 
-							}));
+							}).sort(custom_sort));
+							
 							y.domain([0, d3.max(self.data, function(d){ return d.number; })]);
 
 							g.append("g")
@@ -748,20 +753,7 @@
 								}
 
 								 // x-axis labels
-								/* self.parent.svg.append("text") 
-								 	  .attr("class", "xlabel"+viewId)            
-								      .attr("transform",
-								            "translate(" + (svgw/2) + " ," + 
-								                           (height + margin.top + margin.bottom-8) + ")")
-								      .style("text-anchor", "middle")
-								      .style("font-size", "9pt")
-								      .style("font-weight", "bold")
-								      .text(function(d)
-								      	{   
-								      		self.nsel = {}; 
-								      		return "Selected: " +  0 + " records in " + self.parent.parent.control.getYear();
-								      	});	*/
-
+								
 								  self.nsel = {}; 
 								  var sl = self.parent.svg
 								  			.append("g")
@@ -818,31 +810,7 @@
 								  	  .style("fill", "grey")
 								      .text("Clear");
 
-								/* var slscroll = sl.append("g").attr("transform", "translate(100,2)")
-								 				.on("click", function(){
-								 					d3.selectAll(".sellegend").each(function(du){
-								 						var curY = d3.select(this).attr("y");
-								 						console.log(du.y);
-								 					});
-								 				});
-								  slscroll.append("rect")
-								  				.attr("width", 20)
-								  				.attr("height", 15)	
-								  				.style("fill", "red")	
-								  				.style("stroke-width", 0.5)
-								  				.style("rx", 2)						  				
-								  				.style("stroke", "black");
-								  slscroll.append("text")
-								  	.attr("id", "slscroll-"+viewId)
-								  	.attr("x", 10)
-								  	.attr("y", 12)
-								  	  .style("font-size", "9pt")
-								  	  .style("font-weight", "bold")
-								  	  .style("fill", "grey")
-								      .text("V");
-
-								 */
-
+								
 								 var sllabels = sl.selectAll(".varname")
 								 				.data(color.domain())
 							 						.enter().append("g")
@@ -1549,10 +1517,6 @@ self.updateDualAxis(g);
 							var svgw = scale * parentArea.node().getBoundingClientRect().width;
 							var svgh = scale * parentArea.node().getBoundingClientRect().height; 
 
-							/*var parentW = parseInt(d3.select("#card"+self.id).style("width")),
-								parentH = parseInt(d3.select("#card"+self.id).style("height"));
-							var svgw = parentW * scale,
-								svgh = parentH * scale;*/
 								// update the range of the scale with new width/ height
 							var width = svgw - margin.right - margin.left, 
 								height = svgh - margin.top - margin.bottom; 
@@ -1561,13 +1525,17 @@ self.updateDualAxis(g);
 
 							var x = d3.scaleBand().rangeRound([0, (width-35)]).padding(0.1), 
 								y = d3.scaleLinear().range([height, 0]).nice(); 
-							//var data = self.audit === "picanet"? self.fixDataFormat() :self.data; 							
+							//var data = self.audit === "picanet"? self.fixDataFormat() :self.data; 
+							   							
 							var data = self.data; 
-							//console.log(data);
-							//console.log(width); 
+							function custom_sort(a,b){
+                                    return new Date("01-"+a).getTime() - new Date("01-"+b).getTime(); 
+                                }
+
 							x.domain(data.map(function(d){
 									return d.date; 
-							}));
+							}).sort(custom_sort));
+							console.log(x.domain());
 							y.domain([0, self.yMax]);
 							
 							// update svg width and height

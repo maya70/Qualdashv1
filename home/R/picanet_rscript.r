@@ -185,7 +185,29 @@ for(year in unique(df$adyear)){
     tmp[which(tmp$AdMonth == m), 'SMR'] <- smr['SMR']
   }
   
-  
+  # add readmission calculation
+  tmp = cbind(tmp, readmission=0)
+  n_occur <- data.frame(table(tmp$PatientID))
+  repeated <- tmp[tmp$PatientID %in% n_occur$Var1[n_occur$Freq > 1],]
+  u <- unique(repeated$PatientID)
+  for(pid in u){
+    adDate <- data.frame(tmp[which(tmp$PatientID == pid), 'AdDateTime' ])
+    disDate <- data.frame(tmp[which(tmp$PatientID == pid), 'UnitDisDateTime'])
+    for(ad in adDate){
+      for(adEvt in ad){
+        for(dis in disDate){
+          for(disEvt in dis){
+            diff <- adEvt - disEvt
+            if((diff >=0) & (diff <= 172800) ){
+              print(diff)
+              tmp[which(tmp$PatientID == pid & tmp$AdDateTime == adEvt), 'readmission'] <- 1
+            }
+            
+          }
+        }
+      }
+    }
+  }
   
   fn = paste(dest_file_path, gsub(' ','', year), '.csv', sep='' )
   write.csv(tmp, fn, row.names = FALSE)
