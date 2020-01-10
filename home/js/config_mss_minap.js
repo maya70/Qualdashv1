@@ -1,4 +1,3 @@
-
 $Q.Minap = {
     "availMetrics": [{"value": "4.04 DeathInHospital", 
                         "text": "Mortality by month of admission"},
@@ -31,8 +30,9 @@ $Q.Minap = {
                       }, 
     "displayVariables": [
                          {  
-                        "metric": "Mortality by month of admission",   
-                        "desc":"Admissions in a month broken down \n by eventual discharge status",                   
+                        "metric": "Mortality by month of admission",  
+						"desc":"Admissions in a month broken down \n by eventual discharge status",                   
+                       						
                         "mark": "bar", // should remove this 
                         "chart": "grouped",
                         "x": "3.06 ArrivalAtHospital",
@@ -48,30 +48,36 @@ $Q.Minap = {
                         "xspan": "year",    
                         "yspan": "unit",  
                         "ylabel": "All admissions",                        
-                        "tspan": 3,                           
-                        "granP": ["unit", "unit"], 
-                        "ehr": "Admissions",
-                        "event": {"name":"4.04 DeathInHospital",
+                        "tspan": 3,     
+"event": {"name":"4.04 DeathInHospital",
                                     "desc": "Death in hospital", 
                                     "date": "4.01 DischargeDate", 
                                     "id": "1.02 HospitalNumber" }, 
+                        						
+                        "granP": ["unit", "unit"], 
+                        "ehr": "Admissions",
                         "legend": ["Alive", "Deceased"],
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["2.01 AdmissionDiagnosis", "2.39 AdmissionMethod", "2.22 AdmittingConsultantType"],      
+                        "categories": ["2.01 AdmissionDiagnosis", "2.39 AdmissionMethod"],      
                         "quantities": [
                                         //{"q":"1.02 HospitalNumber","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"2.22 AdmittingConsultantType", "granT": "admonth", "granP":["unit"], "yaggregates": "" }
+                                        {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["1.02 HospitalNumber", "4.04 DeathInHospital"] }   // the first element holds the master view's granT                                             
           
                         },
                         {  
-                        "metric": "Call-to-Balloon (STEMI Only)",                      
+                        "metric": "Call-to-Balloon (STEMI Only)",      
+						 "desc": "STEMI patients who met / did not meet \n the 120-min target for Call to Balloon time.",
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 ArrivalAtHospital",
                         "y": [ "1.02 HospitalNumber", "2.01 AdmissionDiagnosis"], 
                         "yaggregates": ["count", "count"], 
+						"event": {"name":"2.01 AdmissionDiagnosis",
+                                    "desc": "Last admission not meeting target", 
+                                    "date": "3.06 ArrivalAtHospital", 
+                                    "id": "1.02 HospitalNumber" },
                         "yfilters": {"1.02 HospitalNumber": {"where": {"2.01 AdmissionDiagnosis": "1. Definite myocardial infarction", 
                                                                         "3.10 JustifiedDelay": "0. No" },
                                                                           "operator": "AND", 
@@ -164,6 +170,7 @@ $Q.Minap = {
                         },
                          {  
                         "metric": "Door-to-Angio (NSTEMI Only)",
+						"desc": "NSTEMI patients who met / did not meet \n the 72-hour target for Door-to-Angio.",
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 ArrivalAtHospital",
@@ -219,6 +226,7 @@ $Q.Minap = {
                          },
                          {  
                         "metric": "Gold Standard Drugs",
+						"desc": "All given = Beta Blocker & ACEI or ARB & Statin \n & Aspirin & Ticagrelor or Thienopyridine Inhibitor \n Not all given = one or more of the above not given.  ",
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 ArrivalAtHospital",
@@ -265,6 +273,7 @@ $Q.Minap = {
                          },
                           {  
                         "metric": "Referral for Cardiac Rehabiliation",
+						"desc": "Was patient referred for Cardiac Rehabilitation?",
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 ArrivalAtHospital",
@@ -298,6 +307,7 @@ $Q.Minap = {
                          },
                           {  
                         "metric": "Accute Use of Aspirin",
+						"desc": "Accute use of aspirin", 
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 ArrivalAtHospital",
