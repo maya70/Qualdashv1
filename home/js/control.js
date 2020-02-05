@@ -30,7 +30,7 @@
 											}, 
 											{
 												type: 'GET',
-												data: {id: 0}
+												data: {id: self.sessionID}
 											});
 							
 							//self.sessionParams = {}; // stores audit, year and job title to be retrievable later
@@ -78,6 +78,10 @@
 						},
 						writeSessionLog: function(){
 							var self = this;
+							self.updateSessionLog({'type': 'endSession' , 
+															'owner': 'application' 
+																		});
+								
 							//self.sessionLog['exitTime'] = Date.now(); 
 							$Q.handleJSON('./php/submit_log.php', 
 												function(){},

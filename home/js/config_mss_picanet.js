@@ -87,7 +87,7 @@ $Q.Picanet = {
                                     "desc": "Readmission within 48 hours", 
                                     "date": "UnitDisDate", 
                                     "id": "EventID" },                         
-                        "categories": ["SourceAd", "CareAreaAd", "UnitDisDest"], 
+                        "categories": ["SourceAdDescription", "CareAreaAdDescription", "UnitDisDestDescription"], 
                         "quantities": [{"q":"readmission", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
                                       {"q":"AdType", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum", "filters": {"where": { "AdType": ["2", "4"] } } }],
                         "xType": "t",
@@ -121,7 +121,7 @@ $Q.Picanet = {
                         "yaggregates": ["sum", "sum", "sum"],
                         "ehr": "Admissions", 
                         "granP": ["unit", "unit", "unit"], 
-                        "categories": ["InvVent", "UnplannedExtubation"], 
+                        "categories": ["InvVentDescription", "UnplannedExtubation"], 
                         "quantities": [{"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
                                         {"q":"der_spanbedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
                         "granT": {"monthly-annual": ["der_spanbedDays", "der_spanventDays"]}, 
@@ -175,34 +175,6 @@ $Q.Picanet = {
                                         {"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["XB04Z", "XB03Z", "XB02Z", "XB01Z"]}   // the first element holds the master view's granT                                             
-          
-                     },
-                      {
-                      "metric": "Ventilation days by admission month",
-                      "mark": "bar",                         
-                      "chart": "stacked",
-                        "x": "AdDate",
-                        "y": ["InvVentDay", "NonInvVentDay"], 
-                        "yfilters": {"InvVentDay" : {"where": "*"}, 
-                                    "NonInvVentDay": {"where": "*"}}, 
-                        "yaggregates": ["sum", "sum"], 
-                        "legend": ["Invasive ventilation days", "Noninvasive ventilation days"],
-                        "xType": "t",
-                        "yType": ["q", "q"],  
-                        "xspan": "year",    
-                        "yspan": "unit", 
-                        "ylabel": "Num. Days",                         
-                        "tspan": 3,                           
-                        "granP": ["unit", "unit"], 
-                        "ehr": "Admissions",
-                        /** Slave Tasks spec begin here **/ 
-                        "categories": ["PrimReasonDescription","AdTypeDescription", "Sex"],      
-                        "quantities": [
-                                        {"q":"UnitDisStatus",  "granP":["unit"], "yaggregates": "sum", 
-                                         "filters": {"where": { "UnitDisStatus":"2" } } },
-                                        {"q":"EventID",  "granP":["unit"], "yaggregates": "count" }
-                                       ], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["InvVentDay", "NonInvVentDay"]}   // the first element holds the master view's granT                                             
           
                      }
                        

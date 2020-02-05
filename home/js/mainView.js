@@ -118,8 +118,14 @@
 
 
 							var self = this;
+							 var existing = $("#tableTabs").contents();
+					  		 $("#tableTabs").find("*").remove();
+					  		  $("#tableContents").find("*").remove();
+
+					  							  		
 							var tabs = d3.select("#tableTabs");
-							if (!self.tableTabs) self.tableTabs = {};
+							//if (!self.tableTabs) 
+							self.tableTabs = {};
 							var tabContents = {};
 
 							keys.forEach(function(key, i){
@@ -131,8 +137,10 @@
 										.attr("class", function(){
 											return (i>0)? "nav-item px-1": "active nav-item px-1"; 
 										})
+										.attr("role", "presentation")
 										.append("a")
 											.attr("class", "nav-link")
+											.attr("role", "tab")
 											.attr("id", "tab-"+key)
 											.attr("data-toggle", "tab")
 											.attr("href", "#tab-content-"+key)
@@ -140,8 +148,8 @@
 											.style("background-color", "#f1f1f1")
 											.style("display", "inline-block")
 											.text(key);
-											
-
+									
+									
 									tabContents[key] = d3.select('#tableContents').append("div")
 															.attr("id", "tab-content-"+key)
 															.attr("class", "tab-pane fade"+str)
