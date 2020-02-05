@@ -576,7 +576,7 @@ svg{
    </div>
  </div> 
  <div id="tabCanvas" class="tab-pane fade"> 
-   <ul class="nav nav-tabs" id="tableTabs">
+   <ul class="nav nav-tabs" id="tableTabs" role="tablist">
 
     </ul>  
     <div id="tableContents"> </div>
@@ -742,7 +742,10 @@ function layout1x1() {
 }
 
 function refreshLayout() {  
- $Q.mainControl.refreshGrid();  
+  var activeTab = $('.nav-tabs .active').text();
+  console.log("activeTab = " + activeTab);
+  if(activeTab === "Home") 
+    $Q.mainControl.refreshGrid();  
 }
 function loadFunction() {
   closeRightMenu(); 

@@ -30,7 +30,7 @@
 											}, 
 											{
 												type: 'GET',
-												data: {id: 0}
+												data: {id: self.sessionID}
 											});
 							
 							//self.sessionParams = {}; // stores audit, year and job title to be retrievable later

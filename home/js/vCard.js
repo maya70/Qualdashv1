@@ -1154,7 +1154,7 @@
 												.style("color", "black")
 												.on("click", function(){
 												  		//console.log(self.selection);	
-												  		 $('[href="#tabCanvas"]').tab('show');						  		
+												  		 $('[href="#tabCanvas"]').tab('show');	
 												  		
 												  		var tabContents = self.parent.setTableTabs(Object.keys(self.selection), self);
 												  		
