@@ -188,10 +188,11 @@
 											d3.select(this).select("rect").style("fill", "white");
 											//d3.select(this).style("fill", "white");
 											//var mssLegend = auditVars["displayVariables"][self.id]["legend"]? auditVars["displayVariables"][self.id]["legend"][i]: undef;
-							      			var dictLegend = self.audit=== "picanet"? $Q.Picanet['variableDict'][d]: $Q.Minap['variableDict'][d];
-							      			var descLegend = self.parent.control.getVarDesc(d);
+							      			var dictLegend = self.parent.control.audit=== "picanet"? $Q.Picanet['variableDict'][d]: $Q.Minap['variableDict'][d];
+					
+											var descLegend = self.parent.control.getVarDesc(d);
 
-							      			var name = dictLegend ||  descLegend || d;
+							      			var name = descLegend || dictLegend || d;
 							      	
 
 											div.transition()
@@ -201,7 +202,7 @@
 									      		.style("height", "70px")
 									      		.style("background-color", "white")
 									      		.style("vertical-align", "center");
-									      	div .html( name + "")
+									      	div .html( d + "<br>"+ name + "")
 									      		.style("left", (d3.event.pageX) -28 + "px")
 									      		.style("top", (d3.event.pageY + 28) + "px");
 									      	
@@ -342,6 +343,14 @@
 											d3.select(this).select("rect").style("fill", "white");
 											//d3.select(this).style("fill", "white");
 											var qname = auditVars["variableDict"][d['q']] || d['q'];
+											
+											var dictLegend = self.parent.control.audit=== "picanet"? $Q.Picanet['variableDict'][qname]: $Q.Minap['variableDict'][qname];
+					
+											var descLegend = self.parent.control.getVarDesc(qname);
+
+							      			var name = descLegend || dictLegend || qname;
+							      	
+
 											div.transition()
 									      		.duration(200)
 									      		.style("opacity", 0.8)
@@ -349,7 +358,7 @@
 									      		.style("height", "70px")
 									      		.style("background-color", "white")
 									      		.style("vertical-align", "center");
-									      	div .html( qname + "")
+									      	div .html( qname + "<br>"+ name + "")
 									      		.style("left", (d3.event.pageX) -28 + "px")
 									      		.style("top", (d3.event.pageY + 28) + "px");
 									      	
@@ -1071,7 +1080,7 @@
 													div2.transition()
 											      		.duration(200)
 											      		.style("opacity", 0.99)
-											      		.style("width", "360px")
+											      		.style("width", "560px")
 											      		.style("height", "270px")
 											      		.style("background-color", "#0feae8")											      													      		
 											      		.style("text-align", "left")

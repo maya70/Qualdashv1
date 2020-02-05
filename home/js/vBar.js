@@ -978,6 +978,7 @@
 							    .attr("y", height)
 							    .attr("width", x.bandwidth())
 							    .attr("height", 0)
+								.style("stroke-width", 0.5)
 							    .style("stroke", "darkgrey")
 							     .on("mouseover", function(d, i){
 							     	var numValues = color.domain().length; 

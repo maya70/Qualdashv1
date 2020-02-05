@@ -49,7 +49,7 @@ $Q.Minap = {
                         "yspan": "unit",  
                         "ylabel": "All admissions",                        
                         "tspan": 3,     
-"event": {"name":"4.04 DeathInHospital",
+						"event": {"name":"4.04 DeathInHospital",
                                     "desc": "Death in hospital", 
                                     "date": "4.01 DischargeDate", 
                                     "id": "1.02 HospitalNumber" }, 
@@ -61,7 +61,7 @@ $Q.Minap = {
                         "categories": ["2.01 AdmissionDiagnosis", "2.39 AdmissionMethod"],      
                         "quantities": [
                                         //{"q":"1.02 HospitalNumber","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
-                                        {"q":"der_bedDays", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" }
+                                        {"q":"2.30 Weight", "granT": "admonth", "granP":["unit"], "yaggregates": "average" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["1.02 HospitalNumber", "4.04 DeathInHospital"] }   // the first element holds the master view's granT                                             
           
@@ -266,7 +266,7 @@ $Q.Minap = {
                                         //{"q":"4.27 DischargedOnThieno","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"4.31 Discharged on TIcagrelor (v10.3 Dataset)", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
                                         // {"q":"der_ctb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}, 
-                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"2.30 Weight", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": [ "1", "2" ] }   // the first element holds the master view's granT                                             
           
@@ -354,8 +354,8 @@ $Q.Minap = {
                         "quantities": [
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
-                                         {"q":"der_angioTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "sum"}, 
-                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"dtaTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "sum"}, 
+                                         {"q":"dta", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": [ "1", "2", "3", "4", "8"] }   // the first element holds the master view's granT                                             
           

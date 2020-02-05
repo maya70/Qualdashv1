@@ -1182,6 +1182,8 @@
 
                                 }
                             }
+							if(vval > 0)
+								vval = (yaggregates === "count")? 1 : rec[vname]; 
                             return vval; 
 
                         },
@@ -1716,11 +1718,11 @@
                                             if(!slaves['data'][quant['q']][mon])
                                                 slaves['data'][quant['q']][mon] = {};
                                             if(!slaves['data'][quant['q']][mon]['unit'] && self.recordIncluded(dict, mon, i, displayId))
-                                                slaves['data'][quant['q']][mon]['unit'] = //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
-                                                                                                            (quant['yaggregates']==="count"? 1: qval);                                               
+                                                slaves['data'][quant['q']][mon]['unit'] = qval; //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
+                                                                                                           // (quant['yaggregates']==="count"? 1: qval);                                               
                                             else if(self.recordIncluded(dict, mon, i, displayId))
-                                                slaves['data'][quant['q']][mon]['unit'] += //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
-                                                                                                            (quant['yaggregates']==="count"? 1: qval); //: 0;
+                                                slaves['data'][quant['q']][mon]['unit'] += qval; //(self.data[i][$Q.DataDefs[self.audit]["unitIdVar"]] === self.unitID )? 
+                                                                                                            //(quant['yaggregates']==="count"? 1: qval); //: 0;
                                             
 
                                             if(!slaves['data'][quant['q']][mon]['data'])

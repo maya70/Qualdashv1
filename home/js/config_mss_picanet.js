@@ -72,7 +72,7 @@ $Q.Picanet = {
                                     "date": "UnitDisDate", 
                                     "id": "EventID" }, 
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["PrimReasonDescription","AdTypeDescription", "Ethnic"],      
+                        "categories": ["PrimReasonDescription","AdTypeDescription", "EthnicDescription"],      
                         "quantities": [{"q":"PIM3","granT": "AdDate", "granP":["unit"], "yaggregates": "average" }], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["EventID", "UnitDisStatus"] }   // the first element holds the master view's granT                                             
           
@@ -88,8 +88,8 @@ $Q.Picanet = {
                                     "date": "UnitDisDate", 
                                     "id": "EventID" },                         
                         "categories": ["SourceAdDescription", "CareAreaAdDescription", "UnitDisDestDescription"], 
-                        "quantities": [{"q":"readmission", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
-                                      {"q":"AdType", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum", "filters": {"where": { "AdType": ["2", "4"] } } }],
+                        "quantities": [//{"q":"readmission", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
+                                      {"q":"ADTYPE2OR4", "granT": "UnitDisDate", "granP":["unit","national"], "yaggregates": "count", "filters": {"where": { "AdType": ["1"] } } }],
                         "xType": "t",
                         "yType": ["q", "q"],
                         "legend": ["Discharged", "Readmitted"],
@@ -119,17 +119,17 @@ $Q.Picanet = {
                         "yspan": "unit", 
                         "ylabel": "Num. Days",
                         "tspan": 3,                        
-                        "yaggregates": ["sum", "sum", "sum"],
+                        "yaggregates": ["count", "count", "count"],
                         "ehr": "Admissions", 
                         "granP": ["unit", "unit", "unit"], 
                         "categories": ["InvVentDescription", "UnplannedExtubation"], 
-                        "quantities": [{"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" },
+                        "quantities": [{"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "average" },
                                         {"q":"der_spanbedDays", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }],                       
                         "granT": {"monthly-annual": ["der_spanbedDays", "der_spanventDays"]}, 
                         "combinations": ["adtype&der_readmit"]
                      }, 
                       {  "metric": "dependency",   
-						"desc":"Number of patients receiving enhanced care, high dependency, \n high dependency advanced and intensive care basic per month",
+						"desc":"By month of admission: \n Number of patients receiving enhanced care, high dependency, \n high dependency advanced and intensive care basic",
                         "mark": "bar",                         
                         "chart": "stacked",
                         "x": "AdDate",
@@ -147,7 +147,7 @@ $Q.Picanet = {
                         "tspan": 3,                           
                         "granP": ["unit"], 
                         "ehr": "Admissions",                        
-                        "categories": ["PrimReasonDescription","AdTypeDescription", "Sex", "Ethnic"],      
+                        "categories": ["PrimReasonDescription","AdTypeDescription", "SexDescription", "EthnicDescription"],      
                         "quantities": [ {"q":"XB09Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"XB07Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
@@ -155,7 +155,8 @@ $Q.Picanet = {
                         "granT": {"monthly-annual": ["XB09Z", "XB07Z","XB06Z", "XB05Z"]}   // the first element holds the master view's granT                                             
           
                      },
-                      {  "metric": "Dependency (contd')",                        
+                      {  "metric": "Dependency (contd')",   
+						"desc":"By month of admission: \n Number of patients receiving intensive care basic enhanced, \n intensive care advanced enhanced, intensive care advanced, \n intensive care ECMO/ECLS",
                         "mark": "bar",                         
                         "chart": "stacked",
                         "x": "AdDate",
@@ -171,9 +172,9 @@ $Q.Picanet = {
                         "tspan": 3,                           
                         "granP": ["unit"], 
                         "ehr": "Admissions",                        
-                        "categories": ["PrimReasonDescription","AdTypeDescription", "Sex", "Ethnic"],      
-                        "quantities": [ {"q":"XB09Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
-                                        {"q":"XB07Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                        "categories": ["PrimReasonDescription","AdTypeDescription", "SexDescription", "EthnicDescription"],      
+                        "quantities": [ {"q":"XB04Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
+                                        {"q":"XB03Z", "granT": "admonth", "granP":["unit"], "yaggregates": "sum" },
                                         {"q":"PIM3", "granT": "admonth", "granP":["unit","national"], "yaggregates": "sum" }
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": ["XB04Z", "XB03Z", "XB02Z", "XB01Z"]}   // the first element holds the master view's granT                                             

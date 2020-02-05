@@ -16,7 +16,12 @@
 							if(viewType === "series")
 								self.drawSimple(viewId, vname, data, parent, svgw, svgh);
 							else
-								self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
+							{
+								if(self.numYears > 2)
+									self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
+								else
+									self.displayMessage(parent,svgw, svgh);
+								}
 						}
 						else
 							self.displayMessage(parent,svgw, svgh);
@@ -31,7 +36,12 @@
 							}	
 							if(self.numYears >= 2){
 								if(viewType === "multiples")				
-									self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
+								{
+									if(self.numYears > 2)
+										self.drawMultiLevel(viewId, self.data, parent, svgw, svgh);
+									else
+										self.displayMessage(parent,svgw, svgh);
+								}
 								else if(viewType === "series")
 									self.drawSimple(viewId, vname, data, parent, svgw, svgh);
 							}
@@ -181,7 +191,7 @@
 							 self.svg.append("text")
 							 			.attr("x", svgw*0.3)
 							 			.attr("y", svgh*0.3)
-							 			.text("No sufficient historic data for comparison.");
+							 			.text("No sufficient historic data to generate this view.");
 
 						},
 						drawSimple: function(viewId, vname, jsonData, parent, svgw, svgh){
