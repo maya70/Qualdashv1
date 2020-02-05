@@ -106,6 +106,7 @@ $Q.Picanet = {
                         
                      },
                       {  "metric": "Bed Days and Ventilation",
+					     "desc":"Number of bed days and number of invasive ventilation days \n by month of occurrence",
                         "mark": "bar",
                         "chart": "grouped",
                         "x": "AdDate",
@@ -127,7 +128,8 @@ $Q.Picanet = {
                         "granT": {"monthly-annual": ["der_spanbedDays", "der_spanventDays"]}, 
                         "combinations": ["adtype&der_readmit"]
                      }, 
-                      {  "metric": "dependency",                        
+                      {  "metric": "dependency",   
+						"desc":"Number of patients receiving enhanced care, high dependency, \n high dependency advanced and intensive care basic per month",
                         "mark": "bar",                         
                         "chart": "stacked",
                         "x": "AdDate",

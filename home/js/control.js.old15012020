@@ -78,10 +78,6 @@
 						},
 						writeSessionLog: function(){
 							var self = this;
-							self.updateSessionLog({'type': 'endSession' , 
-															'owner': 'application' 
-																		});
-								
 							//self.sessionLog['exitTime'] = Date.now(); 
 							$Q.handleJSON('./php/submit_log.php', 
 												function(){},
