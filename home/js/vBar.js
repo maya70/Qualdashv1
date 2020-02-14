@@ -647,7 +647,7 @@
      						 		.attr("dy", ".35em")
 								      .style("text-anchor", "start")							      
 								      .text(function(d) {  
-								       var numRecs = self.parent.parent.control.getDataLength(viewId);
+								       var numRecs = self.parent.parent.control.getDataLengthByView(self.parent.metric, viewId);
 								       var totalMissing; 
 								       //levels.forEach(function(level){
 								       	totalMissing = self.parent.parent.control.getMissing(self.parent.metric, viewId); 	       	

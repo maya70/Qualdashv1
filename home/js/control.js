@@ -223,6 +223,11 @@
 							var self = this; 
 							return self.dataModel.getDataLength(viewId); 
 						},
+						getDataLengthByView: function(metric, viewId){
+							var self = this; 
+							return self.dataModel.getDataLengthByView(metric, viewId); 
+						},
+						
 						getRecordById: function(recId){
 							return this.dataModel.getRecordById(recId); 
 						},

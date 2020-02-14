@@ -1198,6 +1198,22 @@
                             }
                             return totalRecs; */
                         },
+						getDataLengthByView: function(metric, viewId){
+                            var self = this;
+                            
+                            var totalRecs = 0; 
+                            for(var key in self.dicts[viewId]){
+                                for(var kk in self.dicts[viewId][key]){
+                                    totalRecs += self.dicts[viewId][key][kk]['value'];
+                                }
+                            }
+							var missing = self.getMissing(metric, viewId); 
+							if(missing) 
+								return totalRecs + missing;
+							
+                            return totalRecs; 
+                        },
+                        
                         getQuality: function(varname){
                             var self = this;
                             /*if(!self.uniqMissing){

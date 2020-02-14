@@ -1,11 +1,11 @@
 $Q.Minap = {
-    "availMetrics": [{"value": "4.04 DeathInHospital", 
+    "availMetrics": [{"value": "Mortality by month of admission", 
                         "text": "Mortality by month of admission"},
                         //{"value": "derived_readmission", 
                          // "text": "48h Readmission"}, 
-                        {"value": "Delay from Call for Help to Reperfusion Treatment", 
+                        {"value": "Call-to-Balloon (STEMI Only)", 
                         "text": "Call-to-Balloon (STEMI Only)"},
-                        {"value": "Delay from admission at hospital to Angiogram", 
+                        {"value": "Door-to-Angio (NSTEMI Only)", 
                         "text": "Door-to-Angio (NSTEMI Only)"},
                         //{"value": "der_reqEcho", 
                         //"text": "Capacity for Echo"},
@@ -37,7 +37,7 @@ $Q.Minap = {
                         "chart": "grouped",
                         "x": "3.06 ArrivalAtHospital",
                         "y": ["1.02 HospitalNumber", "4.04 DeathInHospital"], 
-                        "yaggregates": ["count", "sum"], 
+                        "yaggregates": ["count", "count"], 
                         "yfilters": {"1.02 HospitalNumber": {"where": {"4.04 DeathInHospital":"0. No"},
                                                                          "valid": ["1. From MI", "3. Other non cardiac related cause", "4. Other cardiac cause"]}, 
                                      "4.04 DeathInHospital": {"where": {"4.04 DeathInHospital": ["1. From MI", "3. Other non cardiac related cause", "4. Other cardiac cause"]}, 
@@ -72,17 +72,17 @@ $Q.Minap = {
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 ArrivalAtHospital",
-                        "y": [ "1.02 HospitalNumber", "2.01 AdmissionDiagnosis"], 
+                        "y": [ "3.10 JustifiedDelay", "2.01 AdmissionDiagnosis"], 
                         "yaggregates": ["count", "count"], 
 						"event": {"name":"2.01 AdmissionDiagnosis",
                                     "desc": "Last admission not meeting target", 
                                     "date": "3.06 ArrivalAtHospital", 
                                     "id": "1.02 HospitalNumber" },
-                        "yfilters": {"1.02 HospitalNumber": {"where": {"2.01 AdmissionDiagnosis": "1. Definite myocardial infarction", 
+                        "yfilters": {"3.10 JustifiedDelay": {"where": {"2.01 AdmissionDiagnosis": "1. Definite myocardial infarction", 
                                                                         "3.10 JustifiedDelay": "0. No" },
                                                                           "operator": "AND", 
                                                                           "valid": [ // for first criterion
-                                                                                    "1. Definite myocardial infarction", 
+                                                                                    "1. Sustained hypertension", 
                                                                                     "3. Acute Coronary Syndrome",
                                                                                     "4. Chest pain ? cause",
                                                                                     "5. Other initial diagnosis",
@@ -108,7 +108,7 @@ $Q.Minap = {
                                                                                   },
                                      "2.01 AdmissionDiagnosis": {"where": { "2.01 AdmissionDiagnosis":  "1. Definite myocardial infarction",
                                                                           "3.10 JustifiedDelay": [ 
-                                                                                    "1. Definite myocardial infarction", 
+                                                                                    "1. Sustained hypertension", 
                                                                                     "2. Clinical concern about recent cerebrovascular event or surgery", 
                                                                                     "3. Delay obtaining consent",
                                                                                     "4. Initial ECG ineligible",
@@ -163,9 +163,9 @@ $Q.Minap = {
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["3.10 JustifiedDelay", "2.39 AdmissionMethod"],      
                         "quantities": [
-                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"2.30 Weight", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ],                                                               
-                        "granT": {"monthly-annual": [ "1.02 HospitalNumber", "2.01 AdmissionDiagnosis"] }             
+                        "granT": {"monthly-annual": [ "3.10 JustifiedDelay", "2.01 AdmissionDiagnosis"] }             
           
                         },
                          {  
@@ -300,7 +300,7 @@ $Q.Minap = {
                                         //{"q":"der_nstemi","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"der_ctbTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 
                                          {"q":"der_angioTarget", "granT": "admonth", "granP":["unit"], "yaggregates": "sum"}, 
-                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"2.30 Weight", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ], // from tasks with a single quantitative variable                                                                   
                         "granT": {"monthly-annual": [ "0", "1", "3", "8", "9"] }   // the first element holds the master view's granT                                             
           
