@@ -1208,7 +1208,8 @@
                                 }
                             }
 							var missing = self.getMissing(metric, viewId); 
-							if(missing) 
+							var missingDisplayed = self.dicts[viewId][Object.keys(self.dicts[viewId])[0]]['missing'];
+							if(missing && !missingDisplayed) 
 								return totalRecs + missing;
 							
                             return totalRecs; 
