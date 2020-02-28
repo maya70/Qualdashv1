@@ -1200,11 +1200,18 @@
                         },
 						getDataLengthByView: function(metric, viewId){
                             var self = this;
-                            
+                            var auditVars = self.audit === "picanet"? $Q.Picanet : $Q.Minap; 
+							var yaggregate = auditVars['displayVariables'][viewId]['yaggregates'];
+							
                             var totalRecs = 0; 
+							
                             for(var key in self.dicts[viewId]){
+								var id = 0; 
                                 for(var kk in self.dicts[viewId][key]){
-                                    totalRecs += self.dicts[viewId][key][kk]['value'];
+									
+									if(id < yaggregate.length && yaggregate[id] == 'count')
+										totalRecs += self.dicts[viewId][key][kk]['value'];	
+								id++;
                                 }
                             }
 							var missing = self.getMissing(metric, viewId); 
