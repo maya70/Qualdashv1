@@ -1391,6 +1391,7 @@
                         },
                         updateTimeHierarchy: function(year, varname, displayId, rec, qval){
                             var self = this; 
+							var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][displayId]: $Q.Minap["displayVariables"][displayId];  
                             if(year.indexOf("-") < 0)
                             {                            
                                                         if(self.checkGranT(varname , displayId)){
@@ -1400,18 +1401,21 @@
                                                                 self.tHier[displayId] = {}; 
                                                             if(!self.tHier[displayId][year])
                                                                 self.tHier[displayId][year] = {}; 
-                                                            var quar = self.getRecordQuarter(rec);
+                                                            var quar = self.getRecordQuarter(rec, displayId);
                                                             if(quar === 1){
-                                                                var m = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                                                //var m = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+																var m = parseInt(self.stringToMonth(rec[auditVars['x']]));
                                                                 if(m === 12)
                                                                     console.log(m); 
                                                             }
                                                             if(!self.tHier[displayId][year][quar])
                                                                 self.tHier[displayId][year][quar] = {};
-                                                            var mon =  self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+                                                            //var mon =  self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
+															var mon = parseInt(self.stringToMonth(rec[auditVars['x']]));
                                                             if(!self.tHier[displayId][year][quar][mon])
                                                                 self.tHier[displayId][year][quar][mon] = {};
-                                                            var week = parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
+                                                            //var week = parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
+															var week = parseInt(self.stringToDate(rec[auditVars['x']]).getDate()/7);
                                                             if(!self.tHier[displayId][year][quar][mon][week])
                                                                 self.tHier[displayId][year][quar][mon][week] = {};
                                                             if(!self.tHier[displayId][year][quar][mon][week][varname])
@@ -2045,9 +2049,11 @@
                              
                              return result; 
                         },
-                        getRecordQuarter: function(rec){
+                        getRecordQuarter: function(rec, viewId){
                             var self = this; 
-                            var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || parseInt(self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]));                            
+							var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId];  
+							var recMonth = parseInt(self.stringToMonth(rec[auditVars['x']]));
+                            //var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || parseInt(self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]));                            
                             if(recMonth === 12) 
                                 return 4; 
                             return recMonth < 4 ? 1: (recMonth < 7? 2: (recMonth < 10? 3 : 4))
