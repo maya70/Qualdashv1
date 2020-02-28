@@ -1219,7 +1219,7 @@
 							if(missing && !missingDisplayed) 
 								return totalRecs + missing;
 							
-                            return totalRecs; 
+                            return totalRecs >0 ? totalRecs : self.getDataLength(viewId); 
                         },
                         
                         getQuality: function(varname){
