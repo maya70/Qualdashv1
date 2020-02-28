@@ -1182,7 +1182,9 @@
 
                                 }
                             }
-							if(vval > 0)
+							if(self.derivedLookup && self.derivedLookup[yvar])
+								return vval; 
+							else if (vval > 0)
 								vval = (yaggregates === "count")? 1 : rec[vname]; 
                             return vval; 
 
@@ -1931,7 +1933,7 @@
                                    */
                                 
                                 
-                                for(var key in dict){
+                               /* for(var key in dict){
                                     
                                    if(result['slaves']['data']['der_spanbedDays'] && self.excessDays && self.excessDays['spanbedDays'] &&self.excessDays['spanbedDays'][key])
                                     for(var kk in self.excessDays['spanbedDays'][key])
@@ -1940,7 +1942,7 @@
                                    if(result['slaves']['data']['der_spanventDays'] && self.excessDays && self.excessDays['spanventDays'] &&self.excessDays['spanventDays'][key])
                                     for(var kk in self.excessDays['spanventDays'][key])
                                        result['slaves']['data']['der_spanventDays'][key]['unit'] += self.excessDays['spanventDays'][key][kk];
-                                }
+                                } */
                                 
                                 // calculate averages (if any)
                                 slaves['quants'].forEach(function(q){
