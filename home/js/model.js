@@ -773,14 +773,7 @@
                             else if(vname === "noninvVentDays" && self.audit === "picanet"){
                                 return parseInt(rec["noninvventday"]) || 0; 
                             }
-                            else if(vname === "unplannedAdm" && self.audit === "picanet"){
-                                return  (parseInt(rec["adtype"]) === 2 || parseInt(rec["adtype"]) === 4)? 1 : 0; 
-                            }
-                            else if(vname === "extubation" && self.audit === "picanet"){
-                                return (parseInt(rec["unplannedextubation"])===1)? 1: 0;
-                                
-                            }
-                           
+                            
                             else if(vname === "invalid" && self.audit === "picanet"){
                                 var count = 0; 
                                 for(var key in rec){
@@ -789,47 +782,7 @@
                                 }
                                 return count; 
                             }
-                            else if(vname === "stemi"){
-                                return rec["2.01 AdmissionDiagnosis"] === "1" ? 1: 0; 
-                            }
-                            else if(vname === "angioTarget"){
-                                 var tta = (self.stringToDate(rec["4.18 LocalAngioDate"], 1) - self.stringToDate(rec["3.06 ArrivalAtHospital"], 1))/60000;
-                                 if(isNaN(tta)){
-                                    if(! (rec["4.18 LocalAngioDate"] instanceof Date) || (! (rec["3.06 ArrivalAtHospital"] instanceof Date)))
-                                        self.recordMissing(metric, vname , i);
-                                                                        
-                                }
-                                return (rec["2.01 AdmissionDiagnosis"] !== "1" &&  tta < 4320)? 1: 0; 
-                            }
-                            else if(vname === "ctbTarget"){
-                                return (rec["2.01 AdmissionDiagnosis"] === "1" && rec["3.10 JustifiedDelay"] !== "0")? 1: 0; 
-                            }
-                            else if(vname === "ctbTargetMet"){
-                                return (rec["2.01 AdmissionDiagnosis"] === "1" && rec["3.10 JustifiedDelay"] === "0")? 1: 0; 
-                            }
-                            else if(vname === "ctb"){
-                                return (self.stringToDate(rec["3.09 ReperfusionTreatment"], 1) - self.stringToDate(rec["3.02 CallforHelp"], 1))/60000;
-                            }
-                            else if(vname === "dtb"){
-                                var dtb = (self.stringToDate(rec["3.09 ReperfusionTreatment"], 1) - self.stringToDate(rec["3.06 ArrivalAtHospital"], 1))/60000;
-                                return (self.stringToDate(rec["3.09 ReperfusionTreatment"], 1) - self.stringToDate(rec["3.06 ArrivalAtHospital"], 1))/60000;
-                            }
-                            else if(vname === "angioNoTarget"){
-                                var tta = (self.stringToDate(rec["4.18 LocalAngioDate"], 1) - self.stringToDate(rec["3.06 ArrivalAtHospital"], 1))/60000;
-                                return (rec["2.01 AdmissionDiagnosis"] !== "1" &&  tta > 4320)? 1: 0; 
-                            }
-                            else if(vname === "reqEcho"){
-                                var possible = ["1", "2", "3", "4", "5", "9"];
-                                return (rec["2.01 AdmissionDiagnosis"] === "1"  && rec["2.03 ECGDeterminingTreatment"] === 1 && possible.indexOf(rec["2.36 InfarctionSite"])>=0)? 1: 0; 
-                            }
-                            else if(vname === "missing" && self.audit === "picanet"){
-                                var count = 0;
-                                for(var key in rec){
-                                    if(rec[key] === "NA")
-                                        count++;
-                                }
-                                return count; 
-                            }
+                            
                         },
                         
                         stringToMonth: function(str){

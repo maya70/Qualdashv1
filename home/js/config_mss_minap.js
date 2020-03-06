@@ -72,100 +72,79 @@ $Q.Minap = {
                         "mark": "bar", // should remove this 
                         "chart": "stacked",
                         "x": "3.06 ArrivalAtHospital",
-                        "y": [ "3.10 JustifiedDelay", "2.01 AdmissionDiagnosis"], 
-                        "yaggregates": ["count", "count"], 
-						"event": {"name":"2.01 AdmissionDiagnosis",
+                        "y": [ "ctbTarget", "ctbNoTarget", "missing"], 
+                        "yaggregates": ["count", "count", "count"], 
+						"event": {"name":"ctbNoTarget",
                                     "desc": "Last admission not meeting target", 
                                     "date": "3.06 ArrivalAtHospital", 
                                     "id": "1.02 HospitalNumber" },
-                        "yfilters": {"3.10 JustifiedDelay": {"where": {"2.01 AdmissionDiagnosis": "1. Definite myocardial infarction", 
-                                                                        "3.10 JustifiedDelay": "0. No" },
+                        "yfilters": {"ctbTarget": {"where": {"4.02 FinalDiagnosis": "1. Myocardial infarction (ST elevation)",
+															  "ctbTarget": "1"	
+																},
                                                                           "operator": "AND", 
-                                                                          "valid": [ // for first criterion
-                                                                                    "1. Sustained hypertension", 
-                                                                                    "3. Acute Coronary Syndrome",
-                                                                                    "4. Chest pain ? cause",
-                                                                                    "5. Other initial diagnosis",
-                                                                                    // for second criterion
-                                                                                    "0. No", 
-                                                                                    "1. Definite myocardial infarction", 
-                                                                                    "2. Clinical concern about recent cerebrovascular event or surgery", 
-                                                                                    "3. Delay obtaining consent",
-                                                                                    "4. Initial ECG ineligible",
-                                                                                    "5. Cardiac arrest",
-                                                                                    "6. Obtaining consent for therapeutic trial",
-                                                                                    "7. Hospital administrative failure",
-                                                                                    "8. Ambulance procedural delay",
-                                                                                    "9. Other",
-                                                                                    "10. Ambulance 12 lead ECG not diagnostic of STEMI",
-                                                                                    "11. Consideration of primary PCI",
-                                                                                    "12. Ambulance administrative delay",
-                                                                                    "13. Cath lab access delayed", 
-                                                                                    "14. Delay in activating cath lab team",
-                                                                                    "15. Pre-PCI complication",
-                                                                                    "16. Equipment failure",
-                                                                                    "17. Convalescent STEMI"  ]
+																		   "valid": [ "0", "1",
+																					// for first criterion
+                                                                                    "1. Myocardial infarction (ST elevation)", 
+                                                                                    "2. Myocardial infarction (non ST elevation)",
+                                                                                    "3. Threatened MI",
+                                                                                    "4. Acute coronary syndrome (troponin positive)/ nSTEMI",
+																					"5. Acute coronary syndrome (troponin negative)", 
+																					"6. Chest pain of uncertain cause", 
+																					"7. Myocardial infarction (unconfirmed)",
+																					"8. Other diagnosis", 
+																					"9. Takotsubo Cardiomyopathy", 
+																					"10. Acute coronary syndrome (troponin unspecified)", 
+																					"11. PCI related infarction",
+                                                                                   ]
                                                                                   },
-                                     "2.01 AdmissionDiagnosis": {"where": { "2.01 AdmissionDiagnosis":  "1. Definite myocardial infarction",
-                                                                          "3.10 JustifiedDelay": [ 
-                                                                                    "1. Sustained hypertension", 
-                                                                                    "2. Clinical concern about recent cerebrovascular event or surgery", 
-                                                                                    "3. Delay obtaining consent",
-                                                                                    "4. Initial ECG ineligible",
-                                                                                    "5. Cardiac arrest",
-                                                                                    "6. Obtaining consent for therapeutic trial",
-                                                                                    "7. Hospital administrative failure",
-                                                                                    "8. Ambulance procedural delay",
-                                                                                    "9. Other",
-                                                                                    "10. Ambulance 12 lead ECG not diagnostic of STEMI",
-                                                                                    "11. Consideration of primary PCI",
-                                                                                    "12. Ambulance administrative delay",
-                                                                                    "13. Cath lab access delayed", 
-                                                                                    "14. Delay in activating cath lab team",
-                                                                                    "15. Pre-PCI complication",
-                                                                                    "16. Equipment failure",
-                                                                                    "17. Convalescent STEMI"  ]}, 
+                                     "ctbNoTarget": {"where": { "4.02 FinalDiagnosis":  "1. Myocardial infarction (ST elevation)",
+																 "ctbNoTarget": "1",
+																		}, 
                                                                 "operator": "AND",  "valid": [// for first criterion
-                                                                                    "1. Definite myocardial infarction", 
-                                                                                    "3. Acute Coronary Syndrome",
-                                                                                    "4. Chest pain ? cause",
-                                                                                    "5. Other initial diagnosis",
-                                                                                    // for second criterion
-                                                                                    "0. No", 
-                                                                                    "1. Definite myocardial infarction", 
-                                                                                    "2. Clinical concern about recent cerebrovascular event or surgery", 
-                                                                                    "3. Delay obtaining consent",
-                                                                                    "4. Initial ECG ineligible",
-                                                                                    "5. Cardiac arrest",
-                                                                                    "6. Obtaining consent for therapeutic trial",
-                                                                                    "7. Hospital administrative failure",
-                                                                                    "8. Ambulance procedural delay",
-                                                                                    "9. Other",
-                                                                                    "10. Ambulance 12 lead ECG not diagnostic of STEMI",
-                                                                                    "11. Consideration of primary PCI",
-                                                                                    "12. Ambulance administrative delay",
-                                                                                    "13. Cath lab access delayed", 
-                                                                                    "14. Delay in activating cath lab team",
-                                                                                    "15. Pre-PCI complication",
-                                                                                    "16. Equipment failure",
-                                                                                    "17. Convalescent STEMI"  ]
-                                                                                }
+                                                                                    "1. Myocardial infarction (ST elevation)", 
+                                                                                    "2. Myocardial infarction (non ST elevation)",
+                                                                                    "3. Threatened MI",
+                                                                                    "4. Acute coronary syndrome (troponin positive)/ nSTEMI",
+																					"5. Acute coronary syndrome (troponin negative)", 
+																					"6. Chest pain of uncertain cause", 
+																					"7. Myocardial infarction (unconfirmed)",
+																					"8. Other diagnosis", 
+																					"9. Takotsubo Cardiomyopathy", 
+																					"10. Acute coronary syndrome (troponin unspecified)", 
+																					"11. PCI related infarction", "NA",
+                                                                                    "1", "0"  ]
+                                                                                },
+										"missing": {"where": {"ctbTarget": "NA", "4.02 FinalDiagnosis": "1. Myocardial infarction (ST elevation)"}, "operator": "AND",
+													 "valid": [// for first criterion
+                                                                                    "1. Myocardial infarction (ST elevation)", 
+                                                                                    "2. Myocardial infarction (non ST elevation)",
+                                                                                    "3. Threatened MI",
+                                                                                    "4. Acute coronary syndrome (troponin positive)/ nSTEMI",
+																					"5. Acute coronary syndrome (troponin negative)", 
+																					"6. Chest pain of uncertain cause", 
+																					"7. Myocardial infarction (unconfirmed)",
+																					"8. Other diagnosis", 
+																					"9. Takotsubo Cardiomyopathy", 
+																					"10. Acute coronary syndrome (troponin unspecified)", 
+																					"11. PCI related infarction",
+                                                                                    "1", "0", "NA"  ]
+											}
                                       },
                         "xType": "t",
-                        "yType": ["q", "q"],  
+                        "yType": ["q", "q", "q"],  
                         "xspan": "year",    
                         "yspan": "unit",  
                         "ylabel": "PCI Patients",                        
                         "tspan": 3,                           
                         "granP": ["unit", "unit"], 
                         "ehr": "Admissions",
-                        "legend": ["Meeting Target", "Not meeting target"],
+                        "legend": ["Meeting CTB Target", "Not meeting CTB target", "No PCI date"],
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["3.10 JustifiedDelay", "2.39 AdmissionMethod"],      
+                        "categories": ["3.10 JustifiedDelay", "2.39 AdmissionMethod", "2.01 AdmissionDiagnosis"],      
                         "quantities": [
                                          {"q":"2.30 Weight", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ],                                                               
-                        "granT": {"monthly-annual": [ "3.10 JustifiedDelay", "2.01 AdmissionDiagnosis"] }             
+                        "granT": {"monthly-annual": [ "ctbTarget", "ctbNoTarget"] }             
           
                         },
                          {  
@@ -176,38 +155,43 @@ $Q.Minap = {
                         "x": "3.06 ArrivalAtHospital",
                         "y": [ "dtaTarget", "dtaNoTarget", "missing"], 
                         "yaggregates": [ "count", "count", "count"], 
-                        "legend": ["Meeting Target", "Not meeting target", "NA"],
+                        "legend": ["Meeting DTA Target", "Not meeting DTA target", "NA"],
                         "xType": "t",
                         "yType": [ "q", "q", "q"],
-                        "yfilters": {"dtaTarget": {"where": {"dtaTarget": "1", "2.01 AdmissionDiagnosis":[
-                                                                                    "3. Acute Coronary Syndrome",
-                                                                                    "4. Chest pain ? cause",
-                                                                                    "5. Other initial diagnosis"
-                                                                                    ] }, 
-                                                     "operator": "AND"
-                                                     /*"valid": ["0", "1", "1. Definite myocardial infarction", 
-                                                                                    "3. Acute Coronary Syndrome",
-                                                                                    "4. Chest pain ? cause",
-                                                                                    "5. Other initial diagnosis"
-                                                                                    ]*/
+                        "yfilters": {"dtaTarget": {"where": {"dtaTarget": "1", "4.02 FinalDiagnosis": "4. Acute coronary syndrome (troponin positive)/ nSTEMI" }, 
+                                                     "operator": "AND",
+                                                     "valid": [// for first criterion
+                                                                                    "1. Myocardial infarction (ST elevation)", 
+                                                                                    "2. Myocardial infarction (non ST elevation)",
+                                                                                    "3. Threatened MI",
+                                                                                    "4. Acute coronary syndrome (troponin positive)/ nSTEMI",
+																					"5. Acute coronary syndrome (troponin negative)", 
+																					"6. Chest pain of uncertain cause", 
+																					"7. Myocardial infarction (unconfirmed)",
+																					"8. Other diagnosis", 
+																					"9. Takotsubo Cardiomyopathy", 
+																					"10. Acute coronary syndrome (troponin unspecified)", 
+																					"11. PCI related infarction",
+                                                                                    "1", "0"  ]
                                                       }, 
-                                     "dtaNoTarget": {"where": {"dtaTarget": "0", "2.01 AdmissionDiagnosis":[
-                                                                                    "3. Acute Coronary Syndrome",
-                                                                                    "4. Chest pain ? cause",
-                                                                                    "5. Other initial diagnosis"
-                                                                                    ] }, 
-                                                        "operator": "AND"
-                                                        /*"valid": ["0", "1", "1. Definite myocardial infarction", 
-                                                                                    "3. Acute Coronary Syndrome",
-                                                                                    "4. Chest pain ? cause",
-                                                                                    "5. Other initial diagnosis"
-                                                                                    ]*/
-                                                                                },
-                                      "missing": {"where": {"dtaTarget": "NA", "2.01 AdmissionDiagnosis":[
-                                                                                    "3. Acute Coronary Syndrome",
-                                                                                    "4. Chest pain ? cause",
-                                                                                    "5. Other initial diagnosis"
-                                                                                    ]}, "operator": "AND"}
+                                     "dtaNoTarget": {"where": {"dtaTarget": "0", "4.02 FinalDiagnosis": "4. Acute coronary syndrome (troponin positive)/ nSTEMI" }, 
+                                                        "operator": "AND",
+                                                       "valid": [// for first criterion
+                                                                                    "1. Myocardial infarction (ST elevation)", 
+                                                                                    "2. Myocardial infarction (non ST elevation)",
+                                                                                    "3. Threatened MI",
+                                                                                    "4. Acute coronary syndrome (troponin positive)/ nSTEMI",
+																					"5. Acute coronary syndrome (troponin negative)", 
+																					"6. Chest pain of uncertain cause", 
+																					"7. Myocardial infarction (unconfirmed)",
+																					"8. Other diagnosis", 
+																					"9. Takotsubo Cardiomyopathy", 
+																					"10. Acute coronary syndrome (troponin unspecified)", 
+																					"11. PCI related infarction",
+                                                                                    "1", "0", "NA"  ]
+                                                    },
+                                      "missing": {"where": {"dtaTarget": "NA", "4.02 FinalDiagnosis": "4. Acute coronary syndrome (troponin positive)/ nSTEMI"}, 
+									               "operator": "AND"}
 
                                       },
                         "xspan": "year",    
@@ -239,9 +223,23 @@ $Q.Minap = {
                                             "4.05 Betablocker": "1. Yes" , 
                                             "4.06 ACEInhibitor": "1. Yes" ,
                                             "4.07 Statin": "1. Yes" ,
-                                            "4.08 AspirinSecondary": "1. Yes"      
+                                            "4.08 AspirinSecondary": "1. Yes" 
+											//"4.02 FinalDiagnosis": ["4. Acute coronary syndrome (troponin positive)/ nSTEMI", "1. Myocardial infarction (ST elevation)" ]
                             }, 
-                            "valid": ["0", "1", "0. No", "1. Yes" , "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"], 
+                            "valid": ["0", "1", "0. No", "1. Yes" , "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated", 
+							   "1. Myocardial infarction (ST elevation)", 
+                                                                                    "2. Myocardial infarction (non ST elevation)",
+                                                                                    "3. Threatened MI",
+                                                                                    "4. Acute coronary syndrome (troponin positive)/ nSTEMI",
+																					"5. Acute coronary syndrome (troponin negative)", 
+																					"6. Chest pain of uncertain cause", 
+																					"7. Myocardial infarction (unconfirmed)",
+																					"8. Other diagnosis", 
+																					"9. Takotsubo Cardiomyopathy", 
+																					"10. Acute coronary syndrome (troponin unspecified)", 
+																					"11. PCI related infarction"
+                                                                                    
+							], 
                             "operator": "AND"}, 
                            "2": {"where": {
                                             //"4.27 DischargedOnThieno": ["0", "2", "3", "4", "8", "9"] ,
@@ -250,8 +248,12 @@ $Q.Minap = {
                                             "4.05 Betablocker": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] , 
                                             "4.06 ACEInhibitor": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
                                             "4.07 Statin": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
-                                            "4.08 AspirinSecondary": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"]     },
-                                          "valid": ["0. No", "1. Yes" ,"4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"], "operator":"OR"}   
+                                            "4.08 AspirinSecondary": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"]
+											
+											},
+                                          "valid": ["0. No", "1. Yes" ,"4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"
+                                                                                   
+										  ], "operator":"OR"}   
                         }, 
                         "xspan": "year",    
                         "yspan": "unit",  
@@ -261,7 +263,7 @@ $Q.Minap = {
                         "granP": [ "unit", "unit"], 
                         "ehr": "Admissions",
                         /** Slave Tasks spec begin here **/ 
-                        "categories": ["P2Y12", "4.05 Betablocker", "4.07 Statin", "4.06 ACEInhibitor", "4.27 DischargedOnThieno"],      
+                        "categories": ["4.02 FinalDiagnosis", "4.05 Betablocker", "4.07 Statin", "4.06 ACEInhibitor", "4.27 DischargedOnThieno"],      
                         "quantities": [
                                         //{"q":"4.27 DischargedOnThieno","granT": "admonth", "granP":["unit"], "yaggregates": "count" },                                         
                                         //{"q":"4.31 Discharged on TIcagrelor (v10.3 Dataset)", "granT": "admonth", "granP":["unit"], "yaggregates": "count"}, 

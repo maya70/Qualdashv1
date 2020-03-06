@@ -75,8 +75,13 @@ v431 <- madmission$`4.31 DischargedOnTicagrelor` == '1. Yes'
 
 madmission$P2Y12 <- as.numeric(v431 | v427)
 
-#dtb <- madmission$`3.09 ReperfusionTreatment` - madmission$`3.06 ArrivalAtHospital`
-#madmission$dtb <- as.numeric(dtb)
+dtb <- madmission$`3.09 ReperfusionTreatment` - madmission$`3.06 ArrivalAtHospital`
+madmission$dtb <- as.numeric(dtb)
+
+ctb <- madmission$`3.09 ReperfusionTreatment` - madmission$`3.02 CallforHelp`
+madmission$ctb <- as.numeric(ctb)
+madmission$ctbTarget <- as.numeric(ctb <= 120.0)
+madmission$ctbNoTarget <- as.numeric(ctb > 120.0)
 
 dta <- madmission$`4.18 LocalAngioDate` - madmission$`3.06 ArrivalAtHospital`
 madmission$dta <- as.numeric(dta)
@@ -125,7 +130,7 @@ for(year in unique(madmission$adyear)){
 for(year in unique(madmission$adyear)){
   prev = year -1 
   dashed = paste(gsub(' ','', prev),'-', gsub(' ','', year), sep='')
-  if(! (dashed %in% av$x))
-    temp <- c(av$x, dashed) 
+  if(! (dashed %in% temp))
+    temp <- c(temp, dashed) 
 }
 write.csv(temp, yfn, row.names = FALSE)
