@@ -8,16 +8,16 @@ library(ems)
 
 
 #source_file_path <-"//iqdvmappp01its/qualdash/home/data/source/"
-#source_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/source/"
-source_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/source/"
+source_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/source/picanet/"
+#source_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/source/"
 
 #dest_file_path <- "//iqdvmappp01its/qualdash/home/data/picanet_admission/"
-#dest_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/picanet_admission/"
-dest_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_admission/"
+dest_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/picanet_admission/"
+#dest_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_admission/"
 
 #dest_activity_path <- "//iqdvmappp01its/qualdash/home/data/picanet_activity/"
-#dest_activity_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/picanet_activity/"
-dest_activity_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_activity/"
+dest_activity_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/picanet_activity/"
+#dest_activity_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/picanet_activity/"
 
 audit_filename <- "admission.csv"
 

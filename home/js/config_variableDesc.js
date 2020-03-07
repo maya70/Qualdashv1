@@ -62,6 +62,14 @@ $Q.variableDesc = {
     "Description": "DOB estimated or missing"
   },
   {
+    "Name": "SOURCEADDESCRIPTION",
+    "Description": "Source of admission"
+  },
+  {
+    "Name": "CAREAREAADDESCRIPTION",
+    "Description": "Care area admitted from"
+  },
+  {
     "Name": "GEST",
     "Description": "Gestational age at delivery"
   },
@@ -78,8 +86,53 @@ $Q.variableDesc = {
     "Description": "Sex"
   },
   {
+    "Name": "XB09Z",
+    "Description": "Enhanced Care"
+  },
+  {
+    "Name": "XB07Z",
+    "Description": "High dependency"
+  },
+  {
+    "Name": "XB06Z",
+    "Description": "High Dependency Advanced"
+  },
+  {
+    "Name": "XB05Z",
+    "Description": "Intensive Care Basic"
+  },
+  {
+    "Name": "XB04Z",
+    "Description": "Intensive Care Basic Enhanced"
+  },
+  {
+    "Name": "XB03Z",
+    "Description": "Intensive Care Advanced"
+  },
+  {
+    "Name": "XB02Z",
+    "Description": "Intensive Care Advanced Enhanced"
+  },
+  {
+    "Name": "XB01Z",
+    "Description": " Intensive Care - ECMO / ECLS"
+  },
+  
+  {
+    "Name": "SEXDESCRIPTION",
+    "Description": "Sex"
+  },
+  {
     "Name": "ETHNIC",
     "Description": "Ethnic code"
+  },
+  {
+    "Name": "ETHNICDESCRIPTION",
+    "Description": "Ethnic code"
+  },
+  {
+	  "Name": "PRIMREASONDESCRIPTION",
+	  "Description": "Primary reason of admission"
   },
   {
     "Name": "ETHNICOTHER",
@@ -272,6 +325,14 @@ $Q.variableDesc = {
   {
     "Name": "INVVENT",
     "Description": "Invasive ventilation"
+  },
+  {
+    "Name": "INVVENTDESCRIPTION",
+    "Description": "Invasive ventilation"
+  },
+  {
+    "Name": "ADTYPE2OR4",
+    "Description": "Unplanned admissions (AdType = 2 or 4)"
   },
   {
     "Name": "INVVENTDAY",
@@ -521,6 +582,11 @@ $Q.variableDesc = {
     "Name": "UNITDISDEST",
     "Description": "Destination following discharge from unit"
   },
+   {
+    "Name": "UNITDISDESTDESCRIPTION",
+    "Description": "Destination following discharge from unit"
+  },
+ 
   {
     "Name": "UNITDISDESTHOSP",
     "Description": "Destination following discharge from unit: hospital"

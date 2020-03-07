@@ -460,7 +460,9 @@
 												name = "invalid data: " + dstatus ; 
 											}
 								    		var percent = Math.round(parseInt(d.data.number)/self.totalNumRecs * 100); 
-								    		return  name+ "\n "+ percent+ "% (value: "+ d.data.number +")"; });
+								    		if(percent < 1) 
+												percent = "<1";
+											return  name+ "\n "+ percent+ "% (value: "+ d.data.number +")"; });
 								      	// update original color only if this slice isn't selected
 								      	origColor = d3.select(this).style("fill");
 								      	if(origColor !== self.highlightColor)

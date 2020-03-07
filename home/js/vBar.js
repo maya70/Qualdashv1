@@ -647,7 +647,7 @@
      						 		.attr("dy", ".35em")
 								      .style("text-anchor", "start")							      
 								      .text(function(d) {  
-								       var numRecs = self.parent.parent.control.getDataLength(viewId);
+								       var numRecs = self.parent.parent.control.getDataLengthByView(self.parent.metric, viewId);
 								       var totalMissing; 
 								       //levels.forEach(function(level){
 								       	totalMissing = self.parent.parent.control.getMissing(self.parent.metric, viewId); 	       	
@@ -978,6 +978,7 @@
 							    .attr("y", height)
 							    .attr("width", x.bandwidth())
 							    .attr("height", 0)
+								.style("stroke-width", 0.5)
 							    .style("stroke", "darkgrey")
 							     .on("mouseover", function(d, i){
 							     	var numValues = color.domain().length; 

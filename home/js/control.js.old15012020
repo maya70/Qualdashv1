@@ -30,7 +30,7 @@
 											}, 
 											{
 												type: 'GET',
-												data: {id: self.sessionID}
+												data: {id: 0}
 											});
 							
 							//self.sessionParams = {}; // stores audit, year and job title to be retrievable later
@@ -78,10 +78,6 @@
 						},
 						writeSessionLog: function(){
 							var self = this;
-							self.updateSessionLog({'type': 'endSession' , 
-															'owner': 'application' 
-																		});
-								
 							//self.sessionLog['exitTime'] = Date.now(); 
 							$Q.handleJSON('./php/submit_log.php', 
 												function(){},
@@ -223,11 +219,6 @@
 							var self = this; 
 							return self.dataModel.getDataLength(viewId); 
 						},
-						getDataLengthByView: function(metric, viewId){
-							var self = this; 
-							return self.dataModel.getDataLengthByView(metric, viewId); 
-						},
-						
 						getRecordById: function(recId){
 							return this.dataModel.getRecordById(recId); 
 						},
