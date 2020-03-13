@@ -219,6 +219,7 @@ $Q.Minap = {
                         "xType": "t",
                         "yType": [ "q", "q"],
                         "yfilters": {"1": {"where": {
+							                "4.02 FinalDiagnosis": ["1. Myocardial infarction (ST elevation)", "4. Acute coronary syndrome (troponin positive)/ nSTEMI"],
                                             "P2Y12": "1", 
                                             "4.05 Betablocker": "1. Yes" , 
                                             "4.06 ACEInhibitor": "1. Yes" ,
@@ -242,18 +243,20 @@ $Q.Minap = {
 							], 
                             "operator": "AND"}, 
                            "2": {"where": {
+												"missingOneDrug": "1", 
+												"4.02 FinalDiagnosis": ["1. Myocardial infarction (ST elevation)", "4. Acute coronary syndrome (troponin positive)/ nSTEMI"]
                                             //"4.27 DischargedOnThieno": ["0", "2", "3", "4", "8", "9"] ,
                                             //"4.31 Discharged on TIcagrelor (v10.3 Dataset)": ["0", "2", "3", "4", "8", "9"] ,
-                                            "P2Y12": "0", 
-                                            "4.05 Betablocker": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] , 
-                                            "4.06 ACEInhibitor": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
-                                            "4.07 Statin": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
-                                            "4.08 AspirinSecondary": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"]
+                                            //"P2Y12": "0", 
+                                            //"4.05 Betablocker": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] , 
+                                            //"4.06 ACEInhibitor": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
+                                            //"4.07 Statin": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"] ,
+                                            //"4.08 AspirinSecondary": ["0. No", "4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"]
 											
 											},
                                           "valid": ["0. No", "1. Yes" ,"4. Not applicable","2. Contraindicated", "3. Patient declined treatment", "8. Not indicated"
                                                                                    
-										  ], "operator":"OR"}   
+										  ], "operator":"AND"}   
                         }, 
                         "xspan": "year",    
                         "yspan": "unit",  
