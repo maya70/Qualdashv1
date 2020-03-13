@@ -75,6 +75,16 @@
 									self.sessionLog.push(rec); 
 							}
 							
+							$Q.handleJSON('./php/submit_log.php', 
+												function(){},
+												{
+													type: 'POST',
+								                    data: {
+								                       "sessionLog": self.sessionLog								                      
+								                      }
+												});
+						    self.sessionLog = [];
+							
 						},
 						writeSessionLog: function(){
 							var self = this;
