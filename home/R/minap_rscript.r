@@ -90,6 +90,7 @@ madmission$dta <- as.numeric(dtaH)
 madmission$dtaTarget <- as.numeric(dtaH < 72.0)
 madmission$dtaNoTarget <- as.numeric(dtaH > 72.0)
 
+madmission$missingOneDrug <- as.numeric( madmission$'P2Y12' == 0 | madmission$'4.05 Betablocker' == '0. No' | madmission$'4.06 ACEInhibitor' == '0. No' | madmission$'4.07 Statin'== '0. No' | madmission$'4.08 AspirinSecondary' == '0. No' )
 
 
  # break it into separate files for individual years

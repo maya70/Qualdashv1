@@ -114,7 +114,7 @@ $Q.Picanet = {
                         "yfilters": {"der_spanbedDays" : {"where":{"start": "AdDate", "end": "UnitDisDate"}}, 
                                     "der_spanventDays": {"where":{"start": "invVentStart", "end": "invVentEnd"}}}, 
                         "xType": "t",
-                        "yType": ["t", "q"], 
+                        "yType": ["t", "t"], 
                         "xspan": "year",    
                         "yspan": "unit", 
                         "ylabel": "Num. Days",
