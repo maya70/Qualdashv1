@@ -846,6 +846,12 @@
                             var self= this;
                             return self.tHier[viewId]; 
                         },
+                        getTimeDaily: function(viewId){
+                            var self = this;
+                            console.log(self.tDaily);
+                            console.log(self.tDaily[viewId]);
+                            return self.tDaily[viewId]; 
+                        },
                         listTimeVar: function(t){
                             var self = this;
                             if(t === "weekly")
@@ -1135,10 +1141,10 @@
 
                                 }
                             }
-							if(self.derivedLookup && self.derivedLookup[yvar])
-								return vval; 
-							else if (vval > 0)
-								vval = (yaggregates === "count")? 1 : rec[vname]; 
+                            if(self.derivedLookup && self.derivedLookup[yvar])
+                                return vval; 
+                            else if (vval > 0)
+                                vval = (yaggregates === "count")? 1 : rec[vname]; 
                             return vval; 
 
                         },
@@ -1153,27 +1159,27 @@
                             }
                             return totalRecs; */
                         },
-						getDataLengthByView: function(metric, viewId){
+                        getDataLengthByView: function(metric, viewId){
                             var self = this;
                             var auditVars = self.audit === "picanet"? $Q.Picanet : $Q.Minap; 
-							var yaggregate = auditVars['displayVariables'][viewId]['yaggregates'];
-							
+                            var yaggregate = auditVars['displayVariables'][viewId]['yaggregates'];
+                            
                             var totalRecs = 0; 
-							
+                            
                             for(var key in self.dicts[viewId]){
-								var id = 0; 
+                                var id = 0; 
                                 for(var kk in self.dicts[viewId][key]){
-									
-									if(id < yaggregate.length && yaggregate[id] == 'count')
-										totalRecs += self.dicts[viewId][key][kk]['value'];	
-								id++;
+                                    
+                                    if(id < yaggregate.length && yaggregate[id] == 'count')
+                                        totalRecs += self.dicts[viewId][key][kk]['value'];  
+                                id++;
                                 }
                             }
-							var missing = self.getMissing(metric, viewId); 
-							var missingDisplayed = self.dicts[viewId][Object.keys(self.dicts[viewId])[0]]['missing'];
-							if(missing && !missingDisplayed) 
-								return totalRecs + missing;
-							
+                            var missing = self.getMissing(metric, viewId); 
+                            var missingDisplayed = self.dicts[viewId][Object.keys(self.dicts[viewId])[0]]['missing'];
+                            if(missing && !missingDisplayed) 
+                                return totalRecs + missing;
+                            
                             return totalRecs >0 ? totalRecs : self.getDataLength(viewId); 
                         },
                         
@@ -1346,7 +1352,7 @@
                         },
                         updateTimeHierarchy: function(year, varname, displayId, rec, qval){
                             var self = this; 
-							var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][displayId]: $Q.Minap["displayVariables"][displayId];  
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][displayId]: $Q.Minap["displayVariables"][displayId];  
                             if(year.indexOf("-") < 0)
                             {                            
                                                         if(self.checkGranT(varname , displayId)){
@@ -1359,24 +1365,42 @@
                                                             var quar = self.getRecordQuarter(rec, displayId);
                                                             if(quar === 1){
                                                                 //var m = self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
-																var m = parseInt(self.stringToMonth(rec[auditVars['x']]));
+                                                                var m = parseInt(self.stringToMonth(rec[auditVars['x']]));
                                                                 if(m === 12)
                                                                     console.log(m); 
                                                             }
                                                             if(!self.tHier[displayId][year][quar])
                                                                 self.tHier[displayId][year][quar] = {};
                                                             //var mon =  self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]);
-															var mon = parseInt(self.stringToMonth(rec[auditVars['x']]));
+                                                            var mon = parseInt(self.stringToMonth(rec[auditVars['x']]));
                                                             if(!self.tHier[displayId][year][quar][mon])
                                                                 self.tHier[displayId][year][quar][mon] = {};
                                                             //var week = parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
-															var week = parseInt(self.stringToDate(rec[auditVars['x']]).getDate()/7);
+                                                            var week = parseInt(self.stringToDate(rec[auditVars['x']]).getDate()/7);
                                                             if(!self.tHier[displayId][year][quar][mon][week])
                                                                 self.tHier[displayId][year][quar][mon][week] = {};
                                                             if(!self.tHier[displayId][year][quar][mon][week][varname])
                                                                 self.tHier[displayId][year][quar][mon][week][varname] = qval; 
                                                             else
                                                                 self.tHier[displayId][year][quar][mon][week][varname] += qval;
+
+                                                           
+                                                            if(!self.tDaily)
+                                                                self.tDaily = {};
+                                                            if(!self.tDaily[displayId])
+                                                                self.tDaily[displayId] = {};
+                                                            var temp = self.stringToDate(rec[auditVars['x']]); 
+                                                            var date = new Date(temp.getFullYear(),temp.getMonth() , temp.getDate()); 
+                                                            if(!self.tDaily[displayId][date])
+                                                                self.tDaily[displayId][date] ={};
+                                                            if(!self.tDaily[displayId][date][varname])
+                                                                self.tDaily[displayId][date][varname] = qval; 
+                                                            else 
+                                                                self.tDaily[displayId][date][varname] += qval; 
+
+
+
+
                             }
                             }                            
                         },
@@ -2006,8 +2030,8 @@
                         },
                         getRecordQuarter: function(rec, viewId){
                             var self = this; 
-							var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId];  
-							var recMonth = parseInt(self.stringToMonth(rec[auditVars['x']]));
+                            var auditVars = (self.audit === "picanet")? $Q.Picanet["displayVariables"][viewId]: $Q.Minap["displayVariables"][viewId];  
+                            var recMonth = parseInt(self.stringToMonth(rec[auditVars['x']]));
                             //var recMonth = parseInt(rec[$Q.DataDefs[self.audit]["monthVar"]]) || parseInt(self.stringToMonth(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]));                            
                             if(recMonth === 12) 
                                 return 4; 

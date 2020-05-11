@@ -194,6 +194,9 @@
 						},
 						setupPopover: function(viewId){
 							var self = this; 
+							var auditVars = self.control.audit === "picanet"? $Q.Picanet: $Q.Minap;
+							var mss = auditVars["displayVariables"][viewId];
+
 							self.pop = d3.select("body").append("div")
 											.attr("id", "pp"+viewId)
 											.attr("class", "hidden");
@@ -459,21 +462,85 @@
 							var pbody3 = self.pop3.append("div")
 											.attr("class", "popover-body")
 											.attr("id", "time-popover"); 
-							var psel = pbody3.append("select")
+							
+							/*var psel = pbody3.append("select")
 								//.attr("type", "submit")						
 								.attr("id", "time-sel"+viewId)
 								.style("horizontal-align", "center")
 								.style("min-width", "300px")
 								.style("margin-top", "20px");
-
-							
 							psel.append("option")
 								.attr("value", "multiples")
 								.text("Small Multiples"); 
 							psel.append("option")
 								.attr("value", "series")
-								.text("Time Series");
+								.text("Time Series");*/
 
+							var grans = ['daily', 'weekly', 'monthly', 'quarterly', 'annual'];
+							
+							pbody3.selectAll(".ctrl-btn"+viewId).data(grans).enter().append("div")
+									   .attr("id", "days"+viewId)
+									   .attr("class", "ctrl-btn"+viewId)									  
+									   .attr("state", false)
+											.style("background-color", "lightgrey")
+											.style("max-height", "22%")
+											.style("margin-left", "30px")
+											.style("horizontal-align", "center")
+											.style("min-width", "90px")
+											.style("margin-top", "20px")
+											.style("border", function(d){
+												var state = d3.select(this).attr("state");	
+												var temp = Object.keys(mss['granT'])[0];											
+												if(state === "true" || temp === d )
+													return "thick solid #00FFFF";
+												else
+													return "none"; 
+											})
+											.text(function(d){
+												return d; 
+											})
+											 .style("text-align", "center");
+
+
+							$(document).on('click', '.ctrl-btn'+viewId, function(){
+								d3.selectAll(".ctrl-btn"+viewId).attr("state", false);
+								d3.selectAll(".ctrl-btn"+viewId).style("border", "none");
+											 	d3.select(this).attr("state", true)
+											 				   .style("border", "thick solid #00FFFF");
+								self.cards[viewId].updateTimeView(this.textContent); 
+								self.control.updateSessionLog({'type': 'toggleView' , 
+																			'owner': 'history subview' , 
+																			'params': {'metric': self.getMetricById(viewId), 'selection': this.value}
+																		});
+
+
+							});	
+							$(document).on('click', '#time-btn'+viewId, function(){
+								pbody3.selectAll(".ctrl-btn"+viewId).remove();
+								pbody3.selectAll(".ctrl-btn"+viewId).data(grans).enter().append("div")
+									   .attr("id", "days"+viewId)
+									   .attr("class", "ctrl-btn"+viewId)
+									   .attr("state", false)
+											.style("background-color", "lightgrey")
+											.style("max-height", "22%")
+											.style("margin-left", "30px")
+											.style("horizontal-align", "center")
+											.style("min-width", "90px")
+											.style("margin-top", "20px")
+											.style("border", function(d){
+												var state = d3.select(this).attr("state");													
+												if(state === "true" )
+													return "thick solid #00FFFF";
+												else
+													return "none"; 
+											})
+											.text(function(d){
+												return d; 
+											})
+											 .style("text-align", "center");
+
+
+							} );		 
 							$(document).on('change', '#time-sel'+viewId, function(){
 									//console.log(this.value);
 									self.cards[viewId].updateTimeView(this.value); 

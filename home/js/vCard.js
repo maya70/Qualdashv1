@@ -512,6 +512,7 @@
 							var self = this;
 							
 							var tdata = self.parent.control.getTimeHier(self.id); 
+							var tDaily = self.parent.control.getTimeDaily(self.id);
 							var div = d3.select("body").append("div")	
 									    .attr("class", "tooltip")				
 									    .style("opacity", 0);
@@ -647,8 +648,8 @@
 							self.state['timeData'] = tdata;
 							self.state['timeW'] = mainsvgW-10;
 							self.state['timeH'] = ssvgH-10;
-							
-							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]][0] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, self.tView);						
+							console.log(tDaily); 
+							self.subVisT = new $Q.SubTimeChart(self.id, span[tspan[0]][0] , tspan[0], tdata , self, mainsvgW-10, ssvgH-10, self.tView, tDaily);						
 						},
 						nohighlight: function(){
 							var self = this;
@@ -1324,7 +1325,7 @@
 											{"id": "split-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "popover", "hidden": false, "data-popover-content":"#pp"+viewId}, 											
 											{"id": "axes-btn"+viewId, "class": "ctrl-btn fa fa-plus", "data-toggle": "popover", "hidden": false, "data-popover-content":"#aa"+viewId},
 											//{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#grantpp"+viewId}
-											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "none", "hidden": false}
+											{"id": "time-btn"+viewId, "class": "ctrl-btn fa fa-line-chart", "data-toggle": "popover", "hidden": false, "data-popover-content":"#grantpp"+viewId}
 											]; 
 
 							
@@ -1408,7 +1409,7 @@
 								});
 
 							  $("#time-btn"+viewId).on("click", function(e){
-							  	self.updateTimeView(); 
+							  	//self.updateTimeView(); 
 							  });
 							  var time_ttip = $("#time-btn"+viewId).tooltip({    
 							    placement : 'bottom', 
@@ -1496,14 +1497,15 @@
 							
 
 						},
-						updateTimeView: function(){
+						updateTimeView: function(value){
 							var self = this;
-							//self.parent.control.addBtnClick();
-							//console.log(self.id); 
-							//console.log(viewType);  
-							self.tView = self.tView==="series"? "multiples" : "series"; 
+							//console.log(value);
 
-							self.subVisT.draw(self.id, self.state['selectedTime'] ,self.state['tspan'], self.state['timeData'] , self, 
+							//self.tView = self.tView==="series"? "multiples" : "series"; 
+							self.tView = "series";
+							self.tGran = value;
+
+							self.subVisT.draw(self.id, self.state['selectedTime'] ,self.tGran, self.state['timeData'] , self, 
 											 self.state['timeW'], self.state['timeH'], self.tView);			
 						},
 						drawScatter: function(dataView){

@@ -146,6 +146,10 @@
 							var self = this;
 							return self.dataModel.getTimeHier(viewId); 
 						},
+						getTimeDaily: function(viewId){
+							var res = this.dataModel.getTimeDaily(viewId);
+							return res; 
+						},
 						prepTimeData: function(tspan, viewId, vname ){
 							var self = this;
 							return self.dataModel.prepTimeData(tspan, viewId, vname);
