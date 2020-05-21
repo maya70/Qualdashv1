@@ -387,7 +387,7 @@ lines.selectAll('.line-group')
 												if(year === curYear){
 													// get month and day only
 													var date = new Date(key);
-													var mon_day = date.getMonth() + "-" + date.getDate(); 
+													var mon_day = self.months[date.getMonth()] + " " + date.getDate(); 
 													result[result.length-1]['values'].push({'date': mon_day, 'value': self.daily[key][yvar]});
 												}
 											}
@@ -575,113 +575,106 @@ lines.selectAll('.line-group')
 									});							
 								}*/
 								
+						function custom_sort(a,b){
+							      return new Date(a.date).getTime() - new Date(b.date).getTime(); 
+							        }
 
-	function custom_sort(a,b){
-		      return new Date(a.date).getTime() - new Date(b.date).getTime(); 
-		        }
+						self.data.forEach(function(datum){
+							datum['values'].sort(custom_sort);
+						});
 
-self.data.forEach(function(datum){
-	datum['values'].sort(custom_sort);
-});
+						/* Scale */
+						var xScale = d3.scaleTime()
+						  .domain(d3.extent(self.data[0].values, d => d.date))
+						  .range([0, width-margin-70]);
 
-/* Scale */
-var xScale = d3.scaleTime()
-  .domain(d3.extent(self.data[0].values, d => d.date))
-  .range([0, width-margin-40]);
+						var yScale = d3.scaleLinear()
+						  //.domain([0, d3.max(self.data[0].values, d => d.value)])
+						  .domain([0, d3.max(self.data, function(array){
+						  	return d3.max(array.values, d => d.value );
+						  })])
+						  .range([height-margin-20, 0]);
 
-var yScale = d3.scaleLinear()
-  //.domain([0, d3.max(self.data[0].values, d => d.value)])
-  .domain([0, d3.max(self.data, function(array){
-  	return d3.max(array.values, d => d.value );
-  })])
-  .range([height-margin-20, 0]);
+						var color = d3.scaleSequential(d3.interpolateViridis); //d3.scaleOrdinal(d3.schemeCategory10);
+						color.domain([1,4]);
 
-var color = d3.scaleSequential(d3.interpolateViridis); //d3.scaleOrdinal(d3.schemeCategory10);
+						/* Add SVG */
+						if(self.svg){								
+							parent.ssvgt.select("svg").remove(); 								
+						}
 
-color.domain([1,4]);
+					self.svg = parent.ssvgt.append("svg")			    
+					  .attr("width", "100%")
+					  .attr("height", (height+margin+20)+"px")
+					  .append('g')
+					  .attr("transform", "translate("+(margin+30)+","+(margin*2)+")");
 
-/* Add SVG */
-							if(self.svg){								
-								parent.ssvgt.select("svg").remove(); 								
-							}
+					/* Add line into SVG */
+					var line = d3.line()
+					  .x(d => xScale(d.date))
+					  .y(d => yScale(d.value));
 
-							
+					let lines = self.svg.append('g')
+					  .attr('class', 'lines');
 
-self.svg = parent.ssvgt.append("svg")			    
-  //.attr("width", (width+margin*2)+"px")
-  .attr("width", "100%")
-  .attr("height", (height+margin+20)+"px")
-  .append('g')
-  .attr("transform", "translate("+(margin+30)+","+(margin*2)+")");
+					lines.selectAll('.line-group')
+					  .data(self.data).enter()
+					  .append('g')
+					  .attr('class', 'line-group')  
+					  .on("mouseover", function(d, i) {
+					      self.svg.append("text")
+					        .attr("class", "title-text")
+					        .style("fill", color(i))        
+					        //.style("fill", "#1f78b4")
+					        .text(d.name)
+					        .attr("text-anchor", "middle")
+					        .attr("x", (width-margin)/2)
+					        .attr("y", 5);
+					    })
+					  .on("mouseout", function(d) {
+					      self.svg.select(".title-text").remove();
+					    })
+					  .append('path')
+					  .attr('class', 'line')  
+					  .attr('d', d => line(d.values))
+					  .style('stroke', (d, i) => color(i))
+					  .style('opacity', function(d) {
+					  		return lineOpacity;
+						})
+					  .style('fill', 'none')
+					  .style("stroke-dasharray", function(d,i) {
+					  	//if(self.gran.indexOf("daily") < 0)
+					  	return ("3," + ((2-i)*2));
+					  	//else return "none"; 
+						})
+					  .on("mouseover", function(d) {
 
-
-/* Add line into SVG */
-var line = d3.line()
-  .x(d => xScale(d.date))
-  .y(d => yScale(d.value));
-
-let lines = self.svg.append('g')
-  .attr('class', 'lines');
-
-lines.selectAll('.line-group')
-  .data(self.data).enter()
-  .append('g')
-  .attr('class', 'line-group')  
-  .on("mouseover", function(d, i) {
-      self.svg.append("text")
-        .attr("class", "title-text")
-        //.style("fill", color(i))        
-        .style("fill", "#1f78b4")
-        .text(d.name)
-        .attr("text-anchor", "middle")
-        .attr("x", (width-margin)/2)
-        .attr("y", 5);
-    })
-  .on("mouseout", function(d) {
-      self.svg.select(".title-text").remove();
-    })
-  .append('path')
-  .attr('class', 'line')  
-  .attr('d', d => line(d.values))
-  //.style('stroke', (d, i) => color(i))
-  .style('stroke', "#1f78b4")
-  .style('opacity', function(d) {
-  		return lineOpacity;
-	})
-  .style('fill', 'none')
-  .style("stroke-dasharray", function(d,i) {
-  	if(self.gran.indexOf("daily") < 0)
-  	return ("3," + ((2-i)*2));
-  	else return "none"; 
-	})
-  .on("mouseover", function(d) {
-
-      d3.selectAll('.line')
-					.style('opacity', function(d) {
-						if(this.id !== "vline"+viewId)
-						return otherLinesOpacityHover; 
-					});
-      d3.selectAll('.circle')
-					.style('opacity', circleOpacityOnLineHover);
-      d3.select(this)
-        .style('opacity', lineOpacityHover)
-        .style("stroke-width", lineStrokeHover)
-        .style("cursor", "pointer");
-    })
-  .on("mouseout", function(d) {
-  	//if(self.gran.indexOf("daily") < 0){
-      d3.selectAll(".line")
-					.style('opacity', function(d) {
-						if(this.id !== "vline"+viewId)
-						return lineOpacity; 
-					});
-      d3.selectAll('.circle')
-					.style('opacity', circleOpacity);
-      d3.select(this)
-        .style("stroke-width", lineStroke)
-        .style("cursor", "none");
-    	//}
-    });
+					      d3.selectAll('.line')
+										.style('opacity', function(d) {
+											if(this.id !== "vline"+viewId)
+											return otherLinesOpacityHover; 
+										});
+					      d3.selectAll('.circle')
+										.style('opacity', circleOpacityOnLineHover);
+					      d3.select(this)
+					        .style('opacity', lineOpacityHover)
+					        .style("stroke-width", lineStrokeHover)
+					        .style("cursor", "pointer");
+					    })
+					  .on("mouseout", function(d) {
+					  	//if(self.gran.indexOf("daily") < 0){
+					      d3.selectAll(".line")
+										.style('opacity', function(d) {
+											if(this.id !== "vline"+viewId)
+											return lineOpacity; 
+										});
+					      d3.selectAll('.circle')
+										.style('opacity', circleOpacity);
+					      d3.select(this)
+					        .style("stroke-width", lineStroke)
+					        .style("cursor", "none");
+					    	//}
+					    });
 
 
 /* Add circles in the line */
@@ -696,18 +689,28 @@ lines.selectAll("circle-group")
   .data(d => d.values).enter()
   .append("g")
   .attr("class", "circle")  
-  .on("mouseover", function(d) {
+  .on("mouseover", function(datum) {
       d3.select(this)     
         .style("cursor", "pointer")
         .style("opacity", 1.0)
         .append("text")
         .attr("class", "text")
         //.text(`${d.value}` + `${d.date}` )
-        .text(function(d){
-        	return "x:"+ d.date + "<br>" + "y:" + d.value; 
+        .text(function(ddatum){
+			var dd = new Date(ddatum.date);
+			console.log(d3.select(this.parent).attr("d"));
+        	return "x:"+ (dd.getDate()+ "-"+dd.getMonth()+ "-"+ dd.getFullYear()); 
         })
         .attr("x", d => xScale(d.date) + 5)
         .attr("y", d => yScale(d.value) - 10);
+       d3.select(this)
+       	.append("text")
+       	.attr("class", "text")
+       	.text(function(d){
+       		return "y:" + d.value;
+       	})
+       	.attr("x", d => xScale(d.date) + 5)
+        .attr("y", d => yScale(d.value) - 3);
     })
   .on("mouseout", function(d) {
       d3.select(this)
@@ -718,6 +721,7 @@ lines.selectAll("circle-group")
         .selectAll(".text").remove();
     })
   .append("circle")
+  .attr("class","timeCircle"+viewId)
   .attr("cx", d => xScale(d.date))
   .attr("cy", d => yScale(d.value))
   .attr("r", function(d) {
@@ -771,7 +775,9 @@ self.svg.append("g")
    
   var legend = self.svg.append("g")
   				.attr("class", "time-legend")
-  				.attr("transform", "translate("+ (width-margin) + ", 10)");
+  				.attr("transform", "translate("+ (width-margin - 50) + ", 10)");
+
+ 
 
   self.data.forEach(function(year, i){
   	legend.append("line")
@@ -785,7 +791,24 @@ self.svg.append("g")
   	legend.append("text")
   			.attr("x", 12)
   			.attr("y", i*20)
-  			.text(year['name']); 
+  			.attr("d", year['name'] )
+  			.text(year['name'])
+  			.on("click", function(d){  
+  			     legend.selectAll('text').style('opacity', 0.4);
+  			     d3.select(this).style('opacity', 1.0);						
+  				 d3.selectAll('.line')
+					.style('opacity', function(l){
+						if(l.name !== year['name'])
+							return 0;
+						console.log(l.name);
+					});
+				d3.selectAll(".timeCircle"+viewId)
+				  .style("opacity", function(c){
+				  	return 0; 
+				  });
+
+
+  			}); 
   });
 
 						},
