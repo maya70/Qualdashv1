@@ -3,7 +3,8 @@
 	$Q.SubTimeChart = $Q.defineClass(
 					null, 
 					function SubTimeChart(viewId,vname ,gran, data, parent, svgw, svgh, viewType, tDaily, palette){
-						var self = this;	
+						var self = this;
+						console.log("TIME SUBVIEW");	
 						self.monthLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug",
 												"Sep", "Oct", "Nov", "Dec" ];
 						self.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

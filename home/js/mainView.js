@@ -476,7 +476,7 @@
 								.attr("value", "series")
 								.text("Time Series");*/
 
-							var grans = ['daily', 'weekly', 'monthly', 'quarterly', 'annual'];
+							var grans = ['daily', 'weekly', 'monthly'];
 							
 							pbody3.selectAll(".ctrl-btn"+viewId).data(grans).enter().append("div")
 									   .attr("id", "days"+viewId)

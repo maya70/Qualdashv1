@@ -1376,7 +1376,10 @@
                                                             if(!self.tHier[displayId][year][quar][mon])
                                                                 self.tHier[displayId][year][quar][mon] = {};
                                                             //var week = parseInt(self.stringToDate(rec[$Q.DataDefs[self.audit]["admissionDateVar"]]).getDate()/7);
-                                                            var week = parseInt(self.stringToDate(rec[auditVars['x']]).getDate()/7);
+                                                            var day = self.stringToDate(rec[auditVars['x']]).getDate(); 
+                                                            var week = parseInt(day/7)+1;
+                                                            if(isNaN(week))
+                                                                console.log(day);
                                                             if(!self.tHier[displayId][year][quar][mon][week])
                                                                 self.tHier[displayId][year][quar][mon][week] = {};
                                                             if(!self.tHier[displayId][year][quar][mon][week][varname])
