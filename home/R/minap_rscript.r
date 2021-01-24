@@ -2,8 +2,8 @@
  library(lubridate)
  library(parsedate)
 
- source_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/source/minap/"
- dest_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/minap_admission/"
+ source_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/source/minap/"
+ dest_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/minap_admission/"
  dateFormat <- '%d/%m/%Y %H:%M'
  audit_filename <- "admission.csv"
  
@@ -64,33 +64,33 @@ for(col in colnames(madmission)){
 
 
 # get years in data
-admdate <- madmission$`3.06 ArrivalAtHospital`
+admdate <- madmission$`3.06 Admission Date/Time`
 adyear <- year(admdate)
 madmission <- cbind(madmission, adyear)
 
 
 # Derived columns
-v427 <- madmission$`4.27 DischargedOnThieno` == '1. Yes'
-v431 <- madmission$`4.31 DischargedOnTicagrelor` == '1. Yes'
+v427 <- madmission$`4.27 Thienopyridine Inhibitor` == '1. Yes'
+v431 <- madmission$`4.31 Ticagrelor` == '1. Yes'
 
 madmission$P2Y12 <- as.numeric(v431 | v427)
 
-dtb <- madmission$`3.09 ReperfusionTreatment` - madmission$`3.06 ArrivalAtHospital`
+dtb <- madmission$`3.09 Date/Time of Reperfusion or Date/Time of Balloon Inflation` - madmission$`3.06 Admission Date/Time`
 madmission$dtb <- as.numeric(dtb)
 
-ctb <- madmission$`3.09 ReperfusionTreatment` - madmission$`3.02 CallforHelp`
+ctb <- madmission$`3.09 Date/Time of Reperfusion or Date/Time of Balloon Inflation` - madmission$`3.02 Call for help`
 madmission$ctb <- as.numeric(ctb)
 madmission$ctbTarget <- as.numeric(ctb <= 120.0)
 madmission$ctbNoTarget <- as.numeric(ctb > 120.0)
 
-dta <- madmission$`4.18 LocalAngioDate` - madmission$`3.06 ArrivalAtHospital`
+dta <- madmission$`4.18 LocalAngioDate` - madmission$`3.06 Admission Date/Time`
 madmission$dta <- as.numeric(dta)
 dtaH <- as.numeric(dta) / 60
 madmission$dta <- as.numeric(dtaH)
 madmission$dtaTarget <- as.numeric(dtaH < 72.0)
 madmission$dtaNoTarget <- as.numeric(dtaH > 72.0)
 
-madmission$missingOneDrug <- as.numeric( madmission$'P2Y12' == 0 | madmission$'4.05 Betablocker' == '0. No' | madmission$'4.06 ACEInhibitor' == '0. No' | madmission$'4.07 Statin'== '0. No' | madmission$'4.08 AspirinSecondary' == '0. No' )
+madmission$missingOneDrug <- as.numeric( madmission$'P2Y12' == 0 | madmission$'4.05 Betablocker' == '0. No' | madmission$'4.06 ACEI or ARB' == '0. No' | madmission$'4.07 Statin'== '0. No' | madmission$'4.08 Aspirin' == '0. No' )
 
 
  # break it into separate files for individual years
@@ -107,7 +107,7 @@ for(year in sort(unique(adyear))){
   start = paste(prevYear, '-04-01 00:00:00 GMT', sep='')
   end = paste(year, '-03-31 00:00:00 GMT', sep='' )
   
-  tmp2 = subset(madmission, (pmin(as.Date(madmission$`3.06 ArrivalAtHospital`), as.Date(start)) == as.Date(start)) &  (pmin(as.Date(madmission$`3.06 ArrivalAtHospital`), as.Date(end)) == as.Date(madmission$`3.06 ArrivalAtHospital`)) )
+  tmp2 = subset(madmission, (pmin(as.Date(madmission$`3.06 Admission Date/Time`), as.Date(start)) == as.Date(start)) &  (pmin(as.Date(madmission$`3.06 Admission Date/Time`), as.Date(end)) == as.Date(madmission$`3.06 Admission Date/Time`)) )
   fn = paste(dest_file_path, gsub(' ','', prevYear),'-', gsub(' ','', year), '.csv', sep='' )
   write.csv(tmp2, fn, row.names = FALSE)
 }

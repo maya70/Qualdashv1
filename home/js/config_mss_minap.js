@@ -142,7 +142,7 @@ $Q.Minap = {
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["3.10 JustifiedDelay", "2.39 AdmissionMethod", "2.01 AdmissionDiagnosis"],      
                         "quantities": [
-                                         {"q":"2.30 Weight", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
+                                         {"q":"dtb", "granT": "admonth", "granP":["unit"], "yaggregates": "average"}
                                        ],                                                               
                         "granT": {"monthly-annual": [ "ctbTarget", "ctbNoTarget"] }             
           
