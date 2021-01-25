@@ -74,7 +74,7 @@ $Q.Picanet = {
                         /** Slave Tasks spec begin here **/ 
                         "categories": ["PrimReasonDescription","AdTypeDescription", "EthnicDescription"],      
                         "quantities": [{"q":"PIM3","granT": "AdDate", "granP":["unit"], "yaggregates": "average" }], // from tasks with a single quantitative variable                                                                   
-                        "granT": {"monthly-annual": ["EventID", "UnitDisStatus"] }   // the first element holds the master view's granT                                             
+                        "granT": {"daily": ["EventID", "UnitDisStatus"] }   // the first element holds the master view's granT                                             
           
                      },
                      {  "metric": "48h Readmission",
@@ -106,7 +106,7 @@ $Q.Picanet = {
                         
                      },
                       {  "metric": "Bed Days and Ventilation",
-					     "desc":"Number of bed days and number of invasive ventilation days \n by month of occurrence",
+               "desc":"Number of bed days and number of invasive ventilation days \n by month of occurrence",
                         "mark": "bar",
                         "chart": "grouped",
                         "x": "AdDate",
@@ -129,7 +129,7 @@ $Q.Picanet = {
                         "combinations": ["adtype&der_readmit"]
                      }, 
                       {  "metric": "dependency",   
-						"desc":"By month of admission, number of days in which patients received: \n enhanced care, high dependency, \n high dependency advanced and intensive care basic",
+            "desc":"By month of admission, number of days in which patients received: \n enhanced care, high dependency, \n high dependency advanced and intensive care basic",
                         "mark": "bar",                         
                         "chart": "grouped",
                         "x": "AdDate",
@@ -156,7 +156,7 @@ $Q.Picanet = {
           
                      },
                       {  "metric": "Dependency (contd')",   
-						"desc":"By month of admission, number of days in which patients received:\n intensive care basic enhanced, \n intensive care advanced enhanced, intensive care advanced, \n intensive care ECMO/ECLS",
+            "desc":"By month of admission, number of days in which patients received:\n intensive care basic enhanced, \n intensive care advanced enhanced, intensive care advanced, \n intensive care ECMO/ECLS",
                         "mark": "bar",                         
                         "chart": "grouped",
                         "x": "AdDate",
