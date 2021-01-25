@@ -9,11 +9,11 @@ $Q.DataDefs = {"picanet": {"secondaryKey": "EventID",
                           "dischargeStatusVar": "UnitDisStatus"
                           }, 
                "minap": {
-                          "patientIdVar": "1.02 HospitalNumber", 
-                          "unitIdVar": "1.01 Hospital",
+                          "patientIdVar": "X1.02.HospitalNumber", 
+                          "unitIdVar": "X1.01.Hospital",
                           "admissionDateVar": "3.06 ArrivalAtHospital",
                           "yearVar": "adyear",
-                          "dischargeDateVar": "4.01 DischargeDate",
+                          "dischargeDateVar": "X4.01.DischargeDate",
                           "dischargeStatusVar": "4.16 ModeOfDischarge"
                         } };
 $Q.ValueDefs = {"picanet": {"AdType": {"1":"Planned-following surgery", 

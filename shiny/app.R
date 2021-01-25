@@ -8,7 +8,7 @@ library(dplyr)
 ui <- fluidPage(
 
   # App title ----
-  titlePanel("Upload Audit File"),
+  titlePanel("Upload MINAP Audit File"),
 
   # Sidebar layout with input and output definitions ----
   sidebarLayout(
@@ -86,7 +86,8 @@ server <- function(input, output) {
     ##########################################################################
 
     ########################## Main parameters #######################
-    dest_file_path <- "C:/Bitnami/wampstack-7.0.12-0/apache2/htdocs/Qualdashv1/home/data/minap_admission/"
+    #dest_file_path <- "\\iqualdash\data\data\minap_admission\"
+	dest_file_path <- "D:/Bitnami/wampstack-7.1.30-0/apache2/htdocs/qualdash/home/data/minap_admission/"
     dateFormat <- '%d/%m/%Y %H:%M'
     madmission <- df1
     
